@@ -208,5 +208,14 @@
   "signIn": "Sign In",
   "signOut": "Sign Out",
   "email": "Email",
-  "password": "Password"
+  "password": "Password",
+  "highContrastDescription": "Increase contrast for better visibility",
+  "signInWithGoogle": "Sign in with Google",
+  "signInWithApple": "Sign in with Apple",
+  "linkAccount": "Link Account",
+  "linkWithGoogle": "Link with Google",
+  "linkWithApple": "Link with Apple",
+  "accountLinked": "Account linked successfully",
+  "signInCancelled": "Sign in was cancelled",
+  "accountAlreadyLinked": "This account is already linked to another user"
 }

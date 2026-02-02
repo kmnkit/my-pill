@@ -477,4 +477,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get password => 'パスワード';
+
+  @override
+  String get highContrastDescription => '視認性を向上させるためにコントラストを強化';
+
+  @override
+  String get signInWithGoogle => 'Googleでサインイン';
+
+  @override
+  String get signInWithApple => 'Appleでサインイン';
+
+  @override
+  String get linkAccount => 'アカウント連携';
+
+  @override
+  String get linkWithGoogle => 'Googleと連携';
+
+  @override
+  String get linkWithApple => 'Appleと連携';
+
+  @override
+  String get accountLinked => 'アカウントが正常に連携されました';
+
+  @override
+  String get signInCancelled => 'サインインがキャンセルされました';
+
+  @override
+  String get accountAlreadyLinked => 'このアカウントは既に別のユーザーに連携されています';
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -46,6 +47,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Sign in failed: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.signInWithGoogle();
+      if (result == null) {
+        // User cancelled
+        if (mounted) setState(() => _isLoading = false);
+        return;
+      }
+      if (mounted) context.go('/home');
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Google sign in failed: ${e.toString()}'),
             backgroundColor: AppColors.error,
           ),
         );
@@ -255,8 +283,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 const SizedBox(height: AppSpacing.lg),
 
-                // Sign in with Apple
+                // Sign in with Google
                 if (!_isLoading)
+                  MpButton(
+                    label: 'Sign in with Google',
+                    onPressed: _signInWithGoogle,
+                    variant: MpButtonVariant.secondary,
+                    icon: Icons.g_mobiledata,
+                  ),
+                const SizedBox(height: AppSpacing.md),
+
+                // Sign in with Apple (iOS only)
+                if (!_isLoading && Platform.isIOS)
                   MpButton(
                     label: 'Sign in with Apple',
                     onPressed: _signInWithApple,

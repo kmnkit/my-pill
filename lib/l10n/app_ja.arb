@@ -208,5 +208,14 @@
   "signIn": "サインイン",
   "signOut": "サインアウト",
   "email": "メールアドレス",
-  "password": "パスワード"
+  "password": "パスワード",
+  "highContrastDescription": "視認性を向上させるためにコントラストを強化",
+  "signInWithGoogle": "Googleでサインイン",
+  "signInWithApple": "Appleでサインイン",
+  "linkAccount": "アカウント連携",
+  "linkWithGoogle": "Googleと連携",
+  "linkWithApple": "Appleと連携",
+  "accountLinked": "アカウントが正常に連携されました",
+  "signInCancelled": "サインインがキャンセルされました",
+  "accountAlreadyLinked": "このアカウントは既に別のユーザーに連携されています"
 }

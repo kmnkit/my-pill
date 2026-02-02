@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -111,6 +113,21 @@ class AccountSection extends ConsumerWidget {
                   onPressed: () => context.push('/login'),
                   variant: MpButtonVariant.primary,
                 ),
+                const SizedBox(height: AppSpacing.sm),
+                MpButton(
+                  label: 'Link with Google',
+                  onPressed: () => _linkWithGoogle(context, ref),
+                  variant: MpButtonVariant.secondary,
+                  icon: Icons.g_mobiledata,
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                if (Platform.isIOS)
+                  MpButton(
+                    label: 'Link with Apple',
+                    onPressed: () => _linkWithApple(context, ref),
+                    variant: MpButtonVariant.secondary,
+                    icon: Icons.apple,
+                  ),
               ],
             ),
           );
@@ -147,6 +164,51 @@ class AccountSection extends ConsumerWidget {
         );
       },
     );
+  }
+
+  void _linkWithGoogle(BuildContext context, WidgetRef ref) async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.linkWithGoogle();
+      if (result == null) return; // cancelled
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account linked successfully'), backgroundColor: AppColors.primary),
+        );
+        ref.invalidate(authStateProvider);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        final message = e.code == 'credential-already-in-use'
+            ? 'This account is already linked to another user'
+            : 'Failed to link account: ${e.message}';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message), backgroundColor: AppColors.error),
+        );
+      }
+    }
+  }
+
+  void _linkWithApple(BuildContext context, WidgetRef ref) async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.linkWithApple();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account linked successfully'), backgroundColor: AppColors.primary),
+        );
+        ref.invalidate(authStateProvider);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        final message = e.code == 'credential-already-in-use'
+            ? 'This account is already linked to another user'
+            : 'Failed to link account: ${e.message}';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message), backgroundColor: AppColors.error),
+        );
+      }
+    }
   }
 
   String _getInitials(String name) {

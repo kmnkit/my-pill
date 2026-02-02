@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   // Current user stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -24,11 +26,14 @@ class AuthService {
     return await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  // Google Sign-In (placeholder - needs google_sign_in package setup)
+  // Google Sign-In
   Future<UserCredential?> signInWithGoogle() async {
-    // TODO: Implement with google_sign_in package
-    // For now, throw unimplemented
-    throw UnimplementedError('Google Sign-In not yet configured');
+    final googleAccount = await _googleSignIn.authenticate();
+    final googleAuth = googleAccount.authentication;
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+    return await _auth.signInWithCredential(credential);
   }
 
   // Apple Sign-In
@@ -41,6 +46,22 @@ class AuthService {
   Future<UserCredential> linkWithEmail(String email, String password) async {
     final credential = EmailAuthProvider.credential(email: email, password: password);
     return await _auth.currentUser!.linkWithCredential(credential);
+  }
+
+  // Link anonymous account to Google
+  Future<UserCredential?> linkWithGoogle() async {
+    final googleAccount = await _googleSignIn.authenticate();
+    final googleAuth = googleAccount.authentication;
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+    return await _auth.currentUser!.linkWithCredential(credential);
+  }
+
+  // Link anonymous account to Apple
+  Future<UserCredential> linkWithApple() async {
+    final appleProvider = AppleAuthProvider();
+    return await _auth.currentUser!.linkWithProvider(appleProvider);
   }
 
   // Sign out

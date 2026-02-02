@@ -480,4 +480,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get password => 'Password';
+
+  @override
+  String get highContrastDescription =>
+      'Increase contrast for better visibility';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get signInWithApple => 'Sign in with Apple';
+
+  @override
+  String get linkAccount => 'Link Account';
+
+  @override
+  String get linkWithGoogle => 'Link with Google';
+
+  @override
+  String get linkWithApple => 'Link with Apple';
+
+  @override
+  String get accountLinked => 'Account linked successfully';
+
+  @override
+  String get signInCancelled => 'Sign in was cancelled';
+
+  @override
+  String get accountAlreadyLinked =>
+      'This account is already linked to another user';
 }

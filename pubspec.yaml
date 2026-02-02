@@ -37,6 +37,7 @@ dependencies:
   image_picker: any
   # Ads
   google_mobile_ads: any
+  google_sign_in: any
   # IAP
   in_app_purchase: any
   # Home Screen Widgets
@@ -61,6 +62,7 @@ dev_dependencies:
   freezed: any
   riverpod_generator: any
   mockito: any
+  firebase_core_platform_interface: any
 
 flutter:
   uses-material-design: true

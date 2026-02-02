@@ -997,6 +997,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get password;
+
+  /// No description provided for @highContrastDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase contrast for better visibility'**
+  String get highContrastDescription;
+
+  /// No description provided for @signInWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get signInWithGoogle;
+
+  /// No description provided for @signInWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple'**
+  String get signInWithApple;
+
+  /// No description provided for @linkAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Account'**
+  String get linkAccount;
+
+  /// No description provided for @linkWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link with Google'**
+  String get linkWithGoogle;
+
+  /// No description provided for @linkWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Link with Apple'**
+  String get linkWithApple;
+
+  /// No description provided for @accountLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Account linked successfully'**
+  String get accountLinked;
+
+  /// No description provided for @signInCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in was cancelled'**
+  String get signInCancelled;
+
+  /// No description provided for @accountAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'This account is already linked to another user'**
+  String get accountAlreadyLinked;
 }
 
 class _AppLocalizationsDelegate
