@@ -44,11 +44,24 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Notification and alert screens for missed doses and low stock
 - Caregiver settings with notification preferences
 
+### Authentication
+- Anonymous sign-in for frictionless onboarding without account creation
+- Google Sign-In integration across all platforms
+- Sign in with Apple for iOS users
+- Account linking: upgrade anonymous accounts to Google or Apple credentials
+- Secure credential management via Firebase Auth
+
 ### Settings & Account
 - Data sharing preferences with granular toggle controls
 - Backup & sync management with manual sync trigger
 - Account deactivation with confirmation flow
 - Account deletion with double confirmation and full data wipe
+
+### Accessibility
+- High-contrast mode with WCAG AA compliant color schemes (light and dark variants)
+- Adjustable text size options (Normal / Large / XL) with proportional UI scaling
+- Bold weight bumping for improved readability at larger sizes
+- Accessibility preferences persist via user profile settings
 
 ### Localization
 - English and Japanese support
@@ -57,8 +70,11 @@ A comprehensive Flutter application for managing medications, tracking adherence
 
 ### Monetization
 - AdMob banner ads on Home and Medications screens
+- Interstitial ads at natural transition points (medication save, weekly summary view)
+- Smart frequency capping: maximum 1 ad per 3 user actions with cooldown between displays
+- Session-aware ad reset: counters reset after 5+ minutes in background
 - In-app purchase for ad removal with restore purchases support
-- Clean, ad-free user experience after purchase
+- Clean, ad-free experience for premium users (no interstitials shown after purchase)
 - Graceful degradation when ads are unavailable
 
 ## Tech Stack
@@ -69,6 +85,7 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - **Routing**: GoRouter for declarative navigation
 - **Local Storage**: Hive (NoSQL database)
 - **Cloud Backend**: Firebase (Auth, Firestore, Cloud Functions, Cloud Messaging)
+- **Authentication**: google_sign_in, Sign in with Apple via Firebase Auth
 - **UI Components**: Flutter Material Design 3
 - **Charts & Visualization**: fl_chart
 - **QR Code**: qr_flutter + mobile_scanner
