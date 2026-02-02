@@ -40,4 +40,4 @@ final class HomeWidgetUpdaterProvider
   }
 }
 
-String _$homeWidgetUpdaterHash() => r'9dd3e505d92e04c7a13b8b9309009b256e2ecbbf';
+String _$homeWidgetUpdaterHash() => r'a275008a3b0b7417c653a870d7ec997ba005ef37';

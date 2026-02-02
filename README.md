@@ -13,12 +13,16 @@ A comprehensive Flutter application for managing medications, tracking adherence
 ### Smart Scheduling
 - Multiple scheduling modes: daily, specific days of week, or interval-based
 - Time-based reminders with customizable intervals
-- Timezone-aware travel mode supporting both fixed intervals and local time adjustments
+- Timezone-aware travel mode with real timezone data and dual-time display
+- Fixed interval (home time) and local time adaptation modes
 
 ### Reminder System
+- Automatic daily reminder generation from active schedules
 - Real-time push notifications with take/snooze/skip actions
-- Home screen widgets for quick access (iOS and Android)
-- Flexible reminder configuration with repeat patterns
+- Notification actions wire directly to adherence records
+- Missed dose auto-detection (1 hour window)
+- Home screen widgets with real-time medication status (iOS and Android)
+- App lifecycle-aware: reschedules on resume, checks missed on background return
 
 ### Adherence Tracking
 - Automatic tracking of medication adherence
@@ -39,9 +43,10 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Locale-aware date and time formatting
 
 ### Monetization
-- AdMob integration for non-intrusive ads
-- In-app purchase for ad removal
-- Clean, ad-free user experience option
+- AdMob banner ads on Home and Medications screens
+- In-app purchase for ad removal with restore purchases support
+- Clean, ad-free user experience after purchase
+- Graceful degradation when ads are unavailable
 
 ## Tech Stack
 
