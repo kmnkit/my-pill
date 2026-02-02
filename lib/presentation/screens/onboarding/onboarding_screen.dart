@@ -1,18 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _selectedLanguage = 'EN';
+  bool _isLoading = false;
+
+  Future<void> _handleGetStarted() async {
+    setState(() => _isLoading = true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.signInAnonymously();
+      if (mounted) {
+        context.go('/home');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to start: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,17 +127,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const Spacer(),
 
               // Bottom section
-              MpButton(
-                label: 'Get Started',
-                onPressed: () => context.go('/home'),
-                variant: MpButtonVariant.primary,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              MpButton(
-                label: 'I already have an account',
-                onPressed: () {},
-                variant: MpButtonVariant.text,
-              ),
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else ...[
+                MpButton(
+                  label: 'Get Started',
+                  onPressed: _handleGetStarted,
+                  variant: MpButtonVariant.primary,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                MpButton(
+                  label: 'I already have an account',
+                  onPressed: () => context.push('/login'),
+                  variant: MpButtonVariant.text,
+                ),
+              ],
             ],
           ),
         ),
