@@ -4,11 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
+import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/data/services/storage_service.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
+import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
+import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialog.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/display_settings.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/notification_settings.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/remove_ads_banner.dart';
+import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 
@@ -40,14 +45,14 @@ class SettingsScreen extends ConsumerWidget {
                 context,
                 'Data Sharing Preferences',
                 Icons.privacy_tip,
-                () {},
+                () => DataSharingDialog.show(context),
               ),
               const SizedBox(height: AppSpacing.sm),
               _buildListTile(
                 context,
                 'Backup & Sync',
                 Icons.cloud_upload,
-                () {},
+                () => BackupSyncDialog.show(context),
               ),
               const SizedBox(height: AppSpacing.xl),
               const MpSectionHeader(title: 'About'),
@@ -69,7 +74,34 @@ class SettingsScreen extends ConsumerWidget {
                 context,
                 'Deactivate Account',
                 Icons.power_settings_new,
-                () {},
+                () async {
+                  final confirmed = await MpConfirmDialog.show(
+                    context,
+                    title: 'Deactivate Account',
+                    message:
+                        'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.',
+                    confirmLabel: 'Deactivate',
+                    isDestructive: true,
+                  );
+
+                  if (confirmed == true && context.mounted) {
+                    try {
+                      await AuthService().signOut();
+                      if (context.mounted) {
+                        context.go('/login');
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error deactivating account: $e'),
+                            backgroundColor: AppColors.error,
+                          ),
+                        );
+                      }
+                    }
+                  }
+                },
                 textColor: AppColors.error,
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -77,7 +109,50 @@ class SettingsScreen extends ConsumerWidget {
                 context,
                 'Delete Account',
                 Icons.delete_forever,
-                () {},
+                () async {
+                  // First confirmation
+                  final firstConfirm = await MpConfirmDialog.show(
+                    context,
+                    title: 'Delete Account',
+                    message:
+                        'This will permanently delete your account and all data. This cannot be undone.',
+                    confirmLabel: 'Continue',
+                    isDestructive: true,
+                  );
+
+                  if (firstConfirm != true || !context.mounted) return;
+
+                  // Second confirmation
+                  final secondConfirm = await MpConfirmDialog.show(
+                    context,
+                    title: 'Are you sure?',
+                    message:
+                        'All medications, schedules, history, and caregiver links will be permanently deleted.',
+                    confirmLabel: 'Delete Everything',
+                    isDestructive: true,
+                  );
+
+                  if (secondConfirm == true && context.mounted) {
+                    try {
+                      // Clear local data first
+                      await StorageService().clearAll();
+                      // Delete Firebase account
+                      await AuthService().deleteAccount();
+                      if (context.mounted) {
+                        context.go('/login');
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error deleting account: $e'),
+                            backgroundColor: AppColors.error,
+                          ),
+                        );
+                      }
+                    }
+                  }
+                },
                 textColor: AppColors.error,
               ),
               const SizedBox(height: AppSpacing.xl),
