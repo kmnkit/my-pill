@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:my_pill/data/services/adherence_service.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/models/adherence_record.dart';
 
 part 'adherence_provider.g.dart';
 
@@ -42,4 +43,17 @@ String adherenceRating(Ref ref, double percentage) {
   if (percentage >= 80) return 'Good';
   if (percentage >= 50) return 'Fair';
   return 'Poor';
+}
+
+@riverpod
+Future<List<AdherenceRecord>> medicationHistory(Ref ref, String medicationId) async {
+  final storage = ref.watch(storageServiceProvider);
+  final records = await storage.getAdherenceRecords(
+    medicationId: medicationId,
+    startDate: DateTime.now().subtract(const Duration(days: 30)),
+    endDate: DateTime.now(),
+  );
+  // Sort by date descending (most recent first)
+  records.sort((a, b) => b.date.compareTo(a.date));
+  return records.take(10).toList(); // Last 10 records
 }

@@ -272,3 +272,80 @@ final class AdherenceRatingFamily extends $Family
   @override
   String toString() => r'adherenceRatingProvider';
 }
+
+@ProviderFor(medicationHistory)
+final medicationHistoryProvider = MedicationHistoryFamily._();
+
+final class MedicationHistoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<AdherenceRecord>>,
+          List<AdherenceRecord>,
+          FutureOr<List<AdherenceRecord>>
+        >
+    with
+        $FutureModifier<List<AdherenceRecord>>,
+        $FutureProvider<List<AdherenceRecord>> {
+  MedicationHistoryProvider._({
+    required MedicationHistoryFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'medicationHistoryProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$medicationHistoryHash();
+
+  @override
+  String toString() {
+    return r'medicationHistoryProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<AdherenceRecord>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<AdherenceRecord>> create(Ref ref) {
+    final argument = this.argument as String;
+    return medicationHistory(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MedicationHistoryProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$medicationHistoryHash() => r'189253ee9d922974045e74f2d500945ce34165e9';
+
+final class MedicationHistoryFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<AdherenceRecord>>, String> {
+  MedicationHistoryFamily._()
+    : super(
+        retry: null,
+        name: r'medicationHistoryProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  MedicationHistoryProvider call(String medicationId) =>
+      MedicationHistoryProvider._(argument: medicationId, from: this);
+
+  @override
+  String toString() => r'medicationHistoryProvider';
+}

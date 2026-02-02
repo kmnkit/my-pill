@@ -7,7 +7,11 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
+import 'package:my_pill/data/providers/schedule_provider.dart';
+import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/adherence_badge.dart';
+import 'package:my_pill/presentation/screens/medications/widgets/history_list_item.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/dialogs/inventory_update_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
@@ -48,6 +52,8 @@ class MedicationDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final medicationAsync = ref.watch(medicationProvider(medicationId));
     final adherenceAsync = ref.watch(medicationAdherenceProvider(medicationId));
+    final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
+    final historyAsync = ref.watch(medicationHistoryProvider(medicationId));
 
     return Scaffold(
       appBar: MpAppBar(
@@ -184,24 +190,104 @@ class MedicationDetailScreen extends ConsumerWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      _InfoRow(
-                        label: 'Added',
-                        value: DateFormat('MMM d, yyyy').format(medication.createdAt),
+                      schedulesAsync.when(
+                        data: (schedules) {
+                          if (schedules.isEmpty) {
+                            return _InfoRow(
+                              label: 'Status',
+                              value: 'No schedule configured',
+                            );
+                          }
+                          final schedule = schedules.first;
+                          return Column(
+                            children: [
+                              _InfoRow(
+                                label: 'Type',
+                                value: schedule.type.label,
+                              ),
+                              if (schedule.times.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                _InfoRow(
+                                  label: 'Times',
+                                  value: schedule.times.join(', '),
+                                ),
+                              ],
+                              if (schedule.type == ScheduleType.specificDays &&
+                                  schedule.specificDays.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                _InfoRow(
+                                  label: 'Days',
+                                  value: _formatDays(schedule.specificDays),
+                                ),
+                              ],
+                              if (schedule.type == ScheduleType.interval &&
+                                  schedule.intervalHours != null) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                _InfoRow(
+                                  label: 'Interval',
+                                  value: 'Every ${schedule.intervalHours} hours',
+                                ),
+                              ],
+                              const SizedBox(height: AppSpacing.sm),
+                              _InfoRow(
+                                label: 'Added',
+                                value: DateFormat('MMM d, yyyy').format(medication.createdAt),
+                              ),
+                            ],
+                          );
+                        },
+                        loading: () => const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                        error: (_, _) => _InfoRow(
+                          label: 'Status',
+                          value: 'Error loading schedule',
+                        ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxl),
 
-                // Recent history (TODO: Wire to actual history when available)
+                // Recent history
                 const MpSectionHeader(title: 'Recent History'),
                 const SizedBox(height: AppSpacing.md),
-                const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(AppSpacing.xl),
-                    child: Text(
-                      'History coming soon',
-                      style: TextStyle(color: AppColors.textMuted),
+                historyAsync.when(
+                  data: (records) {
+                    if (records.isEmpty) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(AppSpacing.xl),
+                          child: Text(
+                            'No history yet',
+                            style: TextStyle(color: AppColors.textMuted),
+                          ),
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: records.map((record) {
+                        return HistoryListItem(
+                          date: DateFormat('MMM d, yyyy').format(record.date),
+                          time: DateFormat('h:mm a').format(record.scheduledTime),
+                          wasTaken: record.status == ReminderStatus.taken,
+                        );
+                      }).toList(),
+                    );
+                  },
+                  loading: () => const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.xl),
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                  ),
+                  error: (_, _) => const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.xl),
+                      child: Text(
+                        'Error loading history',
+                        style: TextStyle(color: AppColors.textMuted),
+                      ),
                     ),
                   ),
                 ),
@@ -267,4 +353,9 @@ class _InfoRow extends StatelessWidget {
       ],
     );
   }
+}
+
+String _formatDays(List<int> days) {
+  const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  return days.map((d) => d >= 0 && d < 7 ? dayNames[d] : '?').join(', ');
 }
