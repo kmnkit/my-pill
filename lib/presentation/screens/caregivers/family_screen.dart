@@ -35,7 +35,40 @@ class FamilyScreen extends ConsumerWidget {
                     ),
                   );
                 }
-                return const CaregiverListTile();
+                return Column(
+                  children: links.map((link) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                      child: CaregiverListTile(
+                        link: link,
+                        onRevoke: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Revoke Access'),
+                              content: Text(
+                                'Are you sure you want to revoke access for ${link.caregiverName}?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  child: const Text('Revoke'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true) {
+                            await ref.read(caregiverLinksProvider.notifier).removeLink(link.id);
+                          }
+                        },
+                      ),
+                    );
+                  }).toList(),
+                );
               },
               loading: () => const Center(
                 child: Padding(
@@ -43,7 +76,10 @@ class FamilyScreen extends ConsumerWidget {
                   child: CircularProgressIndicator.adaptive(),
                 ),
               ),
-              error: (error, stack) => const CaregiverListTile(),
+              error: (error, stack) => Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Text('Error loading caregivers: $error'),
+              ),
             ),
             const SizedBox(height: AppSpacing.xl),
             const QrInviteSection(),
