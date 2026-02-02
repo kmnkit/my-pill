@@ -23,6 +23,7 @@ dependencies:
   firebase_core: any
   firebase_auth: any
   cloud_firestore: any
+  cloud_functions: any
   firebase_messaging: any
   # Deep Linking (replaces dead firebase_dynamic_links)
   app_links: any

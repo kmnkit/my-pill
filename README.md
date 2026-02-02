@@ -36,10 +36,12 @@ A comprehensive Flutter application for managing medications, tracking adherence
 
 ### Caregiver Coordination
 - Link caregivers via QR code or deep link with share options (clipboard, LINE, Email, SMS)
+- Secure invite system powered by Firebase Cloud Functions (7-day expiring codes)
+- QR scanning with automatic invite code extraction and acceptance
+- Server-side caregiver access revocation with bidirectional cleanup
 - Caregiver dashboard with patient list and adherence status
 - Notification and alert screens for missed doses and low stock
 - Caregiver settings with notification preferences
-- Secure patient-caregiver relationships with revoke access
 
 ### Settings & Account
 - Data sharing preferences with granular toggle controls
@@ -65,7 +67,7 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - **Data Modeling**: Freezed + json_serializable for immutable models
 - **Routing**: GoRouter for declarative navigation
 - **Local Storage**: Hive (NoSQL database)
-- **Cloud Backend**: Firebase (Auth, Firestore, Cloud Functions, Messaging)
+- **Cloud Backend**: Firebase (Auth, Firestore, Cloud Functions, Cloud Messaging)
 - **UI Components**: Flutter Material Design 3
 - **Charts & Visualization**: fl_chart
 - **QR Code**: qr_flutter + mobile_scanner

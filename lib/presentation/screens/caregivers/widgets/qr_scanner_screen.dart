@@ -27,14 +27,15 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               final barcodes = capture.barcodes;
               for (final barcode in barcodes) {
                 final value = barcode.rawValue;
-                if (value != null && value.contains('mypill.app/invite/')) {
-                  _scanned = true;
-                  _controller.stop();
-                  // Extract invite code and pop with result
-                  final uri = Uri.parse(value);
-                  final code = uri.pathSegments.last;
-                  Navigator.of(context).pop(code);
-                  break;
+                if (value != null) {
+                  // Try to extract invite code from URL
+                  final code = _extractInviteCode(value);
+                  if (code != null) {
+                    _scanned = true;
+                    _controller.stop();
+                    Navigator.of(context).pop(code);
+                    break;
+                  }
                 }
               }
             },
@@ -50,9 +51,50 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               ),
             ),
           ),
+          // Instructions overlay
+          Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.7),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                'Position the QR code within the frame',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  String? _extractInviteCode(String scannedValue) {
+    try {
+      // Try to parse as URL
+      final uri = Uri.tryParse(scannedValue);
+      if (uri != null && uri.host.contains('mypill.app')) {
+        // Extract code from path: /invite/{code}
+        final segments = uri.pathSegments;
+        if (segments.length >= 2 && segments[0] == 'invite') {
+          return segments[1];
+        }
+      }
+
+      // If not a valid mypill.app URL, return null
+      return null;
+    } catch (e) {
+      // Invalid URL format
+      return null;
+    }
   }
 
   @override

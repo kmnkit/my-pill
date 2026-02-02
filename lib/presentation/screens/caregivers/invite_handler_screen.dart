@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -26,20 +27,32 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
   Future<void> _acceptInvitation() async {
     setState(() => _isProcessing = true);
 
-    // Simulate processing delay
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      final cfService = ref.read(cloudFunctionsServiceProvider);
+      await cfService.acceptInvite(widget.inviteCode);
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Invitation accepted! (Firebase integration pending)'),
-        backgroundColor: AppColors.success,
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Successfully linked as caregiver!'),
+          backgroundColor: AppColors.success,
+        ),
+      );
 
-    setState(() => _isProcessing = false);
-    context.go('/home');
+      context.go('/home');
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() => _isProcessing = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to accept invite: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _decline() {

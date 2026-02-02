@@ -5,77 +5,188 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
+import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
 
-class QrInviteSection extends ConsumerWidget {
+class QrInviteSection extends ConsumerStatefulWidget {
   const QrInviteSection({super.key});
 
-  String _getInviteUrl(WidgetRef ref) {
-    final userId = ref.read(authServiceProvider).currentUser?.uid ?? 'GUEST';
-    return 'https://mypill.app/invite/$userId';
+  @override
+  ConsumerState<QrInviteSection> createState() => _QrInviteSectionState();
+}
+
+class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
+  bool _isGenerating = false;
+  String? _generatedUrl;
+  String? _generatedCode;
+
+  Future<void> _generateInvite() async {
+    setState(() {
+      _isGenerating = true;
+    });
+
+    try {
+      final cfService = ref.read(cloudFunctionsServiceProvider);
+      final result = await cfService.generateInviteLink();
+
+      if (mounted) {
+        setState(() {
+          _generatedUrl = result.url;
+          _generatedCode = result.code;
+          _isGenerating = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invite link generated successfully!'),
+            backgroundColor: AppColors.success,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to generate invite: $e'),
+            backgroundColor: AppColors.error,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final inviteUrl = _getInviteUrl(ref);
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const MpSectionHeader(title: 'Invite Caregiver'),
         MpCard(
-          child: Column(
-            children: [
-              QrImageView(
-                data: inviteUrl,
-                version: QrVersions.auto,
-                size: 200,
-                backgroundColor: Colors.white,
+          child: _generatedUrl == null
+              ? _buildGenerateButton()
+              : _buildInviteContent(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGenerateButton() {
+    return Column(
+      children: [
+        Icon(
+          Icons.qr_code_2,
+          size: 80,
+          color: AppColors.textMuted,
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        Text(
+          'Generate an invite link to share with your caregiver',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textMuted,
               ),
-              const SizedBox(height: AppSpacing.xl),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildShareButton(
-                    context,
-                    Icons.link,
-                    'Link',
-                    () => _copyLink(context, inviteUrl),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  _buildShareButton(
-                    context,
-                    Icons.message,
-                    'LINE',
-                    () => _shareViaApp(inviteUrl),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  _buildShareButton(
-                    context,
-                    Icons.email,
-                    'Email',
-                    () => _shareViaApp(inviteUrl),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  _buildShareButton(
-                    context,
-                    Icons.sms,
-                    'SMS',
-                    () => _shareViaApp(inviteUrl),
-                  ),
-                ],
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        ElevatedButton.icon(
+          onPressed: _isGenerating ? null : _generateInvite,
+          icon: _isGenerating
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.add_link),
+          label: Text(_isGenerating ? 'Generating...' : 'Generate Invite Link'),
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        const Divider(),
+        const SizedBox(height: AppSpacing.lg),
+        OutlinedButton.icon(
+          onPressed: () => _scanQrCode(context),
+          icon: const Icon(Icons.qr_code_scanner),
+          label: const Text('Scan QR Code'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInviteContent() {
+    return Column(
+      children: [
+        QrImageView(
+          data: _generatedUrl!,
+          version: QrVersions.auto,
+          size: 200,
+          backgroundColor: Colors.white,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(
+          'Code: $_generatedCode',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textMuted,
+                fontFamily: 'monospace',
               ),
-              const SizedBox(height: AppSpacing.lg),
-              OutlinedButton.icon(
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildShareButton(
+              context,
+              Icons.link,
+              'Link',
+              () => _copyLink(context, _generatedUrl!),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+            _buildShareButton(
+              context,
+              Icons.message,
+              'LINE',
+              () => _shareViaApp(_generatedUrl!),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+            _buildShareButton(
+              context,
+              Icons.email,
+              'Email',
+              () => _shareViaApp(_generatedUrl!),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+            _buildShareButton(
+              context,
+              Icons.sms,
+              'SMS',
+              () => _shareViaApp(_generatedUrl!),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
                 onPressed: () => _scanQrCode(context),
                 icon: const Icon(Icons.qr_code_scanner),
                 label: const Text('Scan QR Code'),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _generateInvite,
+                icon: const Icon(Icons.refresh),
+                label: const Text('New Link'),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -114,19 +225,33 @@ class QrInviteSection extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Processing invite...'),
-          duration: Duration(seconds: 1),
+          duration: Duration(seconds: 2),
         ),
       );
 
-      // Show success message since Firebase integration is pending
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Scanned invite code: $code (Firebase integration pending)'),
-            backgroundColor: AppColors.success,
-          ),
-        );
+      try {
+        final cfService = ref.read(cloudFunctionsServiceProvider);
+        await cfService.acceptInvite(code);
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invite accepted successfully!'),
+              backgroundColor: AppColors.success,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to accept invite: $e'),
+              backgroundColor: AppColors.error,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
       }
     }
   }

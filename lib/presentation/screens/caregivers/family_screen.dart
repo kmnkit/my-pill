@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/caregiver_provider.dart';
+import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/caregiver_list_tile.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/privacy_notice.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/qr_invite_section.dart';
@@ -62,7 +64,33 @@ class FamilyScreen extends ConsumerWidget {
                             ),
                           );
                           if (confirmed == true) {
-                            await ref.read(caregiverLinksProvider.notifier).removeLink(link.id);
+                            try {
+                              // Call Cloud Function to revoke server-side
+                              final cfService = ref.read(cloudFunctionsServiceProvider);
+                              await cfService.revokeAccess(
+                                caregiverId: link.caregiverId,
+                                linkId: link.id,
+                              );
+                              // Remove local record
+                              await ref.read(caregiverLinksProvider.notifier).removeLink(link.id);
+
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Access revoked successfully'),
+                                    backgroundColor: AppColors.success,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Failed to revoke access: $e'),
+                                  ),
+                                );
+                              }
+                            }
                           }
                         },
                       ),
