@@ -6,7 +6,8 @@ A comprehensive Flutter application for managing medications, tracking adherence
 
 ### Medication Management
 - Add, edit, and organize medications with detailed information (dosage, shape, color, photo)
-- Track medication inventory levels with low-stock alerts
+- Take or upload medication photos (camera/gallery) for easy identification
+- Track medication inventory levels with low-stock alerts and in-app inventory updates
 - Store medication history and notes
 
 ### Smart Scheduling
@@ -26,9 +27,11 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Overall adherence score
 
 ### Caregiver Coordination
-- Link caregivers via QR code or deep link
-- Real-time adherence monitoring for caregivers
-- Secure patient-caregiver relationships
+- Link caregivers via QR code or deep link with share options (clipboard, LINE, Email, SMS)
+- Caregiver dashboard with patient list and adherence status
+- Notification and alert screens for missed doses and low stock
+- Caregiver settings with notification preferences
+- Secure patient-caregiver relationships with revoke access
 
 ### Localization
 - English and Japanese support

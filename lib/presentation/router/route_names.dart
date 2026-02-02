@@ -1,5 +1,6 @@
 abstract final class RouteNames {
   static const String onboarding = 'onboarding';
+  static const String login = 'login';
   static const String home = 'home';
   static const String medications = 'medications';
   static const String addMedication = 'add-medication';

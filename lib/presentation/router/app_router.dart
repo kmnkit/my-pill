@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 import 'package:my_pill/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:my_pill/presentation/screens/onboarding/login_screen.dart';
 import 'package:my_pill/presentation/screens/home/home_screen.dart';
 import 'package:my_pill/presentation/screens/medications/medications_list_screen.dart';
 import 'package:my_pill/presentation/screens/medications/add_medication_screen.dart';
@@ -14,6 +15,10 @@ import 'package:my_pill/presentation/screens/travel/travel_mode_screen.dart';
 import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
 import 'package:my_pill/presentation/screens/caregivers/family_screen.dart';
 import 'package:my_pill/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
+import 'package:my_pill/presentation/screens/caregivers/caregiver_notifications_screen.dart';
+import 'package:my_pill/presentation/screens/caregivers/caregiver_alerts_screen.dart';
+import 'package:my_pill/presentation/screens/caregivers/caregiver_settings_screen.dart';
+import 'package:my_pill/presentation/screens/caregivers/invite_handler_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/onboarding',
@@ -25,15 +30,20 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const OnboardingScreen(),
     ),
 
+    // Standalone route: Login
+    GoRoute(
+      path: '/login',
+      name: RouteNames.login,
+      builder: (context, state) => const LoginScreen(),
+    ),
+
     // Standalone route: Deep link invite handler
     GoRoute(
       path: '/invite/:code',
       name: RouteNames.invite,
       builder: (context, state) {
         final code = state.pathParameters['code'] ?? '';
-        return Scaffold(
-          body: Center(child: Text('Invite Code: $code')),
-        );
+        return InviteHandlerScreen(inviteCode: code);
       },
     ),
 
@@ -157,9 +167,7 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/caregiver/notifications',
               name: RouteNames.caregiverNotifications,
-              builder: (context, state) => const Scaffold(
-                body: Center(child: Text('Caregiver Notifications Screen')),
-              ),
+              builder: (context, state) => const CaregiverNotificationsScreen(),
             ),
           ],
         ),
@@ -170,9 +178,7 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/caregiver/alerts',
               name: RouteNames.caregiverAlerts,
-              builder: (context, state) => const Scaffold(
-                body: Center(child: Text('Caregiver Alerts Screen')),
-              ),
+              builder: (context, state) => const CaregiverAlertsScreen(),
             ),
           ],
         ),
@@ -183,9 +189,7 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/caregiver/settings',
               name: RouteNames.caregiverSettings,
-              builder: (context, state) => const Scaffold(
-                body: Center(child: Text('Caregiver Settings Screen')),
-              ),
+              builder: (context, state) => const CaregiverSettingsScreen(),
             ),
           ],
         ),
