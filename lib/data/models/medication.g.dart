@@ -20,6 +20,7 @@ _Medication _$MedicationFromJson(Map<String, dynamic> json) => _Medication(
   inventoryTotal: (json['inventoryTotal'] as num?)?.toInt() ?? 30,
   inventoryRemaining: (json['inventoryRemaining'] as num?)?.toInt() ?? 30,
   lowStockThreshold: (json['lowStockThreshold'] as num?)?.toInt() ?? 5,
+  isCritical: json['isCritical'] as bool? ?? false,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: json['updatedAt'] == null
       ? null
@@ -39,6 +40,7 @@ Map<String, dynamic> _$MedicationToJson(_Medication instance) =>
       'inventoryTotal': instance.inventoryTotal,
       'inventoryRemaining': instance.inventoryRemaining,
       'lowStockThreshold': instance.lowStockThreshold,
+      'isCritical': instance.isCritical,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };

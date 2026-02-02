@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
+import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
@@ -35,6 +36,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   PillColor _selectedColor = PillColor.white;
   ScheduleType _selectedScheduleType = ScheduleType.daily;
   int _inventoryCount = 30;
+  bool _isCritical = false;
   bool _isSaving = false;
 
   @override
@@ -154,6 +156,29 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
               },
             ),
             const SizedBox(height: AppSpacing.xxl),
+            const MpSectionHeader(title: 'Critical Alert'),
+            const SizedBox(height: AppSpacing.sm),
+            SwitchListTile(
+              title: Text(
+                'Mark as Critical Medication',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Text(
+                'Critical medications use high-priority alerts that can bypass Do Not Disturb',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textMuted,
+                    ),
+              ),
+              value: _isCritical,
+              onChanged: (value) {
+                setState(() {
+                  _isCritical = value;
+                });
+              },
+              activeTrackColor: AppColors.primary,
+              contentPadding: EdgeInsets.zero,
+            ),
+            const SizedBox(height: AppSpacing.xxl),
             MpButton(
               label: _isSaving ? 'Saving...' : 'Save Medication',
               onPressed: _isSaving ? null : _saveMedication,
@@ -199,6 +224,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
         color: _selectedColor,
         inventoryTotal: _inventoryCount,
         inventoryRemaining: _inventoryCount,
+        isCritical: _isCritical,
         createdAt: DateTime.now(),
       );
 

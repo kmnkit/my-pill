@@ -114,7 +114,7 @@ class TodayReminders extends _$TodayReminders {
         medicationInfo[med.id] = (
           name: med.name,
           dosage: '${med.dosage} ${med.dosageUnit.name}',
-          isCritical: false,
+          isCritical: med.isCritical,
         );
       }
 
