@@ -8,7 +8,10 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Add, edit, and organize medications with detailed information (dosage, shape, color, photo)
 - Take or upload medication photos (camera/gallery) for easy identification
 - Track medication inventory levels with low-stock alerts and in-app inventory updates
-- Store medication history and notes
+- Low stock push notifications triggered automatically when inventory falls below threshold
+- Per-medication critical alert toggle for high-priority notifications that bypass Do Not Disturb
+- Medication detail screen with real adherence history timeline (last 30 days, 10 most recent)
+- Schedule details display showing type, times, active days, and interval information
 
 ### Smart Scheduling
 - Multiple scheduling modes: daily, specific days of week, or interval-based
@@ -19,6 +22,7 @@ A comprehensive Flutter application for managing medications, tracking adherence
 ### Reminder System
 - Automatic daily reminder generation from active schedules
 - Real-time push notifications with take/snooze/skip actions
+- Critical medication alerts with iOS critical interruption level and Android max priority
 - Notification actions wire directly to adherence records
 - Missed dose auto-detection (1 hour window)
 - Home screen widgets with real-time medication status (iOS and Android)
@@ -36,6 +40,12 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Notification and alert screens for missed doses and low stock
 - Caregiver settings with notification preferences
 - Secure patient-caregiver relationships with revoke access
+
+### Settings & Account
+- Data sharing preferences with granular toggle controls
+- Backup & sync management with manual sync trigger
+- Account deactivation with confirmation flow
+- Account deletion with double confirmation and full data wipe
 
 ### Localization
 - English and Japanese support
