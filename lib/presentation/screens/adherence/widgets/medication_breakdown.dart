@@ -1,34 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 
 class MedicationBreakdown extends StatelessWidget {
-  const MedicationBreakdown({super.key});
+  final List<({String id, String name, double percentage})> medications;
 
-  static const List<_MedicationData> _medications = [
-    _MedicationData(
-      name: 'Vitamin D',
-      percentage: 100,
-      shape: PillShape.capsule,
-      color: PillColor.yellow,
-    ),
-    _MedicationData(
-      name: 'Omega-3',
-      percentage: 85,
-      shape: PillShape.oval,
-      color: PillColor.orange,
-    ),
-    _MedicationData(
-      name: 'Melatonin',
-      percentage: 50,
-      shape: PillShape.round,
-      color: PillColor.purple,
-    ),
-  ];
+  const MedicationBreakdown({super.key, required this.medications});
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +19,23 @@ class MedicationBreakdown extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: AppSpacing.lg),
-          for (int i = 0; i < _medications.length; i++) ...[
-            _MedicationRow(medication: _medications[i]),
-            if (i < _medications.length - 1) const SizedBox(height: AppSpacing.lg),
-          ],
+          if (medications.isEmpty)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                child: Text(
+                  'No medication data available',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textMuted,
+                  ),
+                ),
+              ),
+            )
+          else
+            for (int i = 0; i < medications.length; i++) ...[
+              _MedicationRow(medication: medications[i]),
+              if (i < medications.length - 1) const SizedBox(height: AppSpacing.lg),
+            ],
         ],
       ),
     );
@@ -54,16 +45,18 @@ class MedicationBreakdown extends StatelessWidget {
 class _MedicationRow extends StatelessWidget {
   const _MedicationRow({required this.medication});
 
-  final _MedicationData medication;
+  final ({String id, String name, double percentage}) medication;
 
   @override
   Widget build(BuildContext context) {
+    final percentage = medication.percentage.round();
+
     return Row(
       children: [
-        MpPillIcon(
-          shape: medication.shape,
-          color: medication.color,
+        Icon(
+          Icons.medication,
           size: AppSpacing.iconMd,
+          color: AppColors.primary,
         ),
         const SizedBox(width: AppSpacing.md),
         Expanded(
@@ -73,11 +66,11 @@ class _MedicationRow extends StatelessWidget {
           ),
         ),
         Text(
-          '${medication.percentage}%',
+          '$percentage%',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: medication.percentage >= 80
+            color: percentage >= 80
                 ? AppColors.success
-                : medication.percentage >= 60
+                : percentage >= 60
                     ? AppColors.warning
                     : AppColors.error,
           ),
@@ -85,18 +78,4 @@ class _MedicationRow extends StatelessWidget {
       ],
     );
   }
-}
-
-class _MedicationData {
-  final String name;
-  final int percentage;
-  final PillShape shape;
-  final PillColor color;
-
-  const _MedicationData({
-    required this.name,
-    required this.percentage,
-    required this.shape,
-    required this.color,
-  });
 }

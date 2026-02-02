@@ -40,7 +40,7 @@ final class OverallAdherenceProvider
   }
 }
 
-String _$overallAdherenceHash() => r'cb83059e2e63509b196c2dc9b7ca43ebf083e3ba';
+String _$overallAdherenceHash() => r'42a563d9faf060c9c989d798f9cd4cecb45fc2bc';
 
 @ProviderFor(medicationAdherence)
 final medicationAdherenceProvider = MedicationAdherenceFamily._();
@@ -92,7 +92,7 @@ final class MedicationAdherenceProvider
 }
 
 String _$medicationAdherenceHash() =>
-    r'7f9ba357f7b5f86a8536f42b51a0547541b11a07';
+    r'90d563858543895985cecf4c33e483711892a3b2';
 
 final class MedicationAdherenceFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<double>, String> {
@@ -151,7 +151,50 @@ final class WeeklyAdherenceProvider
   }
 }
 
-String _$weeklyAdherenceHash() => r'1bf5d000286381bd07d5f491a05be4e09e555946';
+String _$weeklyAdherenceHash() => r'88cd3c583d1a1547dbe3bcfe089f66ae757f84e5';
+
+@ProviderFor(medicationBreakdown)
+final medicationBreakdownProvider = MedicationBreakdownProvider._();
+
+final class MedicationBreakdownProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<({String id, String name, double percentage})>>,
+          List<({String id, String name, double percentage})>,
+          FutureOr<List<({String id, String name, double percentage})>>
+        >
+    with
+        $FutureModifier<List<({String id, String name, double percentage})>>,
+        $FutureProvider<List<({String id, String name, double percentage})>> {
+  MedicationBreakdownProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'medicationBreakdownProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$medicationBreakdownHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<({String id, String name, double percentage})>>
+  $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<({String id, String name, double percentage})>> create(
+    Ref ref,
+  ) {
+    return medicationBreakdown(ref);
+  }
+}
+
+String _$medicationBreakdownHash() =>
+    r'255eede48769b968da22bce3559f7ef6534f43e9';
 
 @ProviderFor(adherenceRating)
 final adherenceRatingProvider = AdherenceRatingFamily._();

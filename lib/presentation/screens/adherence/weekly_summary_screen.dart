@@ -39,17 +39,26 @@ class WeeklySummaryScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
             weeklyAdherenceAsync.when(
-              data: (weeklyData) => const AdherenceChart(),
+              data: (weeklyData) => AdherenceChart(weeklyData: weeklyData),
               loading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(AppSpacing.xl),
                   child: CircularProgressIndicator.adaptive(),
                 ),
               ),
-              error: (error, _) => const AdherenceChart(),
+              error: (error, _) => AdherenceChart(weeklyData: const {}),
             ),
             const SizedBox(height: AppSpacing.lg),
-            const MedicationBreakdown(),
+            ref.watch(medicationBreakdownProvider).when(
+              data: (medications) => MedicationBreakdown(medications: medications),
+              loading: () => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(AppSpacing.lg),
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+              error: (error, _) => MedicationBreakdown(medications: const []),
+            ),
           ],
         ),
       ),

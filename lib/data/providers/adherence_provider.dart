@@ -1,36 +1,39 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:my_pill/data/services/adherence_service.dart';
+import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:my_pill/data/providers/medication_provider.dart';
 
 part 'adherence_provider.g.dart';
 
 @riverpod
 Future<double> overallAdherence(Ref ref) async {
-  // TODO: Implement adherence calculation based on reminder history
-  // For now, return a placeholder value
-  return 0.85; // 85% adherence
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  final result = await service.getOverallAdherence();
+  return result / 100.0; // Service returns 0-100, provider returns 0.0-1.0
 }
 
 @riverpod
 Future<double> medicationAdherence(Ref ref, String medicationId) async {
-  // TODO: Implement medication-specific adherence calculation
-  // For now, return a placeholder value
-  return 0.90; // 90% adherence
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  final result = await service.getMedicationAdherence(medicationId);
+  return result / 100.0;
 }
 
 @riverpod
 Future<Map<String, double>> weeklyAdherence(Ref ref) async {
-  // TODO: Implement weekly adherence calculation based on reminder history
-  // For now, return placeholder data
-  final Map<String, double> weeklyData = {};
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  return service.getWeeklyAdherence(); // Returns dayName -> percentage (0-100)
+}
 
-  final now = DateTime.now();
-  for (int i = 0; i < 7; i++) {
-    final date = now.subtract(Duration(days: i));
-    final dateKey = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    // Generate mock adherence data for demo purposes
-    weeklyData[dateKey] = 0.80 + (i % 3) * 0.05;
-  }
-
-  return weeklyData;
+@riverpod
+Future<List<({String id, String name, double percentage})>> medicationBreakdown(Ref ref) async {
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  final medicationsAsync = await ref.watch(medicationListProvider.future);
+  return service.getMedicationBreakdown(medicationsAsync);
 }
 
 @riverpod
