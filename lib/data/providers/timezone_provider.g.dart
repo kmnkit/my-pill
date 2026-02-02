@@ -60,3 +60,45 @@ abstract class _$TimezoneSettings extends $Notifier<TimezoneState> {
     element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(timezoneService)
+final timezoneServiceProvider = TimezoneServiceProvider._();
+
+final class TimezoneServiceProvider
+    extends
+        $FunctionalProvider<TimezoneService, TimezoneService, TimezoneService>
+    with $Provider<TimezoneService> {
+  TimezoneServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'timezoneServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$timezoneServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<TimezoneService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  TimezoneService create(Ref ref) {
+    return timezoneService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TimezoneService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TimezoneService>(value),
+    );
+  }
+}
+
+String _$timezoneServiceHash() => r'1d9a523df37c93ca9ccbcc38cb7473e0b9c52e06';

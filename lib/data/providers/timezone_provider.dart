@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/services/timezone_service.dart';
 
 part 'timezone_provider.g.dart';
 
@@ -62,3 +63,6 @@ class TimezoneSettings extends _$TimezoneSettings {
     );
   }
 }
+
+@riverpod
+TimezoneService timezoneService(Ref ref) => TimezoneService();
