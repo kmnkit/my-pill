@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/services/ad_service.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
@@ -20,10 +22,30 @@ class MedicationsListScreen extends ConsumerStatefulWidget {
 class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  BannerAd? _bannerAd;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBannerAd();
+  }
+
+  void _loadBannerAd() {
+    try {
+      _bannerAd = AdService().getMedicationsBannerAd();
+      if (_bannerAd != null) {
+        setState(() {});
+      }
+    } catch (e) {
+      // Graceful failure - app continues without ads
+      debugPrint('Failed to load medications banner ad: $e');
+    }
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -164,6 +186,21 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
               ),
             ),
           ),
+          if (_bannerAd != null)
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: _bannerAd!.size.height.toDouble(),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.cardDark
+                  : AppColors.cardLight,
+              child: Center(
+                child: SizedBox(
+                  width: _bannerAd!.size.width.toDouble(),
+                  height: _bannerAd!.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd!),
+                ),
+              ),
+            ),
         ],
       ),
     );
