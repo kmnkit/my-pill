@@ -53,4 +53,10 @@ class UserSettings extends _$UserSettings {
     final updated = current.copyWith(travelModeEnabled: !current.travelModeEnabled);
     await updateProfile(updated);
   }
+
+  Future<void> updateTextSize(String size) async {
+    final current = await future;
+    final updated = current.copyWith(textSize: size);
+    await updateProfile(updated);
+  }
 }

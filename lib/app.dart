@@ -7,6 +7,9 @@ import 'package:my_pill/data/services/notification_service.dart';
 import 'package:my_pill/data/services/reminder_service.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
+import 'package:my_pill/data/providers/ad_provider.dart';
+import 'package:my_pill/data/providers/interstitial_provider.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 
 class MyPillApp extends ConsumerStatefulWidget {
   const MyPillApp({super.key});
@@ -27,6 +30,8 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
     // Generate and schedule today's reminders on app start
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _generateAndScheduleReminders();
+      // Pre-load interstitial ad
+      ref.read(adServiceProvider).loadInterstitial();
     });
   }
 
@@ -40,9 +45,13 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    // When app resumes from background, check for missed reminders and reschedule
+    if (state == AppLifecycleState.paused) {
+      ref.read(interstitialControllerProvider).onAppPaused();
+    }
+
     if (state == AppLifecycleState.resumed) {
       _onAppResumed();
+      ref.read(interstitialControllerProvider).onAppResumed();
     }
   }
 
@@ -94,14 +103,44 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'MyPill',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      routerConfig: appRouter,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+    final settingsAsync = ref.watch(userSettingsProvider);
+
+    return settingsAsync.when(
+      loading: () => MaterialApp.router(
+        title: 'MyPill',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        routerConfig: appRouter,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+      error: (_, _) => MaterialApp.router(
+        title: 'MyPill',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        routerConfig: appRouter,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+      data: (settings) => MaterialApp.router(
+        title: 'MyPill',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.resolve(
+          highContrast: settings.highContrast,
+          textSize: settings.textSize,
+          brightness: Brightness.light,
+        ),
+        darkTheme: AppTheme.resolve(
+          highContrast: settings.highContrast,
+          textSize: settings.textSize,
+          brightness: Brightness.dark,
+        ),
+        routerConfig: appRouter,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
     );
   }
 }

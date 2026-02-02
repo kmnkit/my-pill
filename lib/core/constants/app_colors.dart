@@ -43,4 +43,22 @@ abstract final class AppColors {
   // Borders
   static const Color borderLight = Color(0xFFE2E8F0);
   static const Color borderDark = Color(0xFF2D4A47);
+
+  // High Contrast - Light
+  static const Color hcBackgroundLight = Color(0xFFFFFFFF);
+  static const Color hcSurfaceLight = Color(0xFFF5F5F5);
+  static const Color hcTextPrimary = Color(0xFF000000);
+  static const Color hcTextMuted = Color(0xFF333333);
+  static const Color hcBorderLight = Color(0xFF000000);
+  static const Color hcPrimary = Color(0xFF006B5E);
+  static const Color hcCardLight = Color(0xFFE8E8E8);
+
+  // High Contrast - Dark
+  static const Color hcBackgroundDark = Color(0xFF000000);
+  static const Color hcSurfaceDark = Color(0xFF1A1A1A);
+  static const Color hcTextPrimaryDark = Color(0xFFFFFFFF);
+  static const Color hcTextMutedDark = Color(0xFFCCCCCC);
+  static const Color hcBorderDark = Color(0xFFFFFFFF);
+  static const Color hcPrimaryDark = Color(0xFF14EBD9);
+  static const Color hcCardDark = Color(0xFF2A2A2A);
 }
