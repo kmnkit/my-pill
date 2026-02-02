@@ -1,0 +1,212 @@
+{
+  "@@locale": "ja",
+
+  "appTitle": "MyPill",
+
+  "onboardingHeadline": "あなたの信頼できる服薬管理パートナー",
+  "onboardingFeature1": "飲み忘れを防止",
+  "onboardingFeature2": "タイムゾーンをまたいで対応",
+  "onboardingFeature3": "ご家族とつながる",
+  "getStarted": "はじめる",
+  "alreadyHaveAccount": "アカウントをお持ちの方",
+
+  "goodMorning": "おはようございます",
+  "goodAfternoon": "こんにちは",
+  "goodEvening": "こんばんは",
+  "medicationsToday": "今日の薬 {count}種類、{taken}種類服用済み",
+  "@medicationsToday": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "taken": {"type": "int"}
+    }
+  },
+  "lowStockAlert": "{name} - 残り{count}錠",
+  "@lowStockAlert": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+
+  "home": "ホーム",
+  "adherence": "服薬状況",
+  "medications": "お薬",
+  "settings": "設定",
+  "patients": "患者",
+  "notifications": "通知",
+  "alerts": "アラート",
+
+  "myMedications": "お薬一覧",
+  "searchMedications": "お薬を検索...",
+  "addMedication": "お薬を追加",
+  "editMedication": "お薬を編集",
+  "saveMedication": "保存",
+  "deleteMedication": "削除",
+  "deleteMedicationConfirm": "このお薬を削除してもよろしいですか？この操作は取り消せません。",
+  "medicationName": "お薬の名前",
+  "dosage": "用量",
+  "dosageUnit": "単位",
+  "pillShape": "錠剤の形",
+  "pillColor": "色",
+  "takePhoto": "写真を撮影・アップロード",
+  "scheduleType": "スケジュールタイプ",
+  "inventory": "在庫",
+  "currentStock": "現在の在庫",
+  "stockRemaining": "{current} / {total}",
+  "@stockRemaining": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "lowStock": "残量少",
+  "updateInventory": "在庫を更新",
+  "noMedications": "お薬がまだ登録されていません",
+  "addFirstMedication": "最初のお薬を追加して始めましょう",
+
+  "round": "丸形",
+  "capsule": "カプセル",
+  "oval": "楕円形",
+  "square": "四角形",
+  "triangle": "三角形",
+  "hexagon": "六角形",
+
+  "mg": "mg",
+  "ml": "ml",
+  "pills": "錠",
+  "units": "単位",
+
+  "setSchedule": "スケジュール設定",
+  "daily": "毎日",
+  "specificDays": "曜日指定",
+  "interval": "間隔指定",
+  "frequency": "頻度",
+  "timesPerDay": "1日あたりの回数",
+  "addAnotherTime": "時刻を追加",
+  "everyNHours": "{hours}時間ごと",
+  "@everyNHours": {
+    "placeholders": {"hours": {"type": "int"}}
+  },
+  "continueButton": "次へ",
+
+  "mon": "月",
+  "tue": "火",
+  "wed": "水",
+  "thu": "木",
+  "fri": "金",
+  "sat": "土",
+  "sun": "日",
+
+  "taken": "服用済み",
+  "missed": "未服用",
+  "upcoming": "次回",
+  "skipped": "スキップ",
+  "snoozed": "スヌーズ中",
+  "pending": "待機中",
+
+  "takeNow": "今すぐ服用",
+  "snoozeMinutes": "{minutes}分スヌーズ",
+  "@snoozeMinutes": {
+    "placeholders": {"minutes": {"type": "int"}}
+  },
+  "skip": "スキップ",
+  "medication": "お薬",
+  "pillsRemaining": "残り{count}カプセル",
+  "@pillsRemaining": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+
+  "weeklyAdherence": "週間服薬遵守率",
+  "overallAdherence": "全体の服薬遵守率",
+  "adherenceRate": "服薬遵守率",
+  "adherenceRatePercent": "{percent}%",
+  "@adherenceRatePercent": {
+    "placeholders": {"percent": {"type": "int"}}
+  },
+  "excellent": "優秀",
+  "good": "良好",
+  "fair": "普通",
+  "poor": "要改善",
+  "keepItUp": "素晴らしいです！この調子で続けましょう！",
+  "medicationBreakdown": "お薬別の詳細",
+  "recentHistory": "最近の履歴",
+
+  "travelMode": "トラベルモード",
+  "currentLocation": "現在地",
+  "homeLocation": "自宅",
+  "timeDifference": "時差: {hours}",
+  "@timeDifference": {
+    "placeholders": {"hours": {"type": "String"}}
+  },
+  "enableTravelMode": "トラベルモードを有効にする",
+  "fixedInterval": "固定間隔（自宅時刻）",
+  "fixedIntervalDesc": "自宅のタイムゾーンで服用",
+  "localTime": "現地時刻に適応",
+  "localTimeDesc": "現地のタイムゾーンに調整",
+  "affectedMedications": "影響を受けるお薬",
+  "consultDoctor": "3時間以上の時差がある場合は、医師にご相談ください",
+
+  "settingsTitle": "設定",
+  "account": "アカウント",
+  "profileInfo": "プロフィール情報",
+  "signInSettings": "サインイン設定",
+  "language": "言語",
+  "pushNotifications": "プッシュ通知",
+  "criticalAlerts": "重要なアラート",
+  "snoozeDuration": "スヌーズ時間",
+  "display": "表示",
+  "highContrast": "ハイコントラスト",
+  "textSize": "文字サイズ",
+  "normal": "標準",
+  "large": "大",
+  "extraLarge": "特大",
+  "safetyPrivacy": "安全とプライバシー",
+  "exportHistory": "履歴をエクスポート",
+  "privacyPolicy": "プライバシーポリシー",
+  "about": "このアプリについて",
+  "version": "バージョン {version}",
+  "@version": {
+    "placeholders": {"version": {"type": "String"}}
+  },
+  "advanced": "詳細設定",
+  "deactivateAccount": "アカウントを無効化",
+  "deleteAccount": "アカウントを削除",
+  "removeAds": "広告を削除",
+  "upgradeMessage": "アップグレードして快適な体験を",
+  "switchToCaregiverView": "介護者ビューに切り替え",
+
+  "familyCaregivers": "ご家族と介護者",
+  "linkedCaregivers": "連携中の介護者",
+  "connected": "連携中",
+  "revokeAccess": "アクセスを取り消す",
+  "inviteCaregiver": "介護者を招待",
+  "scanQrCode": "QRコードをスキャン",
+  "shareVia": "共有方法",
+  "privacyNoticeTitle": "プライバシーについて",
+  "privacyNotice1": "介護者は服薬遵守状況とスケジュールのみ閲覧できます",
+  "privacyNotice2": "個人的なメモやその他の健康データはあなただけに表示されます",
+
+  "caregiverDashboard": "担当患者",
+  "dailyAdherence": "本日の服薬状況",
+  "takenCount": "{taken}/{total} 服用済み",
+  "@takenCount": {
+    "placeholders": {
+      "taken": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+
+  "confirm": "確認",
+  "cancel": "キャンセル",
+  "save": "保存",
+  "delete": "削除",
+  "edit": "編集",
+  "retry": "再試行",
+  "loading": "読み込み中...",
+  "errorOccurred": "エラーが発生しました",
+  "noDataAvailable": "データがありません",
+  "signIn": "サインイン",
+  "signOut": "サインアウト",
+  "email": "メールアドレス",
+  "password": "パスワード"
+}

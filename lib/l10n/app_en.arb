@@ -1,0 +1,212 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "MyPill",
+
+  "onboardingHeadline": "Your reliable medication companion",
+  "onboardingFeature1": "Never miss a dose",
+  "onboardingFeature2": "Works across timezones",
+  "onboardingFeature3": "Keep family connected",
+  "getStarted": "Get Started",
+  "alreadyHaveAccount": "I already have an account",
+
+  "goodMorning": "Good morning",
+  "goodAfternoon": "Good afternoon",
+  "goodEvening": "Good evening",
+  "medicationsToday": "{count} medications today, {taken} taken",
+  "@medicationsToday": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "taken": {"type": "int"}
+    }
+  },
+  "lowStockAlert": "{name} - {count} pills remaining",
+  "@lowStockAlert": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+
+  "home": "Home",
+  "adherence": "Adherence",
+  "medications": "Medications",
+  "settings": "Settings",
+  "patients": "Patients",
+  "notifications": "Notifications",
+  "alerts": "Alerts",
+
+  "myMedications": "My Medications",
+  "searchMedications": "Search medications...",
+  "addMedication": "Add Medication",
+  "editMedication": "Edit Medication",
+  "saveMedication": "Save Medication",
+  "deleteMedication": "Delete Medication",
+  "deleteMedicationConfirm": "Are you sure you want to delete this medication? This action cannot be undone.",
+  "medicationName": "Medication Name",
+  "dosage": "Dosage",
+  "dosageUnit": "Unit",
+  "pillShape": "Pill Shape",
+  "pillColor": "Pill Color",
+  "takePhoto": "Take or upload a photo",
+  "scheduleType": "Schedule Type",
+  "inventory": "Inventory",
+  "currentStock": "Current Stock",
+  "stockRemaining": "{current} / {total}",
+  "@stockRemaining": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "lowStock": "Low Stock",
+  "updateInventory": "Update Inventory",
+  "noMedications": "No medications yet",
+  "addFirstMedication": "Add your first medication to get started",
+
+  "round": "Round",
+  "capsule": "Capsule",
+  "oval": "Oval",
+  "square": "Square",
+  "triangle": "Triangle",
+  "hexagon": "Hexagon",
+
+  "mg": "mg",
+  "ml": "ml",
+  "pills": "pills",
+  "units": "units",
+
+  "setSchedule": "Set Schedule",
+  "daily": "Daily",
+  "specificDays": "Specific Days",
+  "interval": "Interval",
+  "frequency": "Frequency",
+  "timesPerDay": "Times per day",
+  "addAnotherTime": "Add another time",
+  "everyNHours": "Every {hours} hours",
+  "@everyNHours": {
+    "placeholders": {"hours": {"type": "int"}}
+  },
+  "continueButton": "Continue",
+
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sun": "Sun",
+
+  "taken": "Taken",
+  "missed": "Missed",
+  "upcoming": "Upcoming",
+  "skipped": "Skipped",
+  "snoozed": "Snoozed",
+  "pending": "Pending",
+
+  "takeNow": "Take Now",
+  "snoozeMinutes": "Snooze {minutes} min",
+  "@snoozeMinutes": {
+    "placeholders": {"minutes": {"type": "int"}}
+  },
+  "skip": "Skip",
+  "medication": "Medication",
+  "pillsRemaining": "{count} capsules remaining",
+  "@pillsRemaining": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+
+  "weeklyAdherence": "Weekly Adherence",
+  "overallAdherence": "Overall Adherence",
+  "adherenceRate": "Adherence Rate",
+  "adherenceRatePercent": "{percent}%",
+  "@adherenceRatePercent": {
+    "placeholders": {"percent": {"type": "int"}}
+  },
+  "excellent": "Excellent",
+  "good": "Good",
+  "fair": "Fair",
+  "poor": "Poor",
+  "keepItUp": "Keep up the great work!",
+  "medicationBreakdown": "Medication Breakdown",
+  "recentHistory": "Recent History",
+
+  "travelMode": "Travel Mode",
+  "currentLocation": "Current",
+  "homeLocation": "Home",
+  "timeDifference": "Time difference: {hours}",
+  "@timeDifference": {
+    "placeholders": {"hours": {"type": "String"}}
+  },
+  "enableTravelMode": "Enable Travel Mode",
+  "fixedInterval": "Fixed Interval (Home Time)",
+  "fixedIntervalDesc": "Take meds at home timezone",
+  "localTime": "Local Time Adaptation",
+  "localTimeDesc": "Adjust to local timezone",
+  "affectedMedications": "Affected Medications",
+  "consultDoctor": "Consult your doctor for 3+ timezone changes",
+
+  "settingsTitle": "Settings",
+  "account": "Account",
+  "profileInfo": "Profile Info",
+  "signInSettings": "Sign-in Settings",
+  "language": "Language",
+  "pushNotifications": "Push Notifications",
+  "criticalAlerts": "Critical Alerts",
+  "snoozeDuration": "Snooze Duration",
+  "display": "Display",
+  "highContrast": "High Contrast",
+  "textSize": "Text Size",
+  "normal": "Normal",
+  "large": "Large",
+  "extraLarge": "XL",
+  "safetyPrivacy": "Safety & Privacy",
+  "exportHistory": "Export History",
+  "privacyPolicy": "Privacy Policy",
+  "about": "About",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {"version": {"type": "String"}}
+  },
+  "advanced": "Advanced",
+  "deactivateAccount": "Deactivate Account",
+  "deleteAccount": "Delete Account",
+  "removeAds": "Remove Ads",
+  "upgradeMessage": "Upgrade for a cleaner experience",
+  "switchToCaregiverView": "Switch to Caregiver View",
+
+  "familyCaregivers": "Family & Caregivers",
+  "linkedCaregivers": "Linked Caregivers",
+  "connected": "Connected",
+  "revokeAccess": "Revoke Access",
+  "inviteCaregiver": "Invite Caregiver",
+  "scanQrCode": "Scan QR Code",
+  "shareVia": "Share via",
+  "privacyNoticeTitle": "Privacy Notice",
+  "privacyNotice1": "Caregivers can only see medication adherence and scheduled reminders",
+  "privacyNotice2": "Private notes and other health data remain visible only to you",
+
+  "caregiverDashboard": "My Patients",
+  "dailyAdherence": "Daily Adherence",
+  "takenCount": "{taken}/{total} taken",
+  "@takenCount": {
+    "placeholders": {
+      "taken": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "errorOccurred": "An error occurred",
+  "noDataAvailable": "No data available",
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "email": "Email",
+  "password": "Password"
+}
