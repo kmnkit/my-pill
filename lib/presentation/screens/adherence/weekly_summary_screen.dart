@@ -2,16 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
+import 'package:my_pill/data/providers/interstitial_provider.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/adherence_chart.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/medication_breakdown.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/overall_score.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 
-class WeeklySummaryScreen extends ConsumerWidget {
+class WeeklySummaryScreen extends ConsumerStatefulWidget {
   const WeeklySummaryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WeeklySummaryScreen> createState() => _WeeklySummaryScreenState();
+}
+
+class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Record screen entry as an action and maybe show interstitial
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(interstitialControllerProvider).recordAction();
+      ref.read(maybeShowInterstitialProvider.future);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final overallAdherenceAsync = ref.watch(overallAdherenceProvider);
     final weeklyAdherenceAsync = ref.watch(weeklyAdherenceProvider);
 

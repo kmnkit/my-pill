@@ -10,6 +10,7 @@ import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/interstitial_provider.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/inventory_editor.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/photo_picker_button.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/pill_color_picker.dart';
@@ -229,6 +230,10 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       );
 
       await ref.read(medicationListProvider.notifier).addMedication(medication);
+
+      // Record action for interstitial frequency capping
+      ref.read(interstitialControllerProvider).recordAction();
+      await ref.read(maybeShowInterstitialProvider.future);
 
       if (mounted) {
         context.pop();
