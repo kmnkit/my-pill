@@ -1,0 +1,21 @@
+# Generated code
+**/*.freezed.dart
+**/*.g.dart
+
+# Build artifacts
+build/
+.dart_tool/
+
+# Platform native
+ios/Pods/
+android/.gradle/
+android/build/
+
+# Dependencies
+.pub-cache/
+.pub/
+
+# IDE
+.idea/
+.vscode/
+*.iml
