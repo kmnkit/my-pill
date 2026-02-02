@@ -5,7 +5,7 @@ A comprehensive Flutter application for managing medications, tracking adherence
 ## Features
 
 ### Medication Management
-- Add and organize medications with detailed information (dosage, shape, color, photo)
+- Add, edit, and organize medications with detailed information (dosage, shape, color, photo)
 - Track medication inventory levels with low-stock alerts
 - Store medication history and notes
 

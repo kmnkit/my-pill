@@ -15,6 +15,7 @@ import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_progress_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:my_pill/presentation/router/route_names.dart';
 
 class MedicationDetailScreen extends ConsumerWidget {
   final String medicationId;
@@ -54,7 +55,10 @@ class MedicationDetailScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // TODO: Navigate to edit screen
+              context.pushNamed(
+                RouteNames.editMedication,
+                pathParameters: {'id': medicationId},
+              );
             },
             iconSize: AppSpacing.iconMd,
           ),

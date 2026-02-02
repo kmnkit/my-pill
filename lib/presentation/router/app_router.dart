@@ -9,6 +9,7 @@ import 'package:my_pill/presentation/screens/medications/add_medication_screen.d
 import 'package:my_pill/presentation/screens/medications/medication_detail_screen.dart';
 import 'package:my_pill/presentation/screens/schedule/schedule_screen.dart';
 import 'package:my_pill/presentation/screens/adherence/weekly_summary_screen.dart';
+import 'package:my_pill/presentation/screens/medications/edit_medication_screen.dart';
 import 'package:my_pill/presentation/screens/travel/travel_mode_screen.dart';
 import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
 import 'package:my_pill/presentation/screens/caregivers/family_screen.dart';
@@ -90,15 +91,16 @@ final GoRouter appRouter = GoRouter(
                       name: RouteNames.editMedication,
                       builder: (context, state) {
                         final id = state.pathParameters['id'] ?? '';
-                        return Scaffold(
-                          body: Center(child: Text('Edit Medication: $id')),
-                        );
+                        return EditMedicationScreen(medicationId: id);
                       },
                     ),
                     GoRoute(
                       path: 'schedule',
                       name: RouteNames.setSchedule,
-                      builder: (context, state) => const ScheduleScreen(),
+                      builder: (context, state) {
+                        final id = state.pathParameters['id'] ?? '';
+                        return ScheduleScreen(medicationId: id);
+                      },
                     ),
                   ],
                 ),
