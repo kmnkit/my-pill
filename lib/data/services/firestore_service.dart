@@ -170,4 +170,12 @@ class FirestoreService {
             .map((doc) => Reminder.fromJson(doc.data()))
             .toList());
   }
+
+  /// Stream of linked patients for caregiver dashboard
+  Stream<List<Map<String, dynamic>>> watchLinkedPatients() {
+    final caregiverId = _userId;
+    return _db.collection('caregiverAccess').doc(caregiverId)
+      .collection('patients').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => doc.data()).toList());
+  }
 }

@@ -275,3 +275,137 @@ final class PatientDailyAdherenceFamily extends $Family
   @override
   String toString() => r'patientDailyAdherenceProvider';
 }
+
+@ProviderFor(caregiverPatients)
+final caregiverPatientsProvider = CaregiverPatientsProvider._();
+
+final class CaregiverPatientsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<
+            List<({DateTime? linkedAt, String patientId, String patientName})>
+          >,
+          List<({DateTime? linkedAt, String patientId, String patientName})>,
+          Stream<
+            List<({DateTime? linkedAt, String patientId, String patientName})>
+          >
+        >
+    with
+        $FutureModifier<
+          List<({DateTime? linkedAt, String patientId, String patientName})>
+        >,
+        $StreamProvider<
+          List<({DateTime? linkedAt, String patientId, String patientName})>
+        > {
+  CaregiverPatientsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'caregiverPatientsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$caregiverPatientsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<
+    List<({DateTime? linkedAt, String patientId, String patientName})>
+  >
+  $createElement($ProviderPointer pointer) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<({DateTime? linkedAt, String patientId, String patientName})>>
+  create(Ref ref) {
+    return caregiverPatients(ref);
+  }
+}
+
+String _$caregiverPatientsHash() => r'82fb5277076dd524051f9894719c55b72b7fb539';
+
+@ProviderFor(patientMedicationStatus)
+final patientMedicationStatusProvider = PatientMedicationStatusFamily._();
+
+final class PatientMedicationStatusProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Map<String, dynamic>>>,
+          List<Map<String, dynamic>>,
+          FutureOr<List<Map<String, dynamic>>>
+        >
+    with
+        $FutureModifier<List<Map<String, dynamic>>>,
+        $FutureProvider<List<Map<String, dynamic>>> {
+  PatientMedicationStatusProvider._({
+    required PatientMedicationStatusFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'patientMedicationStatusProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$patientMedicationStatusHash();
+
+  @override
+  String toString() {
+    return r'patientMedicationStatusProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Map<String, dynamic>>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Map<String, dynamic>>> create(Ref ref) {
+    final argument = this.argument as String;
+    return patientMedicationStatus(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PatientMedicationStatusProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$patientMedicationStatusHash() =>
+    r'692aecd0afeca3403529fe52fba56df97bba4920';
+
+final class PatientMedicationStatusFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Map<String, dynamic>>>,
+          String
+        > {
+  PatientMedicationStatusFamily._()
+    : super(
+        retry: null,
+        name: r'patientMedicationStatusProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  PatientMedicationStatusProvider call(String patientId) =>
+      PatientMedicationStatusProvider._(argument: patientId, from: this);
+
+  @override
+  String toString() => r'patientMedicationStatusProvider';
+}

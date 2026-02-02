@@ -39,7 +39,8 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Secure invite system powered by Firebase Cloud Functions (7-day expiring codes)
 - QR scanning with automatic invite code extraction and acceptance
 - Server-side caregiver access revocation with bidirectional cleanup
-- Caregiver dashboard with patient list and adherence status
+- Real-time caregiver dashboard with live patient medications, reminder status, and daily adherence from Firestore
+- Per-patient medication status badges (Taken/Missed/Upcoming/Snoozed) with automatic reminder mapping
 - Notification and alert screens for missed doses and low stock
 - Caregiver settings with notification preferences
 

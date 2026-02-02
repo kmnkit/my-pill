@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/patient_card.dart';
+import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
+import 'package:my_pill/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
 
 class CaregiverDashboardScreen extends ConsumerWidget {
   const CaregiverDashboardScreen({super.key});
 
-  String _getInitials(String name) {
-    final parts = name.trim().split(' ');
-    if (parts.isEmpty) return '';
-    if (parts.length == 1) return parts[0][0].toUpperCase();
-    return '${parts[0][0]}${parts[parts.length - 1][0]}'.toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final caregiverLinksAsync = ref.watch(caregiverLinksProvider);
+    final patientsAsync = ref.watch(caregiverPatientsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -32,13 +25,13 @@ class CaregiverDashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.xl),
               Expanded(
-                child: caregiverLinksAsync.when(
+                child: patientsAsync.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(
                     child: Text('Error: $error'),
                   ),
-                  data: (links) {
-                    if (links.isEmpty) {
+                  data: (patients) {
+                    if (patients.isEmpty) {
                       return MpEmptyState(
                         icon: Icons.people_outline,
                         title: 'No patients linked',
@@ -47,18 +40,16 @@ class CaregiverDashboardScreen extends ConsumerWidget {
                     }
 
                     return ListView.builder(
-                      itemCount: links.length,
+                      itemCount: patients.length,
                       itemBuilder: (context, index) {
-                        final link = links[index];
+                        final patient = patients[index];
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: index < links.length - 1 ? AppSpacing.lg : 0,
+                            bottom: index < patients.length - 1 ? AppSpacing.lg : 0,
                           ),
-                          child: PatientCard(
-                            name: link.caregiverName,
-                            initials: _getInitials(link.caregiverName),
-                            adherence: 'Loading...',
-                            medications: const [],
+                          child: PatientDataCard(
+                            patientId: patient.patientId,
+                            patientName: patient.patientName,
                           ),
                         );
                       },

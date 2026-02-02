@@ -38,11 +38,18 @@ exports.acceptInvite = functions.https.onCall(async (data, context) => {
   if (inviteData.expiresAt.toDate() < new Date()) throw new functions.https.HttpsError('failed-precondition', 'Invite expired');
 
   const patientId = inviteData.patientId;
+
+  // Read patient profile to get name for caregiver dashboard
+  const patientDoc = await db.collection('users').doc(patientId).get();
+  const patientData = patientDoc.exists ? patientDoc.data() : {};
+  const patientName = patientData?.profile?.name || 'Patient';
+
   const batch = db.batch();
 
-  // Create caregiver access
+  // Create caregiver access (with patient name for dashboard display)
   batch.set(db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId), {
     patientId,
+    patientName,
     linkedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
