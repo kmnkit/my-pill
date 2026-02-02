@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/adherence_badge.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:my_pill/presentation/shared/dialogs/inventory_update_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
@@ -88,11 +90,22 @@ class MedicationDetailScreen extends ConsumerWidget {
                 Center(
                   child: Column(
                     children: [
-                      MpPillIcon(
-                        shape: medication.shape,
-                        color: medication.color,
-                        size: 64,
-                      ),
+                      if (medication.photoPath != null)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                          child: Image.file(
+                            File(medication.photoPath!),
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      else
+                        MpPillIcon(
+                          shape: medication.shape,
+                          color: medication.color,
+                          size: 64,
+                        ),
                       const SizedBox(height: AppSpacing.lg),
                       Text(
                         medication.name,
@@ -140,8 +153,20 @@ class MedicationDetailScreen extends ConsumerWidget {
                       MpButton(
                         label: 'Update Inventory',
                         variant: MpButtonVariant.secondary,
-                        onPressed: () {
-                          // TODO: Show inventory update dialog
+                        onPressed: () async {
+                          final result = await InventoryUpdateDialog.show(
+                            context,
+                            currentRemaining: medication.inventoryRemaining,
+                            currentTotal: medication.inventoryTotal,
+                          );
+                          if (result != null) {
+                            final updated = medication.copyWith(
+                              inventoryRemaining: result.remaining,
+                              inventoryTotal: result.total,
+                              updatedAt: DateTime.now(),
+                            );
+                            await ref.read(medicationListProvider.notifier).updateMedication(updated);
+                          }
                         },
                       ),
                     ],
