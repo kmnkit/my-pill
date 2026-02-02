@@ -219,6 +219,35 @@ class NotificationService {
     }
   }
 
+  /// Show immediate notification for low stock
+  Future<void> showLowStockNotification(String medicationName, int remaining) async {
+    const androidDetails = AndroidNotificationDetails(
+      'medication_reminders',
+      'Medication Reminders',
+      channelDescription: 'Reminders to take your medication',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    // Use a unique ID based on medication name to avoid duplicate notifications
+    final notificationId = 'low_stock_$medicationName'.hashCode;
+
+    await _localNotifications.show(
+      id: notificationId,
+      title: 'Low Stock Alert: $medicationName',
+      body: 'Only $remaining doses remaining. Time to refill!',
+      notificationDetails: details,
+    );
+  }
+
   // Handle notification response (tap or action)
   static void _onNotificationResponse(NotificationResponse response) {
     final reminderId = response.payload;

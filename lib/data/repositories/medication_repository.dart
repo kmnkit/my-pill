@@ -1,6 +1,7 @@
 import 'package:uuid/uuid.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/services/storage_service.dart';
+import 'package:my_pill/data/services/notification_service.dart';
 
 class MedicationRepository {
   final StorageService _storage;
@@ -88,6 +89,20 @@ class MedicationRepository {
     );
 
     await _storage.saveMedication(updated);
+
+    // Check if now low stock and trigger notification
+    if (isLowStock(updated)) {
+      try {
+        await NotificationService().showLowStockNotification(
+          updated.name,
+          updated.inventoryRemaining,
+        );
+      } catch (e) {
+        // Don't fail the deduction if notification fails
+        // ignore: avoid_print
+      }
+    }
+
     return updated;
   }
 
