@@ -3,7 +3,12 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 
 class IntervalPicker extends StatefulWidget {
-  const IntervalPicker({super.key});
+  const IntervalPicker({
+    super.key,
+    this.onIntervalChanged,
+  });
+
+  final ValueChanged<int>? onIntervalChanged;
 
   @override
   State<IntervalPicker> createState() => _IntervalPickerState();
@@ -12,6 +17,25 @@ class IntervalPicker extends StatefulWidget {
 class _IntervalPickerState extends State<IntervalPicker> {
   int _interval = 8;
   String _unit = 'hours';
+  late final TextEditingController _controller;
+
+  void _notifyParent() {
+    final hours = _unit == 'days' ? _interval * 24 : _interval;
+    widget.onIntervalChanged?.call(hours);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: _interval.toString());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _notifyParent());
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +66,13 @@ class _IntervalPickerState extends State<IntervalPicker> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
-              controller: TextEditingController(text: _interval.toString()),
+              controller: _controller,
               onChanged: (value) {
                 final parsed = int.tryParse(value);
                 if (parsed != null) {
                   setState(() {
                     _interval = parsed;
+                    _notifyParent();
                   });
                 }
               },
@@ -65,6 +90,7 @@ class _IntervalPickerState extends State<IntervalPicker> {
               if (value != null) {
                 setState(() {
                   _unit = value;
+                  _notifyParent();
                 });
               }
             },

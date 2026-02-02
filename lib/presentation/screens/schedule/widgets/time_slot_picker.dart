@@ -6,9 +6,11 @@ class TimeSlotPicker extends StatefulWidget {
   const TimeSlotPicker({
     super.key,
     required this.dosageCount,
+    this.onTimesChanged,
   });
 
   final int dosageCount;
+  final ValueChanged<List<String>>? onTimesChanged;
 
   @override
   State<TimeSlotPicker> createState() => _TimeSlotPickerState();
@@ -20,7 +22,32 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
   void _addTimeSlot() {
     setState(() {
       _timeSlots.add(TimeSlot(hour: 12, minute: 0));
+      _notifyParent();
     });
+  }
+
+  void _notifyParent() {
+    final visibleSlots = _timeSlots.take(widget.dosageCount).toList();
+    final times = visibleSlots.map((slot) {
+      final hour = slot.hour.toString().padLeft(2, '0');
+      final minute = slot.minute.toString().padLeft(2, '0');
+      return '$hour:$minute';
+    }).toList();
+    widget.onTimesChanged?.call(times);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _notifyParent());
+  }
+
+  @override
+  void didUpdateWidget(TimeSlotPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.dosageCount != widget.dosageCount) {
+      _notifyParent();
+    }
   }
 
   @override
@@ -37,11 +64,13 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
             onHourChanged: (value) {
               setState(() {
                 _timeSlots[i] = TimeSlot(hour: value, minute: visibleSlots[i].minute);
+                _notifyParent();
               });
             },
             onMinuteChanged: (value) {
               setState(() {
                 _timeSlots[i] = TimeSlot(hour: visibleSlots[i].hour, minute: value);
+                _notifyParent();
               });
             },
           ),
