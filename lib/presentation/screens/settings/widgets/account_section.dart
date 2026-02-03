@@ -9,6 +9,7 @@ import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class AccountSection extends ConsumerWidget {
   const AccountSection({super.key});
@@ -16,6 +17,7 @@ class AccountSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateAsync = ref.watch(authStateProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return authStateAsync.when(
       loading: () => MpCard(
@@ -25,7 +27,7 @@ class AccountSection extends ConsumerWidget {
             const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Text(
-                'Loading...',
+                l10n.loading,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -39,7 +41,7 @@ class AccountSection extends ConsumerWidget {
             const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Text(
-                'Error loading account',
+                l10n.errorLoadingAccount,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -56,12 +58,12 @@ class AccountSection extends ConsumerWidget {
                 const MpAvatar(initials: '?', size: 56.0),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  'Not signed in',
+                  l10n.notSignedIn,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  'Sign in to access your account',
+                  l10n.signInToAccess,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
@@ -92,12 +94,12 @@ class AccountSection extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Guest User',
+                            l10n.guestUser,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
-                            'Sign in to sync data',
+                            l10n.signInToSync,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: AppColors.textMuted,
                                 ),
@@ -109,13 +111,13 @@ class AccountSection extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 MpButton(
-                  label: 'Sign In',
+                  label: l10n.signIn,
                   onPressed: () => context.push('/login'),
                   variant: MpButtonVariant.primary,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 MpButton(
-                  label: 'Link with Google',
+                  label: l10n.linkWithGoogle,
                   onPressed: () => _linkWithGoogle(context, ref),
                   variant: MpButtonVariant.secondary,
                   icon: Icons.g_mobiledata,
@@ -123,7 +125,7 @@ class AccountSection extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.sm),
                 if (Platform.isIOS)
                   MpButton(
-                    label: 'Link with Apple',
+                    label: l10n.linkWithApple,
                     onPressed: () => _linkWithApple(context, ref),
                     variant: MpButtonVariant.secondary,
                     icon: Icons.apple,
@@ -166,22 +168,24 @@ class AccountSection extends ConsumerWidget {
     );
   }
 
-  void _linkWithGoogle(BuildContext context, WidgetRef ref) async {
+  Future<void> _linkWithGoogle(BuildContext context, WidgetRef ref) async {
     try {
       final authService = ref.read(authServiceProvider);
       final result = await authService.linkWithGoogle();
       if (result == null) return; // cancelled
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account linked successfully'), backgroundColor: AppColors.primary),
+          SnackBar(content: Text(l10n.accountLinked), backgroundColor: AppColors.primary),
         );
         ref.invalidate(authStateProvider);
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         final message = e.code == 'credential-already-in-use'
-            ? 'This account is already linked to another user'
-            : 'Failed to link account: ${e.message}';
+            ? l10n.accountAlreadyLinked
+            : l10n.linkFailed(e.message ?? '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: AppColors.error),
         );
@@ -189,21 +193,23 @@ class AccountSection extends ConsumerWidget {
     }
   }
 
-  void _linkWithApple(BuildContext context, WidgetRef ref) async {
+  Future<void> _linkWithApple(BuildContext context, WidgetRef ref) async {
     try {
       final authService = ref.read(authServiceProvider);
       await authService.linkWithApple();
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account linked successfully'), backgroundColor: AppColors.primary),
+          SnackBar(content: Text(l10n.accountLinked), backgroundColor: AppColors.primary),
         );
         ref.invalidate(authStateProvider);
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         final message = e.code == 'credential-already-in-use'
-            ? 'This account is already linked to another user'
-            : 'Failed to link account: ${e.message}';
+            ? l10n.accountAlreadyLinked
+            : l10n.linkFailed(e.message ?? '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: AppColors.error),
         );
@@ -212,10 +218,10 @@ class AccountSection extends ConsumerWidget {
   }
 
   String _getInitials(String name) {
-    final parts = name.trim().split(' ');
+    final parts = name.trim().split(' ').where((p) => p.isNotEmpty).toList();
     if (parts.isEmpty) return '?';
     if (parts.length == 1) {
-      return parts[0].substring(0, 1).toUpperCase();
+      return parts[0][0].toUpperCase();
     }
     return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
   }

@@ -56,37 +56,3 @@ final class InterstitialControllerProvider
 
 String _$interstitialControllerHash() =>
     r'd2a0e779986655c52e9c5b7886d7c2e610591662';
-
-@ProviderFor(maybeShowInterstitial)
-final maybeShowInterstitialProvider = MaybeShowInterstitialProvider._();
-
-final class MaybeShowInterstitialProvider
-    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
-    with $FutureModifier<void>, $FutureProvider<void> {
-  MaybeShowInterstitialProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'maybeShowInterstitialProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$maybeShowInterstitialHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<void> create(Ref ref) {
-    return maybeShowInterstitial(ref);
-  }
-}
-
-String _$maybeShowInterstitialHash() =>
-    r'cfa440da147b64d4a3d488d83cfbbbe15c8d84d5';

@@ -1051,6 +1051,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This account is already linked to another user'**
   String get accountAlreadyLinked;
+
+  /// No description provided for @guestUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest User'**
+  String get guestUser;
+
+  /// No description provided for @signInToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync data'**
+  String get signInToSync;
+
+  /// No description provided for @notSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not signed in'**
+  String get notSignedIn;
+
+  /// No description provided for @signInToAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access your account'**
+  String get signInToAccess;
+
+  /// No description provided for @errorLoadingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading account'**
+  String get errorLoadingAccount;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// No description provided for @createAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccount;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'your@email.com'**
+  String get emailHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @validEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get validEmail;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// No description provided for @signInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in failed: {error}'**
+  String signInFailed(String error);
+
+  /// No description provided for @googleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign in failed: {error}'**
+  String googleSignInFailed(String error);
+
+  /// No description provided for @appleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign in failed: {error}'**
+  String appleSignInFailed(String error);
+
+  /// No description provided for @accountCreationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Account creation failed: {error}'**
+  String accountCreationFailed(String error);
+
+  /// No description provided for @resetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent'**
+  String get resetEmailSent;
+
+  /// No description provided for @resetEmailFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send reset email: {error}'**
+  String resetEmailFailed(String error);
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email address'**
+  String get enterEmail;
+
+  /// No description provided for @linkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to link account: {error}'**
+  String linkFailed(String error);
+
+  /// No description provided for @weeklySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Summary'**
+  String get weeklySummary;
 }
 
 class _AppLocalizationsDelegate

@@ -44,24 +44,30 @@ class AuthService {
 
   // Link anonymous account to email/password
   Future<UserCredential> linkWithEmail(String email, String password) async {
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authenticated user to link');
     final credential = EmailAuthProvider.credential(email: email, password: password);
-    return await _auth.currentUser!.linkWithCredential(credential);
+    return await user.linkWithCredential(credential);
   }
 
   // Link anonymous account to Google
   Future<UserCredential?> linkWithGoogle() async {
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authenticated user to link');
     final googleAccount = await _googleSignIn.authenticate();
     final googleAuth = googleAccount.authentication;
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
     );
-    return await _auth.currentUser!.linkWithCredential(credential);
+    return await user.linkWithCredential(credential);
   }
 
   // Link anonymous account to Apple
   Future<UserCredential> linkWithApple() async {
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('No authenticated user to link');
     final appleProvider = AppleAuthProvider();
-    return await _auth.currentUser!.linkWithProvider(appleProvider);
+    return await user.linkWithProvider(appleProvider);
   }
 
   // Sign out

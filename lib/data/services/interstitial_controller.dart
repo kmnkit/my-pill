@@ -1,3 +1,5 @@
+import 'package:my_pill/data/services/ad_service.dart';
+
 /// Frequency capping controller for interstitial ads.
 /// Session = cold start OR resume after >5 min background.
 class InterstitialController {
@@ -35,6 +37,19 @@ class InterstitialController {
       _actionCount = 0;
     }
     _lastPausedAt = null;
+  }
+
+  /// Attempt to show an interstitial ad if frequency conditions are met.
+  /// Returns true if an ad was shown.
+  Future<bool> maybeShow({
+    required AdService adService,
+    required bool adsRemoved,
+  }) async {
+    if (adsRemoved) return false;
+    if (!shouldShowInterstitial()) return false;
+    await adService.showInterstitial();
+    onInterstitialShown();
+    return true;
   }
 
   // Getters for testing

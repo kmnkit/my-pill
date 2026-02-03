@@ -509,4 +509,85 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accountAlreadyLinked =>
       'This account is already linked to another user';
+
+  @override
+  String get guestUser => 'Guest User';
+
+  @override
+  String get signInToSync => 'Sign in to sync data';
+
+  @override
+  String get notSignedIn => 'Not signed in';
+
+  @override
+  String get signInToAccess => 'Sign in to access your account';
+
+  @override
+  String get errorLoadingAccount => 'Error loading account';
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get emailHint => 'your@email.com';
+
+  @override
+  String get passwordHint => 'Enter your password';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get validEmail => 'Enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
+  String signInFailed(String error) {
+    return 'Sign in failed: $error';
+  }
+
+  @override
+  String googleSignInFailed(String error) {
+    return 'Google sign in failed: $error';
+  }
+
+  @override
+  String appleSignInFailed(String error) {
+    return 'Apple sign in failed: $error';
+  }
+
+  @override
+  String accountCreationFailed(String error) {
+    return 'Account creation failed: $error';
+  }
+
+  @override
+  String get resetEmailSent => 'Password reset email sent';
+
+  @override
+  String resetEmailFailed(String error) {
+    return 'Failed to send reset email: $error';
+  }
+
+  @override
+  String get enterEmail => 'Please enter your email address';
+
+  @override
+  String linkFailed(String error) {
+    return 'Failed to link account: $error';
+  }
+
+  @override
+  String get weeklySummary => 'Weekly Summary';
 }

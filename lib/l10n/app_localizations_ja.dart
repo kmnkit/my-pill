@@ -504,4 +504,85 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get accountAlreadyLinked => 'このアカウントは既に別のユーザーに連携されています';
+
+  @override
+  String get guestUser => 'ゲストユーザー';
+
+  @override
+  String get signInToSync => 'サインインしてデータを同期';
+
+  @override
+  String get notSignedIn => '未サインイン';
+
+  @override
+  String get signInToAccess => 'アカウントにアクセスするにはサインインしてください';
+
+  @override
+  String get errorLoadingAccount => 'アカウントの読み込みエラー';
+
+  @override
+  String get or => 'または';
+
+  @override
+  String get createAccount => 'アカウント作成';
+
+  @override
+  String get forgotPassword => 'パスワードをお忘れですか？';
+
+  @override
+  String get emailHint => 'your@email.com';
+
+  @override
+  String get passwordHint => 'パスワードを入力';
+
+  @override
+  String get emailRequired => 'メールアドレスは必須です';
+
+  @override
+  String get validEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get passwordRequired => 'パスワードは必須です';
+
+  @override
+  String get passwordMinLength => 'パスワードは6文字以上必要です';
+
+  @override
+  String signInFailed(String error) {
+    return 'サインインに失敗しました: $error';
+  }
+
+  @override
+  String googleSignInFailed(String error) {
+    return 'Googleサインインに失敗しました: $error';
+  }
+
+  @override
+  String appleSignInFailed(String error) {
+    return 'Appleサインインに失敗しました: $error';
+  }
+
+  @override
+  String accountCreationFailed(String error) {
+    return 'アカウント作成に失敗しました: $error';
+  }
+
+  @override
+  String get resetEmailSent => 'パスワードリセットメールを送信しました';
+
+  @override
+  String resetEmailFailed(String error) {
+    return 'リセットメールの送信に失敗しました: $error';
+  }
+
+  @override
+  String get enterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String linkFailed(String error) {
+    return 'アカウント連携に失敗しました: $error';
+  }
+
+  @override
+  String get weeklySummary => '週間サマリー';
 }

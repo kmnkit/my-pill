@@ -56,27 +56,32 @@ class DisplaySettings extends ConsumerWidget {
             final isSelected = textSizeLabel == displayLabel;
             return Padding(
               padding: const EdgeInsets.only(right: AppSpacing.sm),
-              child: GestureDetector(
-                onTap: () {
-                  final storedValue = _textSizeOptions[displayLabel]!;
-                  ref.read(userSettingsProvider.notifier).updateTextSize(storedValue);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : (isDark ? AppColors.cardDark : AppColors.cardLight),
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                  ),
-                  child: Text(
-                    displayLabel,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: isSelected ? AppColors.textOnPrimary : null,
-                        ),
+              child: Semantics(
+                button: true,
+                selected: isSelected,
+                label: 'Text size $displayLabel${isSelected ? ', selected' : ''}',
+                child: GestureDetector(
+                  onTap: () {
+                    final storedValue = _textSizeOptions[displayLabel]!;
+                    ref.read(userSettingsProvider.notifier).updateTextSize(storedValue);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.md,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primary
+                          : (isDark ? AppColors.cardDark : AppColors.cardLight),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    ),
+                    child: Text(
+                      displayLabel,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: isSelected ? AppColors.textOnPrimary : null,
+                          ),
+                    ),
                   ),
                 ),
               ),

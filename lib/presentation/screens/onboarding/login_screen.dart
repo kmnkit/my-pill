@@ -7,6 +7,7 @@ import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -44,9 +45,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Sign in failed: ${e.toString()}'),
+            content: Text(l10n.signInFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -71,9 +73,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) context.go('/home');
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Google sign in failed: ${e.toString()}'),
+            content: Text(l10n.googleSignInFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -95,9 +98,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Apple sign in failed: ${e.toString()}'),
+            content: Text(l10n.appleSignInFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -124,9 +128,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Account creation failed: ${e.toString()}'),
+            content: Text(l10n.accountCreationFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -140,10 +145,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _forgotPassword() async {
     final email = _emailController.text.trim();
+    final l10n = AppLocalizations.of(context)!;
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email address'),
+        SnackBar(
+          content: Text(l10n.enterEmail),
           backgroundColor: AppColors.error,
         ),
       );
@@ -156,8 +162,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await authService.sendPasswordReset(email);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password reset email sent'),
+          SnackBar(
+            content: Text(l10n.resetEmailSent),
             backgroundColor: AppColors.primary,
           ),
         );
@@ -166,7 +172,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to send reset email: ${e.toString()}'),
+            content: Text(l10n.resetEmailFailed(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -181,10 +187,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: MpAppBar(
-        title: 'Sign In',
+        title: l10n.signIn,
         showBack: true,
       ),
       body: SafeArea(
@@ -204,8 +211,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   autofillHints: const [AutofillHints.email],
                   decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'your@email.com',
+                    labelText: l10n.email,
+                    hintText: l10n.emailHint,
                     prefixIcon: const Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -213,10 +220,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Email is required';
+                      return l10n.emailRequired;
                     }
                     if (!value.contains('@')) {
-                      return 'Enter a valid email';
+                      return l10n.validEmail;
                     }
                     return null;
                   },
@@ -230,8 +237,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   obscureText: _obscurePassword,
                   autofillHints: const [AutofillHints.password],
                   decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
+                    labelText: l10n.password,
+                    hintText: l10n.passwordHint,
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -247,10 +254,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Password is required';
+                      return l10n.passwordRequired;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return l10n.passwordMinLength;
                     }
                     return null;
                   },
@@ -263,7 +270,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: TextButton(
                     onPressed: _isLoading ? null : _forgotPassword,
                     child: Text(
-                      'Forgot password?',
+                      l10n.forgotPassword,
                       style: textTheme.bodyMedium?.copyWith(
                         color: AppColors.primary,
                       ),
@@ -277,7 +284,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const Center(child: CircularProgressIndicator())
                 else
                   MpButton(
-                    label: 'Sign In',
+                    label: l10n.signIn,
                     onPressed: _signIn,
                     variant: MpButtonVariant.primary,
                   ),
@@ -286,7 +293,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Sign in with Google
                 if (!_isLoading)
                   MpButton(
-                    label: 'Sign in with Google',
+                    label: l10n.signInWithGoogle,
                     onPressed: _signInWithGoogle,
                     variant: MpButtonVariant.secondary,
                     icon: Icons.g_mobiledata,
@@ -296,7 +303,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Sign in with Apple (iOS only)
                 if (!_isLoading && Platform.isIOS)
                   MpButton(
-                    label: 'Sign in with Apple',
+                    label: l10n.signInWithApple,
                     onPressed: _signInWithApple,
                     variant: MpButtonVariant.secondary,
                     icon: Icons.apple,
@@ -310,7 +317,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
                       child: Text(
-                        'or',
+                        l10n.or,
                         style: textTheme.bodySmall?.copyWith(
                           color: AppColors.textMuted,
                         ),
@@ -324,7 +331,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Create account
                 if (!_isLoading)
                   MpButton(
-                    label: 'Create Account',
+                    label: l10n.createAccount,
                     onPressed: _createAccount,
                     variant: MpButtonVariant.text,
                   ),
