@@ -10,7 +10,7 @@
 		<string>ja</string>
 	</array>
 	<key>CFBundleDisplayName</key>
-	<string>My Pill</string>
+	<string>MyPill</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,7 +18,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>my_pill</string>
+	<string>MyPill</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -62,6 +62,18 @@
 	<!-- Photo Library Write Permission -->
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MyPill saves medication photos to your library for your records.</string>
+
+	<!-- User Tracking Permission (AdMob) -->
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We use tracking to show you personalized ads and improve the app.</string>
+
+	<!-- Face ID Permission -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Use Face ID for secure login to MyPill.</string>
+
+	<!-- Notification Permission -->
+	<key>NSNotificationUsageDescription</key>
+	<string>Get reminders when it's time to take your medication.</string>
 
 	<!-- Background Modes -->
 	<key>UIBackgroundModes</key>
