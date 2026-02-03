@@ -1255,6 +1255,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weekly Summary'**
   String get weeklySummary;
+
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// No description provided for @premiumMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get premiumMonthly;
+
+  /// No description provided for @premiumYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly Plan (34% off)'**
+  String get premiumYearly;
+
+  /// No description provided for @premiumMonthlyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'¥480/mo'**
+  String get premiumMonthlyPrice;
+
+  /// No description provided for @premiumYearlyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'¥3,800/yr'**
+  String get premiumYearlyPrice;
+
+  /// No description provided for @unlockPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get unlockPremium;
+
+  /// No description provided for @premiumFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Features'**
+  String get premiumFeatures;
+
+  /// No description provided for @noAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No Ads'**
+  String get noAds;
+
+  /// No description provided for @unlimitedCaregivers.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited caregivers'**
+  String get unlimitedCaregivers;
+
+  /// No description provided for @pdfReports.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF Reports'**
+  String get pdfReports;
+
+  /// No description provided for @customSounds.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Notification Sounds'**
+  String get customSounds;
+
+  /// No description provided for @premiumThemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Themes'**
+  String get premiumThemes;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get restorePurchases;
+
+  /// No description provided for @alreadyPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re a Premium member'**
+  String get alreadyPremium;
+
+  /// No description provided for @premiumExpiresAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires: {date}'**
+  String premiumExpiresAt(String date);
+
+  /// No description provided for @caregiverLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan allows only 1 caregiver'**
+  String get caregiverLimitReached;
+
+  /// No description provided for @upgradeToPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium for unlimited'**
+  String get upgradeToPremium;
+
+  /// No description provided for @tryPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Premium'**
+  String get tryPremium;
+
+  /// No description provided for @freeTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Plan'**
+  String get freeTier;
+
+  /// No description provided for @premiumTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Plan'**
+  String get premiumTier;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Plan'**
+  String get currentPlan;
+
+  /// No description provided for @exportReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Report'**
+  String get exportReport;
+
+  /// No description provided for @weeklyReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Report'**
+  String get weeklyReport;
+
+  /// No description provided for @monthlyReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Report'**
+  String get monthlyReport;
+
+  /// No description provided for @generatePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate PDF'**
+  String get generatePdf;
+
+  /// No description provided for @shareReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Report'**
+  String get shareReport;
+
+  /// No description provided for @premiumFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Feature'**
+  String get premiumFeature;
+
+  /// No description provided for @unlockThisFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium to unlock this feature'**
+  String get unlockThisFeature;
+
+  /// No description provided for @selectReportPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Report Period'**
+  String get selectReportPeriod;
+
+  /// No description provided for @last7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get last7Days;
+
+  /// No description provided for @last30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get last30Days;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @reportGeneratedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generated successfully'**
+  String get reportGeneratedSuccessfully;
+
+  /// No description provided for @errorGeneratingReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating report'**
+  String get errorGeneratingReport;
+
+  /// No description provided for @pdfReportsRequirePremium.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF reports are a premium feature. Upgrade to access detailed adherence reports.'**
+  String get pdfReportsRequirePremium;
+
+  /// No description provided for @premiumBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Benefits:'**
+  String get premiumBenefits;
+
+  /// No description provided for @weeklyMonthlyReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly and monthly reports'**
+  String get weeklyMonthlyReports;
+
+  /// No description provided for @detailedAdherenceStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed adherence statistics'**
+  String get detailedAdherenceStats;
+
+  /// No description provided for @sharableWithDoctors.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharable with doctors and caregivers'**
+  String get sharableWithDoctors;
 }
 
 class _AppLocalizationsDelegate

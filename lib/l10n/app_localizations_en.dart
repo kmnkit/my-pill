@@ -629,4 +629,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weeklySummary => 'Weekly Summary';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String get premiumMonthly => 'Monthly Plan';
+
+  @override
+  String get premiumYearly => 'Yearly Plan (34% off)';
+
+  @override
+  String get premiumMonthlyPrice => '¥480/mo';
+
+  @override
+  String get premiumYearlyPrice => '¥3,800/yr';
+
+  @override
+  String get unlockPremium => 'Upgrade to Premium';
+
+  @override
+  String get premiumFeatures => 'Premium Features';
+
+  @override
+  String get noAds => 'No Ads';
+
+  @override
+  String get unlimitedCaregivers => 'Unlimited caregivers';
+
+  @override
+  String get pdfReports => 'PDF Reports';
+
+  @override
+  String get customSounds => 'Custom Notification Sounds';
+
+  @override
+  String get premiumThemes => 'Premium Themes';
+
+  @override
+  String get restorePurchases => 'Restore Purchases';
+
+  @override
+  String get alreadyPremium => 'You\'re a Premium member';
+
+  @override
+  String premiumExpiresAt(String date) {
+    return 'Expires: $date';
+  }
+
+  @override
+  String get caregiverLimitReached => 'Free plan allows only 1 caregiver';
+
+  @override
+  String get upgradeToPremium => 'Upgrade to Premium for unlimited';
+
+  @override
+  String get tryPremium => 'Try Premium';
+
+  @override
+  String get freeTier => 'Free Plan';
+
+  @override
+  String get premiumTier => 'Premium Plan';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get exportReport => 'Export Report';
+
+  @override
+  String get weeklyReport => 'Weekly Report';
+
+  @override
+  String get monthlyReport => 'Monthly Report';
+
+  @override
+  String get generatePdf => 'Generate PDF';
+
+  @override
+  String get shareReport => 'Share Report';
+
+  @override
+  String get premiumFeature => 'Premium Feature';
+
+  @override
+  String get unlockThisFeature => 'Upgrade to Premium to unlock this feature';
+
+  @override
+  String get selectReportPeriod => 'Select Report Period';
+
+  @override
+  String get last7Days => 'Last 7 days';
+
+  @override
+  String get last30Days => 'Last 30 days';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get reportGeneratedSuccessfully => 'Report generated successfully';
+
+  @override
+  String get errorGeneratingReport => 'Error generating report';
+
+  @override
+  String get pdfReportsRequirePremium =>
+      'PDF reports are a premium feature. Upgrade to access detailed adherence reports.';
+
+  @override
+  String get premiumBenefits => 'Premium Benefits:';
+
+  @override
+  String get weeklyMonthlyReports => 'Weekly and monthly reports';
+
+  @override
+  String get detailedAdherenceStats => 'Detailed adherence statistics';
+
+  @override
+  String get sharableWithDoctors => 'Sharable with doctors and caregivers';
 }

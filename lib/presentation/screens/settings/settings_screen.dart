@@ -12,7 +12,7 @@ import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialo
 import 'package:my_pill/presentation/screens/settings/widgets/display_settings.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/notification_settings.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/remove_ads_banner.dart';
+import 'package:my_pill/presentation/screens/settings/widgets/premium_banner.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
@@ -156,7 +156,7 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: AppColors.error,
               ),
               const SizedBox(height: AppSpacing.xl),
-              const RemoveAdsBanner(),
+              const PremiumBanner(),
               const SizedBox(height: AppSpacing.xl),
               Center(
                 child: TextButton(

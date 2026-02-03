@@ -53,3 +53,80 @@ abstract class _$CaregiverLinks extends $AsyncNotifier<List<CaregiverLink>> {
     element.handleCreate(ref, build);
   }
 }
+
+/// Check if user can add another caregiver based on subscription tier
+
+@ProviderFor(canAddCaregiver)
+final canAddCaregiverProvider = CanAddCaregiverProvider._();
+
+/// Check if user can add another caregiver based on subscription tier
+
+final class CanAddCaregiverProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
+    with $FutureModifier<bool>, $FutureProvider<bool> {
+  /// Check if user can add another caregiver based on subscription tier
+  CanAddCaregiverProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'canAddCaregiverProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$canAddCaregiverHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<bool> create(Ref ref) {
+    return canAddCaregiver(ref);
+  }
+}
+
+String _$canAddCaregiverHash() => r'7905758a025421559f3fcc28efaab7ce02d2e78a';
+
+/// Get the number of remaining caregiver slots
+
+@ProviderFor(remainingCaregiverSlots)
+final remainingCaregiverSlotsProvider = RemainingCaregiverSlotsProvider._();
+
+/// Get the number of remaining caregiver slots
+
+final class RemainingCaregiverSlotsProvider
+    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
+    with $FutureModifier<int>, $FutureProvider<int> {
+  /// Get the number of remaining caregiver slots
+  RemainingCaregiverSlotsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'remainingCaregiverSlotsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$remainingCaregiverSlotsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int> create(Ref ref) {
+    return remainingCaregiverSlots(ref);
+  }
+}
+
+String _$remainingCaregiverSlotsHash() =>
+    r'0a60211af92497ac186db7a67ab70d994968938e';

@@ -4,6 +4,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 
 class IapService {
   static const String removeAdsProductId = 'remove_ads';
+  static const String monthlyProductId = 'premium_monthly';
+  static const String yearlyProductId = 'premium_yearly';
 
   final InAppPurchase _iap = InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _subscription;
@@ -31,10 +33,17 @@ class IapService {
       onError: (error) => debugPrint('IAP error: $error'),
     );
 
-    // Load product details
-    final response = await _iap.queryProductDetails({removeAdsProductId});
-    if (response.productDetails.isNotEmpty) {
-      _removeAdsProduct = response.productDetails.first;
+    // Load product details (including subscription products)
+    final response = await _iap.queryProductDetails({
+      removeAdsProductId,
+      monthlyProductId,
+      yearlyProductId,
+    });
+    for (final product in response.productDetails) {
+      if (product.id == removeAdsProductId) {
+        _removeAdsProduct = product;
+        break;
+      }
     }
 
     // Check for previous purchases (restore)
@@ -43,7 +52,10 @@ class IapService {
 
   void _handlePurchaseUpdates(List<PurchaseDetails> purchases) {
     for (final purchase in purchases) {
-      if (purchase.productID == removeAdsProductId) {
+      // Handle both legacy remove_ads and new subscription products
+      if (purchase.productID == removeAdsProductId ||
+          purchase.productID == monthlyProductId ||
+          purchase.productID == yearlyProductId) {
         if (purchase.status == PurchaseStatus.purchased ||
             purchase.status == PurchaseStatus.restored) {
           _adsRemoved = true;

@@ -70,14 +70,17 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - Instant language switching without app restart
 - Locale-aware date and time formatting
 
-### Monetization
-- AdMob banner ads on Home and Medications screens
-- Interstitial ads at natural transition points (medication save, weekly summary view)
-- Smart frequency capping: maximum 1 ad per 3 user actions with cooldown between displays
-- Session-aware ad reset: counters reset after 5+ minutes in background
-- In-app purchase for ad removal with restore purchases support
-- Clean, ad-free experience for premium users (no interstitials shown after purchase)
-- Graceful degradation when ads are unavailable
+### Monetization (Freemium Model)
+- **Free Tier**: Basic features with ads + 1 caregiver connection
+- **Premium Tier**: Ad-free + unlimited caregivers + PDF reports + custom sounds + premium themes
+- **Subscription Plans**: Monthly (¥480/mo) and Yearly (¥3,800/yr with 34% discount)
+- AdMob banner ads on Home and Medications screens (free users only)
+- Interstitial ads at natural transition points with smart frequency capping
+- Premium upsell screen with feature comparison and plan toggle
+- In-app purchase with restore purchases support
+- PDF medication adherence reports (weekly/monthly) for premium users
+- Premium feature gating with elegant locked-state UI and upgrade prompts
+- Localized pricing and feature descriptions (EN/JA)
 
 ## Tech Stack
 
@@ -93,7 +96,8 @@ A comprehensive Flutter application for managing medications, tracking adherence
 - **QR Code**: qr_flutter + mobile_scanner
 - **Typography**: Google Fonts (Lexend)
 - **Notifications**: flutter_local_notifications
-- **Ads & IAP**: Google Mobile Ads + In-App Purchase
+- **Ads & IAP**: Google Mobile Ads + In-App Purchase (subscriptions)
+- **PDF Generation**: pdf + printing for medication reports
 - **Widgets**: home_widget for home screen integration
 
 ## Prerequisites

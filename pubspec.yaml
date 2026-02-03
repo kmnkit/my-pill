@@ -52,6 +52,9 @@ dependencies:
   json_annotation: any
   freezed_annotation: any
   collection: any
+  # PDF Generation
+  pdf: any
+  printing: any
 
 dev_dependencies:
   flutter_test:

@@ -16,4 +16,5 @@ abstract final class RouteNames {
   static const String caregiverAlerts = 'caregiver-alerts';
   static const String caregiverSettings = 'caregiver-settings';
   static const String invite = 'invite';
+  static const String premium = 'premium';
 }

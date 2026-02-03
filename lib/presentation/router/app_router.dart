@@ -19,6 +19,7 @@ import 'package:my_pill/presentation/screens/caregivers/caregiver_notifications_
 import 'package:my_pill/presentation/screens/caregivers/caregiver_alerts_screen.dart';
 import 'package:my_pill/presentation/screens/caregivers/caregiver_settings_screen.dart';
 import 'package:my_pill/presentation/screens/caregivers/invite_handler_screen.dart';
+import 'package:my_pill/presentation/screens/premium/premium_upsell_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/onboarding',
@@ -45,6 +46,13 @@ final GoRouter appRouter = GoRouter(
         final code = state.pathParameters['code'] ?? '';
         return InviteHandlerScreen(inviteCode: code);
       },
+    ),
+
+    // Standalone route: Premium Upsell
+    GoRoute(
+      path: '/premium',
+      name: RouteNames.premium,
+      builder: (context, state) => const PremiumUpsellScreen(),
     ),
 
     // Patient ShellRoute (default navigation)

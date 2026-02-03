@@ -618,4 +618,127 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get weeklySummary => '週間サマリー';
+
+  @override
+  String get premium => 'プレミアム';
+
+  @override
+  String get premiumMonthly => '月額プラン';
+
+  @override
+  String get premiumYearly => '年額プラン (34%お得)';
+
+  @override
+  String get premiumMonthlyPrice => '¥480/月';
+
+  @override
+  String get premiumYearlyPrice => '¥3,800/年';
+
+  @override
+  String get unlockPremium => 'プレミアムにアップグレード';
+
+  @override
+  String get premiumFeatures => 'プレミアム機能';
+
+  @override
+  String get noAds => '広告なし';
+
+  @override
+  String get unlimitedCaregivers => '介護者無制限';
+
+  @override
+  String get pdfReports => 'PDFレポート出力';
+
+  @override
+  String get customSounds => 'カスタム通知音';
+
+  @override
+  String get premiumThemes => 'プレミアムテーマ';
+
+  @override
+  String get restorePurchases => '購入を復元';
+
+  @override
+  String get alreadyPremium => 'プレミアム会員です';
+
+  @override
+  String premiumExpiresAt(String date) {
+    return '有効期限: $date';
+  }
+
+  @override
+  String get caregiverLimitReached => '無料プランでは介護者は1名までです';
+
+  @override
+  String get upgradeToPremium => 'プレミアムにアップグレードして無制限に';
+
+  @override
+  String get tryPremium => 'プレミアムを試す';
+
+  @override
+  String get freeTier => '無料プラン';
+
+  @override
+  String get premiumTier => 'プレミアムプラン';
+
+  @override
+  String get currentPlan => '現在のプラン';
+
+  @override
+  String get exportReport => 'レポートを出力';
+
+  @override
+  String get weeklyReport => '週間レポート';
+
+  @override
+  String get monthlyReport => '月間レポート';
+
+  @override
+  String get generatePdf => 'PDFを生成';
+
+  @override
+  String get shareReport => 'レポートを共有';
+
+  @override
+  String get premiumFeature => 'プレミアム機能';
+
+  @override
+  String get unlockThisFeature => 'この機能を解除するにはプレミアムにアップグレードしてください';
+
+  @override
+  String get selectReportPeriod => 'レポート期間を選択';
+
+  @override
+  String get last7Days => '過去7日間';
+
+  @override
+  String get last30Days => '過去30日間';
+
+  @override
+  String get weekly => '週間';
+
+  @override
+  String get monthly => '月間';
+
+  @override
+  String get reportGeneratedSuccessfully => 'レポートが正常に生成されました';
+
+  @override
+  String get errorGeneratingReport => 'レポート生成中にエラーが発生しました';
+
+  @override
+  String get pdfReportsRequirePremium =>
+      'PDFレポートはプレミアム機能です。詳細な服薬状況レポートにアクセスするにはアップグレードしてください。';
+
+  @override
+  String get premiumBenefits => 'プレミアム特典：';
+
+  @override
+  String get weeklyMonthlyReports => '週間・月間レポート';
+
+  @override
+  String get detailedAdherenceStats => '詳細な服薬統計';
+
+  @override
+  String get sharableWithDoctors => '医師や介護者と共有可能';
 }

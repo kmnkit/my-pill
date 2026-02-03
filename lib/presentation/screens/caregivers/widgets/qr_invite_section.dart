@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
+import 'package:my_pill/data/providers/caregiver_provider.dart';
+import 'package:my_pill/data/providers/subscription_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:my_pill/presentation/shared/widgets/premium_gate.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
+import 'package:my_pill/presentation/router/route_names.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class QrInviteSection extends ConsumerStatefulWidget {
   const QrInviteSection({super.key});
@@ -23,6 +29,16 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
   String? _generatedCode;
 
   Future<void> _generateInvite() async {
+    // Check if user can add more caregivers
+    final canAdd = await ref.read(canAddCaregiverProvider.future);
+
+    if (!canAdd) {
+      if (mounted) {
+        _showPremiumLimitDialog();
+      }
+      return;
+    }
+
     setState(() {
       _isGenerating = true;
     });
@@ -61,6 +77,67 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         );
       }
     }
+  }
+
+  void _showPremiumLimitDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    final isPremium = ref.read(isPremiumProvider);
+
+    if (isPremium) {
+      // Should not happen, but show generic error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cannot add more caregivers'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.workspace_premium,
+              color: AppColors.warning,
+              size: AppSpacing.iconLg,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Text(l10n.caregiverLimitReached),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.upgradeToPremium),
+            const SizedBox(height: AppSpacing.md),
+            PremiumInlineUpsell(
+              message: l10n.unlimitedCaregivers,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.push(RouteNames.premium);
+            },
+            icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
+            label: Text(l10n.tryPremium),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.warning,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

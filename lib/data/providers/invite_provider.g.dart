@@ -59,7 +59,7 @@ final class CloudFunctionsServiceProvider
 }
 
 String _$cloudFunctionsServiceHash() =>
-    r'52a5bec9e976335bdc37101d6b6312160aa3d076';
+    r'ffd40613017b6d6dd5036b14c924ef6f1e23c52b';
 
 /// Provider for managing caregiver invite link state
 /// Handles generation, acceptance, and state management of invite links
