@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'MyPill';
+  String get appTitle => 'Kusuridoki';
 
   @override
   String get onboardingHeadline => 'Your reliable medication companion';
@@ -848,4 +848,204 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sharableWithDoctors => 'Sharable with doctors and caregivers';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get backupAndSync => 'Backup & Sync';
+
+  @override
+  String get syncWithCloud => 'Sync your data with the cloud';
+
+  @override
+  String get lastSync => 'Last sync:';
+
+  @override
+  String get never => 'Never';
+
+  @override
+  String get justNow => 'Just now';
+
+  @override
+  String get syncing => 'Syncing...';
+
+  @override
+  String get syncNow => 'Sync Now';
+
+  @override
+  String get syncComplete => 'Sync complete';
+
+  @override
+  String get autoSync => 'Auto-sync';
+
+  @override
+  String get autoSyncSubtitle => 'Automatically sync when changes are made';
+
+  @override
+  String get takePhotoOption => 'Take Photo';
+
+  @override
+  String get chooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get removePhoto => 'Remove Photo';
+
+  @override
+  String failedToPickImage(String error) {
+    return 'Failed to pick image: $error';
+  }
+
+  @override
+  String get missedDoseAlerts => 'Missed Dose Alerts';
+
+  @override
+  String get missedDoseAlertsSubtitle =>
+      'Get notified when patients miss medications';
+
+  @override
+  String get lowStockAlerts => 'Low Stock Alerts';
+
+  @override
+  String get lowStockAlertsSubtitle =>
+      'Get notified about low medication inventory';
+
+  @override
+  String get switchToPatientView => 'Switch to Patient View';
+
+  @override
+  String get areYouSureSignOut => 'Are you sure you want to sign out?';
+
+  @override
+  String get dataSharingPreferences => 'Data Sharing Preferences';
+
+  @override
+  String get dataSharingSubtitle =>
+      'Control what information you share with your caregivers';
+
+  @override
+  String get shareAdherenceData => 'Share adherence data with caregivers';
+
+  @override
+  String get shareMedicationList => 'Share medication list with caregivers';
+
+  @override
+  String get allowCaregiverNotifications => 'Allow caregiver notifications';
+
+  @override
+  String get manageSubscription => 'Manage Subscription';
+
+  @override
+  String get noAdsDescription => 'Enjoy an ad-free experience';
+
+  @override
+  String get unlimitedCaregiversDescription =>
+      'Connect with unlimited family members';
+
+  @override
+  String get pdfReportsDescription => 'Export detailed medication reports';
+
+  @override
+  String get customSoundsDescription => 'Personalize notification sounds';
+
+  @override
+  String get premiumThemesDescription => 'Access exclusive themes';
+
+  @override
+  String get purchaseFailed => 'Purchase failed. Please try again.';
+
+  @override
+  String get purchasesRestored => 'Purchases restored successfully!';
+
+  @override
+  String get noPurchasesFound => 'No purchases found to restore.';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get noCaregiversLinked => 'No caregivers linked yet';
+
+  @override
+  String get revokeAccessTitle => 'Revoke Access';
+
+  @override
+  String revokeAccessConfirm(String name) {
+    return 'Are you sure you want to revoke access for $name?';
+  }
+
+  @override
+  String get revoke => 'Revoke';
+
+  @override
+  String get accessRevokedSuccess => 'Access revoked successfully';
+
+  @override
+  String failedToRevokeAccess(String error) {
+    return 'Failed to revoke access: $error';
+  }
+
+  @override
+  String errorLoadingCaregivers(String error) {
+    return 'Error loading caregivers: $error';
+  }
+
+  @override
+  String syncFailed(String error) {
+    return 'Sync failed: $error';
+  }
+
+  @override
+  String get noRemindersForToday => 'No reminders for today';
+
+  @override
+  String get errorLoadingReminders => 'Error loading reminders';
+
+  @override
+  String get errorLoadingSettings => 'Error loading settings';
+
+  @override
+  String get appVersion => 'App Version';
+
+  @override
+  String get deactivateAccountTitle => 'Deactivate Account';
+
+  @override
+  String get deactivateAccountMessage =>
+      'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.';
+
+  @override
+  String get deactivate => 'Deactivate';
+
+  @override
+  String get deleteAccountTitle => 'Delete Account';
+
+  @override
+  String get deleteAccountMessage =>
+      'This will permanently delete your account and all data. This cannot be undone.';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Are you sure?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'All medications, schedules, history, and caregiver links will be permanently deleted.';
+
+  @override
+  String get deleteEverything => 'Delete Everything';
+
+  @override
+  String errorDeactivatingAccount(String error) {
+    return 'Error deactivating account: $error';
+  }
+
+  @override
+  String errorDeletingAccount(String error) {
+    return 'Error deleting account: $error';
+  }
+
+  @override
+  String get minuteShort => 'min';
 }

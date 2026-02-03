@@ -118,7 +118,7 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
 
     return settingsAsync.when(
       loading: () => MaterialApp.router(
-        title: 'MyPill',
+        title: 'Kusuridoki',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
@@ -126,8 +126,8 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
-      error: (error, stack) => MaterialApp.router(
-        title: 'MyPill',
+      error: (_, _) => MaterialApp.router(
+        title: 'Kusuridoki',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
@@ -136,7 +136,7 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
         supportedLocales: AppLocalizations.supportedLocales,
       ),
       data: (settings) => MaterialApp.router(
-        title: 'MyPill',
+        title: 'Kusuridoki',
         debugShowCheckedModeBanner: false,
         locale: _getLocaleFromLanguage(settings.language),
         theme: AppTheme.resolve(

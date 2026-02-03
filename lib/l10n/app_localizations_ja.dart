@@ -9,7 +9,7 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appTitle => 'MyPill';
+  String get appTitle => 'クスリドキ';
 
   @override
   String get onboardingHeadline => 'あなたの信頼できる服薬管理パートナー';
@@ -831,4 +831,198 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get sharableWithDoctors => '医師や介護者と共有可能';
+
+  @override
+  String get close => '閉じる';
+
+  @override
+  String get backupAndSync => 'バックアップと同期';
+
+  @override
+  String get syncWithCloud => 'データをクラウドと同期';
+
+  @override
+  String get lastSync => '最終同期:';
+
+  @override
+  String get never => '未同期';
+
+  @override
+  String get justNow => 'たった今';
+
+  @override
+  String get syncing => '同期中...';
+
+  @override
+  String get syncNow => '今すぐ同期';
+
+  @override
+  String get syncComplete => '同期完了';
+
+  @override
+  String get autoSync => '自動同期';
+
+  @override
+  String get autoSyncSubtitle => '変更があると自動的に同期します';
+
+  @override
+  String get takePhotoOption => '写真を撮る';
+
+  @override
+  String get chooseFromGallery => 'ギャラリーから選択';
+
+  @override
+  String get removePhoto => '写真を削除';
+
+  @override
+  String failedToPickImage(String error) {
+    return '画像の選択に失敗しました: $error';
+  }
+
+  @override
+  String get missedDoseAlerts => '服用忘れアラート';
+
+  @override
+  String get missedDoseAlertsSubtitle => '患者が薬を飲み忘れた時に通知を受け取る';
+
+  @override
+  String get lowStockAlerts => '在庫不足アラート';
+
+  @override
+  String get lowStockAlertsSubtitle => '薬の在庫が少ない時に通知を受け取る';
+
+  @override
+  String get switchToPatientView => '患者ビューに切り替え';
+
+  @override
+  String get areYouSureSignOut => 'サインアウトしてもよろしいですか？';
+
+  @override
+  String get dataSharingPreferences => 'データ共有設定';
+
+  @override
+  String get dataSharingSubtitle => '介護者と共有する情報を管理します';
+
+  @override
+  String get shareAdherenceData => '服薬データを介護者と共有';
+
+  @override
+  String get shareMedicationList => 'お薬リストを介護者と共有';
+
+  @override
+  String get allowCaregiverNotifications => '介護者への通知を許可';
+
+  @override
+  String get manageSubscription => 'サブスクリプション管理';
+
+  @override
+  String get noAdsDescription => '広告なしの快適な体験';
+
+  @override
+  String get unlimitedCaregiversDescription => '無制限の家族と連携';
+
+  @override
+  String get pdfReportsDescription => '詳細な服薬レポートを出力';
+
+  @override
+  String get customSoundsDescription => '通知音をカスタマイズ';
+
+  @override
+  String get premiumThemesDescription => '限定テーマにアクセス';
+
+  @override
+  String get purchaseFailed => '購入に失敗しました。もう一度お試しください。';
+
+  @override
+  String get purchasesRestored => '購入が正常に復元されました！';
+
+  @override
+  String get noPurchasesFound => '復元する購入が見つかりません。';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'エラー: $message';
+  }
+
+  @override
+  String get noCaregiversLinked => 'まだ介護者がリンクされていません';
+
+  @override
+  String get revokeAccessTitle => 'アクセスを取り消す';
+
+  @override
+  String revokeAccessConfirm(String name) {
+    return '$nameのアクセスを取り消してもよろしいですか？';
+  }
+
+  @override
+  String get revoke => '取り消す';
+
+  @override
+  String get accessRevokedSuccess => 'アクセスが正常に取り消されました';
+
+  @override
+  String failedToRevokeAccess(String error) {
+    return 'アクセスの取り消しに失敗しました: $error';
+  }
+
+  @override
+  String errorLoadingCaregivers(String error) {
+    return '介護者の読み込みエラー: $error';
+  }
+
+  @override
+  String syncFailed(String error) {
+    return '同期に失敗しました: $error';
+  }
+
+  @override
+  String get noRemindersForToday => '今日のリマインダーはありません';
+
+  @override
+  String get errorLoadingReminders => 'リマインダーの読み込みエラー';
+
+  @override
+  String get errorLoadingSettings => '設定の読み込みエラー';
+
+  @override
+  String get appVersion => 'アプリバージョン';
+
+  @override
+  String get deactivateAccountTitle => 'アカウントを無効化';
+
+  @override
+  String get deactivateAccountMessage =>
+      'アカウントが無効化され、サインアウトされます。データは保持され、後でサインインできます。';
+
+  @override
+  String get deactivate => '無効化';
+
+  @override
+  String get deleteAccountTitle => 'アカウントを削除';
+
+  @override
+  String get deleteAccountMessage => 'アカウントとすべてのデータが完全に削除されます。この操作は取り消せません。';
+
+  @override
+  String get deleteAccountConfirmTitle => '本当によろしいですか？';
+
+  @override
+  String get deleteAccountConfirmMessage => 'すべてのお薬、スケジュール、履歴、介護者連携が完全に削除されます。';
+
+  @override
+  String get deleteEverything => 'すべて削除';
+
+  @override
+  String errorDeactivatingAccount(String error) {
+    return 'アカウント無効化エラー: $error';
+  }
+
+  @override
+  String errorDeletingAccount(String error) {
+    return 'アカウント削除エラー: $error';
+  }
+
+  @override
+  String get minuteShort => '分';
 }
