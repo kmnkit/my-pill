@@ -18,6 +18,7 @@ abstract class UserProfile with _$UserProfile {
     @Default(false) bool travelModeEnabled,
     String? homeTimezone,
     @Default(false) bool removeAds,
+    @Default(false) bool usesPrivateEmail,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>

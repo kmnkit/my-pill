@@ -8,6 +8,8 @@ import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -95,6 +97,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await authService.signInWithApple();
       if (mounted) {
         context.go('/home');
+      }
+    } on AppleSignInException catch (e) {
+      if (mounted && e.error.shouldShowSnackbar) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.error.getLocalizedMessage(context)),
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

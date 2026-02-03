@@ -19,6 +19,7 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   travelModeEnabled: json['travelModeEnabled'] as bool? ?? false,
   homeTimezone: json['homeTimezone'] as String?,
   removeAds: json['removeAds'] as bool? ?? false,
+  usesPrivateEmail: json['usesPrivateEmail'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
@@ -35,4 +36,5 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'travelModeEnabled': instance.travelModeEnabled,
       'homeTimezone': instance.homeTimezone,
       'removeAds': instance.removeAds,
+      'usesPrivateEmail': instance.usesPrivateEmail,
     };

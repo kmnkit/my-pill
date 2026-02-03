@@ -1184,6 +1184,72 @@ abstract class AppLocalizations {
   /// **'Failed to link account: {error}'**
   String linkFailed(String error);
 
+  /// No description provided for @appleSignInCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in was cancelled'**
+  String get appleSignInCancelled;
+
+  /// No description provided for @appleCredentialAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This Apple account is already linked to another user'**
+  String get appleCredentialAlreadyInUse;
+
+  /// No description provided for @appleInvalidCredential.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign in failed. Please try again'**
+  String get appleInvalidCredential;
+
+  /// No description provided for @appleOperationNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign in is not enabled for this app'**
+  String get appleOperationNotAllowed;
+
+  /// No description provided for @appleProviderAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'An Apple account is already linked to this profile'**
+  String get appleProviderAlreadyLinked;
+
+  /// No description provided for @appleNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again'**
+  String get appleNetworkError;
+
+  /// No description provided for @appleSignInUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign in failed. Please try again later'**
+  String get appleSignInUnknownError;
+
+  /// No description provided for @privateEmailNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re using Apple\'s private email relay.'**
+  String get privateEmailNotice;
+
+  /// No description provided for @emailHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Email hidden'**
+  String get emailHidden;
+
+  /// No description provided for @usesPrivateEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Using private email relay'**
+  String get usesPrivateEmail;
+
+  /// No description provided for @emailAddressInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get emailAddressInfo;
+
   /// No description provided for @weeklySummary.
   ///
   /// In en, this message translates to:

@@ -47,7 +47,9 @@ A comprehensive Flutter application for managing medications, tracking adherence
 ### Authentication
 - Anonymous sign-in for frictionless onboarding without account creation
 - Google Sign-In integration across all platforms
-- Sign in with Apple for iOS users
+- Sign in with Apple for iOS users with proper entitlements configuration
+- Apple private email relay detection with "Email hidden" display for privacy
+- Provider-specific error handling with localized messages (EN/JA)
 - Account linking: upgrade anonymous accounts to Google or Apple credentials
 - Secure credential management via Firebase Auth
 

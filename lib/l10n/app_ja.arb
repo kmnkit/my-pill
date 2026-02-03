@@ -247,5 +247,16 @@
   "enterEmail": "メールアドレスを入力してください",
   "linkFailed": "アカウント連携に失敗しました: {error}",
   "@linkFailed": { "placeholders": { "error": { "type": "String" } } },
+  "appleSignInCancelled": "サインインがキャンセルされました",
+  "appleCredentialAlreadyInUse": "このAppleアカウントは既に別のユーザーに連携されています",
+  "appleInvalidCredential": "Appleサインインに失敗しました。もう一度お試しください",
+  "appleOperationNotAllowed": "このアプリではAppleサインインが有効になっていません",
+  "appleProviderAlreadyLinked": "このプロフィールには既にAppleアカウントが連携されています",
+  "appleNetworkError": "ネットワークエラーです。接続を確認して再試行してください",
+  "appleSignInUnknownError": "Appleサインインに失敗しました。後でもう一度お試しください",
+  "privateEmailNotice": "Appleのプライベートメールリレーを使用中です。",
+  "emailHidden": "メール非公開",
+  "usesPrivateEmail": "プライベートメールリレーを使用中",
+  "emailAddressInfo": "メールアドレス",
   "weeklySummary": "週間サマリー"
 }

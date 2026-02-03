@@ -584,5 +584,38 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get appleSignInCancelled => 'サインインがキャンセルされました';
+
+  @override
+  String get appleCredentialAlreadyInUse => 'このAppleアカウントは既に別のユーザーに連携されています';
+
+  @override
+  String get appleInvalidCredential => 'Appleサインインに失敗しました。もう一度お試しください';
+
+  @override
+  String get appleOperationNotAllowed => 'このアプリではAppleサインインが有効になっていません';
+
+  @override
+  String get appleProviderAlreadyLinked => 'このプロフィールには既にAppleアカウントが連携されています';
+
+  @override
+  String get appleNetworkError => 'ネットワークエラーです。接続を確認して再試行してください';
+
+  @override
+  String get appleSignInUnknownError => 'Appleサインインに失敗しました。後でもう一度お試しください';
+
+  @override
+  String get privateEmailNotice => 'Appleのプライベートメールリレーを使用中です。';
+
+  @override
+  String get emailHidden => 'メール非公開';
+
+  @override
+  String get usesPrivateEmail => 'プライベートメールリレーを使用中';
+
+  @override
+  String get emailAddressInfo => 'メールアドレス';
+
+  @override
   String get weeklySummary => '週間サマリー';
 }

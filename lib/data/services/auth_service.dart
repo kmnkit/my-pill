@@ -1,5 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_pill/data/enums/apple_auth_error.dart';
+
+/// Custom exception for Apple Sign-In errors with structured error information.
+class AppleSignInException implements Exception {
+  const AppleSignInException({required this.error, this.originalMessage});
+
+  /// The structured Apple auth error.
+  final AppleAuthError error;
+
+  /// The original error message from Firebase, if available.
+  final String? originalMessage;
+
+  @override
+  String toString() => 'AppleSignInException: ${error.code}';
+}
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,10 +51,17 @@ class AuthService {
     return await _auth.signInWithCredential(credential);
   }
 
-  // Apple Sign-In
+  // Apple Sign-In with proper error handling
   Future<UserCredential> signInWithApple() async {
-    final appleProvider = AppleAuthProvider();
-    return await _auth.signInWithProvider(appleProvider);
+    try {
+      final appleProvider = AppleAuthProvider();
+      return await _auth.signInWithProvider(appleProvider);
+    } on FirebaseAuthException catch (e) {
+      throw AppleSignInException(
+        error: AppleAuthError.fromCode(e.code),
+        originalMessage: e.message,
+      );
+    }
   }
 
   // Link anonymous account to email/password
@@ -62,12 +84,19 @@ class AuthService {
     return await user.linkWithCredential(credential);
   }
 
-  // Link anonymous account to Apple
+  // Link anonymous account to Apple with proper error handling
   Future<UserCredential> linkWithApple() async {
     final user = _auth.currentUser;
     if (user == null) throw StateError('No authenticated user to link');
-    final appleProvider = AppleAuthProvider();
-    return await user.linkWithProvider(appleProvider);
+    try {
+      final appleProvider = AppleAuthProvider();
+      return await user.linkWithProvider(appleProvider);
+    } on FirebaseAuthException catch (e) {
+      throw AppleSignInException(
+        error: AppleAuthError.fromCode(e.code),
+        originalMessage: e.message,
+      );
+    }
   }
 
   // Sign out
@@ -83,5 +112,12 @@ class AuthService {
   // Password reset
   Future<void> sendPasswordReset(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  /// Check if an email is an Apple private relay email.
+  /// Apple private relay emails end with @privaterelay.appleid.com
+  static bool isPrivateRelayEmail(String? email) {
+    if (email == null) return false;
+    return email.toLowerCase().endsWith('@privaterelay.appleid.com');
   }
 }

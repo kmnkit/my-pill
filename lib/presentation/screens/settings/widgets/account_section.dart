@@ -10,6 +10,8 @@ import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
 
 class AccountSection extends ConsumerWidget {
   const AccountSection({super.key});
@@ -136,6 +138,8 @@ class AccountSection extends ConsumerWidget {
         }
 
         // Authenticated user
+        final isPrivateEmail = AuthService.isPrivateRelayEmail(user.email);
+
         return MpCard(
           onTap: () => context.push('/login'),
           child: Row(
@@ -151,12 +155,21 @@ class AccountSection extends ConsumerWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      email,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                    ),
+                    if (isPrivateEmail)
+                      Text(
+                        l10n.emailHidden,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textMuted,
+                              fontStyle: FontStyle.italic,
+                            ),
+                      )
+                    else
+                      Text(
+                        email,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textMuted,
+                            ),
+                      ),
                   ],
                 ),
               ),
@@ -203,6 +216,15 @@ class AccountSection extends ConsumerWidget {
           SnackBar(content: Text(l10n.accountLinked), backgroundColor: AppColors.primary),
         );
         ref.invalidate(authStateProvider);
+      }
+    } on AppleSignInException catch (e) {
+      if (context.mounted && e.error.shouldShowSnackbar) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.error.getLocalizedMessage(context)),
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {

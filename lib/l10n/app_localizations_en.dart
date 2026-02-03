@@ -589,5 +589,44 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get appleSignInCancelled => 'Sign in was cancelled';
+
+  @override
+  String get appleCredentialAlreadyInUse =>
+      'This Apple account is already linked to another user';
+
+  @override
+  String get appleInvalidCredential => 'Apple sign in failed. Please try again';
+
+  @override
+  String get appleOperationNotAllowed =>
+      'Apple sign in is not enabled for this app';
+
+  @override
+  String get appleProviderAlreadyLinked =>
+      'An Apple account is already linked to this profile';
+
+  @override
+  String get appleNetworkError =>
+      'Network error. Please check your connection and try again';
+
+  @override
+  String get appleSignInUnknownError =>
+      'Apple sign in failed. Please try again later';
+
+  @override
+  String get privateEmailNotice =>
+      'You\'re using Apple\'s private email relay.';
+
+  @override
+  String get emailHidden => 'Email hidden';
+
+  @override
+  String get usesPrivateEmail => 'Using private email relay';
+
+  @override
+  String get emailAddressInfo => 'Email address';
+
+  @override
   String get weeklySummary => 'Weekly Summary';
 }

@@ -247,5 +247,16 @@
   "enterEmail": "Please enter your email address",
   "linkFailed": "Failed to link account: {error}",
   "@linkFailed": { "placeholders": { "error": { "type": "String" } } },
+  "appleSignInCancelled": "Sign in was cancelled",
+  "appleCredentialAlreadyInUse": "This Apple account is already linked to another user",
+  "appleInvalidCredential": "Apple sign in failed. Please try again",
+  "appleOperationNotAllowed": "Apple sign in is not enabled for this app",
+  "appleProviderAlreadyLinked": "An Apple account is already linked to this profile",
+  "appleNetworkError": "Network error. Please check your connection and try again",
+  "appleSignInUnknownError": "Apple sign in failed. Please try again later",
+  "privateEmailNotice": "You're using Apple's private email relay.",
+  "emailHidden": "Email hidden",
+  "usesPrivateEmail": "Using private email relay",
+  "emailAddressInfo": "Email address",
   "weeklySummary": "Weekly Summary"
 }
