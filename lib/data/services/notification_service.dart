@@ -43,8 +43,9 @@ class NotificationService {
     // Create notification channels (Android)
     await _createChannels();
 
-    // Request permissions (iOS)
-    await requestPermissions();
+    // NOTE: Permission request removed from initialize()
+    // Permission should be requested explicitly via UI (e.g., onboarding)
+    // to ensure users see the system permission dialog
 
     // Initialize FCM
     await _initializeFCM();
@@ -87,14 +88,26 @@ class NotificationService {
     return false;
   }
 
+  /// Check current notification permission status without requesting.
+  /// Useful for checking if permission was already granted (e.g., from previous install).
+  Future<bool> checkPermissionStatus() async {
+    if (Platform.isIOS) {
+      final settings = await _fcm.getNotificationSettings();
+      return settings.authorizationStatus == AuthorizationStatus.authorized;
+    }
+    if (Platform.isAndroid) {
+      final androidPlugin = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final areEnabled = await androidPlugin?.areNotificationsEnabled();
+      return areEnabled ?? false;
+    }
+    return false;
+  }
+
   Future<void> _initializeFCM() async {
     try {
-      await _fcm.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-        criticalAlert: true,
-      );
+      // NOTE: FCM permission request removed from initialize()
+      // Permission should be requested explicitly via UI (e.g., onboarding)
+      // FCM will still work once permission is granted via local notifications
 
       final token = await _fcm.getToken();
       debugPrint('FCM Token: $token');
