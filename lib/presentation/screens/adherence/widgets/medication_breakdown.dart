@@ -4,7 +4,8 @@ import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class MedicationBreakdown extends StatelessWidget {
-  final List<({String id, String name, double percentage})> medications;
+  /// List of medications with their adherence percentage (null if no data).
+  final List<({String id, String name, double? percentage})> medications;
 
   const MedicationBreakdown({super.key, required this.medications});
 
@@ -45,11 +46,12 @@ class MedicationBreakdown extends StatelessWidget {
 class _MedicationRow extends StatelessWidget {
   const _MedicationRow({required this.medication});
 
-  final ({String id, String name, double percentage}) medication;
+  final ({String id, String name, double? percentage}) medication;
 
   @override
   Widget build(BuildContext context) {
-    final percentage = medication.percentage.round();
+    final percentage = medication.percentage?.round();
+    final hasData = percentage != null;
 
     return Row(
       children: [
@@ -66,13 +68,15 @@ class _MedicationRow extends StatelessWidget {
           ),
         ),
         Text(
-          '$percentage%',
+          hasData ? '$percentage%' : 'No Data',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: percentage >= 80
-                ? AppColors.success
-                : percentage >= 60
-                    ? AppColors.warning
-                    : AppColors.error,
+            color: !hasData
+                ? AppColors.textMuted
+                : percentage >= 80
+                    ? AppColors.success
+                    : percentage >= 60
+                        ? AppColors.warning
+                        : AppColors.error,
           ),
         ),
       ],

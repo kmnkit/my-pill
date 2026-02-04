@@ -5,7 +5,8 @@ import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class AdherenceChart extends StatelessWidget {
-  final Map<String, double> weeklyData;
+  /// Weekly adherence data: day label -> percentage (0-100), null if no data for that day.
+  final Map<String, double?> weeklyData;
 
   const AdherenceChart({super.key, required this.weeklyData});
 
@@ -65,7 +66,7 @@ class AdherenceChart extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: List.generate(percentages.length, (index) {
-                  final taken = percentages[index];
+                  final takenValue = percentages[index];
 
                   return BarChartGroupData(
                     x: index,
@@ -73,10 +74,15 @@ class AdherenceChart extends StatelessWidget {
                       BarChartRodData(
                         toY: 100,
                         width: 24,
-                        rodStackItems: [
-                          BarChartRodStackItem(0, taken, AppColors.primary),
-                          BarChartRodStackItem(taken, 100, AppColors.error),
-                        ],
+                        rodStackItems: takenValue != null
+                            ? [
+                                BarChartRodStackItem(0, takenValue, AppColors.primary),
+                                BarChartRodStackItem(takenValue, 100, AppColors.error),
+                              ]
+                            : [
+                                // Gray bar for no data
+                                BarChartRodStackItem(0, 100, AppColors.info),
+                              ],
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(AppSpacing.radiusSm),
                           topRight: Radius.circular(AppSpacing.radiusSm),
@@ -95,6 +101,8 @@ class AdherenceChart extends StatelessWidget {
               _LegendItem(color: AppColors.primary, label: 'Taken'),
               const SizedBox(width: AppSpacing.xl),
               _LegendItem(color: AppColors.error, label: 'Missed'),
+              const SizedBox(width: AppSpacing.xl),
+              _LegendItem(color: AppColors.info, label: 'No Data'),
             ],
           ),
         ],

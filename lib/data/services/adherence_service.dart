@@ -8,7 +8,8 @@ class AdherenceService {
   AdherenceService(this._storage);
 
   /// Calculate daily adherence for a date: taken / (taken + missed) * 100
-  Future<double> getDailyAdherence(DateTime date) async {
+  /// Returns null if no adherence records exist for the date.
+  Future<double?> getDailyAdherence(DateTime date) async {
     final records = await _storage.getAdherenceRecords(
       startDate: date,
       endDate: date,
@@ -20,14 +21,15 @@ class AdherenceService {
 
     final total = taken + missed;
 
-    // Return 100 if no records (no doses scheduled = perfect adherence)
-    if (total == 0) return 100.0;
+    // Return null if no records (no data available)
+    if (total == 0) return null;
 
     return (taken / total) * 100;
   }
 
   /// Calculate overall adherence for all medications
-  Future<double> getOverallAdherence({int days = 30}) async {
+  /// Returns null if no adherence records exist in the period.
+  Future<double?> getOverallAdherence({int days = 30}) async {
     final endDate = DateTime.now();
     final startDate = endDate.subtract(Duration(days: days));
     final records = await _storage.getAdherenceRecords(
@@ -41,14 +43,15 @@ class AdherenceService {
 
     final total = taken + missed;
 
-    // Return 100 if no records
-    if (total == 0) return 100.0;
+    // Return null if no records (no data available)
+    if (total == 0) return null;
 
     return (taken / total) * 100;
   }
 
   /// Calculate per-medication adherence
-  Future<double> getMedicationAdherence(
+  /// Returns null if no adherence records exist for the medication.
+  Future<double?> getMedicationAdherence(
     String medicationId, {
     int days = 30,
   }) async {
@@ -66,15 +69,16 @@ class AdherenceService {
 
     final total = taken + missed;
 
-    // Return 100 if no records
-    if (total == 0) return 100.0;
+    // Return null if no records (no data available)
+    if (total == 0) return null;
 
     return (taken / total) * 100;
   }
 
   /// Calculate weekly adherence: returns map of day label -> percentage for last 7 days
-  Future<Map<String, double>> getWeeklyAdherence() async {
-    final result = <String, double>{};
+  /// Values are nullable - null indicates no data for that day.
+  Future<Map<String, double?>> getWeeklyAdherence() async {
+    final result = <String, double?>{};
     final now = DateTime.now();
     final dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -87,12 +91,13 @@ class AdherenceService {
   }
 
   /// Per-medication breakdown: returns list of (medicationId, medicationName, percentage)
-  Future<List<({String id, String name, double percentage})>>
+  /// Percentage is nullable - null indicates no data for that medication.
+  Future<List<({String id, String name, double? percentage})>>
       getMedicationBreakdown(
     List<Medication> medications, {
     int days = 7,
   }) async {
-    final result = <({String id, String name, double percentage})>[];
+    final result = <({String id, String name, double? percentage})>[];
 
     for (final medication in medications) {
       final percentage = await getMedicationAdherence(
@@ -107,8 +112,13 @@ class AdherenceService {
       ));
     }
 
-    // Sort by percentage descending
-    result.sort((a, b) => b.percentage.compareTo(a.percentage));
+    // Sort by percentage descending (nulls last)
+    result.sort((a, b) {
+      if (a.percentage == null && b.percentage == null) return 0;
+      if (a.percentage == null) return 1;
+      if (b.percentage == null) return -1;
+      return b.percentage!.compareTo(a.percentage!);
+    });
 
     return result;
   }

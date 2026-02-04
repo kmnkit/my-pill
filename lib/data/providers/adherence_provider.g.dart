@@ -13,8 +13,8 @@ part of 'adherence_provider.dart';
 final overallAdherenceProvider = OverallAdherenceProvider._();
 
 final class OverallAdherenceProvider
-    extends $FunctionalProvider<AsyncValue<double>, double, FutureOr<double>>
-    with $FutureModifier<double>, $FutureProvider<double> {
+    extends $FunctionalProvider<AsyncValue<double?>, double?, FutureOr<double?>>
+    with $FutureModifier<double?>, $FutureProvider<double?> {
   OverallAdherenceProvider._()
     : super(
         from: null,
@@ -31,23 +31,23 @@ final class OverallAdherenceProvider
 
   @$internal
   @override
-  $FutureProviderElement<double> $createElement($ProviderPointer pointer) =>
+  $FutureProviderElement<double?> $createElement($ProviderPointer pointer) =>
       $FutureProviderElement(pointer);
 
   @override
-  FutureOr<double> create(Ref ref) {
+  FutureOr<double?> create(Ref ref) {
     return overallAdherence(ref);
   }
 }
 
-String _$overallAdherenceHash() => r'42a563d9faf060c9c989d798f9cd4cecb45fc2bc';
+String _$overallAdherenceHash() => r'63142cbadd9043ca843952e1e9373a193302c1e6';
 
 @ProviderFor(medicationAdherence)
 final medicationAdherenceProvider = MedicationAdherenceFamily._();
 
 final class MedicationAdherenceProvider
-    extends $FunctionalProvider<AsyncValue<double>, double, FutureOr<double>>
-    with $FutureModifier<double>, $FutureProvider<double> {
+    extends $FunctionalProvider<AsyncValue<double?>, double?, FutureOr<double?>>
+    with $FutureModifier<double?>, $FutureProvider<double?> {
   MedicationAdherenceProvider._({
     required MedicationAdherenceFamily super.from,
     required String super.argument,
@@ -71,11 +71,11 @@ final class MedicationAdherenceProvider
 
   @$internal
   @override
-  $FutureProviderElement<double> $createElement($ProviderPointer pointer) =>
+  $FutureProviderElement<double?> $createElement($ProviderPointer pointer) =>
       $FutureProviderElement(pointer);
 
   @override
-  FutureOr<double> create(Ref ref) {
+  FutureOr<double?> create(Ref ref) {
     final argument = this.argument as String;
     return medicationAdherence(ref, argument);
   }
@@ -92,10 +92,10 @@ final class MedicationAdherenceProvider
 }
 
 String _$medicationAdherenceHash() =>
-    r'90d563858543895985cecf4c33e483711892a3b2';
+    r'335bd8dce26271ff060d95f567920b204501d4bd';
 
 final class MedicationAdherenceFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<double>, String> {
+    with $FunctionalFamilyOverride<FutureOr<double?>, String> {
   MedicationAdherenceFamily._()
     : super(
         retry: null,
@@ -118,13 +118,13 @@ final weeklyAdherenceProvider = WeeklyAdherenceProvider._();
 final class WeeklyAdherenceProvider
     extends
         $FunctionalProvider<
-          AsyncValue<Map<String, double>>,
-          Map<String, double>,
-          FutureOr<Map<String, double>>
+          AsyncValue<Map<String, double?>>,
+          Map<String, double?>,
+          FutureOr<Map<String, double?>>
         >
     with
-        $FutureModifier<Map<String, double>>,
-        $FutureProvider<Map<String, double>> {
+        $FutureModifier<Map<String, double?>>,
+        $FutureProvider<Map<String, double?>> {
   WeeklyAdherenceProvider._()
     : super(
         from: null,
@@ -141,17 +141,17 @@ final class WeeklyAdherenceProvider
 
   @$internal
   @override
-  $FutureProviderElement<Map<String, double>> $createElement(
+  $FutureProviderElement<Map<String, double?>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<Map<String, double>> create(Ref ref) {
+  FutureOr<Map<String, double?>> create(Ref ref) {
     return weeklyAdherence(ref);
   }
 }
 
-String _$weeklyAdherenceHash() => r'88cd3c583d1a1547dbe3bcfe089f66ae757f84e5';
+String _$weeklyAdherenceHash() => r'6db3f8789f93a6340a6dcd4346d2cbd85ebba720';
 
 @ProviderFor(medicationBreakdown)
 final medicationBreakdownProvider = MedicationBreakdownProvider._();
@@ -159,13 +159,13 @@ final medicationBreakdownProvider = MedicationBreakdownProvider._();
 final class MedicationBreakdownProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<({String id, String name, double percentage})>>,
-          List<({String id, String name, double percentage})>,
-          FutureOr<List<({String id, String name, double percentage})>>
+          AsyncValue<List<({String id, String name, double? percentage})>>,
+          List<({String id, String name, double? percentage})>,
+          FutureOr<List<({String id, String name, double? percentage})>>
         >
     with
-        $FutureModifier<List<({String id, String name, double percentage})>>,
-        $FutureProvider<List<({String id, String name, double percentage})>> {
+        $FutureModifier<List<({String id, String name, double? percentage})>>,
+        $FutureProvider<List<({String id, String name, double? percentage})>> {
   MedicationBreakdownProvider._()
     : super(
         from: null,
@@ -182,11 +182,11 @@ final class MedicationBreakdownProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<({String id, String name, double percentage})>>
+  $FutureProviderElement<List<({String id, String name, double? percentage})>>
   $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<({String id, String name, double percentage})>> create(
+  FutureOr<List<({String id, String name, double? percentage})>> create(
     Ref ref,
   ) {
     return medicationBreakdown(ref);
@@ -194,7 +194,7 @@ final class MedicationBreakdownProvider
 }
 
 String _$medicationBreakdownHash() =>
-    r'255eede48769b968da22bce3559f7ef6534f43e9';
+    r'cf90388f5b3fce3acd09ea7286a06d175c0cb361';
 
 @ProviderFor(adherenceRating)
 final adherenceRatingProvider = AdherenceRatingFamily._();

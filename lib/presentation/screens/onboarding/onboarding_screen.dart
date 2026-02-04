@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -14,7 +15,6 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  String _selectedLanguage = 'EN';
   bool _isLoading = false;
 
   Future<void> _handleGetStarted() async {
@@ -44,6 +44,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final settingsAsync = ref.watch(userSettingsProvider);
+    final currentLanguage = settingsAsync.whenOrNull(
+      data: (settings) => settings.language,
+    ) ?? 'en';
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -58,11 +62,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => setState(() => _selectedLanguage = 'EN'),
+                    onPressed: () {
+                      ref.read(userSettingsProvider.notifier).updateLanguage('en');
+                    },
                     child: Text(
                       'EN',
                       style: textTheme.labelLarge?.copyWith(
-                        color: _selectedLanguage == 'EN' ? AppColors.primary : AppColors.textMuted,
+                        color: currentLanguage == 'en' ? AppColors.primary : AppColors.textMuted,
                       ),
                     ),
                   ),
@@ -71,11 +77,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     style: textTheme.labelLarge?.copyWith(color: AppColors.textMuted),
                   ),
                   TextButton(
-                    onPressed: () => setState(() => _selectedLanguage = 'JP'),
+                    onPressed: () {
+                      ref.read(userSettingsProvider.notifier).updateLanguage('ja');
+                    },
                     child: Text(
                       'JP',
                       style: textTheme.labelLarge?.copyWith(
-                        color: _selectedLanguage == 'JP' ? AppColors.primary : AppColors.textMuted,
+                        color: currentLanguage == 'ja' ? AppColors.primary : AppColors.textMuted,
                       ),
                     ),
                   ),

@@ -53,7 +53,7 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
           children: [
             overallAdherenceAsync.when(
               data: (adherence) => OverallScore(
-                percentage: (adherence * 100).round(),
+                percentage: adherence != null ? (adherence * 100).round() : null,
               ),
               loading: () => const Center(
                 child: Padding(
@@ -61,7 +61,7 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
                   child: CircularProgressIndicator.adaptive(),
                 ),
               ),
-              error: (error, _) => const OverallScore(percentage: 0),
+              error: (error, _) => const OverallScore(percentage: null),
             ),
             const SizedBox(height: AppSpacing.lg),
             weeklyAdherenceAsync.when(

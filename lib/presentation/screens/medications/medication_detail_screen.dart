@@ -295,9 +295,11 @@ class MedicationDetailScreen extends ConsumerWidget {
 
                 // Adherence badge
                 adherenceAsync.when(
-                  data: (adherence) => AdherenceBadge(
-                    percentage: (adherence * 100).round(),
-                  ),
+                  data: (adherence) => adherence != null
+                      ? AdherenceBadge(
+                          percentage: (adherence * 100).round(),
+                        )
+                      : const SizedBox.shrink(),
                   loading: () => const SizedBox.shrink(),
                   error: (error, stack) => const SizedBox.shrink(),
                 ),

@@ -7,30 +7,32 @@ import 'package:my_pill/data/models/adherence_record.dart';
 part 'adherence_provider.g.dart';
 
 @riverpod
-Future<double> overallAdherence(Ref ref) async {
+Future<double?> overallAdherence(Ref ref) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
   final result = await service.getOverallAdherence();
+  if (result == null) return null;
   return result / 100.0; // Service returns 0-100, provider returns 0.0-1.0
 }
 
 @riverpod
-Future<double> medicationAdherence(Ref ref, String medicationId) async {
+Future<double?> medicationAdherence(Ref ref, String medicationId) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
   final result = await service.getMedicationAdherence(medicationId);
+  if (result == null) return null;
   return result / 100.0;
 }
 
 @riverpod
-Future<Map<String, double>> weeklyAdherence(Ref ref) async {
+Future<Map<String, double?>> weeklyAdherence(Ref ref) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
-  return service.getWeeklyAdherence(); // Returns dayName -> percentage (0-100)
+  return service.getWeeklyAdherence(); // Returns dayName -> percentage (0-100), null if no data
 }
 
 @riverpod
-Future<List<({String id, String name, double percentage})>> medicationBreakdown(Ref ref) async {
+Future<List<({String id, String name, double? percentage})>> medicationBreakdown(Ref ref) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
   final medicationsAsync = await ref.watch(medicationListProvider.future);
