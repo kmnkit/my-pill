@@ -30,6 +30,102 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alreadyHaveAccount => 'I already have an account';
 
   @override
+  String get onboardingWelcomeTitle => 'Welcome to MyPill';
+
+  @override
+  String get onboardingWelcomeSubtitle =>
+      'Let\'s set up your medication companion';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingBack => 'Back';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingFinish => 'Get Started';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get onboardingNameTitle => 'What\'s your name?';
+
+  @override
+  String get onboardingNameSubtitle =>
+      'We\'ll use this to personalize your experience';
+
+  @override
+  String get onboardingNameHint => 'Enter your name';
+
+  @override
+  String get onboardingNameSkip => 'Skip for now';
+
+  @override
+  String get onboardingRoleTitle => 'How will you use MyPill?';
+
+  @override
+  String get onboardingRoleSubtitle =>
+      'Choose the option that best describes you';
+
+  @override
+  String get onboardingRolePatient => 'Patient';
+
+  @override
+  String get onboardingRolePatientDesc => 'I\'m managing my own medications';
+
+  @override
+  String get onboardingRoleCaregiver => 'Caregiver';
+
+  @override
+  String get onboardingRoleCaregiverDesc =>
+      'I\'m helping someone else with their medications';
+
+  @override
+  String get onboardingTimezoneTitle => 'Confirm your timezone';
+
+  @override
+  String get onboardingTimezoneSubtitle =>
+      'This ensures reminders arrive at the right time';
+
+  @override
+  String get onboardingTimezoneDetected => 'Detected timezone';
+
+  @override
+  String get onboardingTimezoneChange => 'Change timezone';
+
+  @override
+  String get onboardingTimezonePickerTitle => 'Select Timezone';
+
+  @override
+  String get onboardingTimezoneSearchHint => 'Search timezones...';
+
+  @override
+  String get onboardingTimezoneNoResults => 'No timezones found';
+
+  @override
+  String get onboardingNotificationTitle => 'Stay on track';
+
+  @override
+  String get onboardingNotificationSubtitle =>
+      'Get timely reminders for your medications';
+
+  @override
+  String get onboardingNotificationEnable => 'Enable notifications';
+
+  @override
+  String get onboardingNotificationSkip => 'Maybe later';
+
+  @override
+  String get onboardingNotificationEnabled => 'Notifications enabled';
+
+  @override
+  String get onboardingNotificationDenied => 'Notifications disabled';
+
+  @override
   String get goodMorning => 'Good morning';
 
   @override

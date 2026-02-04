@@ -140,6 +140,186 @@ abstract class AppLocalizations {
   /// **'I already have an account'**
   String get alreadyHaveAccount;
 
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to MyPill'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s set up your medication companion'**
+  String get onboardingWelcomeSubtitle;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onboardingBack;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingFinish;
+
+  /// No description provided for @selectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// No description provided for @onboardingNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your name?'**
+  String get onboardingNameTitle;
+
+  /// No description provided for @onboardingNameSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll use this to personalize your experience'**
+  String get onboardingNameSubtitle;
+
+  /// No description provided for @onboardingNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get onboardingNameHint;
+
+  /// No description provided for @onboardingNameSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get onboardingNameSkip;
+
+  /// No description provided for @onboardingRoleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How will you use MyPill?'**
+  String get onboardingRoleTitle;
+
+  /// No description provided for @onboardingRoleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the option that best describes you'**
+  String get onboardingRoleSubtitle;
+
+  /// No description provided for @onboardingRolePatient.
+  ///
+  /// In en, this message translates to:
+  /// **'Patient'**
+  String get onboardingRolePatient;
+
+  /// No description provided for @onboardingRolePatientDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m managing my own medications'**
+  String get onboardingRolePatientDesc;
+
+  /// No description provided for @onboardingRoleCaregiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Caregiver'**
+  String get onboardingRoleCaregiver;
+
+  /// No description provided for @onboardingRoleCaregiverDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m helping someone else with their medications'**
+  String get onboardingRoleCaregiverDesc;
+
+  /// No description provided for @onboardingTimezoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your timezone'**
+  String get onboardingTimezoneTitle;
+
+  /// No description provided for @onboardingTimezoneSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This ensures reminders arrive at the right time'**
+  String get onboardingTimezoneSubtitle;
+
+  /// No description provided for @onboardingTimezoneDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected timezone'**
+  String get onboardingTimezoneDetected;
+
+  /// No description provided for @onboardingTimezoneChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change timezone'**
+  String get onboardingTimezoneChange;
+
+  /// No description provided for @onboardingTimezonePickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Timezone'**
+  String get onboardingTimezonePickerTitle;
+
+  /// No description provided for @onboardingTimezoneSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search timezones...'**
+  String get onboardingTimezoneSearchHint;
+
+  /// No description provided for @onboardingTimezoneNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No timezones found'**
+  String get onboardingTimezoneNoResults;
+
+  /// No description provided for @onboardingNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay on track'**
+  String get onboardingNotificationTitle;
+
+  /// No description provided for @onboardingNotificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get timely reminders for your medications'**
+  String get onboardingNotificationSubtitle;
+
+  /// No description provided for @onboardingNotificationEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications'**
+  String get onboardingNotificationEnable;
+
+  /// No description provided for @onboardingNotificationSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get onboardingNotificationSkip;
+
+  /// No description provided for @onboardingNotificationEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications enabled'**
+  String get onboardingNotificationEnabled;
+
+  /// No description provided for @onboardingNotificationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get onboardingNotificationDenied;
+
   /// No description provided for @goodMorning.
   ///
   /// In en, this message translates to:

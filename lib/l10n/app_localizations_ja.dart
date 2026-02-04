@@ -30,6 +30,96 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alreadyHaveAccount => 'アカウントをお持ちの方';
 
   @override
+  String get onboardingWelcomeTitle => 'MyPillへようこそ';
+
+  @override
+  String get onboardingWelcomeSubtitle => '服薬管理パートナーを設定しましょう';
+
+  @override
+  String get onboardingNext => '次へ';
+
+  @override
+  String get onboardingBack => '戻る';
+
+  @override
+  String get onboardingSkip => 'スキップ';
+
+  @override
+  String get onboardingFinish => 'はじめる';
+
+  @override
+  String get selectLanguage => '言語を選択';
+
+  @override
+  String get onboardingNameTitle => 'お名前を教えてください';
+
+  @override
+  String get onboardingNameSubtitle => 'あなたに合わせた体験を提供するために使用します';
+
+  @override
+  String get onboardingNameHint => '名前を入力';
+
+  @override
+  String get onboardingNameSkip => 'スキップ';
+
+  @override
+  String get onboardingRoleTitle => 'MyPillをどのように使いますか？';
+
+  @override
+  String get onboardingRoleSubtitle => 'あなたに最も当てはまるものを選んでください';
+
+  @override
+  String get onboardingRolePatient => '患者';
+
+  @override
+  String get onboardingRolePatientDesc => '自分のお薬を管理します';
+
+  @override
+  String get onboardingRoleCaregiver => '介護者';
+
+  @override
+  String get onboardingRoleCaregiverDesc => '他の人のお薬管理をサポートします';
+
+  @override
+  String get onboardingTimezoneTitle => 'タイムゾーンを確認';
+
+  @override
+  String get onboardingTimezoneSubtitle => 'リマインダーが正しい時間に届くようにします';
+
+  @override
+  String get onboardingTimezoneDetected => '検出されたタイムゾーン';
+
+  @override
+  String get onboardingTimezoneChange => 'タイムゾーンを変更';
+
+  @override
+  String get onboardingTimezonePickerTitle => 'タイムゾーンを選択';
+
+  @override
+  String get onboardingTimezoneSearchHint => 'タイムゾーンを検索...';
+
+  @override
+  String get onboardingTimezoneNoResults => 'タイムゾーンが見つかりません';
+
+  @override
+  String get onboardingNotificationTitle => 'お薬を忘れずに';
+
+  @override
+  String get onboardingNotificationSubtitle => 'お薬の時間をお知らせします';
+
+  @override
+  String get onboardingNotificationEnable => '通知を有効にする';
+
+  @override
+  String get onboardingNotificationSkip => '後で設定する';
+
+  @override
+  String get onboardingNotificationEnabled => '通知が有効になりました';
+
+  @override
+  String get onboardingNotificationDenied => '通知が無効です';
+
+  @override
   String get goodMorning => 'おはようございます';
 
   @override
