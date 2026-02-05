@@ -159,26 +159,94 @@ class HomeRobot {
 
   /// Navigate to home tab
   Future<void> goToHome() async {
-    await tester.tap(homeTab.first);
-    await tester.pumpAndSettle();
+    // Wait for navigation bar to be rendered (splash screen may still be showing)
+    const maxAttempts = 30; // 6 seconds total (2s splash + 4s buffer)
+    const attemptDelay = Duration(milliseconds: 200);
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      await tester.pump(attemptDelay);
+
+      if (homeTab.evaluate().isNotEmpty) {
+        await tester.tap(homeTab.first);
+        await tester.pumpAndSettle();
+        return;
+      }
+    }
+
+    // If still not found, fail with descriptive error
+    throw TestFailure(
+      'Home tab not found after ${maxAttempts * attemptDelay.inMilliseconds}ms. '
+      'Navigation bar may not be rendered yet.',
+    );
   }
 
   /// Navigate to adherence tab
   Future<void> goToAdherence() async {
-    await tester.tap(adherenceTab.first);
-    await tester.pumpAndSettle();
+    // Wait for navigation bar to be rendered (splash screen may still be showing)
+    const maxAttempts = 30; // 6 seconds total (2s splash + 4s buffer)
+    const attemptDelay = Duration(milliseconds: 200);
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      await tester.pump(attemptDelay);
+
+      if (adherenceTab.evaluate().isNotEmpty) {
+        await tester.tap(adherenceTab.first);
+        await tester.pumpAndSettle();
+        return;
+      }
+    }
+
+    // If still not found, fail with descriptive error
+    throw TestFailure(
+      'Adherence tab not found after ${maxAttempts * attemptDelay.inMilliseconds}ms. '
+      'Navigation bar may not be rendered yet.',
+    );
   }
 
   /// Navigate to medications tab
   Future<void> goToMedications() async {
-    await tester.tap(medicationsTab.first);
-    await tester.pumpAndSettle();
+    // Wait for navigation bar to be rendered (splash screen may still be showing)
+    const maxAttempts = 30; // 6 seconds total (2s splash + 4s buffer)
+    const attemptDelay = Duration(milliseconds: 200);
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      await tester.pump(attemptDelay);
+
+      if (medicationsTab.evaluate().isNotEmpty) {
+        await tester.tap(medicationsTab.first);
+        await tester.pumpAndSettle();
+        return;
+      }
+    }
+
+    // If still not found, fail with descriptive error
+    throw TestFailure(
+      'Medications tab not found after ${maxAttempts * attemptDelay.inMilliseconds}ms. '
+      'Navigation bar may not be rendered yet.',
+    );
   }
 
   /// Navigate to settings tab
   Future<void> goToSettings() async {
-    await tester.tap(settingsTab.first);
-    await tester.pumpAndSettle();
+    // Wait for navigation bar to be rendered (splash screen may still be showing)
+    const maxAttempts = 30; // 6 seconds total (2s splash + 4s buffer)
+    const attemptDelay = Duration(milliseconds: 200);
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      await tester.pump(attemptDelay);
+
+      if (settingsTab.evaluate().isNotEmpty) {
+        await tester.tap(settingsTab.first);
+        await tester.pumpAndSettle();
+        return;
+      }
+    }
+
+    // If still not found, fail with descriptive error
+    throw TestFailure(
+      'Settings tab not found after ${maxAttempts * attemptDelay.inMilliseconds}ms. '
+      'Navigation bar may not be rendered yet.',
+    );
   }
 
   /// Long press on a reminder to show action menu
