@@ -53,5 +53,8 @@ android/app/google-services.json
 .env.*
 *.env
 
-# oh-my-claudecode
+# Development tools and local configuration
 .omc/
+.serena/
+.mcp.json
+.claude/settings.local.json
