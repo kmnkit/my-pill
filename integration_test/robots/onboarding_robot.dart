@@ -45,11 +45,15 @@ class OnboardingRobot {
 
   // ===== ASSERTIONS =====
 
-  /// Verify we're on the welcome step
+  /// Verify we're on the welcome step with retry logic for async loading
   Future<void> verifyOnWelcomeStep() async {
-    await tester.pumpAndSettle();
+    // Wait for splash screen navigation (2 seconds) + async provider loading + route transition
+    await tester.pump(const Duration(seconds: 3)); // Wait for splash
+    await tester.pumpAndSettle(); // Settle animations
+
+    // Verify we're on onboarding welcome step
+    expect(find.textContaining('Welcome'), findsWidgets);
     expect(welcomeIcon, findsOneWidget);
-    expect(find.textContaining('Welcome'), findsOneWidget);
   }
 
   /// Verify we're on the name step

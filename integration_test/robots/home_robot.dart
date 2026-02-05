@@ -35,11 +35,26 @@ class HomeRobot {
   // Low stock banner
   Finder get lowStockBanner => find.textContaining('Low Stock');
 
-  // Bottom navigation
-  Finder get homeTab => find.byIcon(Icons.home);
-  Finder get adherenceTab => find.byIcon(Icons.bar_chart);
-  Finder get medicationsTab => find.byIcon(Icons.medication);
-  Finder get settingsTab => find.byIcon(Icons.settings);
+  // Bottom navigation - use finders that match either active or inactive icons
+  Finder get homeTab => find.byWidgetPredicate(
+    (widget) => widget is Icon &&
+      (widget.icon == Icons.home || widget.icon == Icons.home_outlined),
+  );
+
+  Finder get adherenceTab => find.byWidgetPredicate(
+    (widget) => widget is Icon &&
+      (widget.icon == Icons.calendar_today || widget.icon == Icons.calendar_today_outlined),
+  );
+
+  Finder get medicationsTab => find.byWidgetPredicate(
+    (widget) => widget is Icon &&
+      (widget.icon == Icons.medication || widget.icon == Icons.medication_outlined),
+  );
+
+  Finder get settingsTab => find.byWidgetPredicate(
+    (widget) => widget is Icon &&
+      (widget.icon == Icons.settings || widget.icon == Icons.settings_outlined),
+  );
 
   /// Find a reminder card by medication name
   Finder reminderCard(String medicationName) => find.text(medicationName);

@@ -69,7 +69,9 @@ class TestAppConfig {
   factory TestAppConfig.newUser() {
     return TestAppConfig(
       onboardingComplete: false,
-      userProfile: TestData.newUserProfile,
+      // CRITICAL: userProfile must be null for new users
+      // If a profile exists, the settings provider auto-migrates it to onboardingComplete: true
+      userProfile: null,
     );
   }
 
