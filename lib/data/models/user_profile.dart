@@ -19,6 +19,8 @@ abstract class UserProfile with _$UserProfile {
     String? homeTimezone,
     @Default(false) bool removeAds,
     @Default(false) bool usesPrivateEmail,
+    @Default(false) bool onboardingComplete,
+    @Default('patient') String userRole, // 'patient' or 'caregiver'
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>

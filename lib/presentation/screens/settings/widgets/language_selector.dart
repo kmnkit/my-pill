@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 
-class LanguageSelector extends StatefulWidget {
+class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
 
   @override
-  State<LanguageSelector> createState() => _LanguageSelectorState();
-}
-
-class _LanguageSelectorState extends State<LanguageSelector> {
-  String _selectedLanguage = 'EN';
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final settingsAsync = ref.watch(userSettingsProvider);
+
+    final selectedLanguage = settingsAsync.whenOrNull(
+      data: (settings) => settings.language,
+    ) ?? 'en';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,8 +26,10 @@ class _LanguageSelectorState extends State<LanguageSelector> {
             Expanded(
               child: _buildLanguageButton(
                 context,
+                ref,
+                'en',
                 'EN',
-                _selectedLanguage == 'EN',
+                selectedLanguage == 'en',
                 isDark,
               ),
             ),
@@ -35,8 +37,10 @@ class _LanguageSelectorState extends State<LanguageSelector> {
             Expanded(
               child: _buildLanguageButton(
                 context,
+                ref,
+                'ja',
                 'JP',
-                _selectedLanguage == 'JP',
+                selectedLanguage == 'ja',
                 isDark,
               ),
             ),
@@ -48,13 +52,15 @@ class _LanguageSelectorState extends State<LanguageSelector> {
 
   Widget _buildLanguageButton(
     BuildContext context,
-    String language,
+    WidgetRef ref,
+    String languageCode,
+    String displayLabel,
     bool isSelected,
     bool isDark,
   ) {
     return GestureDetector(
       onTap: () {
-        setState(() => _selectedLanguage = language);
+        ref.read(userSettingsProvider.notifier).updateLanguage(languageCode);
       },
       child: Container(
         height: AppSpacing.buttonHeight,
@@ -66,7 +72,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
         ),
         child: Center(
           child: Text(
-            language,
+            displayLabel,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
                 ),

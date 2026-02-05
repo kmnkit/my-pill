@@ -10,7 +10,20 @@ class UserSettings extends _$UserSettings {
   Future<UserProfile> build() async {
     final storage = ref.watch(storageServiceProvider);
     final profile = await storage.getUserProfile();
-    return profile ?? const UserProfile(
+
+    if (profile != null) {
+      // Migration: existing users (who have a saved profile) should be
+      // considered as having completed onboarding
+      if (!profile.onboardingComplete) {
+        final migrated = profile.copyWith(onboardingComplete: true);
+        await storage.saveUserProfile(migrated);
+        return migrated;
+      }
+      return profile;
+    }
+
+    // New user - onboardingComplete defaults to false
+    return const UserProfile(
       id: 'local',
       name: 'User',
       language: 'en',
@@ -57,6 +70,36 @@ class UserSettings extends _$UserSettings {
   Future<void> updateTextSize(String size) async {
     final current = await future;
     final updated = current.copyWith(textSize: size);
+    await updateProfile(updated);
+  }
+
+  Future<void> updateName(String name) async {
+    final current = await future;
+    final updated = current.copyWith(name: name);
+    await updateProfile(updated);
+  }
+
+  Future<void> updateUserRole(String role) async {
+    final current = await future;
+    final updated = current.copyWith(userRole: role);
+    await updateProfile(updated);
+  }
+
+  Future<void> updateHomeTimezone(String timezone) async {
+    final current = await future;
+    final updated = current.copyWith(homeTimezone: timezone);
+    await updateProfile(updated);
+  }
+
+  Future<void> updateNotificationsEnabled(bool enabled) async {
+    final current = await future;
+    final updated = current.copyWith(notificationsEnabled: enabled);
+    await updateProfile(updated);
+  }
+
+  Future<void> completeOnboarding() async {
+    final current = await future;
+    final updated = current.copyWith(onboardingComplete: true);
     await updateProfile(updated);
   }
 }

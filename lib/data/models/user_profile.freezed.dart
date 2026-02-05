@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- String get id; String? get name; String? get email; String get language; bool get highContrast; String get textSize; bool get notificationsEnabled; bool get criticalAlerts; int get snoozeDuration; bool get travelModeEnabled; String? get homeTimezone; bool get removeAds; bool get usesPrivateEmail;
+ String get id; String? get name; String? get email; String get language; bool get highContrast; String get textSize; bool get notificationsEnabled; bool get criticalAlerts; int get snoozeDuration; bool get travelModeEnabled; String? get homeTimezone; bool get removeAds; bool get usesPrivateEmail; bool get onboardingComplete; String get userRole;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail);
+int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole);
 
 @override
 String toString() {
-  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail)';
+  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail
+ String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole
 });
 
 
@@ -65,7 +65,7 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -80,7 +80,9 @@ as int,travelModeEnabled: null == travelModeEnabled ? _self.travelModeEnabled : 
 as bool,homeTimezone: freezed == homeTimezone ? _self.homeTimezone : homeTimezone // ignore: cast_nullable_to_non_nullable
 as String?,removeAds: null == removeAds ? _self.removeAds : removeAds // ignore: cast_nullable_to_non_nullable
 as bool,usesPrivateEmail: null == usesPrivateEmail ? _self.usesPrivateEmail : usesPrivateEmail // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,onboardingComplete: null == onboardingComplete ? _self.onboardingComplete : onboardingComplete // ignore: cast_nullable_to_non_nullable
+as bool,userRole: null == userRole ? _self.userRole : userRole // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -165,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
   return orElse();
 
 }
@@ -186,10 +188,10 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +208,10 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
   return null;
 
 }
@@ -221,7 +223,7 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 @JsonSerializable()
 
 class _UserProfile implements UserProfile {
-  const _UserProfile({required this.id, this.name, this.email, this.language = 'en', this.highContrast = false, this.textSize = 'normal', this.notificationsEnabled = true, this.criticalAlerts = false, this.snoozeDuration = 15, this.travelModeEnabled = false, this.homeTimezone, this.removeAds = false, this.usesPrivateEmail = false});
+  const _UserProfile({required this.id, this.name, this.email, this.language = 'en', this.highContrast = false, this.textSize = 'normal', this.notificationsEnabled = true, this.criticalAlerts = false, this.snoozeDuration = 15, this.travelModeEnabled = false, this.homeTimezone, this.removeAds = false, this.usesPrivateEmail = false, this.onboardingComplete = false, this.userRole = 'patient'});
   factory _UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
 @override final  String id;
@@ -237,6 +239,8 @@ class _UserProfile implements UserProfile {
 @override final  String? homeTimezone;
 @override@JsonKey() final  bool removeAds;
 @override@JsonKey() final  bool usesPrivateEmail;
+@override@JsonKey() final  bool onboardingComplete;
+@override@JsonKey() final  String userRole;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
@@ -251,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail);
+int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole);
 
 @override
 String toString() {
-  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail)';
+  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole)';
 }
 
 
@@ -271,7 +275,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail
+ String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole
 });
 
 
@@ -288,7 +292,7 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,}) {
   return _then(_UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -303,7 +307,9 @@ as int,travelModeEnabled: null == travelModeEnabled ? _self.travelModeEnabled : 
 as bool,homeTimezone: freezed == homeTimezone ? _self.homeTimezone : homeTimezone // ignore: cast_nullable_to_non_nullable
 as String?,removeAds: null == removeAds ? _self.removeAds : removeAds // ignore: cast_nullable_to_non_nullable
 as bool,usesPrivateEmail: null == usesPrivateEmail ? _self.usesPrivateEmail : usesPrivateEmail // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,onboardingComplete: null == onboardingComplete ? _self.onboardingComplete : onboardingComplete // ignore: cast_nullable_to_non_nullable
+as bool,userRole: null == userRole ? _self.userRole : userRole // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

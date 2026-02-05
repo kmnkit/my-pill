@@ -20,6 +20,8 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   homeTimezone: json['homeTimezone'] as String?,
   removeAds: json['removeAds'] as bool? ?? false,
   usesPrivateEmail: json['usesPrivateEmail'] as bool? ?? false,
+  onboardingComplete: json['onboardingComplete'] as bool? ?? false,
+  userRole: json['userRole'] as String? ?? 'patient',
 );
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
@@ -37,4 +39,6 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'homeTimezone': instance.homeTimezone,
       'removeAds': instance.removeAds,
       'usesPrivateEmail': instance.usesPrivateEmail,
+      'onboardingComplete': instance.onboardingComplete,
+      'userRole': instance.userRole,
     };
