@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/core/theme/app_theme.dart';
-import 'package:my_pill/presentation/router/app_router.dart';
+import 'package:my_pill/presentation/router/app_router_provider.dart';
 import 'package:my_pill/data/services/notification_service.dart';
 import 'package:my_pill/data/services/reminder_service.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
@@ -101,9 +101,20 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
     }
   }
 
+  Locale _getLocaleFromLanguage(String language) {
+    switch (language) {
+      case 'ja':
+        return const Locale('ja');
+      case 'en':
+      default:
+        return const Locale('en');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final settingsAsync = ref.watch(userSettingsProvider);
+    final router = ref.watch(appRouterProvider);
 
     return settingsAsync.when(
       loading: () => MaterialApp.router(
@@ -111,22 +122,23 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        routerConfig: appRouter,
+        routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
-      error: (_, _) => MaterialApp.router(
+      error: (error, stack) => MaterialApp.router(
         title: 'MyPill',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        routerConfig: appRouter,
+        routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
       data: (settings) => MaterialApp.router(
         title: 'MyPill',
         debugShowCheckedModeBanner: false,
+        locale: _getLocaleFromLanguage(settings.language),
         theme: AppTheme.resolve(
           highContrast: settings.highContrast,
           textSize: settings.textSize,
@@ -137,7 +149,7 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
           textSize: settings.textSize,
           brightness: Brightness.dark,
         ),
-        routerConfig: appRouter,
+        routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
