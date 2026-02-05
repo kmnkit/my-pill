@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/schedule.dart';
@@ -16,21 +18,61 @@ class StorageService {
   static const String _settingsBox = 'settings';
   static const String _caregiverLinksBox = 'caregiver_links';
 
+  // Encryption key management
+  static const String _encryptionKeyName = 'hive_encryption_key';
+  static const FlutterSecureStorage _secureStorage = FlutterSecureStorage(
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+  );
+
+  HiveCipher? _cipher;
+
+  /// Initialize encryption - must be called before any storage operations
+  Future<void> initializeEncryption() async {
+    if (_cipher != null) return;
+
+    try {
+      String? encodedKey = await _secureStorage.read(key: _encryptionKeyName);
+
+      if (encodedKey == null) {
+        // Generate new encryption key
+        final key = Hive.generateSecureKey();
+        encodedKey = base64Encode(key);
+        await _secureStorage.write(key: _encryptionKeyName, value: encodedKey);
+      }
+
+      final encryptionKey = base64Decode(encodedKey);
+      _cipher = HiveAesCipher(Uint8List.fromList(encryptionKey));
+    } catch (e) {
+      // Fallback: no encryption if secure storage fails (e.g., in tests)
+      debugPrint('Encryption init failed, using unencrypted storage: $e');
+      _cipher = null;
+    }
+  }
+
+  /// Open an encrypted box
+  Future<Box<String>> _openBox(String boxName) async {
+    await initializeEncryption();
+    if (_cipher != null) {
+      return await Hive.openBox<String>(boxName, encryptionCipher: _cipher);
+    }
+    return await Hive.openBox<String>(boxName);
+  }
+
   // --- Medications ---
   Future<void> saveMedication(Medication med) async {
-    final box = await Hive.openBox<String>(_medicationsBox);
+    final box = await _openBox(_medicationsBox);
     await box.put(med.id, jsonEncode(med.toJson()));
   }
 
   Future<Medication?> getMedication(String id) async {
-    final box = await Hive.openBox<String>(_medicationsBox);
+    final box = await _openBox(_medicationsBox);
     final json = box.get(id);
     if (json == null) return null;
     return Medication.fromJson(jsonDecode(json) as Map<String, dynamic>);
   }
 
   Future<List<Medication>> getAllMedications() async {
-    final box = await Hive.openBox<String>(_medicationsBox);
+    final box = await _openBox(_medicationsBox);
     return box.values
         .map((json) =>
             Medication.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -38,25 +80,25 @@ class StorageService {
   }
 
   Future<void> deleteMedication(String id) async {
-    final box = await Hive.openBox<String>(_medicationsBox);
+    final box = await _openBox(_medicationsBox);
     await box.delete(id);
   }
 
   // --- Schedules ---
   Future<void> saveSchedule(Schedule schedule) async {
-    final box = await Hive.openBox<String>(_schedulesBox);
+    final box = await _openBox(_schedulesBox);
     await box.put(schedule.id, jsonEncode(schedule.toJson()));
   }
 
   Future<Schedule?> getSchedule(String id) async {
-    final box = await Hive.openBox<String>(_schedulesBox);
+    final box = await _openBox(_schedulesBox);
     final json = box.get(id);
     if (json == null) return null;
     return Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>);
   }
 
   Future<List<Schedule>> getAllSchedules() async {
-    final box = await Hive.openBox<String>(_schedulesBox);
+    final box = await _openBox(_schedulesBox);
     return box.values
         .map((json) =>
             Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -64,7 +106,7 @@ class StorageService {
   }
 
   Future<List<Schedule>> getSchedulesForMedication(String medicationId) async {
-    final box = await Hive.openBox<String>(_schedulesBox);
+    final box = await _openBox(_schedulesBox);
     return box.values
         .map((json) =>
             Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -73,25 +115,25 @@ class StorageService {
   }
 
   Future<void> deleteSchedule(String id) async {
-    final box = await Hive.openBox<String>(_schedulesBox);
+    final box = await _openBox(_schedulesBox);
     await box.delete(id);
   }
 
   // --- Reminders ---
   Future<void> saveReminder(Reminder reminder) async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     await box.put(reminder.id, jsonEncode(reminder.toJson()));
   }
 
   Future<Reminder?> getReminder(String id) async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     final json = box.get(id);
     if (json == null) return null;
     return Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>);
   }
 
   Future<List<Reminder>> getAllReminders() async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     return box.values
         .map((json) =>
             Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -99,7 +141,7 @@ class StorageService {
   }
 
   Future<List<Reminder>> getRemindersForDate(DateTime date) async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     return box.values
         .map((json) =>
             Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -112,12 +154,12 @@ class StorageService {
   }
 
   Future<void> deleteReminder(String id) async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     await box.delete(id);
   }
 
   Future<void> deleteRemindersForMedication(String medicationId) async {
-    final box = await Hive.openBox<String>(_remindersBox);
+    final box = await _openBox(_remindersBox);
     final toDelete = box.values
         .map((json) =>
             Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -132,7 +174,7 @@ class StorageService {
 
   // --- Adherence Records ---
   Future<void> saveAdherenceRecord(AdherenceRecord record) async {
-    final box = await Hive.openBox<String>(_adherenceBox);
+    final box = await _openBox(_adherenceBox);
     await box.put(record.id, jsonEncode(record.toJson()));
   }
 
@@ -141,7 +183,7 @@ class StorageService {
     DateTime? startDate,
     DateTime? endDate,
   }) async {
-    final box = await Hive.openBox<String>(_adherenceBox);
+    final box = await _openBox(_adherenceBox);
     var records = box.values
         .map((json) =>
             AdherenceRecord.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -171,7 +213,7 @@ class StorageService {
   }
 
   Future<void> deleteAdherenceRecordsForMedication(String medicationId) async {
-    final box = await Hive.openBox<String>(_adherenceBox);
+    final box = await _openBox(_adherenceBox);
     final toDelete = box.values
         .map((json) =>
             AdherenceRecord.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -186,12 +228,12 @@ class StorageService {
 
   // --- User Settings ---
   Future<void> saveUserProfile(UserProfile profile) async {
-    final box = await Hive.openBox<String>(_settingsBox);
+    final box = await _openBox(_settingsBox);
     await box.put('user_profile', jsonEncode(profile.toJson()));
   }
 
   Future<UserProfile?> getUserProfile() async {
-    final box = await Hive.openBox<String>(_settingsBox);
+    final box = await _openBox(_settingsBox);
     final json = box.get('user_profile');
     if (json == null) return null;
     return UserProfile.fromJson(jsonDecode(json) as Map<String, dynamic>);
@@ -199,12 +241,12 @@ class StorageService {
 
   // --- Caregiver Links ---
   Future<void> saveCaregiverLink(CaregiverLink link) async {
-    final box = await Hive.openBox<String>(_caregiverLinksBox);
+    final box = await _openBox(_caregiverLinksBox);
     await box.put(link.id, jsonEncode(link.toJson()));
   }
 
   Future<List<CaregiverLink>> getAllCaregiverLinks() async {
-    final box = await Hive.openBox<String>(_caregiverLinksBox);
+    final box = await _openBox(_caregiverLinksBox);
     return box.values
         .map((json) =>
             CaregiverLink.fromJson(jsonDecode(json) as Map<String, dynamic>))
@@ -212,7 +254,7 @@ class StorageService {
   }
 
   Future<void> deleteCaregiverLink(String id) async {
-    final box = await Hive.openBox<String>(_caregiverLinksBox);
+    final box = await _openBox(_caregiverLinksBox);
     await box.delete(id);
   }
 
