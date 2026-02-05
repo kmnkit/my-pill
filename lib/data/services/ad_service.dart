@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -13,9 +14,35 @@ class AdService {
   BannerAd? _medicationsBannerAd;
   InterstitialAd? _interstitialAd;
 
-  // Test ad unit IDs (replace with real ones in production)
+  // Test ad unit IDs (Google's official test IDs)
   static const String _testBannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
   static const String _testInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
+
+  // Production ad unit IDs (replace with your actual AdMob ad unit IDs)
+  // iOS Banner: ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
+  // iOS Interstitial: ca-app-pub-XXXXXXXXXXXXXXXX/ZZZZZZZZZZ
+  // Android Banner: ca-app-pub-XXXXXXXXXXXXXXXX/AAAAAAAAAA
+  // Android Interstitial: ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB
+  static const String _prodBannerAdUnitIdIOS = 'ca-app-pub-8394008055710959/6625781071';
+  static const String _prodInterstitialAdUnitIdIOS = 'ca-app-pub-8394008055710959/1832619397';
+  static const String _prodBannerAdUnitIdAndroid = 'ca-app-pub-8394008055710959/8841172453';
+  static const String _prodInterstitialAdUnitIdAndroid = 'ca-app-pub-8394008055710959/8206456054';
+
+  /// Returns the appropriate banner ad unit ID based on platform and build mode
+  static String get _bannerAdUnitId {
+    if (kDebugMode) {
+      return _testBannerAdUnitId;
+    }
+    return Platform.isIOS ? _prodBannerAdUnitIdIOS : _prodBannerAdUnitIdAndroid;
+  }
+
+  /// Returns the appropriate interstitial ad unit ID based on platform and build mode
+  static String get _interstitialAdUnitId {
+    if (kDebugMode) {
+      return _testInterstitialAdUnitId;
+    }
+    return Platform.isIOS ? _prodInterstitialAdUnitIdIOS : _prodInterstitialAdUnitIdAndroid;
+  }
 
   bool get adsRemoved => _adsRemoved;
 
@@ -40,7 +67,7 @@ class AdService {
   BannerAd? getHomeBannerAd() {
     if (_adsRemoved || !_initialized) return null;
     _homeBannerAd ??= BannerAd(
-      adUnitId: _testBannerAdUnitId,
+      adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -58,7 +85,7 @@ class AdService {
   BannerAd? getMedicationsBannerAd() {
     if (_adsRemoved || !_initialized) return null;
     _medicationsBannerAd ??= BannerAd(
-      adUnitId: _testBannerAdUnitId,
+      adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -76,7 +103,7 @@ class AdService {
   Future<void> loadInterstitial() async {
     if (_adsRemoved || !_initialized) return;
     await InterstitialAd.load(
-      adUnitId: _testInterstitialAdUnitId,
+      adUnitId: _interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
