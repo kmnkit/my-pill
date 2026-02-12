@@ -8,6 +8,7 @@ import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/screens/home/widgets/timeline_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class MedicationTimeline extends ConsumerWidget {
   const MedicationTimeline({super.key});
@@ -26,31 +27,32 @@ class MedicationTimeline extends ConsumerWidget {
     }
   }
 
-  String _getBadgeLabel(ReminderStatus status) {
+  String _getBadgeLabel(ReminderStatus status, AppLocalizations l10n) {
     switch (status) {
       case ReminderStatus.taken:
-        return 'Taken';
+        return l10n.taken;
       case ReminderStatus.skipped:
-        return 'Skipped';
+        return l10n.skipped;
       case ReminderStatus.missed:
-        return 'Missed';
+        return l10n.missed;
       case ReminderStatus.snoozed:
-        return 'Snoozed';
+        return l10n.snoozed;
       case ReminderStatus.pending:
-        return 'Upcoming';
+        return l10n.upcoming;
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final remindersAsync = ref.watch(todayRemindersProvider);
 
     return remindersAsync.when(
       data: (reminders) {
         if (reminders.isEmpty) {
-          return const MpEmptyState(
+          return MpEmptyState(
             icon: Icons.calendar_today,
-            title: 'No reminders for today',
+            title: l10n.noRemindersForToday,
           );
         }
 
@@ -74,7 +76,7 @@ class MedicationTimeline extends ConsumerWidget {
                         dosage: '${medication.dosage}${medication.dosageUnit.label}',
                         time: DateFormat('h:mm a').format(reminders[i].scheduledTime),
                         badgeVariant: _getBadgeVariant(reminders[i].status),
-                        badgeLabel: _getBadgeLabel(reminders[i].status),
+                        badgeLabel: _getBadgeLabel(reminders[i].status, l10n),
                         pillShape: medication.shape,
                         pillColor: medication.color,
                         medicationId: medication.id,
@@ -102,7 +104,7 @@ class MedicationTimeline extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xl),
           child: Text(
-            'Error loading reminders',
+            l10n.errorLoadingReminders,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class DataSharingDialog extends StatefulWidget {
   const DataSharingDialog({super.key});
@@ -24,6 +25,7 @@ class _DataSharingDialogState extends State<DataSharingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Dialog(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -36,12 +38,12 @@ class _DataSharingDialogState extends State<DataSharingDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Data Sharing Preferences',
+              l10n.dataSharingPreferences,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              'Control what information you share with your caregivers',
+              l10n.dataSharingSubtitle,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textMuted,
                   ),
@@ -54,7 +56,7 @@ class _DataSharingDialogState extends State<DataSharingDialog> {
                   _shareAdherenceData = value;
                 });
               },
-              title: const Text('Share adherence data with caregivers'),
+              title: Text(l10n.shareAdherenceData),
               contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -65,7 +67,7 @@ class _DataSharingDialogState extends State<DataSharingDialog> {
                   _shareMedicationList = value;
                 });
               },
-              title: const Text('Share medication list with caregivers'),
+              title: Text(l10n.shareMedicationList),
               contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -76,12 +78,12 @@ class _DataSharingDialogState extends State<DataSharingDialog> {
                   _allowCaregiverNotifications = value;
                 });
               },
-              title: const Text('Allow caregiver notifications'),
+              title: Text(l10n.allowCaregiverNotifications),
               contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: AppSpacing.xxl),
             MpButton(
-              label: 'Close',
+              label: l10n.close,
               variant: MpButtonVariant.secondary,
               onPressed: () => Navigator.of(context).pop(),
             ),

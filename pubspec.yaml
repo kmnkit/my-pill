@@ -19,7 +19,6 @@ dependencies:
   # Local Storage
   hive_flutter: any
   hive: any
-  flutter_secure_storage: any
   # Firebase
   firebase_core: any
   firebase_auth: any
@@ -60,8 +59,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  integration_test:
-    sdk: flutter
   flutter_lints: any
   build_runner: any
   json_serializable: any
@@ -72,12 +69,12 @@ dev_dependencies:
   flutter_launcher_icons: any
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/icons/icon.png"
+  image_path: "assets/images/kusuridoki.png"
   min_sdk_android: 21
   adaptive_icon_background: "#FFF5F0"
-  adaptive_icon_foreground: "assets/icons/icon.png"
+  adaptive_icon_foreground: "assets/images/kusuridoki.png"
   remove_alpha_ios: true
 
 flutter:

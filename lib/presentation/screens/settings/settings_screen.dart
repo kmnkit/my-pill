@@ -16,16 +16,18 @@ import 'package:my_pill/presentation/screens/settings/widgets/premium_banner.dar
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final userSettingsAsync = ref.watch(userSettingsProvider);
 
     return Scaffold(
-      appBar: const MpAppBar(title: 'Settings'),
+      appBar: MpAppBar(title: l10n.settingsTitle),
       body: userSettingsAsync.when(
         data: (userSettings) => SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -40,47 +42,46 @@ class SettingsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               const DisplaySettings(),
               const SizedBox(height: AppSpacing.xl),
-              const MpSectionHeader(title: 'Safety & Privacy'),
+              MpSectionHeader(title: l10n.safetyPrivacy),
               _buildListTile(
                 context,
-                'Data Sharing Preferences',
+                l10n.dataSharingPreferences,
                 Icons.privacy_tip,
                 () => DataSharingDialog.show(context),
               ),
               const SizedBox(height: AppSpacing.sm),
               _buildListTile(
                 context,
-                'Backup & Sync',
+                l10n.backupAndSync,
                 Icons.cloud_upload,
                 () => BackupSyncDialog.show(context),
               ),
               const SizedBox(height: AppSpacing.xl),
-              const MpSectionHeader(title: 'About'),
+              MpSectionHeader(title: l10n.about),
               _buildListTile(
                 context,
-                'App Version',
+                l10n.appVersion,
                 Icons.info_outline,
                 null,
                 trailing: Text(
-                  'Version 1.0.0',
+                  l10n.version('1.0.0'),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
-              const MpSectionHeader(title: 'Advanced'),
+              MpSectionHeader(title: l10n.advanced),
               _buildListTile(
                 context,
-                'Deactivate Account',
+                l10n.deactivateAccount,
                 Icons.power_settings_new,
                 () async {
                   final confirmed = await MpConfirmDialog.show(
                     context,
-                    title: 'Deactivate Account',
-                    message:
-                        'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.',
-                    confirmLabel: 'Deactivate',
+                    title: l10n.deactivateAccountTitle,
+                    message: l10n.deactivateAccountMessage,
+                    confirmLabel: l10n.deactivate,
                     isDestructive: true,
                   );
 
@@ -94,7 +95,7 @@ class SettingsScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Error deactivating account: $e'),
+                            content: Text(l10n.errorDeactivatingAccount(e.toString())),
                             backgroundColor: AppColors.error,
                           ),
                         );
@@ -107,16 +108,15 @@ class SettingsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.sm),
               _buildListTile(
                 context,
-                'Delete Account',
+                l10n.deleteAccount,
                 Icons.delete_forever,
                 () async {
                   // First confirmation
                   final firstConfirm = await MpConfirmDialog.show(
                     context,
-                    title: 'Delete Account',
-                    message:
-                        'This will permanently delete your account and all data. This cannot be undone.',
-                    confirmLabel: 'Continue',
+                    title: l10n.deleteAccountTitle,
+                    message: l10n.deleteAccountMessage,
+                    confirmLabel: l10n.continueButton,
                     isDestructive: true,
                   );
 
@@ -125,10 +125,9 @@ class SettingsScreen extends ConsumerWidget {
                   // Second confirmation
                   final secondConfirm = await MpConfirmDialog.show(
                     context,
-                    title: 'Are you sure?',
-                    message:
-                        'All medications, schedules, history, and caregiver links will be permanently deleted.',
-                    confirmLabel: 'Delete Everything',
+                    title: l10n.deleteAccountConfirmTitle,
+                    message: l10n.deleteAccountConfirmMessage,
+                    confirmLabel: l10n.deleteEverything,
                     isDestructive: true,
                   );
 
@@ -145,7 +144,7 @@ class SettingsScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Error deleting account: $e'),
+                            content: Text(l10n.errorDeletingAccount(e.toString())),
                             backgroundColor: AppColors.error,
                           ),
                         );
@@ -164,7 +163,7 @@ class SettingsScreen extends ConsumerWidget {
                     context.go('/caregiver/patients');
                   },
                   child: Text(
-                    'Switch to Caregiver View',
+                    l10n.switchToCaregiverView,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: AppColors.primary,
                         ),
@@ -181,11 +180,11 @@ class SettingsScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Error loading settings'),
+              Text(l10n.errorLoadingSettings),
               const SizedBox(height: AppSpacing.md),
               TextButton(
                 onPressed: () => ref.invalidate(userSettingsProvider),
-                child: const Text('Retry'),
+                child: Text(l10n.retry),
               ),
             ],
           ),

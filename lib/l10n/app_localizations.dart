@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'MyPill'**
+  /// **'Kusuridoki'**
   String get appTitle;
 
   /// No description provided for @onboardingHeadline.
@@ -1675,6 +1675,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sharable with doctors and caregivers'**
   String get sharableWithDoctors;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @backupAndSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & Sync'**
+  String get backupAndSync;
+
+  /// No description provided for @syncWithCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync your data with the cloud'**
+  String get syncWithCloud;
+
+  /// No description provided for @lastSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Last sync:'**
+  String get lastSync;
+
+  /// No description provided for @never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// No description provided for @syncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing...'**
+  String get syncing;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get syncNow;
+
+  /// No description provided for @syncComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get syncComplete;
+
+  /// No description provided for @autoSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-sync'**
+  String get autoSync;
+
+  /// No description provided for @autoSyncSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically sync when changes are made'**
+  String get autoSyncSubtitle;
+
+  /// No description provided for @takePhotoOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get takePhotoOption;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get chooseFromGallery;
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Photo'**
+  String get removePhoto;
+
+  /// No description provided for @failedToPickImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick image: {error}'**
+  String failedToPickImage(String error);
+
+  /// No description provided for @missedDoseAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed Dose Alerts'**
+  String get missedDoseAlerts;
+
+  /// No description provided for @missedDoseAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified when patients miss medications'**
+  String get missedDoseAlertsSubtitle;
+
+  /// No description provided for @lowStockAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Stock Alerts'**
+  String get lowStockAlerts;
+
+  /// No description provided for @lowStockAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified about low medication inventory'**
+  String get lowStockAlertsSubtitle;
+
+  /// No description provided for @switchToPatientView.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Patient View'**
+  String get switchToPatientView;
+
+  /// No description provided for @areYouSureSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out?'**
+  String get areYouSureSignOut;
+
+  /// No description provided for @dataSharingPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sharing Preferences'**
+  String get dataSharingPreferences;
+
+  /// No description provided for @dataSharingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Control what information you share with your caregivers'**
+  String get dataSharingSubtitle;
+
+  /// No description provided for @shareAdherenceData.
+  ///
+  /// In en, this message translates to:
+  /// **'Share adherence data with caregivers'**
+  String get shareAdherenceData;
+
+  /// No description provided for @shareMedicationList.
+  ///
+  /// In en, this message translates to:
+  /// **'Share medication list with caregivers'**
+  String get shareMedicationList;
+
+  /// No description provided for @allowCaregiverNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow caregiver notifications'**
+  String get allowCaregiverNotifications;
+
+  /// No description provided for @manageSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscription'**
+  String get manageSubscription;
+
+  /// No description provided for @noAdsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy an ad-free experience'**
+  String get noAdsDescription;
+
+  /// No description provided for @unlimitedCaregiversDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with unlimited family members'**
+  String get unlimitedCaregiversDescription;
+
+  /// No description provided for @pdfReportsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Export detailed medication reports'**
+  String get pdfReportsDescription;
+
+  /// No description provided for @customSoundsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalize notification sounds'**
+  String get customSoundsDescription;
+
+  /// No description provided for @premiumThemesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Access exclusive themes'**
+  String get premiumThemesDescription;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get purchaseFailed;
+
+  /// No description provided for @purchasesRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored successfully!'**
+  String get purchasesRestored;
+
+  /// No description provided for @noPurchasesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No purchases found to restore.'**
+  String get noPurchasesFound;
+
+  /// No description provided for @errorWithMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorWithMessage(String message);
+
+  /// No description provided for @noCaregiversLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'No caregivers linked yet'**
+  String get noCaregiversLinked;
+
+  /// No description provided for @revokeAccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke Access'**
+  String get revokeAccessTitle;
+
+  /// No description provided for @revokeAccessConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to revoke access for {name}?'**
+  String revokeAccessConfirm(String name);
+
+  /// No description provided for @revoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get revoke;
+
+  /// No description provided for @accessRevokedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access revoked successfully'**
+  String get accessRevokedSuccess;
+
+  /// No description provided for @failedToRevokeAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to revoke access: {error}'**
+  String failedToRevokeAccess(String error);
+
+  /// No description provided for @errorLoadingCaregivers.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading caregivers: {error}'**
+  String errorLoadingCaregivers(String error);
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed: {error}'**
+  String syncFailed(String error);
+
+  /// No description provided for @noRemindersForToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders for today'**
+  String get noRemindersForToday;
+
+  /// No description provided for @errorLoadingReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading reminders'**
+  String get errorLoadingReminders;
+
+  /// No description provided for @errorLoadingSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading settings'**
+  String get errorLoadingSettings;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'App Version'**
+  String get appVersion;
+
+  /// No description provided for @deactivateAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Account'**
+  String get deactivateAccountTitle;
+
+  /// No description provided for @deactivateAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.'**
+  String get deactivateAccountMessage;
+
+  /// No description provided for @deactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get deactivate;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete your account and all data. This cannot be undone.'**
+  String get deleteAccountMessage;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'All medications, schedules, history, and caregiver links will be permanently deleted.'**
+  String get deleteAccountConfirmMessage;
+
+  /// No description provided for @deleteEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Everything'**
+  String get deleteEverything;
+
+  /// No description provided for @errorDeactivatingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deactivating account: {error}'**
+  String errorDeactivatingAccount(String error);
+
+  /// No description provided for @errorDeletingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting account: {error}'**
+  String errorDeletingAccount(String error);
+
+  /// No description provided for @minuteShort.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minuteShort;
 }
 
 class _AppLocalizationsDelegate

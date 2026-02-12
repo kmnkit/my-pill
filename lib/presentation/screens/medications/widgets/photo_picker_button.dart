@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class PhotoPickerButton extends StatelessWidget {
   const PhotoPickerButton({
@@ -30,9 +31,10 @@ class PhotoPickerButton extends StatelessWidget {
       onPhotoChanged?.call(savedImage.path);
     } catch (e) {
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick image: ${e.toString()}'),
+            content: Text(l10n.failedToPickImage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -41,6 +43,7 @@ class PhotoPickerButton extends StatelessWidget {
   }
 
   void _showPhotoOptions(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       builder: (context) => SafeArea(
@@ -49,7 +52,7 @@ class PhotoPickerButton extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('Take Photo'),
+              title: Text(l10n.takePhotoOption),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(context, ImageSource.camera);
@@ -57,7 +60,7 @@ class PhotoPickerButton extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Choose from Gallery'),
+              title: Text(l10n.chooseFromGallery),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(context, ImageSource.gallery);
@@ -66,7 +69,7 @@ class PhotoPickerButton extends StatelessWidget {
             if (currentPhotoPath != null)
               ListTile(
                 leading: const Icon(Icons.delete, color: AppColors.error),
-                title: const Text('Remove Photo', style: TextStyle(color: AppColors.error)),
+                title: Text(l10n.removePhoto, style: const TextStyle(color: AppColors.error)),
                 onTap: () {
                   Navigator.pop(context);
                   onPhotoChanged?.call(null);
@@ -135,7 +138,7 @@ class PhotoPickerButton extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Text(
-                      'Take or upload a photo',
+                      AppLocalizations.of(context)!.takePhoto,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textMuted,
                           ),

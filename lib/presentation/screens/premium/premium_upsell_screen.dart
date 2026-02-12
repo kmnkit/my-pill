@@ -116,27 +116,27 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       _FeatureItem(
         icon: Icons.block,
         title: l10n.noAds,
-        description: 'Enjoy an ad-free experience',
+        description: l10n.noAdsDescription,
       ),
       _FeatureItem(
         icon: Icons.people,
         title: l10n.unlimitedCaregivers,
-        description: 'Connect with unlimited family members',
+        description: l10n.unlimitedCaregiversDescription,
       ),
       _FeatureItem(
         icon: Icons.picture_as_pdf,
         title: l10n.pdfReports,
-        description: 'Export detailed medication reports',
+        description: l10n.pdfReportsDescription,
       ),
       _FeatureItem(
         icon: Icons.notifications_active,
         title: l10n.customSounds,
-        description: 'Personalize notification sounds',
+        description: l10n.customSoundsDescription,
       ),
       _FeatureItem(
         icon: Icons.palette,
         title: l10n.premiumThemes,
-        description: 'Access exclusive themes',
+        description: l10n.premiumThemesDescription,
       ),
     ];
 
@@ -194,6 +194,8 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -274,11 +276,14 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       if (badge != null) ...[
                         const SizedBox(width: AppSpacing.sm),
@@ -415,8 +420,8 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Purchase failed. Please try again.'),
+            SnackBar(
+              content: Text(l10n.purchaseFailed),
               backgroundColor: AppColors.error,
             ),
           );
@@ -424,9 +429,10 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(l10n.errorWithMessage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -447,30 +453,32 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       await service.restorePurchases();
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         final isPremium = ref.read(isPremiumProvider);
 
         if (isPremium) {
           AdService().setAdsRemoved(true);
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Purchases restored successfully!'),
+            SnackBar(
+              content: Text(l10n.purchasesRestored),
               backgroundColor: AppColors.success,
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No purchases found to restore.'),
+            SnackBar(
+              content: Text(l10n.noPurchasesFound),
             ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(l10n.errorWithMessage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

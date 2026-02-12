@@ -71,11 +71,11 @@ class FamilyScreen extends ConsumerWidget {
             caregiverLinksAsync.when(
               data: (links) {
                 if (links.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
                     child: MpEmptyState(
                       icon: Icons.people_outline,
-                      title: 'No caregivers linked yet',
+                      title: l10n.noCaregiversLinked,
                     ),
                   );
                 }
@@ -89,18 +89,18 @@ class FamilyScreen extends ConsumerWidget {
                           final confirmed = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('Revoke Access'),
+                              title: Text(l10n.revokeAccessTitle),
                               content: Text(
-                                'Are you sure you want to revoke access for ${link.caregiverName}?',
+                                l10n.revokeAccessConfirm(link.caregiverName),
                               ),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(false),
-                                  child: const Text('Cancel'),
+                                  child: Text(l10n.cancel),
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(true),
-                                  child: const Text('Revoke'),
+                                  child: Text(l10n.revoke),
                                 ),
                               ],
                             ),
@@ -118,8 +118,8 @@ class FamilyScreen extends ConsumerWidget {
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Access revoked successfully'),
+                                  SnackBar(
+                                    content: Text(l10n.accessRevokedSuccess),
                                     backgroundColor: AppColors.success,
                                   ),
                                 );
@@ -128,7 +128,7 @@ class FamilyScreen extends ConsumerWidget {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Failed to revoke access: $e'),
+                                    content: Text(l10n.failedToRevokeAccess(e.toString())),
                                   ),
                                 );
                               }
@@ -148,7 +148,7 @@ class FamilyScreen extends ConsumerWidget {
               ),
               error: (error, stack) => Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                child: Text('Error loading caregivers: $error'),
+                child: Text(l10n.errorLoadingCaregivers(error.toString())),
               ),
             ),
             const SizedBox(height: AppSpacing.xl),

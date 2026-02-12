@@ -130,7 +130,7 @@ class PremiumBanner extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           MpButton(
-            label: 'Manage Subscription',
+            label: l10n.manageSubscription,
             onPressed: () => context.push('/premium'),
             variant: MpButtonVariant.secondary,
           ),

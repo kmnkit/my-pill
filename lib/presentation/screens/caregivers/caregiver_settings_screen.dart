@@ -6,6 +6,7 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class CaregiverSettingsScreen extends ConsumerStatefulWidget {
   const CaregiverSettingsScreen({super.key});
@@ -20,16 +21,17 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: const MpAppBar(title: 'Settings'),
+      appBar: MpAppBar(title: l10n.settingsTitle),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.lg),
           children: [
-            const MpSectionHeader(title: 'Notifications'),
+            MpSectionHeader(title: l10n.notifications),
             SwitchListTile(
-              title: const Text('Missed Dose Alerts'),
-              subtitle: const Text('Get notified when patients miss medications'),
+              title: Text(l10n.missedDoseAlerts),
+              subtitle: Text(l10n.missedDoseAlertsSubtitle),
               value: _missedDoseAlerts,
               onChanged: (value) {
                 setState(() {
@@ -38,8 +40,8 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
               },
             ),
             SwitchListTile(
-              title: const Text('Low Stock Alerts'),
-              subtitle: const Text('Get notified about low medication inventory'),
+              title: Text(l10n.lowStockAlerts),
+              subtitle: Text(l10n.lowStockAlertsSubtitle),
               value: _lowStockAlerts,
               onChanged: (value) {
                 setState(() {
@@ -48,10 +50,10 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
               },
             ),
             const SizedBox(height: AppSpacing.xl),
-            const MpSectionHeader(title: 'Account'),
+            MpSectionHeader(title: l10n.account),
             ListTile(
               leading: const Icon(Icons.swap_horiz),
-              title: const Text('Switch to Patient View'),
+              title: Text(l10n.switchToPatientView),
               onTap: () {
                 context.go('/home');
               },
@@ -60,23 +62,23 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
             ListTile(
               leading: Icon(Icons.logout, color: AppColors.error),
               title: Text(
-                'Sign Out',
+                l10n.signOut,
                 style: TextStyle(color: AppColors.error),
               ),
               onTap: () async {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Sign Out'),
-                    content: const Text('Are you sure you want to sign out?'),
+                    title: Text(l10n.signOut),
+                    content: Text(l10n.areYouSureSignOut),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text('Cancel'),
+                        child: Text(l10n.cancel),
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(true),
-                        child: const Text('Sign Out'),
+                        child: Text(l10n.signOut),
                       ),
                     ],
                   ),

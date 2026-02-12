@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -7,6 +8,9 @@ class AdService {
   factory AdService() => _instance;
   AdService._();
 
+  // Set to true to hide ads for screenshots
+  static const bool _hideAdsForScreenshots = true;
+
   bool _initialized = false;
   bool _adsRemoved = false;
 
@@ -14,34 +18,25 @@ class AdService {
   BannerAd? _medicationsBannerAd;
   InterstitialAd? _interstitialAd;
 
-  // Test ad unit IDs (Google's official test IDs)
-  static const String _testBannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
-  static const String _testInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
-
-  // Production ad unit IDs (replace with your actual AdMob ad unit IDs)
-  // iOS Banner: ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
-  // iOS Interstitial: ca-app-pub-XXXXXXXXXXXXXXXX/ZZZZZZZZZZ
-  // Android Banner: ca-app-pub-XXXXXXXXXXXXXXXX/AAAAAAAAAA
-  // Android Interstitial: ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB
-  static const String _prodBannerAdUnitIdIOS = 'ca-app-pub-8394008055710959/6625781071';
-  static const String _prodInterstitialAdUnitIdIOS = 'ca-app-pub-8394008055710959/1832619397';
-  static const String _prodBannerAdUnitIdAndroid = 'ca-app-pub-8394008055710959/8841172453';
-  static const String _prodInterstitialAdUnitIdAndroid = 'ca-app-pub-8394008055710959/8206456054';
-
-  /// Returns the appropriate banner ad unit ID based on platform and build mode
+  // Production ad unit IDs
   static String get _bannerAdUnitId {
     if (kDebugMode) {
-      return _testBannerAdUnitId;
+      // Test ad unit IDs for development
+      return 'ca-app-pub-3940256099942544/6300978111';
     }
-    return Platform.isIOS ? _prodBannerAdUnitIdIOS : _prodBannerAdUnitIdAndroid;
+    return Platform.isAndroid
+        ? 'ca-app-pub-8394008055710959/8841172453'
+        : 'ca-app-pub-8394008055710959/6625781071';
   }
 
-  /// Returns the appropriate interstitial ad unit ID based on platform and build mode
   static String get _interstitialAdUnitId {
     if (kDebugMode) {
-      return _testInterstitialAdUnitId;
+      // Test ad unit IDs for development
+      return 'ca-app-pub-3940256099942544/1033173712';
     }
-    return Platform.isIOS ? _prodInterstitialAdUnitIdIOS : _prodInterstitialAdUnitIdAndroid;
+    return Platform.isAndroid
+        ? 'ca-app-pub-8394008055710959/8206456054'
+        : 'ca-app-pub-8394008055710959/1832619397';
   }
 
   bool get adsRemoved => _adsRemoved;
@@ -65,7 +60,7 @@ class AdService {
 
   // Banner ad for Home screen
   BannerAd? getHomeBannerAd() {
-    if (_adsRemoved || !_initialized) return null;
+    if (_hideAdsForScreenshots || _adsRemoved || !_initialized) return null;
     _homeBannerAd ??= BannerAd(
       adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
@@ -83,7 +78,7 @@ class AdService {
 
   // Banner ad for Medications screen
   BannerAd? getMedicationsBannerAd() {
-    if (_adsRemoved || !_initialized) return null;
+    if (_hideAdsForScreenshots || _adsRemoved || !_initialized) return null;
     _medicationsBannerAd ??= BannerAd(
       adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
@@ -101,7 +96,7 @@ class AdService {
 
   // Load interstitial ad
   Future<void> loadInterstitial() async {
-    if (_adsRemoved || !_initialized) return;
+    if (_hideAdsForScreenshots || _adsRemoved || !_initialized) return;
     await InterstitialAd.load(
       adUnitId: _interstitialAdUnitId,
       request: const AdRequest(),

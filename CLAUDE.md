@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## App Identity
+
+- **App Name:** Kusuridoki (くすりどき)
+- **Package ID:** `com.gingers.mypill`
+- **Supported Locales:** English (`en`), Japanese (`ja`)
+
+## Session Initialization
+
+**Serena Plugin**: 이 프로젝트 세션 시작 시 Serena MCP 서버가 활성화되어 있는지 확인하세요. Serena는 Dart LSP 기반 코드 인텔리전스를 제공합니다.
+
+```bash
+# Serena 상태 확인
+claude mcp list | grep serena
+
+# 비활성화된 경우 활성화
+claude mcp add serena -s project -- "$HOME/.local/bin/uvx" --from "git+https://github.com/oraios/serena" serena start-mcp-server
+```
+
+Serena 도구: `get_symbols_overview`, `find_symbol`, `find_referencing_symbols`, `search_for_pattern`, `rename_symbol` 등
+
 ## Build & Development Commands
 
 ```bash
@@ -12,6 +32,9 @@ flutter run                                                        # Run the app
 flutter test                                                       # Run all tests
 flutter test test/data/services/adherence_service_test.dart        # Run a single test file
 flutter analyze                                                    # Static analysis (flutter_lints)
+flutter clean                                                      # Clear build cache (use when builds fail unexpectedly)
+flutter build apk --release                                        # Build Android APK
+flutter build ios --release                                        # Build iOS (requires macOS)
 ```
 
 **After modifying models (`lib/data/models/`) or providers (`lib/data/providers/`)**, you must run `build_runner` — the `.freezed.dart` and `.g.dart` files are auto-generated and must never be manually edited.
@@ -69,8 +92,28 @@ lib/
 
 Deploy with `firebase deploy --only functions`.
 
+## Environment Setup
+
+**Required files (not in git):**
+- `android/app/google-services.json` — Firebase Android config
+- `ios/Runner/GoogleService-Info.plist` — Firebase iOS config
+
+**Firebase Emulator (local development):**
+```bash
+cd functions && npm install
+firebase emulators:start --only functions,firestore
+```
+
 ## Testing
 
 - `mockito` with `@GenerateMocks` for service mocking (run `build_runner` after adding annotations)
 - `ProviderContainer` for testing providers, `ProviderScope` wrapper for widget tests
 - Existing tests cover: medication inventory logic, adherence rating boundaries, timezone conversions
+
+## Gotchas
+
+- **build_runner 충돌**: `--delete-conflicting-outputs` 플래그 필수
+- **Hive 초기화**: `main.dart`에서 모든 TypeAdapter 등록 확인 필요
+- **iOS 권한**: 카메라/갤러리 사용 시 `ios/Runner/Info.plist`에 권한 설명 추가
+- **Android 권한**: `android/app/src/main/AndroidManifest.xml`에 권한 추가
+- **Riverpod 3.x**: `StateProvider` 대신 `NotifierProvider` 사용, `valueOrNull` 없음
