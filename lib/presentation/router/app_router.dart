@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/presentation/router/route_names.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 import 'package:my_pill/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:my_pill/presentation/screens/onboarding/login_screen.dart';
@@ -219,7 +220,7 @@ class _PatientShellScreen extends StatefulWidget {
 class _PatientShellScreenState extends State<_PatientShellScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
@@ -248,7 +249,7 @@ class _CaregiverShellScreen extends StatefulWidget {
 class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,

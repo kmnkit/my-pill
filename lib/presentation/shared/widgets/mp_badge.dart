@@ -53,13 +53,26 @@ class MpBadge extends StatelessWidget {
     return Semantics(
       label: 'Status: $label',
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.xs,
+        ),
         decoration: BoxDecoration(
           color: _backgroundColor,
           borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+          border: Border.all(
+            color: _textColor.withValues(alpha: 0.2),
+            width: 1,
+          ),
         ),
         child: ExcludeSemantics(
-          child: Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: _textColor)),
+          child: Text(
+            label,
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: _textColor),
+          ),
         ),
       ),
     );

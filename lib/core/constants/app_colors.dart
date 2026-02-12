@@ -61,4 +61,24 @@ abstract final class AppColors {
   static const Color hcBorderDark = Color(0xFFFFFFFF);
   static const Color hcPrimaryDark = Color(0xFF14EBD9);
   static const Color hcCardDark = Color(0xFF2A2A2A);
+
+  // Glassmorphism - Light
+  static const Color glassWhite = Color(0x26FFFFFF); // 15% white
+  static const Color glassWhiteStrong = Color(0x4DFFFFFF); // 30% white
+  static const Color glassBorder = Color(0x33FFFFFF); // 20% white border
+
+  // Glassmorphism - Dark
+  static const Color glassDark = Color(0x26000000); // 15% black
+  static const Color glassDarkStrong = Color(0x4D000000); // 30% black
+  static const Color glassBorderDark = Color(0x33FFFFFF); // 20% white border
+
+  // Gradient Backgrounds - Light
+  static const Color gradientLightStart = Color(0xFFE0F7F5); // Subtle teal
+  static const Color gradientLightMid = Color(0xFFF0FDFA); // Very light teal
+  static const Color gradientLightEnd = Color(0xFFE6FFFA); // Mint tint
+
+  // Gradient Backgrounds - Dark
+  static const Color gradientDarkStart = Color(0xFF0D1F1D); // Deep teal
+  static const Color gradientDarkMid = Color(0xFF102220); // Dark teal
+  static const Color gradientDarkEnd = Color(0xFF1A2C2A); // Slightly lighter
 }

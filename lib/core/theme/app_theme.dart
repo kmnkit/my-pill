@@ -198,7 +198,7 @@ abstract final class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: config.surface,
+        backgroundColor: Colors.transparent,
         foregroundColor: config.textPrimary,
         centerTitle: false,
         titleTextStyle: textTheme.titleLarge?.copyWith(
@@ -247,18 +247,33 @@ abstract final class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: config.card,
+        fillColor: config.brightness == Brightness.dark
+            ? AppColors.glassDark
+            : AppColors.glassWhite,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: config.inputBorder ?? BorderSide.none,
+          borderSide: config.inputBorder ??
+              BorderSide(
+                color: config.brightness == Brightness.dark
+                    ? AppColors.glassBorderDark
+                    : AppColors.glassBorder,
+              ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: config.inputBorder ?? BorderSide.none,
+          borderSide: config.inputBorder ??
+              BorderSide(
+                color: config.brightness == Brightness.dark
+                    ? AppColors.glassBorderDark
+                    : AppColors.glassBorder,
+              ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: BorderSide(color: config.primary, width: config.cardBorder != null ? 2.0 : 1.5),
+          borderSide: BorderSide(
+            color: config.primary,
+            width: config.cardBorder != null ? 2.0 : 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -285,10 +300,19 @@ abstract final class AppTheme {
       ),
       dialogTheme: DialogThemeData(
         elevation: 0,
-        backgroundColor: config.surface,
+        backgroundColor: config.dialogBorder != null
+            ? config.surface // Solid for high contrast
+            : (config.brightness == Brightness.dark
+                ? AppColors.glassDarkStrong
+                : AppColors.glassWhiteStrong),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-          side: config.dialogBorder ?? BorderSide.none,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+          side: config.dialogBorder ??
+              BorderSide(
+                color: config.brightness == Brightness.dark
+                    ? AppColors.glassBorderDark
+                    : AppColors.glassBorder,
+              ),
         ),
       ),
       chipTheme: ChipThemeData(
