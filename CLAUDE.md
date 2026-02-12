@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## App Identity
 
 - **App Name:** Kusuridoki (くすりどき)
-- **Package ID:** `com.gingers.mypill`
+- **Package ID:** `com.ginger.mypill`
 - **Supported Locales:** English (`en`), Japanese (`ja`)
 
 ## Session Initialization
@@ -24,6 +24,26 @@ Serena 도구: `get_symbols_overview`, `find_symbol`, `find_referencing_symbols`
 
 ## Build & Development Commands
 
+### Quick Start (First-time Setup)
+
+```bash
+# 1. Install dependencies
+flutter pub get
+
+# 2. Generate code (Freezed models, Riverpod providers)
+dart run build_runner build --delete-conflicting-outputs
+
+# 3. Generate localizations
+flutter gen-l10n
+
+# 4. Run the app
+flutter run
+```
+
+**Required Flutter version:** 3.24.0+ (check with `flutter --version`)
+
+### All Commands
+
 ```bash
 flutter pub get                                                    # Install dependencies
 flutter pub run build_runner build --delete-conflicting-outputs    # Generate Freezed models, Riverpod providers, JSON serialization
@@ -35,11 +55,20 @@ flutter analyze                                                    # Static anal
 flutter clean                                                      # Clear build cache (use when builds fail unexpectedly)
 flutter build apk --release                                        # Build Android APK
 flutter build ios --release                                        # Build iOS (requires macOS)
+flutter test integration_test/                                     # Run integration tests
+flutter pub run flutter_launcher_icons:main                        # Regenerate app icons
 ```
 
 **After modifying models (`lib/data/models/`) or providers (`lib/data/providers/`)**, you must run `build_runner` — the `.freezed.dart` and `.g.dart` files are auto-generated and must never be manually edited.
 
 **After modifying localization ARB files**, run `flutter gen-l10n`.
+
+## CI/CD
+
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on PRs to main/develop:
+- `flutter analyze --fatal-infos`
+- `flutter test --coverage`
+- Code coverage uploaded to Codecov
 
 ## Architecture
 
@@ -71,6 +100,12 @@ lib/
 
 **Firestore security:** User-scoped read/write, caregivers get read-only access via `caregiverAccess` documents, `invites` and `caregiverAccess` are write-protected (Cloud Functions only).
 
+**Premium features:** In-app purchases via `IapService`, subscription status tracked in `SubscriptionService`, ad display managed by `AdService` and `InterstitialController`.
+
+**Home widgets:** Native home screen widgets via `HomeWidgetService` for quick medication reminders.
+
+**Deep linking:** `DeepLinkService` handles app_links for caregiver invite flows.
+
 ## Key Conventions
 
 - **Imports**: Always use `package:my_pill/...`, never relative imports
@@ -92,6 +127,8 @@ lib/
 
 Deploy with `firebase deploy --only functions`.
 
+**Firestore rules:** `firebase deploy --only firestore`
+
 ## Environment Setup
 
 **Required files (not in git):**
@@ -112,8 +149,21 @@ firebase emulators:start --only functions,firestore
 
 ## Gotchas
 
-- **build_runner 충돌**: `--delete-conflicting-outputs` 플래그 필수
-- **Hive 초기화**: `main.dart`에서 모든 TypeAdapter 등록 확인 필요
+- **build_runner 충돌**: `--delete-conflicting-outputs` 플래그 필수 → `dart run build_runner build --delete-conflicting-outputs`
+- **Hive 초기화 실패**: 새 모델 추가 후 `main.dart`에서 TypeAdapter 등록 → `Hive.registerAdapter(NewModelAdapter())`
 - **iOS 권한**: 카메라/갤러리 사용 시 `ios/Runner/Info.plist`에 권한 설명 추가
 - **Android 권한**: `android/app/src/main/AndroidManifest.xml`에 권한 추가
 - **Riverpod 3.x**: `StateProvider` 대신 `NotifierProvider` 사용, `valueOrNull` 없음
+- **빌드 실패 시**: `flutter clean && flutter pub get && dart run build_runner build --delete-conflicting-outputs`
+
+## Documentation
+
+- `docs/product_requirements_document.md` — PRD (English)
+- `docs/product_requirements_document_ja.md` — PRD (Japanese)
+- `docs/iOS_APP_STORE_DEPLOYMENT_GUIDE.md` — iOS deployment steps
+
+## AGENTS.md Hierarchy
+
+Subdirectory-specific context files exist at:
+- `lib/AGENTS.md`, `lib/core/AGENTS.md`, `lib/data/AGENTS.md`, `lib/presentation/AGENTS.md`
+- `functions/AGENTS.md`, `test/AGENTS.md`, `docs/AGENTS.md`
