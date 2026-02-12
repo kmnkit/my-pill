@@ -61,7 +61,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: any
   build_runner: any
-  json_serializable: any
+  json_serializable: 6.12.0
   freezed: any
   riverpod_generator: any
   mockito: any
