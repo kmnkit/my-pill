@@ -28,7 +28,7 @@ dependencies:
   # Deep Linking (replaces dead firebase_dynamic_links)
   app_links: any
   # Notifications
-  flutter_local_notifications: any
+  flutter_local_notifications: 20.1.0
   # UI
   google_fonts: any
   fl_chart: any
