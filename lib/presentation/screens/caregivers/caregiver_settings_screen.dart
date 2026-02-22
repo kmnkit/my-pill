@@ -10,7 +10,7 @@ import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/services/auth_service.dart';
+
 import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
@@ -104,12 +104,12 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
                   ),
                 );
                 if (confirmed == true && context.mounted) {
-                  await ref.read(authServiceProvider).signOut();
+                  // 1. Clear user data first (while widget is still mounted)
                   await StorageService().clearUserData();
+                  // 2. Invalidate providers (before signOut triggers redirect)
                   _invalidateAllProviders();
-                  if (context.mounted) {
-                    context.go('/login');
-                  }
+                  // 3. Sign out last — router redirect handles navigation to /login
+                  await ref.read(authServiceProvider).signOut();
                 }
               },
             ),
@@ -136,12 +136,12 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
                 if (confirmed == true && context.mounted) {
                   try {
-                    await AuthService().signOut();
+                    // 1. Clear user data first (while widget is still mounted)
                     await StorageService().clearUserData();
+                    // 2. Invalidate providers (before signOut triggers redirect)
                     _invalidateAllProviders();
-                    if (context.mounted) {
-                      context.go('/login');
-                    }
+                    // 3. Sign out last — router redirect handles navigation
+                    await ref.read(authServiceProvider).signOut();
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -189,14 +189,18 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
                 if (secondConfirm == true && context.mounted) {
                   try {
-                    // Re-authenticate before deletion
-                    final reauthed = await AuthService().reauthenticate();
+                    // 1. Re-authenticate before deletion
+                    final authService = ref.read(authServiceProvider);
+                    final reauthed = await authService.reauthenticate();
                     if (!reauthed) return; // User cancelled
+                    // 2. Server-side deletion
                     await CloudFunctionsService().deleteAccount();
+                    // 3. Clear local data (while widget is still mounted)
                     await StorageService().clearAll();
-                    if (context.mounted) {
-                      context.go('/login');
-                    }
+                    // 4. Invalidate providers (before signOut triggers redirect)
+                    _invalidateAllProviders();
+                    // 5. Sign out last — router redirect handles navigation
+                    await authService.signOut();
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

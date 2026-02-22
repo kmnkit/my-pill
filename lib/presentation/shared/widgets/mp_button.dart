@@ -134,10 +134,13 @@ class MpButton extends StatelessWidget {
                         iconWidget ?? Icon(icon, size: AppSpacing.iconMd, color: AppColors.primary),
                         const SizedBox(width: AppSpacing.sm),
                       ],
-                      Text(
-                        label,
-                        style: textTheme.labelLarge
-                            ?.copyWith(color: AppColors.primary),
+                      Flexible(
+                        child: Text(
+                          label,
+                          style: textTheme.labelLarge
+                              ?.copyWith(color: AppColors.primary),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
