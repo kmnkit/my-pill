@@ -1013,7 +1013,7 @@ abstract class AppLocalizations {
   /// No description provided for @deactivateAccount.
   ///
   /// In en, this message translates to:
-  /// **'Deactivate Account'**
+  /// **'Log Out'**
   String get deactivateAccount;
 
   /// No description provided for @deleteAccount.
@@ -1913,19 +1913,19 @@ abstract class AppLocalizations {
   /// No description provided for @deactivateAccountTitle.
   ///
   /// In en, this message translates to:
-  /// **'Deactivate Account'**
+  /// **'Log Out'**
   String get deactivateAccountTitle;
 
   /// No description provided for @deactivateAccountMessage.
   ///
   /// In en, this message translates to:
-  /// **'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.'**
+  /// **'You will be signed out. Your data will be preserved and you can sign back in later.'**
   String get deactivateAccountMessage;
 
   /// No description provided for @deactivate.
   ///
   /// In en, this message translates to:
-  /// **'Deactivate'**
+  /// **'Log Out'**
   String get deactivate;
 
   /// No description provided for @deleteAccountTitle.
@@ -1961,7 +1961,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorDeactivatingAccount.
   ///
   /// In en, this message translates to:
-  /// **'Error deactivating account: {error}'**
+  /// **'Error logging out: {error}'**
   String errorDeactivatingAccount(String error);
 
   /// No description provided for @errorDeletingAccount.
