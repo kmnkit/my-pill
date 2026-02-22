@@ -12,7 +12,7 @@ import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 
 import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
@@ -112,11 +112,9 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (confirmed == true && context.mounted) {
                     try {
-                      // 1. Sign out from Firebase first
-                      await AuthService().signOut();
-                      // 2. Clear user data (preserves onboardingComplete/language)
+                      // 1. Clear user data first (while widget is still mounted)
                       await StorageService().clearUserData();
-                      // 3. Invalidate all user-data providers
+                      // 2. Invalidate all user-data providers (before signOut triggers redirect)
                       ref.invalidate(medicationListProvider);
                       ref.invalidate(scheduleListProvider);
                       ref.invalidate(todayRemindersProvider);
@@ -124,9 +122,8 @@ class SettingsScreen extends ConsumerWidget {
                       ref.invalidate(weeklyAdherenceProvider);
                       ref.invalidate(caregiverLinksProvider);
                       ref.invalidate(userSettingsProvider);
-                      if (context.mounted) {
-                        context.go('/login');
-                      }
+                      // 3. Sign out last — router redirect handles navigation to /login
+                      await ref.read(authServiceProvider).signOut();
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -170,15 +167,23 @@ class SettingsScreen extends ConsumerWidget {
                   if (secondConfirm == true && context.mounted) {
                     try {
                       // Re-authenticate before deletion
-                      final reauthed = await AuthService().reauthenticate();
+                      final authService = ref.read(authServiceProvider);
+                      final reauthed = await authService.reauthenticate();
                       if (!reauthed) return; // User cancelled
-                      // Server-side deletion of all user data + auth account
+                      // 1. Server-side deletion of all user data + auth account
                       await CloudFunctionsService().deleteAccount();
-                      // Clear local data
+                      // 2. Clear local data first (while widget is still mounted)
                       await StorageService().clearAll();
-                      if (context.mounted) {
-                        context.go('/login');
-                      }
+                      // 3. Invalidate all providers (before signOut triggers redirect)
+                      ref.invalidate(medicationListProvider);
+                      ref.invalidate(scheduleListProvider);
+                      ref.invalidate(todayRemindersProvider);
+                      ref.invalidate(overallAdherenceProvider);
+                      ref.invalidate(weeklyAdherenceProvider);
+                      ref.invalidate(caregiverLinksProvider);
+                      ref.invalidate(userSettingsProvider);
+                      // 4. Sign out last — router redirect handles navigation
+                      await authService.signOut();
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(

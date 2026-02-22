@@ -141,14 +141,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  AppSpacing.xxl * 2,
-            ),
-            child: Column(
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Language selector
@@ -185,22 +179,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
 
-                const SizedBox(height: AppSpacing.xxl),
+                const SizedBox(height: AppSpacing.lg),
 
                 // App icon + title
                 Icon(
                   Icons.health_and_safety,
-                  size: 64,
+                  size: 56,
                   color: AppColors.primary,
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   l10n?.signIn ?? 'Sign In',
                   style: textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: AppSpacing.xxxl),
+                const SizedBox(height: AppSpacing.xl),
 
                 // Role selection
                 Text(
@@ -236,7 +230,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
 
-                const SizedBox(height: AppSpacing.xxxl),
+                const SizedBox(height: AppSpacing.xl),
 
                 // Sign-in buttons
                 if (_isLoading)
@@ -303,7 +297,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ],
               ],
             ),
-          ),
         ),
       ),
     );
@@ -346,6 +339,7 @@ class _RoleCard extends StatelessWidget {
           ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
@@ -369,6 +363,8 @@ class _RoleCard extends StatelessWidget {
                 fontSize: 11,
               ),
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
