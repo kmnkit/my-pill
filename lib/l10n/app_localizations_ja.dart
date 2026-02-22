@@ -30,6 +30,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alreadyHaveAccount => 'アカウントをお持ちの方';
 
   @override
+  String get tryWithoutAccount => 'アカウントなしで試す';
+
+  @override
+  String get localDataOnlyNotice => 'アカウントなしの場合、データはこの端末にのみ保存されます。';
+
+  @override
   String get onboardingWelcomeTitle => 'くすりどきへようこそ';
 
   @override
@@ -617,35 +623,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get or => 'または';
 
   @override
-  String get createAccount => 'アカウント作成';
-
-  @override
-  String get forgotPassword => 'パスワードをお忘れですか？';
-
-  @override
-  String get emailHint => 'your@email.com';
-
-  @override
-  String get passwordHint => 'パスワードを入力';
-
-  @override
-  String get emailRequired => 'メールアドレスは必須です';
-
-  @override
-  String get validEmail => '有効なメールアドレスを入力してください';
-
-  @override
-  String get passwordRequired => 'パスワードは必須です';
-
-  @override
-  String get passwordMinLength => 'パスワードは6文字以上必要です';
-
-  @override
-  String signInFailed(String error) {
-    return 'サインインに失敗しました: $error';
-  }
-
-  @override
   String googleSignInFailed(String error) {
     return 'Googleサインインに失敗しました: $error';
   }
@@ -654,22 +631,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String appleSignInFailed(String error) {
     return 'Appleサインインに失敗しました: $error';
   }
-
-  @override
-  String accountCreationFailed(String error) {
-    return 'アカウント作成に失敗しました: $error';
-  }
-
-  @override
-  String get resetEmailSent => 'パスワードリセットメールを送信しました';
-
-  @override
-  String resetEmailFailed(String error) {
-    return 'リセットメールの送信に失敗しました: $error';
-  }
-
-  @override
-  String get enterEmail => 'メールアドレスを入力してください';
 
   @override
   String linkFailed(String error) {

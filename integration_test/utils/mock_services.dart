@@ -59,23 +59,7 @@ class MockAuthService implements AuthService {
   }
 
   @override
-  Future<UserCredential> registerWithEmail(String email, String password) async {
-    _checkFailure();
-    _currentUser = _MockUser(uid: 'email-user-1', email: email);
-    _authStateController.add(_currentUser);
-    return _MockUserCredential(_currentUser);
-  }
-
-  @override
-  Future<UserCredential> signInWithEmail(String email, String password) async {
-    _checkFailure();
-    _currentUser = _MockUser(uid: 'email-user-1', email: email);
-    _authStateController.add(_currentUser);
-    return _MockUserCredential(_currentUser);
-  }
-
-  @override
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     _checkFailure();
     _currentUser = _MockUser(
       uid: 'google-user-1',
@@ -99,13 +83,7 @@ class MockAuthService implements AuthService {
   }
 
   @override
-  Future<UserCredential> linkWithEmail(String email, String password) async {
-    _checkFailure();
-    return _MockUserCredential(_currentUser);
-  }
-
-  @override
-  Future<UserCredential> linkWithGoogle() async {
+  Future<UserCredential?> linkWithGoogle() async {
     _checkFailure();
     return _MockUserCredential(_currentUser);
   }
@@ -130,12 +108,7 @@ class MockAuthService implements AuthService {
     _authStateController.add(null);
   }
 
-  @override
-  Future<void> sendPasswordReset(String email) async {
-    _checkFailure();
-  }
-
-  bool isPrivateRelayEmail(String? email) {
+  static bool isPrivateRelayEmail(String? email) {
     return email?.contains('privaterelay.appleid.com') ?? false;
   }
 

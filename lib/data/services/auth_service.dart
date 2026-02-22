@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_pill/data/enums/apple_auth_error.dart';
 
 /// Custom exception for Apple Sign-In errors with structured error information.
@@ -18,7 +17,6 @@ class AppleSignInException implements Exception {
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   // Current user stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -31,24 +29,20 @@ class AuthService {
     return await _auth.signInAnonymously();
   }
 
-  // Email/password registration
-  Future<UserCredential> registerWithEmail(String email, String password) async {
-    return await _auth.createUserWithEmailAndPassword(email: email, password: password);
-  }
-
-  // Email/password sign-in
-  Future<UserCredential> signInWithEmail(String email, String password) async {
-    return await _auth.signInWithEmailAndPassword(email: email, password: password);
-  }
-
-  // Google Sign-In
+  // Google Sign-In via Firebase OAuth provider
   Future<UserCredential?> signInWithGoogle() async {
-    final googleAccount = await _googleSignIn.authenticate();
-    final googleAuth = googleAccount.authentication;
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-    );
-    return await _auth.signInWithCredential(credential);
+    try {
+      final googleProvider = GoogleAuthProvider();
+      return await _auth.signInWithProvider(googleProvider);
+    } on FirebaseAuthException catch (e) {
+      // User cancelled the sign-in flow
+      if (e.code == 'web-context-canceled' ||
+          e.code == 'popup-closed-by-user' ||
+          e.code == 'canceled') {
+        return null;
+      }
+      rethrow;
+    }
   }
 
   // Apple Sign-In with proper error handling
@@ -64,24 +58,21 @@ class AuthService {
     }
   }
 
-  // Link anonymous account to email/password
-  Future<UserCredential> linkWithEmail(String email, String password) async {
-    final user = _auth.currentUser;
-    if (user == null) throw StateError('No authenticated user to link');
-    final credential = EmailAuthProvider.credential(email: email, password: password);
-    return await user.linkWithCredential(credential);
-  }
-
   // Link anonymous account to Google
   Future<UserCredential?> linkWithGoogle() async {
     final user = _auth.currentUser;
     if (user == null) throw StateError('No authenticated user to link');
-    final googleAccount = await _googleSignIn.authenticate();
-    final googleAuth = googleAccount.authentication;
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-    );
-    return await user.linkWithCredential(credential);
+    try {
+      final googleProvider = GoogleAuthProvider();
+      return await user.linkWithProvider(googleProvider);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'web-context-canceled' ||
+          e.code == 'popup-closed-by-user' ||
+          e.code == 'canceled') {
+        return null;
+      }
+      rethrow;
+    }
   }
 
   // Link anonymous account to Apple with proper error handling
@@ -107,11 +98,6 @@ class AuthService {
   // Delete account
   Future<void> deleteAccount() async {
     await _auth.currentUser?.delete();
-  }
-
-  // Password reset
-  Future<void> sendPasswordReset(String email) async {
-    await _auth.sendPasswordResetEmail(email: email);
   }
 
   /// Check if an email is an Apple private relay email.

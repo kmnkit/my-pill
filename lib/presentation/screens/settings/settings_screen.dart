@@ -105,7 +105,7 @@ class SettingsScreen extends ConsumerWidget {
                     try {
                       await AuthService().signOut();
                       if (context.mounted) {
-                        context.go('/login');
+                        context.go('/onboarding');
                       }
                     } catch (e) {
                       if (context.mounted) {
@@ -154,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
                       // Delete Firebase account
                       await AuthService().deleteAccount();
                       if (context.mounted) {
-                        context.go('/login');
+                        context.go('/onboarding');
                       }
                     } catch (e) {
                       if (context.mounted) {

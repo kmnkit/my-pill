@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'I already have an account'**
   String get alreadyHaveAccount;
 
+  /// No description provided for @tryWithoutAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Try without an account'**
+  String get tryWithoutAccount;
+
+  /// No description provided for @localDataOnlyNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Without an account, your data is stored only on this device.'**
+  String get localDataOnlyNotice;
+
   /// No description provided for @onboardingWelcomeTitle.
   ///
   /// In en, this message translates to:
@@ -1274,60 +1286,6 @@ abstract class AppLocalizations {
   /// **'or'**
   String get or;
 
-  /// No description provided for @createAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Create Account'**
-  String get createAccount;
-
-  /// No description provided for @forgotPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgot password?'**
-  String get forgotPassword;
-
-  /// No description provided for @emailHint.
-  ///
-  /// In en, this message translates to:
-  /// **'your@email.com'**
-  String get emailHint;
-
-  /// No description provided for @passwordHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your password'**
-  String get passwordHint;
-
-  /// No description provided for @emailRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Email is required'**
-  String get emailRequired;
-
-  /// No description provided for @validEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email'**
-  String get validEmail;
-
-  /// No description provided for @passwordRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Password is required'**
-  String get passwordRequired;
-
-  /// No description provided for @passwordMinLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 6 characters'**
-  String get passwordMinLength;
-
-  /// No description provided for @signInFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in failed: {error}'**
-  String signInFailed(String error);
-
   /// No description provided for @googleSignInFailed.
   ///
   /// In en, this message translates to:
@@ -1339,30 +1297,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apple sign in failed: {error}'**
   String appleSignInFailed(String error);
-
-  /// No description provided for @accountCreationFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Account creation failed: {error}'**
-  String accountCreationFailed(String error);
-
-  /// No description provided for @resetEmailSent.
-  ///
-  /// In en, this message translates to:
-  /// **'Password reset email sent'**
-  String get resetEmailSent;
-
-  /// No description provided for @resetEmailFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to send reset email: {error}'**
-  String resetEmailFailed(String error);
-
-  /// No description provided for @enterEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter your email address'**
-  String get enterEmail;
 
   /// No description provided for @linkFailed.
   ///
