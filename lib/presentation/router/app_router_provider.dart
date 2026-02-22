@@ -115,12 +115,12 @@ Raw<GoRouter> appRouter(Ref ref) {
         return '/login';
       }
 
-      // Not authenticated -> redirect to login (not onboarding)
+      // Not authenticated -> redirect to login (check BEFORE home redirect)
       if (!isAuthenticated && !isLoginRoute && onboardingComplete) {
         return '/login';
       }
 
-      // Authenticated but on login screen -> redirect to home
+      // Authenticated but on login screen -> redirect to appropriate home
       if (isAuthenticated && isLoginRoute) {
         return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
       }
@@ -333,6 +333,7 @@ class _PatientShellScreenState extends State<_PatientShellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
@@ -362,6 +363,7 @@ class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
