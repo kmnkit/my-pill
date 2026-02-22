@@ -749,7 +749,7 @@ abstract class AppLocalizations {
   /// No description provided for @pillsRemaining.
   ///
   /// In en, this message translates to:
-  /// **'{count} capsules remaining'**
+  /// **'{count} pills remaining'**
   String pillsRemaining(int count);
 
   /// No description provided for @weeklyAdherence.
@@ -1307,7 +1307,7 @@ abstract class AppLocalizations {
   /// No description provided for @appleSignInCancelled.
   ///
   /// In en, this message translates to:
-  /// **'Sign in was cancelled'**
+  /// **'Apple sign in was cancelled'**
   String get appleSignInCancelled;
 
   /// No description provided for @appleCredentialAlreadyInUse.
