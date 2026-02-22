@@ -98,6 +98,7 @@ class TodayReminders extends _$TodayReminders {
 
       // Get all active schedules
       final schedules = await ref.read(scheduleListProvider.future);
+      if (!ref.mounted) return [];
       final activeSchedules = schedules.where((s) => s.isActive).toList();
 
       // Generate reminders for today
@@ -105,9 +106,11 @@ class TodayReminders extends _$TodayReminders {
         activeSchedules,
         DateTime.now(),
       );
+      if (!ref.mounted) return reminders;
 
       // Get all medications to build info map
       final medications = await ref.read(medicationListProvider.future);
+      if (!ref.mounted) return reminders;
       final medicationInfo = <String, ({String name, String dosage, bool isCritical})>{};
 
       for (final med in medications) {
@@ -127,6 +130,7 @@ class TodayReminders extends _$TodayReminders {
         pendingReminders,
         medicationInfo,
       );
+      if (!ref.mounted) return reminders;
 
       // Invalidate to refresh UI
       ref.invalidateSelf();
