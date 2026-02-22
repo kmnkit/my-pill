@@ -1,29 +1,43 @@
-# Generated code
+# === Generated code (build_runner, l10n) ===
 **/*.freezed.dart
 **/*.g.dart
 **/app_localizations_*.dart
+**/app_localizations.dart
 
-# Build artifacts
+# === Build artifacts ===
 build/
 .dart_tool/
-.firebase/
-hosting/
+.flutter-plugins
+.flutter-plugins-dependencies
 
-# Platform native
+# === Platform native (rarely edited directly) ===
 ios/Pods/
-ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
-ios/Runner.xcodeproj/xcuserdata/
+ios/.symlinks/
+ios/Flutter/
+ios/Runner.xcodeproj/
+ios/Runner.xcworkspace/
+ios/RunnerTests/
+ios/fastlane/
 android/.gradle/
+android/.kotlin/
 android/build/
 android/app/build/
 android/.cxx/
+android/gradle/
 
-# Dependencies
+# === Firebase / Hosting ===
+.firebase/
+hosting/
+
+# === Cloud Functions dependencies ===
+functions/node_modules/
+functions/package-lock.json
+
+# === Dependencies ===
 .pub-cache/
 .pub/
-pubspec.lock
 
-# IDE & local settings
+# === IDE & local tooling ===
 .idea/
 .vscode/
 *.iml
@@ -31,24 +45,34 @@ pubspec.lock
 .serena/
 .mcp.json
 .claude/settings.local.json
+.claude/worktrees/
 
-# Sensitive files (API keys)
+# === Sensitive files ===
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
 .env
 .env.*
 
-# Large binary files
+# === Binary / media files ===
 **/*.png
 **/*.jpg
 **/*.jpeg
 **/*.gif
 **/*.ico
+**/*.svg
 **/*.ttf
 **/*.otf
 **/*.woff
 **/*.woff2
+**/*.apk
+**/*.ipa
+**/*.aab
 
-# Test artifacts
+# === Test / coverage artifacts ===
 coverage/
 test-results/
+.test_coverage.dart
+
+# === OS files ===
+.DS_Store
+Thumbs.db

@@ -7,135 +7,190 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **App Name:** Kusuridoki (くすりどき)
 - **Package ID:** `com.ginger.mypill`
 - **Supported Locales:** English (`en`), Japanese (`ja`)
+- **Version:** 1.0.0+1
+- **Min Dart SDK:** ^3.10.8
 
 ## Session Initialization
 
-**Serena Plugin**: 이 프로젝트 세션 시작 시 Serena MCP 서버가 활성화되어 있는지 확인하세요. Serena는 Dart LSP 기반 코드 인텔리전스를 제공합니다.
+**Serena Plugin**: Serena MCP 서버 활성화 확인 (Dart LSP 기반 코드 인텔리전스).
 
 ```bash
-# Serena 상태 확인
 claude mcp list | grep serena
-
-# 비활성화된 경우 활성화
-claude mcp add serena -s project -- "$HOME/.local/bin/uvx" --from "git+https://github.com/oraios/serena" serena start-mcp-server
 ```
-
-Serena 도구: `get_symbols_overview`, `find_symbol`, `find_referencing_symbols`, `search_for_pattern`, `rename_symbol` 등
 
 ## Build & Development Commands
 
-### Quick Start (First-time Setup)
+### Quick Start
 
 ```bash
-# 1. Install dependencies
 flutter pub get
-
-# 2. Generate code (Freezed models, Riverpod providers)
 dart run build_runner build --delete-conflicting-outputs
-
-# 3. Generate localizations
 flutter gen-l10n
-
-# 4. Run the app
 flutter run
 ```
-
-**Required Flutter version:** 3.24.0+ (check with `flutter --version`)
 
 ### All Commands
 
 ```bash
 flutter pub get                                                    # Install dependencies
-flutter pub run build_runner build --delete-conflicting-outputs    # Generate Freezed models, Riverpod providers, JSON serialization
-flutter gen-l10n                                                   # Generate localization files from ARB (lib/l10n/)
-flutter run                                                        # Run the app
+dart run build_runner build --delete-conflicting-outputs            # Code generation (Freezed, Riverpod, JSON)
+flutter gen-l10n                                                   # Generate l10n from ARB files
+flutter run                                                        # Run app
 flutter test                                                       # Run all tests
-flutter test test/data/services/adherence_service_test.dart        # Run a single test file
-flutter analyze                                                    # Static analysis (flutter_lints)
-flutter clean                                                      # Clear build cache (use when builds fail unexpectedly)
-flutter build apk --release                                        # Build Android APK
-flutter build ios --release                                        # Build iOS (requires macOS)
-flutter test integration_test/                                     # Run integration tests
+flutter analyze                                                    # Static analysis
+flutter clean && flutter pub get                                   # Clean rebuild
+flutter build apk --release                                        # Android build
+flutter build ios --release                                        # iOS build (macOS only)
+flutter test integration_test/                                     # Integration tests
 flutter pub run flutter_launcher_icons:main                        # Regenerate app icons
 ```
 
-**After modifying models (`lib/data/models/`) or providers (`lib/data/providers/`)**, you must run `build_runner` — the `.freezed.dart` and `.g.dart` files are auto-generated and must never be manually edited.
+**After modifying models or providers**, run `build_runner`. `.freezed.dart` and `.g.dart` files are auto-generated — never edit manually.
 
-**After modifying localization ARB files**, run `flutter gen-l10n`.
+**After modifying ARB files** (`lib/l10n/`), run `flutter gen-l10n`.
 
 ## CI/CD
 
-GitHub Actions workflow (`.github/workflows/ci.yml`) runs on PRs to main/develop:
+GitHub Actions (`.github/workflows/ci.yml`) on PRs to main/develop:
 - `flutter analyze --fatal-infos`
 - `flutter test --coverage`
-- Code coverage uploaded to Codecov
+- Codecov upload
 
 ## Architecture
 
-Clean Architecture with Riverpod, organized as:
+Clean Architecture with Riverpod, Freezed, GoRouter.
 
 ```
 lib/
-├── main.dart              # Entry: Hive init, Firebase init, ProviderScope
-├── app.dart               # MaterialApp.router with themes, localization, GoRouter
-├── core/                  # Design tokens (AppColors, AppTypography, AppSpacing), theme, utils
+├── main.dart                    # Entry: Hive init, Firebase init, ProviderScope
+├── app.dart                     # MaterialApp.router (themes, l10n, GoRouter)
+├── firebase_options.dart        # Firebase config (auto-generated)
+├── core/
+│   ├── constants/               # AppColors, AppSpacing, AppTypography
+│   ├── theme/                   # AppTheme, GlassDecoration
+│   ├── utils/                   # ErrorHandler, TimezoneUtils, AppleAuthErrorMessages
+│   └── extensions/              # (Dart extension methods)
 ├── data/
-│   ├── enums/             # Domain constants with UI metadata (PillShape, PillColor, ScheduleType, etc.)
-│   ├── models/            # Freezed immutable data classes (Medication, Schedule, Reminder, etc.)
-│   ├── services/          # Business logic + external APIs (StorageService, FirestoreService, AuthService, etc.)
-│   ├── repositories/      # Data access with business rules (cascade deletes, UUID generation)
-│   └── providers/         # Riverpod state management (@riverpod code-gen)
-├── l10n/                  # Auto-generated localization (EN/JA)
+│   ├── enums/                   # PillShape, PillColor, DosageUnit, ScheduleType,
+│   │                            # ReminderStatus, TimezoneMode, AppleAuthError
+│   ├── models/                  # Freezed: Medication, Schedule, Reminder,
+│   │                            # AdherenceRecord, Inventory, CaregiverLink,
+│   │                            # SubscriptionStatus, UserProfile
+│   ├── services/                # Stateless singletons (18 services):
+│   │   ├── storage_service      #   Hive local storage
+│   │   ├── firestore_service    #   Cloud Firestore sync
+│   │   ├── auth_service         #   Firebase Auth (Apple, Google sign-in)
+│   │   ├── notification_service #   flutter_local_notifications
+│   │   ├── reminder_service     #   Reminder scheduling logic
+│   │   ├── adherence_service    #   Adherence tracking/rating
+│   │   ├── report_service       #   PDF report generation
+│   │   ├── ad_service           #   Google AdMob
+│   │   ├── iap_service          #   In-app purchases
+│   │   ├── subscription_service #   Premium subscription tracking
+│   │   ├── interstitial_controller # Interstitial ad management
+│   │   ├── cloud_functions_service # Firebase Cloud Functions calls
+│   │   ├── deep_link_service    #   app_links handling
+│   │   ├── home_widget_service  #   Native home screen widgets
+│   │   └── timezone_service     #   Timezone conversion
+│   ├── repositories/            # MedicationRepository, ScheduleRepository
+│   └── providers/               # @riverpod code-gen (19 providers):
+│       ├── auth, medication, schedule, reminder, adherence
+│       ├── caregiver, caregiver_monitoring, invite
+│       ├── ad, iap, interstitial, subscription
+│       ├── home_widget, deep_link, timezone
+│       ├── report, settings, storage_service
+│       └── (all use AsyncNotifier pattern)
+├── l10n/                        # Auto-generated localization (EN/JA)
 └── presentation/
-    ├── router/            # GoRouter config with Patient shell (4 tabs) and Caregiver shell (4 tabs)
-    ├── screens/           # Feature screens, each with widgets/ subdirectory
-    └── shared/            # Reusable Mp-prefixed widgets and dialogs
+    ├── router/                  # GoRouter: AppRouter, RouteNames, AppRouterProvider
+    ├── screens/
+    │   ├── home/                # HomeScreen + GreetingHeader, LowStockBanner, MedicationTimeline, TimelineCard
+    │   ├── medications/         # List, Add, Edit, Detail + PillShapeSelector, PillColorPicker, etc.
+    │   ├── schedule/            # ScheduleScreen + DaySelector, FrequencySelector, TimeSlotPicker, etc.
+    │   ├── adherence/           # WeeklySummaryScreen + AdherenceChart, OverallScore, MedicationBreakdown, ExportReportButton
+    │   ├── settings/            # SettingsScreen + AccountSection, NotificationSettings, LanguageSelector, etc.
+    │   ├── caregivers/          # FamilyScreen, CaregiverDashboard, Alerts, Notifications, InviteHandler, QRScanner
+    │   ├── onboarding/          # LoginScreen, OnboardingScreen + 5 steps (Welcome, Name, Role, Timezone, Notification)
+    │   ├── premium/             # PremiumUpsellScreen
+    │   ├── travel/              # TravelModeScreen + AffectedMedList, LocationDisplay, TimezoneModelSelector
+    │   └── splash/              # SplashScreen
+    └── shared/
+        ├── widgets/             # Mp-prefixed: MpButton, MpCard, MpAppBar, MpAvatar, MpBadge,
+        │                        # MpBottomNavBar, MpColorDot, MpEmptyState, MpErrorView,
+        │                        # MpLoadingView, MpMedicationCard, MpPillIcon, MpProgressBar,
+        │                        # MpRadioOption, MpSectionHeader, MpTextField, MpTimePicker,
+        │                        # MpToggleSwitch, GradientScaffold, MpAlertBanner,
+        │                        # PremiumBadge, PremiumGate
+        └── dialogs/             # MpConfirmDialog, MpReminderDialog, InventoryUpdateDialog
 ```
 
-**Data flow:** Enums → Models → Services → Repositories → Providers → Screens
+### Data Flow
 
-**Dual storage:** `StorageService` (Hive, local-first) and `FirestoreService` (cloud sync) maintain API parity. Services are stateless singletons injected via Riverpod providers.
+```
+Enums → Models → Services → Repositories → Providers → Screens
+```
 
-**Navigation:** GoRouter with two `StatefulShellRoute.indexedStack` shells — Patient mode (`/home`, `/adherence`, `/medications`, `/settings`) and Caregiver mode (`/caregiver/patients`, `/caregiver/notifications`, `/caregiver/alerts`, `/caregiver/settings`). Route names are constants in `RouteNames`.
+### Dual Storage
 
-**Firestore security:** User-scoped read/write, caregivers get read-only access via `caregiverAccess` documents, `invites` and `caregiverAccess` are write-protected (Cloud Functions only).
+`StorageService` (Hive, local-first) + `FirestoreService` (cloud sync) — API parity maintained.
 
-**Premium features:** In-app purchases via `IapService`, subscription status tracked in `SubscriptionService`, ad display managed by `AdService` and `InterstitialController`.
+### Navigation
 
-**Home widgets:** Native home screen widgets via `HomeWidgetService` for quick medication reminders.
+GoRouter with two `StatefulShellRoute.indexedStack` shells:
+- **Patient:** `/home`, `/adherence`, `/medications`, `/settings`
+- **Caregiver:** `/caregiver/patients`, `/caregiver/notifications`, `/caregiver/alerts`, `/caregiver/settings`
+- Additional routes: `/onboarding`, `/schedule`, `/travel`, `/premium`, `/invite`
 
-**Deep linking:** `DeepLinkService` handles app_links for caregiver invite flows.
+### Key Dependencies
+
+| Category | Package |
+|----------|---------|
+| State | flutter_riverpod, riverpod_annotation |
+| Routing | go_router |
+| Storage | hive_flutter |
+| Firebase | firebase_core, firebase_auth, cloud_firestore, cloud_functions, firebase_messaging |
+| Auth | google_sign_in (+ Apple Sign-In via firebase_auth) |
+| Ads | google_mobile_ads |
+| IAP | in_app_purchase |
+| UI | google_fonts, fl_chart, qr_flutter, mobile_scanner, image_picker |
+| PDF | pdf, printing |
+| Notifications | flutter_local_notifications |
+| Deep Links | app_links |
+| Home Widget | home_widget |
+| Utilities | intl, timezone, uuid, share_plus, url_launcher, path_provider, collection |
+| Security | flutter_secure_storage |
+| Code Gen | freezed, freezed_annotation, json_serializable, json_annotation, riverpod_generator, build_runner |
 
 ## Key Conventions
 
-- **Imports**: Always use `package:my_pill/...`, never relative imports
-- **Models**: Freezed with `@freezed` — use `copyWith` for mutations, never mutate directly
-- **Providers**: Use `@riverpod` annotation, `AsyncNotifier` for mutable state, `ref.invalidateSelf()` after mutations
-- **Screens**: `ConsumerWidget`/`ConsumerStatefulWidget`, use `AsyncValue.when()` for loading/error/data
-- **Shared widgets**: Prefixed with `Mp` (e.g., `MpButton`, `MpCard`), use `AppColors`/`AppSpacing`/`AppTypography` from `core/constants/`
-- **Localization**: All UI strings via `AppLocalizations.of(context)!.key` — supported locales: `en`, `ja`
-- **Repositories**: Use `const Uuid().v4()` for new entity IDs, implement cascade deletes (e.g., deleting medication removes its schedules, reminders, adherence records), update `updatedAt` timestamps
-- **Enums**: Carry UI metadata (labels, icons, colors) — changes require updating consuming widgets
+- **Imports**: Always `package:my_pill/...`, never relative
+- **Models**: Freezed `@freezed` — `copyWith` for mutations, never mutate directly
+- **Providers**: `@riverpod` annotation, `AsyncNotifier` pattern, `ref.invalidateSelf()` after mutations
+- **Screens**: `ConsumerWidget`/`ConsumerStatefulWidget`, `AsyncValue.when()` for loading/error/data
+- **Shared widgets**: `Mp` prefix (e.g., `MpButton`, `MpCard`)
+- **Design tokens**: `AppColors`, `AppSpacing`, `AppTypography` from `core/constants/`
+- **Localization**: `AppLocalizations.of(context)!.key` — `en`, `ja`
+- **Repositories**: `const Uuid().v4()` for IDs, cascade deletes, `updatedAt` timestamps
+- **Enums**: Carry UI metadata (labels, icons, colors)
 
 ## Firebase Cloud Functions
 
-`functions/index.js` (Node 18) handles caregiver linking:
-- `generateInviteLink` — creates 7-day expiring invite code
-- `acceptInvite` — validates and creates bidirectional links via atomic batch writes
+`functions/index.js` (Node 18):
+- `generateInviteLink` — 7-day expiring invite code
+- `acceptInvite` — bidirectional link via atomic batch writes
 - `revokeAccess` — patient-initiated caregiver removal
 - `cleanupExpiredInvites` — daily scheduled cleanup
 
-Deploy with `firebase deploy --only functions`.
-
-**Firestore rules:** `firebase deploy --only firestore`
+Deploy: `firebase deploy --only functions`
+Firestore rules: `firebase deploy --only firestore`
 
 ## Environment Setup
 
 **Required files (not in git):**
-- `android/app/google-services.json` — Firebase Android config
-- `ios/Runner/GoogleService-Info.plist` — Firebase iOS config
+- `android/app/google-services.json`
+- `ios/Runner/GoogleService-Info.plist`
 
-**Firebase Emulator (local development):**
+**Firebase Emulator:**
 ```bash
 cd functions && npm install
 firebase emulators:start --only functions,firestore
@@ -143,27 +198,30 @@ firebase emulators:start --only functions,firestore
 
 ## Testing
 
-- `mockito` with `@GenerateMocks` for service mocking (run `build_runner` after adding annotations)
-- `ProviderContainer` for testing providers, `ProviderScope` wrapper for widget tests
-- Existing tests cover: medication inventory logic, adherence rating boundaries, timezone conversions
+- **Framework**: `mockito` with `@GenerateMocks` (run `build_runner` after adding annotations)
+- **Provider testing**: `ProviderContainer` with `overrides`
+- **Widget testing**: `ProviderScope` wrapper with mocked providers
+- **Existing coverage**: medication inventory, adherence rating, timezone conversions
 
 ## Gotchas
 
-- **build_runner 충돌**: `--delete-conflicting-outputs` 플래그 필수 → `dart run build_runner build --delete-conflicting-outputs`
-- **Hive 초기화 실패**: 새 모델 추가 후 `main.dart`에서 TypeAdapter 등록 → `Hive.registerAdapter(NewModelAdapter())`
-- **iOS 권한**: 카메라/갤러리 사용 시 `ios/Runner/Info.plist`에 권한 설명 추가
-- **Android 권한**: `android/app/src/main/AndroidManifest.xml`에 권한 추가
-- **Riverpod 3.x**: `StateProvider` 대신 `NotifierProvider` 사용, `valueOrNull` 없음
-- **빌드 실패 시**: `flutter clean && flutter pub get && dart run build_runner build --delete-conflicting-outputs`
+- **build_runner**: Always use `--delete-conflicting-outputs`
+- **Hive adapters**: New model → register `TypeAdapter` in `main.dart`
+- **iOS permissions**: Add `NS*UsageDescription` to `Info.plist` with reason in target language
+- **Android permissions**: Update `AndroidManifest.xml`
+- **Riverpod 3.x**: `NotifierProvider` (not `StateNotifier`), no `valueOrNull`
+- **Clean rebuild**: `flutter clean && flutter pub get && dart run build_runner build --delete-conflicting-outputs`
+- **iOS Pod issues**: `cd ios && rm -rf Pods Podfile.lock && pod install && cd ..`
+- **`BuildContext` across async gap**: Use `mounted` check or `ref`
 
 ## Documentation
 
 - `docs/product_requirements_document.md` — PRD (English)
 - `docs/product_requirements_document_ja.md` — PRD (Japanese)
 - `docs/iOS_APP_STORE_DEPLOYMENT_GUIDE.md` — iOS deployment steps
+- `docs/APP_STORE_METADATA.md` — Store listing metadata
 
 ## AGENTS.md Hierarchy
 
-Subdirectory-specific context files exist at:
-- `lib/AGENTS.md`, `lib/core/AGENTS.md`, `lib/data/AGENTS.md`, `lib/presentation/AGENTS.md`
-- `functions/AGENTS.md`, `test/AGENTS.md`, `docs/AGENTS.md`
+- `AGENTS.md` (root), `lib/AGENTS.md`, `lib/core/AGENTS.md`, `lib/data/AGENTS.md`, `lib/presentation/AGENTS.md`
+- `lib/l10n/AGENTS.md`, `assets/AGENTS.md`, `functions/AGENTS.md`, `test/AGENTS.md`, `test/data/AGENTS.md`, `docs/AGENTS.md`
