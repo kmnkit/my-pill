@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class MedicationBreakdown extends StatelessWidget {
@@ -11,12 +12,14 @@ class MedicationBreakdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return MpCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'By Medication',
+            l10n.byMedication,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -25,7 +28,7 @@ class MedicationBreakdown extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
                 child: Text(
-                  'No medication data available',
+                  l10n.noMedicationData,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textMuted,
                   ),
@@ -50,6 +53,7 @@ class _MedicationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = medication.percentage?.round();
     final hasData = percentage != null;
 
@@ -68,7 +72,7 @@ class _MedicationRow extends StatelessWidget {
           ),
         ),
         Text(
-          hasData ? '$percentage%' : 'No Data',
+          hasData ? '$percentage%' : l10n.noData,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: !hasData
                 ? AppColors.textMuted

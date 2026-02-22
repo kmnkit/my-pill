@@ -2,26 +2,41 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class AdherenceChart extends StatelessWidget {
-  /// Weekly adherence data: day label -> percentage (0-100), null if no data for that day.
+  /// Weekly adherence data: weekday number ('1'-'7') -> percentage (0-100), null if no data for that day.
   final Map<String, double?> weeklyData;
 
   const AdherenceChart({super.key, required this.weeklyData});
 
+  List<String> _dayLabels(AppLocalizations l10n) {
+    return [l10n.mon, l10n.tue, l10n.wed, l10n.thu, l10n.fri, l10n.sat, l10n.sun];
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Convert Map<String, double> to list for chart rendering
-    final dayLabels = weeklyData.keys.toList();
-    final percentages = weeklyData.values.toList();
+    final l10n = AppLocalizations.of(context)!;
+    final localizedDayLabels = _dayLabels(l10n);
+
+    // Convert Map<String, double?> to ordered lists based on weekday keys
+    final entries = weeklyData.entries.toList();
+    final dayLabels = entries.map((e) {
+      final weekday = int.tryParse(e.key);
+      if (weekday != null && weekday >= 1 && weekday <= 7) {
+        return localizedDayLabels[weekday - 1];
+      }
+      return e.key;
+    }).toList();
+    final percentages = entries.map((e) => e.value).toList();
 
     return MpCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'This Week',
+            l10n.thisWeek,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -66,7 +81,7 @@ class AdherenceChart extends StatelessWidget {
                 gridData: const FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: List.generate(percentages.length, (index) {
-                  final takenValue = percentages[index];
+                  final takenValue = percentages.elementAt(index);
 
                   return BarChartGroupData(
                     x: index,
@@ -98,11 +113,11 @@ class AdherenceChart extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _LegendItem(color: AppColors.primary, label: 'Taken'),
+              _LegendItem(color: AppColors.primary, label: l10n.taken),
               const SizedBox(width: AppSpacing.xl),
-              _LegendItem(color: AppColors.error, label: 'Missed'),
+              _LegendItem(color: AppColors.error, label: l10n.missed),
               const SizedBox(width: AppSpacing.xl),
-              _LegendItem(color: AppColors.info, label: 'No Data'),
+              _LegendItem(color: AppColors.info, label: l10n.noData),
             ],
           ),
         ],

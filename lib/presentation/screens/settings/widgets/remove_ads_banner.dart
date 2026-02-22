@@ -4,6 +4,7 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/services/ad_service.dart';
 import 'package:my_pill/data/services/iap_service.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
@@ -53,18 +54,19 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
     try {
       final success = await _iapService.purchaseRemoveAds();
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         if (success) {
           AdService().setAdsRemoved(true);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ads removed successfully!'),
+            SnackBar(
+              content: Text(l10n.adsRemovedSuccess),
               backgroundColor: AppColors.success,
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Purchase failed. Please try again.'),
+            SnackBar(
+              content: Text(l10n.purchaseFailed),
               backgroundColor: AppColors.error,
             ),
           );
@@ -72,9 +74,10 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(l10n.errorWithMessage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -98,27 +101,29 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
     try {
       await _iapService.restorePurchases();
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         if (_iapService.adsRemoved) {
           AdService().setAdsRemoved(true);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Purchases restored successfully!'),
+            SnackBar(
+              content: Text(l10n.purchasesRestored),
               backgroundColor: AppColors.success,
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No purchases found to restore.'),
+            SnackBar(
+              content: Text(l10n.noPurchasesFound),
             ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: ${e.toString()}'),
+            content: Text(l10n.errorWithMessage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -139,6 +144,8 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
       return const SizedBox.shrink();
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     return MpCard(
       color: AppColors.primary.withValues(alpha: 0.1),
       borderColor: AppColors.primary,
@@ -150,7 +157,7 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Text(
-                  'Upgrade for a cleaner experience',
+                  l10n.upgradeMessage,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.primary,
                       ),
@@ -160,7 +167,7 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
           ),
           const SizedBox(height: AppSpacing.lg),
           MpButton(
-            label: _isLoading ? 'Processing...' : 'Remove Ads',
+            label: _isLoading ? l10n.processingEllipsis : l10n.removeAds,
             onPressed: _isLoading ? null : _purchaseRemoveAds,
             variant: MpButtonVariant.primary,
           ),
@@ -168,7 +175,7 @@ class _RemoveAdsBannerState extends ConsumerState<RemoveAdsBanner> {
           TextButton(
             onPressed: _isLoading ? null : _restorePurchases,
             child: Text(
-              'Restore Purchases',
+              l10n.restorePurchases,
               style: TextStyle(
                 color: _isLoading ? AppColors.textMuted : AppColors.primary,
               ),

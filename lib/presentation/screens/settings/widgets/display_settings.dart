@@ -60,7 +60,7 @@ class DisplaySettings extends ConsumerWidget {
                   child: Semantics(
                     button: true,
                     selected: isSelected,
-                    label: 'Text size $displayLabel${isSelected ? ', selected' : ''}',
+                    label: '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
                     child: GestureDetector(
                       onTap: () {
                         ref.read(userSettingsProvider.notifier).updateTextSize(storedValue);
@@ -92,7 +92,10 @@ class DisplaySettings extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) {
+        final l10n = AppLocalizations.of(context)!;
+        return Center(child: Text(l10n.errorWithMessage(error.toString())));
+      },
     );
   }
 }
