@@ -35,15 +35,10 @@ class HomeWidgetService {
           .toList()
         ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
 
-      String nextMedName = '';
       String nextMedTime = '';
-      String nextMedDosage = '';
 
       if (upcoming.isNotEmpty) {
         final next = upcoming.first;
-        final med = medications[next.medicationId];
-        nextMedName = med?.name ?? 'Unknown';
-        nextMedDosage = '${med?.dosage ?? ''} ${med?.dosageUnit.name ?? ''}';
         final hour = next.scheduledTime.hour;
         final minute = next.scheduledTime.minute;
         final amPm = hour >= 12 ? 'PM' : 'AM';
@@ -52,12 +47,13 @@ class HomeWidgetService {
       }
 
       // Save data to shared storage
+      // Medication name and dosage are omitted from the widget for privacy
       await HomeWidget.saveWidgetData('total_medications', total);
       await HomeWidget.saveWidgetData('taken_count', taken);
       await HomeWidget.saveWidgetData('pending_count', pending);
-      await HomeWidget.saveWidgetData('next_med_name', nextMedName);
+      await HomeWidget.saveWidgetData('next_med_name', '');
       await HomeWidget.saveWidgetData('next_med_time', nextMedTime);
-      await HomeWidget.saveWidgetData('next_med_dosage', nextMedDosage);
+      await HomeWidget.saveWidgetData('next_med_dosage', '');
       await HomeWidget.saveWidgetData('summary_text', '$taken/$total taken');
       await HomeWidget.saveWidgetData('last_updated', DateTime.now().toIso8601String());
 

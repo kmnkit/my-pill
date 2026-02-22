@@ -31,7 +31,7 @@ class LanguageSelector extends ConsumerWidget {
                   child: _buildLanguageButton(
                     context,
                     ref,
-                    'EN',
+                    'English',
                     'en',
                     currentLanguage == 'en',
                     isDark,
@@ -42,7 +42,7 @@ class LanguageSelector extends ConsumerWidget {
                   child: _buildLanguageButton(
                     context,
                     ref,
-                    'JP',
+                    '\u65E5\u672C\u8A9E',
                     'ja',
                     currentLanguage == 'ja',
                     isDark,

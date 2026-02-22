@@ -508,5 +508,11 @@
   "@failedToStart": { "placeholders": { "error": { "type": "String" } } },
   "off": "34% OFF",
   "unit": "Unit",
-  "markAsTaken": "Mark as taken"
+  "markAsTaken": "Mark as taken",
+
+  "genericError": "Something went wrong. Please try again.",
+  "networkError": "Network error. Please check your connection.",
+  "authError": "Authentication error. Please sign in again.",
+  "permissionDenied": "You don't have permission to perform this action.",
+  "serviceUnavailable": "Service temporarily unavailable. Please try again later."
 }

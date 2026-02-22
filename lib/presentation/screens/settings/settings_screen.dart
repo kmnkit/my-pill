@@ -5,8 +5,15 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_constants.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:my_pill/data/providers/adherence_provider.dart';
+import 'package:my_pill/data/providers/caregiver_provider.dart';
+import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/reminder_provider.dart';
+import 'package:my_pill/data/providers/schedule_provider.dart';
+
 import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/data/providers/auth_provider.dart';
+import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
@@ -105,15 +112,23 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (confirmed == true && context.mounted) {
                     try {
-                      await AuthService().signOut();
-                      if (context.mounted) {
-                        context.go('/onboarding');
-                      }
+                      // 1. Clear user data first (while widget is still mounted)
+                      await StorageService().clearUserData();
+                      // 2. Invalidate all user-data providers (before signOut triggers redirect)
+                      ref.invalidate(medicationListProvider);
+                      ref.invalidate(scheduleListProvider);
+                      ref.invalidate(todayRemindersProvider);
+                      ref.invalidate(overallAdherenceProvider);
+                      ref.invalidate(weeklyAdherenceProvider);
+                      ref.invalidate(caregiverLinksProvider);
+                      ref.invalidate(userSettingsProvider);
+                      // 3. Sign out last — router redirect handles navigation to /login
+                      await ref.read(authServiceProvider).signOut();
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.errorDeactivatingAccount(e.toString())),
+                            content: Text(l10n.errorOccurred),
                             backgroundColor: AppColors.error,
                           ),
                         );
@@ -151,18 +166,29 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (secondConfirm == true && context.mounted) {
                     try {
-                      // Clear local data first
+                      // Re-authenticate before deletion
+                      final authService = ref.read(authServiceProvider);
+                      final reauthed = await authService.reauthenticate();
+                      if (!reauthed) return; // User cancelled
+                      // 1. Server-side deletion of all user data + auth account
+                      await CloudFunctionsService().deleteAccount();
+                      // 2. Clear local data first (while widget is still mounted)
                       await StorageService().clearAll();
-                      // Delete Firebase account
-                      await AuthService().deleteAccount();
-                      if (context.mounted) {
-                        context.go('/onboarding');
-                      }
+                      // 3. Invalidate all providers (before signOut triggers redirect)
+                      ref.invalidate(medicationListProvider);
+                      ref.invalidate(scheduleListProvider);
+                      ref.invalidate(todayRemindersProvider);
+                      ref.invalidate(overallAdherenceProvider);
+                      ref.invalidate(weeklyAdherenceProvider);
+                      ref.invalidate(caregiverLinksProvider);
+                      ref.invalidate(userSettingsProvider);
+                      // 4. Sign out last — router redirect handles navigation
+                      await authService.signOut();
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.errorDeletingAccount(e.toString())),
+                            content: Text(l10n.errorOccurred),
                             backgroundColor: AppColors.error,
                           ),
                         );

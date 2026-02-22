@@ -28,10 +28,17 @@ class DeepLinkService {
   }
 
   void _handleUri(Uri uri) {
+    // Domain whitelist
+    const allowedHosts = ['mypill.app', 'www.mypill.app'];
+    if (!allowedHosts.contains(uri.host)) return;
+
     // Expected format: https://mypill.app/invite/{code}
     if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'invite') {
       final code = uri.pathSegments[1];
-      _inviteCodeController.add(code);
+      // Validate invite code format: alphanumeric, 8 characters
+      if (RegExp(r'^[A-Za-z0-9]{8}$').hasMatch(code)) {
+        _inviteCodeController.add(code);
+      }
     }
   }
 

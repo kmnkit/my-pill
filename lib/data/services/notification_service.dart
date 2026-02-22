@@ -110,7 +110,9 @@ class NotificationService {
       // FCM will still work once permission is granted via local notifications
 
       final token = await _fcm.getToken();
-      debugPrint('FCM Token: $token');
+      if (kDebugMode) {
+        debugPrint('FCM Token: $token');
+      }
 
       // Listen for foreground messages
       FirebaseMessaging.onMessage.listen(_handleFCMMessage);
@@ -122,7 +124,9 @@ class NotificationService {
 
   void _handleFCMMessage(RemoteMessage message) {
     // Handle incoming FCM messages
-    debugPrint('FCM message: ${message.data}');
+    if (kDebugMode) {
+      debugPrint('FCM message: ${message.data}');
+    }
   }
 
   // Schedule a local notification for a reminder

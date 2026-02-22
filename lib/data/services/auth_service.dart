@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:my_pill/data/enums/apple_auth_error.dart';
+import 'package:my_pill/data/services/cloud_functions_service.dart';
 
 /// Custom exception for Apple Sign-In errors with structured error information.
 class AppleSignInException implements Exception {
@@ -103,14 +104,48 @@ class AuthService {
     }
   }
 
+  /// Re-authenticate the current user before sensitive operations (e.g. account deletion).
+  /// Anonymous users don't need re-authentication.
+  /// Returns true if re-authentication succeeded or was not needed.
+  Future<bool> reauthenticate() async {
+    final user = _auth.currentUser;
+    if (user == null) return false;
+
+    // Anonymous users don't need re-authentication
+    if (user.isAnonymous) return true;
+
+    final providers = user.providerData.map((p) => p.providerId).toList();
+
+    try {
+      if (providers.contains('apple.com')) {
+        final appleProvider = AppleAuthProvider();
+        await user.reauthenticateWithProvider(appleProvider);
+        return true;
+      } else if (providers.contains('google.com')) {
+        final googleProvider = GoogleAuthProvider();
+        await user.reauthenticateWithProvider(googleProvider);
+        return true;
+      }
+      // No known provider — treat as success (anonymous-like)
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'canceled' ||
+          e.code == 'web-context-canceled' ||
+          e.code == 'popup-closed-by-user') {
+        return false; // User cancelled
+      }
+      rethrow;
+    }
+  }
+
   // Sign out
   Future<void> signOut() async {
     await _auth.signOut();
   }
 
-  // Delete account
+  // Delete account — delegates to Cloud Function for server-side full data cleanup
   Future<void> deleteAccount() async {
-    await _auth.currentUser?.delete();
+    await CloudFunctionsService().deleteAccount();
   }
 
   /// Check if an email is an Apple private relay email.
