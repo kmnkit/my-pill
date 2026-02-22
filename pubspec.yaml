@@ -30,7 +30,7 @@ dependencies:
   # Notifications
   flutter_local_notifications: ^20.0.0
   # UI
-  google_fonts: ^8.0.0
+  google_fonts: ^8.0.2
   fl_chart: ^1.1.1
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.1.4
