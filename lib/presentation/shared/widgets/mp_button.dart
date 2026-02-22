@@ -15,6 +15,7 @@ class MpButton extends StatelessWidget {
     this.variant = MpButtonVariant.primary,
     this.isFullWidth = true,
     this.icon,
+    this.iconWidget,
   });
 
   final String label;
@@ -22,6 +23,7 @@ class MpButton extends StatelessWidget {
   final MpButtonVariant variant;
   final bool isFullWidth;
   final IconData? icon;
+  final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,10 @@ class MpButton extends StatelessWidget {
             height: AppSpacing.buttonHeight,
             child: ElevatedButton.icon(
               onPressed: onPressed,
-              icon: icon != null
-                  ? Icon(icon, size: AppSpacing.iconMd)
-                  : const SizedBox.shrink(),
+              icon: iconWidget ??
+                  (icon != null
+                      ? Icon(icon, size: AppSpacing.iconMd)
+                      : const SizedBox.shrink()),
               label: Text(
                 label,
                 style: textTheme.labelLarge
@@ -76,9 +79,10 @@ class MpButton extends StatelessWidget {
             height: AppSpacing.minTapTarget,
             child: TextButton.icon(
               onPressed: onPressed,
-              icon: icon != null
-                  ? Icon(icon, size: AppSpacing.iconMd)
-                  : const SizedBox.shrink(),
+              icon: iconWidget ??
+                  (icon != null
+                      ? Icon(icon, size: AppSpacing.iconMd)
+                      : const SizedBox.shrink()),
               label: Text(
                 label,
                 style:
@@ -126,8 +130,8 @@ class MpButton extends StatelessWidget {
                         isFullWidth ? MainAxisSize.max : MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (icon != null) ...[
-                        Icon(icon, size: AppSpacing.iconMd, color: AppColors.primary),
+                      if (iconWidget != null || icon != null) ...[
+                        iconWidget ?? Icon(icon, size: AppSpacing.iconMd, color: AppColors.primary),
                         const SizedBox(width: AppSpacing.sm),
                       ],
                       Text(
@@ -156,9 +160,10 @@ class MpButton extends StatelessWidget {
         height: AppSpacing.buttonHeight,
         child: OutlinedButton.icon(
           onPressed: onPressed,
-          icon: icon != null
-              ? Icon(icon, size: AppSpacing.iconMd)
-              : const SizedBox.shrink(),
+          icon: iconWidget ??
+              (icon != null
+                  ? Icon(icon, size: AppSpacing.iconMd)
+                  : const SizedBox.shrink()),
           label: Text(
             label,
             style: textTheme.labelLarge?.copyWith(color: AppColors.primary),
