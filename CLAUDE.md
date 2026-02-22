@@ -76,7 +76,7 @@ lib/
 │   ├── models/                  # Freezed: Medication, Schedule, Reminder,
 │   │                            # AdherenceRecord, Inventory, CaregiverLink,
 │   │                            # SubscriptionStatus, UserProfile
-│   ├── services/                # Stateless singletons (18 services):
+│   ├── services/                # Stateless singletons (15 services):
 │   │   ├── storage_service      #   Hive local storage
 │   │   ├── firestore_service    #   Cloud Firestore sync
 │   │   ├── auth_service         #   Firebase Auth (Apple, Google sign-in)
@@ -110,7 +110,7 @@ lib/
     │   ├── adherence/           # WeeklySummaryScreen + AdherenceChart, OverallScore, MedicationBreakdown, ExportReportButton
     │   ├── settings/            # SettingsScreen + AccountSection, NotificationSettings, LanguageSelector, etc.
     │   ├── caregivers/          # FamilyScreen, CaregiverDashboard, Alerts, Notifications, InviteHandler, QRScanner
-    │   ├── onboarding/          # LoginScreen, OnboardingScreen + 5 steps (Welcome, Name, Role, Timezone, Notification)
+    │   ├── onboarding/          # OnboardingScreen (Apple/Google/Anonymous 통합) + 5 steps (Welcome, Name, Role, Timezone, Notification)
     │   ├── premium/             # PremiumUpsellScreen
     │   ├── travel/              # TravelModeScreen + AffectedMedList, LocationDisplay, TimezoneModelSelector
     │   └── splash/              # SplashScreen
@@ -139,7 +139,7 @@ Enums → Models → Services → Repositories → Providers → Screens
 GoRouter with two `StatefulShellRoute.indexedStack` shells:
 - **Patient:** `/home`, `/adherence`, `/medications`, `/settings`
 - **Caregiver:** `/caregiver/patients`, `/caregiver/notifications`, `/caregiver/alerts`, `/caregiver/settings`
-- Additional routes: `/onboarding`, `/schedule`, `/travel`, `/premium`, `/invite`
+- Additional routes: `/onboarding`, `/schedule`, `/travel`, `/premium`, `/invite` (note: `/login` removed — auth integrated into OnboardingScreen)
 
 ### Key Dependencies
 
@@ -149,7 +149,7 @@ GoRouter with two `StatefulShellRoute.indexedStack` shells:
 | Routing | go_router |
 | Storage | hive_flutter |
 | Firebase | firebase_core, firebase_auth, cloud_firestore, cloud_functions, firebase_messaging |
-| Auth | google_sign_in (+ Apple Sign-In via firebase_auth) |
+| Auth | firebase_auth (`signInWithProvider` — Apple, Google) |
 | Ads | google_mobile_ads |
 | IAP | in_app_purchase |
 | UI | google_fonts, fl_chart, qr_flutter, mobile_scanner, image_picker |
