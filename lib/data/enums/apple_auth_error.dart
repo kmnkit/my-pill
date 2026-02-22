@@ -31,6 +31,8 @@ enum AppleAuthError {
 
   /// Parse a Firebase error code to get the corresponding AppleAuthError.
   static AppleAuthError fromCode(String code) {
+    // 'canceled' is the code from signInWithProvider on iOS
+    if (code == 'canceled') return AppleAuthError.userCancelled;
     return AppleAuthError.values.firstWhere(
       (e) => e.code == code,
       orElse: () => AppleAuthError.unknown,

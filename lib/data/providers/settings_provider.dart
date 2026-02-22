@@ -40,7 +40,17 @@ class UserSettings extends _$UserSettings {
   Future<void> updateProfile(UserProfile profile) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveUserProfile(profile);
-    ref.invalidateSelf();
+    state = AsyncData(profile);
+  }
+
+  Future<void> syncWithFirebaseUser(String uid, {String? email, String? displayName}) async {
+    final current = await future;
+    final updated = current.copyWith(
+      id: uid,
+      email: email ?? current.email,
+      name: displayName ?? current.name,
+    );
+    await updateProfile(updated);
   }
 
   Future<void> updateLanguage(String language) async {
