@@ -42,10 +42,13 @@ class OnboardingWelcomeStep extends ConsumerWidget {
           Column(
             children: [
               // App icon
-              Icon(
-                Icons.health_and_safety,
-                size: 80,
-                color: AppColors.primary,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                child: Image.asset(
+                  'assets/images/app_icon.png',
+                  width: 80,
+                  height: 80,
+                ),
               ),
               const SizedBox(height: AppSpacing.xl),
 
@@ -125,7 +128,7 @@ class _LanguageSelector extends StatelessWidget {
           style: textTheme.labelLarge?.copyWith(color: AppColors.textMuted),
         ),
         _LanguageButton(
-          label: 'JP',
+          label: 'JA',
           isSelected: currentLanguage == 'ja',
           onTap: () => onLanguageChanged('ja'),
         ),

@@ -22,15 +22,18 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
   @override
   void initState() {
     super.initState();
-    // Record screen entry as an action and maybe show interstitial
+    // Record screen entry as an action and show interstitial after delay
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(interstitialControllerProvider).recordAction();
-      ref.read(interstitialControllerProvider).maybeShow(
-        adService: ref.read(adServiceProvider),
-        adsRemoved: ref.read(adsRemovedProvider),
-      ).catchError((e) {
-        debugPrint('Interstitial error: $e');
-        return false;
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        ref.read(interstitialControllerProvider).maybeShow(
+          adService: ref.read(adServiceProvider),
+          adsRemoved: ref.read(adsRemovedProvider),
+        ).catchError((e) {
+          debugPrint('Interstitial error: $e');
+          return false;
+        });
       });
     });
   }

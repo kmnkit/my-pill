@@ -97,9 +97,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       await _completeAndNavigate();
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to start: ${e.toString()}'),
+            content: Text(l10n.failedToStart),
             backgroundColor: AppColors.error,
           ),
         );
@@ -155,7 +156,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   TextButton(
                     onPressed: () => _setLanguage('ja'),
                     child: Text(
-                      'JP',
+                      'JA',
                       style: textTheme.labelLarge?.copyWith(
                         color: currentLanguage == 'ja'
                             ? AppColors.primary
@@ -172,10 +173,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               Column(
                 children: [
                   // App icon
-                  Icon(
-                    Icons.health_and_safety,
-                    size: 80,
-                    color: AppColors.primary,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      width: 80,
+                      height: 80,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xxl),
 
@@ -214,70 +218,73 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               const Spacer(),
 
               // Bottom section: Sign-in buttons
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator())
-              else ...[
-                // Apple Sign-In (iOS only, primary CTA)
-                if (Platform.isIOS) ...[
-                  MpButton(
-                    label: l10n?.signInWithApple ?? 'Sign in with Apple',
-                    onPressed: _signInWithApple,
-                    variant: MpButtonVariant.primary,
-                    icon: Icons.apple,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                ],
-
-                // Google Sign-In
+              // Apple Sign-In (iOS only, primary CTA)
+              if (Platform.isIOS) ...[
                 MpButton(
-                  label: l10n?.signInWithGoogle ?? 'Sign in with Google',
-                  onPressed: _signInWithGoogle,
-                  variant: Platform.isIOS
-                      ? MpButtonVariant.secondary
-                      : MpButtonVariant.primary,
-                  icon: Icons.g_mobiledata,
-                ),
-                const SizedBox(height: AppSpacing.lg),
-
-                // Divider
-                Row(
-                  children: [
-                    const Expanded(child: Divider()),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.md),
-                      child: Text(
-                        l10n?.or ?? 'or',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                      ),
-                    ),
-                    const Expanded(child: Divider()),
-                  ],
+                  label: l10n?.signInWithApple ?? 'Sign in with Apple',
+                  onPressed: _signInWithApple,
+                  variant: MpButtonVariant.primary,
+                  icon: Icons.apple,
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: AppSpacing.md),
-
-                // Anonymous / try without account
-                MpButton(
-                  label: l10n?.tryWithoutAccount ??
-                      'Try without an account',
-                  onPressed: _continueAnonymously,
-                  variant: MpButtonVariant.text,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-
-                // Disclaimer
-                Text(
-                  l10n?.localDataOnlyNotice ??
-                      'Without an account, your data is stored only on this device.',
-                  style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.textMuted,
-                    fontSize: 11,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
               ],
+
+              // Google Sign-In
+              MpButton(
+                label: l10n?.signInWithGoogle ?? 'Sign in with Google',
+                onPressed: _signInWithGoogle,
+                variant: Platform.isIOS
+                    ? MpButtonVariant.secondary
+                    : MpButtonVariant.primary,
+                iconWidget: Image.asset(
+                  'assets/images/google-logo.png',
+                  width: 20,
+                  height: 20,
+                ),
+                isLoading: _isLoading,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+
+              // Divider
+              Row(
+                children: [
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md),
+                    child: Text(
+                      l10n?.or ?? 'or',
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: Divider()),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.md),
+
+              // Anonymous / try without account
+              MpButton(
+                label: l10n?.tryWithoutAccount ??
+                    'Try without an account',
+                onPressed: _continueAnonymously,
+                variant: MpButtonVariant.text,
+                isLoading: _isLoading,
+              ),
+              const SizedBox(height: AppSpacing.xs),
+
+              // Disclaimer
+              Text(
+                l10n?.localDataOnlyNotice ??
+                    'Without an account, your data is stored only on this device.',
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.textMuted,
+                  fontSize: 11,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),

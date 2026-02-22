@@ -2059,6 +2059,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Text size {label}'**
   String textSizeSemanticLabel(String label);
+
+  /// No description provided for @noMedicationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No medications found'**
+  String get noMedicationsFound;
+
+  /// No description provided for @stockOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get stockOk;
+
+  /// No description provided for @failedToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start. Please try again.'**
+  String get failedToStart;
 }
 
 class _AppLocalizationsDelegate

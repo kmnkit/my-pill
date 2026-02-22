@@ -412,5 +412,8 @@
     "placeholders": {
       "label": {"type": "String"}
     }
-  }
+  },
+  "noMedicationsFound": "該当するお薬が見つかりません",
+  "stockOk": "正常",
+  "failedToStart": "開始に失敗しました。もう一度お試しください。"
 }

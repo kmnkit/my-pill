@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
 class MpErrorView extends StatelessWidget {
@@ -16,6 +17,8 @@ class MpErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -32,7 +35,7 @@ class MpErrorView extends StatelessWidget {
             if (onRetry != null) ...[
               const SizedBox(height: AppSpacing.xl),
               MpButton(
-                label: 'Retry',
+                label: l10n.retry,
                 onPressed: onRetry,
                 variant: MpButtonVariant.secondary,
               ),

@@ -1065,4 +1065,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String textSizeSemanticLabel(String label) {
     return 'Text size $label';
   }
+
+  @override
+  String get noMedicationsFound => 'No medications found';
+
+  @override
+  String get stockOk => 'OK';
+
+  @override
+  String get failedToStart => 'Failed to start. Please try again.';
 }

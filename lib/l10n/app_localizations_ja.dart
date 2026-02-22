@@ -1037,4 +1037,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String textSizeSemanticLabel(String label) {
     return 'テキストサイズ $label';
   }
+
+  @override
+  String get noMedicationsFound => '該当するお薬が見つかりません';
+
+  @override
+  String get stockOk => '正常';
+
+  @override
+  String get failedToStart => '開始に失敗しました。もう一度お試しください。';
 }

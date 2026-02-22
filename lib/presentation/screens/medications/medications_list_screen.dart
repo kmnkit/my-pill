@@ -6,8 +6,10 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/services/ad_service.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
+import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
@@ -51,12 +53,12 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     final medicationsAsync = ref.watch(medicationListProvider);
 
     return Scaffold(
       appBar: MpAppBar(
-        title: 'My Medications',
+        title: l10n.myMedications,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -71,7 +73,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: MpTextField(
               controller: _searchController,
-              hint: 'Search medications...',
+              hint: l10n.searchMedications,
               prefixIcon: Icons.search,
               onChanged: (value) {
                 setState(() {
@@ -94,8 +96,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                   return MpEmptyState(
                     icon: Icons.medication,
                     title: _searchQuery.isEmpty
-                        ? 'No medications added yet'
-                        : 'No medications found',
+                        ? l10n.noMedications
+                        : l10n.noMedicationsFound,
                   );
                 }
 
@@ -108,60 +110,54 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                      child: GestureDetector(
+                      child: MpCard(
                         onTap: () => context.go('/medications/${med.id}'),
-                        child: Container(
-                          padding: const EdgeInsets.all(AppSpacing.lg),
-                          decoration: BoxDecoration(
-                            color: isDark ? AppColors.cardDark : AppColors.cardLight,
-                            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                          ),
-                          child: Row(
-                            children: [
-                              MpPillIcon(shape: med.shape, color: med.color),
-                              const SizedBox(width: AppSpacing.md),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      med.name,
-                                      style: Theme.of(context).textTheme.titleSmall,
-                                    ),
-                                    const SizedBox(height: AppSpacing.xs),
-                                    Text(
-                                      '${med.dosage}${med.dosageUnit.label}',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: AppColors.textMuted,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: AppSpacing.md),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                        useGlass: false,
+                        child: Row(
+                          children: [
+                            MpPillIcon(shape: med.shape, color: med.color),
+                            const SizedBox(width: AppSpacing.md),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${med.inventoryRemaining}/${med.inventoryTotal}',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    med.name,
+                                    style: Theme.of(context).textTheme.titleSmall,
                                   ),
                                   const SizedBox(height: AppSpacing.xs),
-                                  MpBadge(
-                                    label: isLowStock ? 'Low' : 'OK',
-                                    variant: isLowStock
-                                        ? MpBadgeVariant.lowStock
-                                        : MpBadgeVariant.connected,
+                                  Text(
+                                    '${med.dosage}${med.dosageUnit.label}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: AppColors.textMuted,
+                                        ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: AppSpacing.sm),
-                              const Icon(
-                                Icons.chevron_right,
-                                color: AppColors.textMuted,
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: AppSpacing.md),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${med.inventoryRemaining}/${med.inventoryTotal}',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                const SizedBox(height: AppSpacing.xs),
+                                MpBadge(
+                                  label: isLowStock ? l10n.lowStock : l10n.stockOk,
+                                  variant: isLowStock
+                                      ? MpBadgeVariant.lowStock
+                                      : MpBadgeVariant.connected,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: AppColors.textMuted,
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -175,11 +171,11 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Error loading medications'),
+                    Text(l10n.errorOccurred),
                     const SizedBox(height: AppSpacing.md),
                     TextButton(
                       onPressed: () => ref.invalidate(medicationListProvider),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),

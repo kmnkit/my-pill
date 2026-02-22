@@ -28,7 +28,7 @@ abstract final class AppColors {
   static const Color successBright = Color(0xFF22C55E);
   static const Color warning = Color(0xFFF59E0B);
   static const Color warningDark = Color(0xFFF97316);
-  static const Color info = Color(0xFF94A3B8);
+  static const Color info = Color(0xFF64748B);
 
   // Pill Colors (for color picker)
   static const Color pillWhite = Color(0xFFFFFFFF);

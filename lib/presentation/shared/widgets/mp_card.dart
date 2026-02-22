@@ -81,7 +81,24 @@ class MpCard extends StatelessWidget {
     final bgColor =
         color ?? (isDark ? AppColors.cardDark : AppColors.cardLight);
 
-    final container = Container(
+    final cardChild = Container(
+      padding: padding ?? const EdgeInsets.all(AppSpacing.lg),
+      child: child,
+    );
+
+    if (onTap != null) {
+      return Material(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          child: cardChild,
+        ),
+      );
+    }
+
+    return Container(
       padding: padding ?? const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: bgColor,
@@ -90,10 +107,5 @@ class MpCard extends StatelessWidget {
       ),
       child: child,
     );
-
-    if (onTap != null) {
-      return GestureDetector(onTap: onTap, child: container);
-    }
-    return container;
   }
 }

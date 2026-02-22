@@ -412,5 +412,8 @@
     "placeholders": {
       "label": {"type": "String"}
     }
-  }
+  },
+  "noMedicationsFound": "No medications found",
+  "stockOk": "OK",
+  "failedToStart": "Failed to start. Please try again."
 }
