@@ -1350,4 +1350,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get markAsTaken => 'Mark as taken';
+
+  @override
+  String get genericError => 'Something went wrong. Please try again.';
+
+  @override
+  String get networkError => 'Network error. Please check your connection.';
+
+  @override
+  String get authError => 'Authentication error. Please sign in again.';
+
+  @override
+  String get permissionDenied =>
+      'You don\'t have permission to perform this action.';
+
+  @override
+  String get serviceUnavailable =>
+      'Service temporarily unavailable. Please try again later.';
 }

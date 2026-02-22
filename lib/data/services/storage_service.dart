@@ -43,9 +43,12 @@ class StorageService {
       final encryptionKey = base64Decode(encodedKey);
       _cipher = HiveAesCipher(Uint8List.fromList(encryptionKey));
     } catch (e) {
-      // Fallback: no encryption if secure storage fails (e.g., in tests)
-      debugPrint('Encryption init failed, using unencrypted storage: $e');
-      _cipher = null;
+      debugPrint('Encryption init failed: $e');
+      // Re-throw - unencrypted storage is not acceptable for medical data
+      throw StateError(
+        'Failed to initialize secure storage. Please restart the app. '
+        'If the problem persists, reinstall the app.',
+      );
     }
   }
 

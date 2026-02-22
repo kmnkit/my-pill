@@ -51,4 +51,14 @@ class CloudFunctionsService {
       throw Exception('Failed to revoke access');
     }
   }
+
+  /// Delete the current user's account and all associated data (server-side)
+  /// Throws [FirebaseFunctionsException] on failure
+  Future<void> deleteAccount() async {
+    final result = await _functions.httpsCallable('deleteUserAccount').call();
+    final data = result.data as Map<String, dynamic>;
+    if (data['success'] != true) {
+      throw Exception('Failed to delete account');
+    }
+  }
 }

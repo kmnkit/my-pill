@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:my_pill/data/enums/apple_auth_error.dart';
+import 'package:my_pill/data/services/cloud_functions_service.dart';
 
 /// Custom exception for Apple Sign-In errors with structured error information.
 class AppleSignInException implements Exception {
@@ -108,9 +109,9 @@ class AuthService {
     await _auth.signOut();
   }
 
-  // Delete account
+  // Delete account — delegates to Cloud Function for server-side full data cleanup
   Future<void> deleteAccount() async {
-    await _auth.currentUser?.delete();
+    await CloudFunctionsService().deleteAccount();
   }
 
   /// Check if an email is an Apple private relay email.
