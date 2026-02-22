@@ -71,7 +71,7 @@ class MockAuthService implements AuthService {
   }
 
   @override
-  Future<UserCredential> signInWithApple() async {
+  Future<UserCredential?> signInWithApple() async {
     _checkFailure();
     _currentUser = _MockUser(
       uid: 'apple-user-1',
@@ -89,7 +89,7 @@ class MockAuthService implements AuthService {
   }
 
   @override
-  Future<UserCredential> linkWithApple() async {
+  Future<UserCredential?> linkWithApple() async {
     _checkFailure();
     return _MockUserCredential(_currentUser);
   }

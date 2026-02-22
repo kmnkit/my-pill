@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:my_pill/data/enums/apple_auth_error.dart';
 
 /// Custom exception for Apple Sign-In errors with structured error information.
@@ -46,13 +47,19 @@ class AuthService {
   }
 
   // Apple Sign-In with proper error handling
-  Future<UserCredential> signInWithApple() async {
+  Future<UserCredential?> signInWithApple() async {
     try {
       final appleProvider = AppleAuthProvider();
       return await _auth.signInWithProvider(appleProvider);
     } on FirebaseAuthException catch (e) {
+      if (e.code == 'canceled') return null;
       throw AppleSignInException(
         error: AppleAuthError.fromCode(e.code),
+        originalMessage: e.message,
+      );
+    } on PlatformException catch (e) {
+      throw AppleSignInException(
+        error: AppleAuthError.unknown,
         originalMessage: e.message,
       );
     }
@@ -76,15 +83,21 @@ class AuthService {
   }
 
   // Link anonymous account to Apple with proper error handling
-  Future<UserCredential> linkWithApple() async {
+  Future<UserCredential?> linkWithApple() async {
     final user = _auth.currentUser;
     if (user == null) throw StateError('No authenticated user to link');
     try {
       final appleProvider = AppleAuthProvider();
       return await user.linkWithProvider(appleProvider);
     } on FirebaseAuthException catch (e) {
+      if (e.code == 'canceled') return null;
       throw AppleSignInException(
         error: AppleAuthError.fromCode(e.code),
+        originalMessage: e.message,
+      );
+    } on PlatformException catch (e) {
+      throw AppleSignInException(
+        error: AppleAuthError.unknown,
         originalMessage: e.message,
       );
     }

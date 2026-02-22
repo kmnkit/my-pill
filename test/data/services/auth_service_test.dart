@@ -45,6 +45,10 @@ void main() {
       expect(AppleAuthError.fromCode('network-request-failed'), AppleAuthError.networkRequestFailed);
     });
 
+    test('fromCode maps canceled to userCancelled', () {
+      expect(AppleAuthError.fromCode('canceled'), AppleAuthError.userCancelled);
+    });
+
     test('fromCode returns unknown for unrecognized codes', () {
       expect(AppleAuthError.fromCode('some-random-error'), AppleAuthError.unknown);
       expect(AppleAuthError.fromCode(''), AppleAuthError.unknown);
