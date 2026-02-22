@@ -9,6 +9,12 @@ build/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.metadata
+
+# === Lock files ===
+pubspec.lock
+ios/Podfile.lock
+functions/package-lock.json
 
 # === Platform native (rarely edited directly) ===
 ios/Pods/
@@ -22,6 +28,9 @@ android/.gradle/
 android/.kotlin/
 android/build/
 android/app/build/
+android/app/debug/
+android/app/profile/
+android/app/release/
 android/.cxx/
 android/gradle/
 
@@ -31,7 +40,6 @@ hosting/
 
 # === Cloud Functions dependencies ===
 functions/node_modules/
-functions/package-lock.json
 
 # === Dependencies ===
 .pub-cache/
@@ -68,11 +76,20 @@ android/app/google-services.json
 **/*.ipa
 **/*.aab
 
+# === Symbolication / obfuscation ===
+app.*.symbols
+app.*.map.json
+
 # === Test / coverage artifacts ===
 coverage/
 test-results/
 .test_coverage.dart
 
-# === OS files ===
+# === Generated docs ===
+**/doc/api/
+
+# === OS / misc files ===
 .DS_Store
 Thumbs.db
+*.log
+*.swp
