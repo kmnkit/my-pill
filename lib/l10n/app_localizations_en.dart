@@ -492,7 +492,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get advanced => 'Advanced';
 
   @override
-  String get deactivateAccount => 'Deactivate Account';
+  String get deactivateAccount => 'Log Out';
 
   @override
   String get deleteAccount => 'Delete Account';
@@ -979,14 +979,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appVersion => 'App Version';
 
   @override
-  String get deactivateAccountTitle => 'Deactivate Account';
+  String get deactivateAccountTitle => 'Log Out';
 
   @override
   String get deactivateAccountMessage =>
-      'Your account will be deactivated and you will be signed out. Your data will be preserved and you can sign back in later.';
+      'You will be signed out. Your data will be preserved and you can sign back in later.';
 
   @override
-  String get deactivate => 'Deactivate';
+  String get deactivate => 'Log Out';
 
   @override
   String get deleteAccountTitle => 'Delete Account';
@@ -1007,7 +1007,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String errorDeactivatingAccount(String error) {
-    return 'Error deactivating account: $error';
+    return 'Error logging out: $error';
   }
 
   @override

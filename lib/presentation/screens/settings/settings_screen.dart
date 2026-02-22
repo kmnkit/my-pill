@@ -87,11 +87,13 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
+              const PremiumBanner(),
+              const SizedBox(height: AppSpacing.xl),
               MpSectionHeader(title: l10n.advanced),
               _buildListTile(
                 context,
                 l10n.deactivateAccount,
-                Icons.power_settings_new,
+                Icons.logout,
                 () async {
                   final confirmed = await MpConfirmDialog.show(
                     context,
@@ -170,8 +172,6 @@ class SettingsScreen extends ConsumerWidget {
                 },
                 textColor: AppColors.error,
               ),
-              const SizedBox(height: AppSpacing.xl),
-              const PremiumBanner(),
               const SizedBox(height: AppSpacing.xl),
               Center(
                 child: TextButton(

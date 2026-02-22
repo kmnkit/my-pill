@@ -300,11 +300,7 @@ abstract final class AppTheme {
       ),
       dialogTheme: DialogThemeData(
         elevation: 0,
-        backgroundColor: config.dialogBorder != null
-            ? config.surface // Solid for high contrast
-            : (config.brightness == Brightness.dark
-                ? AppColors.glassDarkStrong
-                : AppColors.glassWhiteStrong),
+        backgroundColor: config.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
           side: config.dialogBorder ??

@@ -483,7 +483,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get advanced => '詳細設定';
 
   @override
-  String get deactivateAccount => 'アカウントを無効化';
+  String get deactivateAccount => 'ログアウト';
 
   @override
   String get deleteAccount => 'アカウントを削除';
@@ -956,14 +956,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get appVersion => 'アプリバージョン';
 
   @override
-  String get deactivateAccountTitle => 'アカウントを無効化';
+  String get deactivateAccountTitle => 'ログアウト';
 
   @override
-  String get deactivateAccountMessage =>
-      'アカウントが無効化され、サインアウトされます。データは保持され、後でサインインできます。';
+  String get deactivateAccountMessage => 'サインアウトされます。データは保持され、後でサインインできます。';
 
   @override
-  String get deactivate => '無効化';
+  String get deactivate => 'ログアウト';
 
   @override
   String get deleteAccountTitle => 'アカウントを削除';
@@ -983,7 +982,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String errorDeactivatingAccount(String error) {
-    return 'アカウント無効化エラー: $error';
+    return 'ログアウトエラー: $error';
   }
 
   @override
