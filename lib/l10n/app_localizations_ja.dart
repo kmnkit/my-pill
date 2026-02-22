@@ -1028,4 +1028,48 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get minuteShort => '分';
+
+  @override
+  String get noData => 'データなし';
+
+  @override
+  String get noEmail => 'メール未設定';
+
+  @override
+  String get needsImprovement => '改善が必要';
+
+  @override
+  String get startTrackingMessage => 'お薬の服用を記録して、服薬状況を確認しましょう。';
+
+  @override
+  String get excellentMessage => '素晴らしい！一貫した服薬を続けています。';
+
+  @override
+  String get goodMessage => 'よく頑張っています！少し飲み忘れがある程度です。';
+
+  @override
+  String get fairMessage => '改善の余地があります。リマインダーを増やしてみましょう。';
+
+  @override
+  String get needsImprovementMessage => '一緒に安定した服薬習慣を作りましょう。';
+
+  @override
+  String get thisWeek => '今週';
+
+  @override
+  String get byMedication => 'お薬別';
+
+  @override
+  String get noMedicationData => 'お薬のデータがありません';
+
+  @override
+  String get adsRemovedSuccess => '広告を削除しました！';
+
+  @override
+  String get processingEllipsis => '処理中...';
+
+  @override
+  String textSizeSemanticLabel(String label) {
+    return 'テキストサイズ $label';
+  }
 }

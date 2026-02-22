@@ -407,5 +407,25 @@
   "@errorDeactivatingAccount": { "placeholders": { "error": { "type": "String" } } },
   "errorDeletingAccount": "アカウント削除エラー: {error}",
   "@errorDeletingAccount": { "placeholders": { "error": { "type": "String" } } },
-  "minuteShort": "分"
+  "minuteShort": "分",
+
+  "noData": "データなし",
+  "noEmail": "メール未設定",
+  "needsImprovement": "改善が必要",
+  "startTrackingMessage": "お薬の服用を記録して、服薬状況を確認しましょう。",
+  "excellentMessage": "素晴らしい！一貫した服薬を続けています。",
+  "goodMessage": "よく頑張っています！少し飲み忘れがある程度です。",
+  "fairMessage": "改善の余地があります。リマインダーを増やしてみましょう。",
+  "needsImprovementMessage": "一緒に安定した服薬習慣を作りましょう。",
+  "thisWeek": "今週",
+  "byMedication": "お薬別",
+  "noMedicationData": "お薬のデータがありません",
+  "adsRemovedSuccess": "広告を削除しました！",
+  "processingEllipsis": "処理中...",
+  "textSizeSemanticLabel": "テキストサイズ {label}",
+  "@textSizeSemanticLabel": {
+    "placeholders": {
+      "label": {"type": "String"}
+    }
+  }
 }

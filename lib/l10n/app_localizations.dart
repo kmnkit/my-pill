@@ -2035,6 +2035,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'min'**
   String get minuteShort;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No Data'**
+  String get noData;
+
+  /// No description provided for @noEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'No email'**
+  String get noEmail;
+
+  /// No description provided for @needsImprovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Improvement'**
+  String get needsImprovement;
+
+  /// No description provided for @startTrackingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Start tracking your medications to see your adherence score.'**
+  String get startTrackingMessage;
+
+  /// No description provided for @excellentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep up the great work! Your consistency is impressive.'**
+  String get excellentMessage;
+
+  /// No description provided for @goodMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re doing well! A few missed doses here and there.'**
+  String get goodMessage;
+
+  /// No description provided for @fairMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Room for improvement. Try setting more reminders.'**
+  String get fairMessage;
+
+  /// No description provided for @needsImprovementMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s work on building a consistent routine together.'**
+  String get needsImprovementMessage;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @byMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'By Medication'**
+  String get byMedication;
+
+  /// No description provided for @noMedicationData.
+  ///
+  /// In en, this message translates to:
+  /// **'No medication data available'**
+  String get noMedicationData;
+
+  /// No description provided for @adsRemovedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads removed successfully!'**
+  String get adsRemovedSuccess;
+
+  /// No description provided for @processingEllipsis.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processingEllipsis;
+
+  /// No description provided for @textSizeSemanticLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size {label}'**
+  String textSizeSemanticLabel(String label);
 }
 
 class _AppLocalizationsDelegate

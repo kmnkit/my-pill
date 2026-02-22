@@ -77,8 +77,8 @@ class AccountSection extends ConsumerWidget {
 
         final isAnonymous = user.isAnonymous;
         final displayName = user.displayName ??
-                           (user.email?.split('@').first ?? 'User');
-        final email = user.email ?? 'No email';
+                           (user.email?.split('@').first ?? l10n.guestUser);
+        final email = user.email ?? l10n.noEmail;
         final initials = _getInitials(displayName);
 
         if (isAnonymous) {
