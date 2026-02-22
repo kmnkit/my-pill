@@ -5,8 +5,15 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_constants.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:my_pill/data/providers/adherence_provider.dart';
+import 'package:my_pill/data/providers/caregiver_provider.dart';
+import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/reminder_provider.dart';
+import 'package:my_pill/data/providers/schedule_provider.dart';
+
 import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/data/services/auth_service.dart';
+import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
@@ -105,6 +112,17 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (confirmed == true && context.mounted) {
                     try {
+                      // 1. Invalidate all user-data providers
+                      ref.invalidate(medicationListProvider);
+                      ref.invalidate(scheduleListProvider);
+                      ref.invalidate(todayRemindersProvider);
+                      ref.invalidate(overallAdherenceProvider);
+                      ref.invalidate(weeklyAdherenceProvider);
+                      ref.invalidate(caregiverLinksProvider);
+                      ref.invalidate(userSettingsProvider);
+                      // 2. Clear Hive local storage
+                      await StorageService().clearAll();
+                      // 3. Sign out from Firebase
                       await AuthService().signOut();
                       if (context.mounted) {
                         context.go('/onboarding');
@@ -113,7 +131,7 @@ class SettingsScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.errorDeactivatingAccount(e.toString())),
+                            content: Text(l10n.errorOccurred),
                             backgroundColor: AppColors.error,
                           ),
                         );
@@ -151,10 +169,10 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (secondConfirm == true && context.mounted) {
                     try {
-                      // Clear local data first
+                      // Server-side deletion of all user data + auth account
+                      await CloudFunctionsService().deleteAccount();
+                      // Clear local data
                       await StorageService().clearAll();
-                      // Delete Firebase account
-                      await AuthService().deleteAccount();
                       if (context.mounted) {
                         context.go('/onboarding');
                       }
@@ -162,7 +180,7 @@ class SettingsScreen extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.errorDeletingAccount(e.toString())),
+                            content: Text(l10n.errorOccurred),
                             backgroundColor: AppColors.error,
                           ),
                         );

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:my_pill/data/models/user_profile.dart';
+import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
@@ -26,9 +28,10 @@ import 'package:flutter/material.dart';
 
 part 'app_router_provider.g.dart';
 
-/// A ChangeNotifier that listens to user settings changes
+/// A ChangeNotifier that listens to user settings and auth state changes
 class RouterRefreshNotifier extends ChangeNotifier {
   UserProfile? _settings;
+  bool _isAuthenticated = false;
 
   void update(UserProfile? settings) {
     if (_settings?.onboardingComplete != settings?.onboardingComplete ||
@@ -37,6 +40,13 @@ class RouterRefreshNotifier extends ChangeNotifier {
       notifyListeners();
     }
     _settings = settings;
+  }
+
+  void updateAuth(bool isAuthenticated) {
+    if (_isAuthenticated != isAuthenticated) {
+      _isAuthenticated = isAuthenticated;
+      notifyListeners();
+    }
   }
 }
 
@@ -47,6 +57,12 @@ RouterRefreshNotifier routerRefreshNotifier(Ref ref) {
   ref.listen(userSettingsProvider, (previous, next) {
     next.whenData((settings) {
       notifier.update(settings);
+    });
+  });
+
+  ref.listen(authStateProvider, (previous, next) {
+    next.whenData((user) {
+      notifier.updateAuth(user != null);
     });
   });
 
@@ -75,6 +91,12 @@ Raw<GoRouter> appRouter(Ref ref) {
 
       // Allow splash and invite deep links to pass through
       if (isSplashRoute || isInviteRoute) return null;
+
+      // Auth guard: redirect to onboarding if not authenticated
+      final isAuthenticated = FirebaseAuth.instance.currentUser != null;
+      if (!isAuthenticated && !isOnboardingRoute) {
+        return '/onboarding';
+      }
 
       // If we don't have settings yet, stay on onboarding
       if (currentSettings == null) {

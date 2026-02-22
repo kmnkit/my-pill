@@ -1314,4 +1314,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get markAsTaken => '服用済みにする';
+
+  @override
+  String get genericError => 'エラーが発生しました。もう一度お試しください。';
+
+  @override
+  String get networkError => 'ネットワークエラーです。接続を確認してください。';
+
+  @override
+  String get authError => '認証エラーです。再度サインインしてください。';
+
+  @override
+  String get permissionDenied => 'この操作を行う権限がありません。';
+
+  @override
+  String get serviceUnavailable => 'サービスが一時的に利用できません。後でお試しください。';
 }

@@ -508,5 +508,11 @@
   "@failedToStart": { "placeholders": { "error": { "type": "String" } } },
   "off": "34%オフ",
   "unit": "単位",
-  "markAsTaken": "服用済みにする"
+  "markAsTaken": "服用済みにする",
+
+  "genericError": "エラーが発生しました。もう一度お試しください。",
+  "networkError": "ネットワークエラーです。接続を確認してください。",
+  "authError": "認証エラーです。再度サインインしてください。",
+  "permissionDenied": "この操作を行う権限がありません。",
+  "serviceUnavailable": "サービスが一時的に利用できません。後でお試しください。"
 }

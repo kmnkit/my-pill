@@ -43,9 +43,9 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Invites - readable by anyone with the code, writable only by Cloud Functions
+    // Invites - readable only by the patient who created them, writable only by Cloud Functions
     match /invites/{inviteCode} {
-      allow read: if request.auth != null;
+      allow read: if request.auth != null && request.auth.uid == resource.data.patientId;
       allow write: if false;
     }
   }

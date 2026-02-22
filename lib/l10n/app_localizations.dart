@@ -2587,6 +2587,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark as taken'**
   String get markAsTaken;
+
+  /// No description provided for @genericError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get genericError;
+
+  /// No description provided for @networkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection.'**
+  String get networkError;
+
+  /// No description provided for @authError.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication error. Please sign in again.'**
+  String get authError;
+
+  /// No description provided for @permissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to perform this action.'**
+  String get permissionDenied;
+
+  /// No description provided for @serviceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Service temporarily unavailable. Please try again later.'**
+  String get serviceUnavailable;
 }
 
 class _AppLocalizationsDelegate
