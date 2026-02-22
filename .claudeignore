@@ -36,7 +36,9 @@ android/gradle/
 
 # === Firebase / Hosting ===
 .firebase/
+firebase.json
 hosting/
+lib/firebase_options.dart
 
 # === Cloud Functions dependencies ===
 functions/node_modules/
@@ -87,6 +89,9 @@ test-results/
 
 # === Generated docs ===
 **/doc/api/
+
+# === Wrangler (Cloudflare) ===
+.wrangler/
 
 # === OS / misc files ===
 .DS_Store
