@@ -11,6 +11,7 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+Thumbs.db
 
 # IntelliJ related
 *.iml
@@ -34,6 +35,8 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+.test_coverage.dart
+test-results/
 
 # Symbolication related
 app.*.symbols
@@ -54,6 +57,9 @@ firebase.json
 
 # Firebase cache
 .firebase/
+
+# Firebase hosting
+hosting/
 
 # Wrangler (Cloudflare)
 .wrangler/

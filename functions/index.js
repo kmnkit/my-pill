@@ -1,12 +1,35 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const crypto = require('crypto');
 admin.initializeApp();
 
 const db = admin.firestore();
 
+// Rate limiter: max 5 calls per minute per uid+action
+async function checkRateLimit(uid, action, maxPerMinute = 5) {
+  const now = Date.now();
+  const windowStart = now - 60000; // 1 minute window
+  const rateLimitRef = db.collection('rateLimits').doc(`${uid}_${action}`);
+
+  const doc = await rateLimitRef.get();
+  if (doc.exists) {
+    const data = doc.data();
+    const recentCalls = (data.timestamps || []).filter(t => t > windowStart);
+    if (recentCalls.length >= maxPerMinute) {
+      throw new functions.https.HttpsError('resource-exhausted', 'Too many requests. Please try again later.');
+    }
+    recentCalls.push(now);
+    await rateLimitRef.set({ timestamps: recentCalls, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+  } else {
+    await rateLimitRef.set({ timestamps: [now], updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+  }
+}
+
 // Generate invite link
 exports.generateInviteLink = functions.https.onCall(async (data, context) => {
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+
+  await checkRateLimit(context.auth.uid, 'generateInviteLink');
 
   const patientId = context.auth.uid;
   const code = generateCode();
@@ -25,6 +48,8 @@ exports.generateInviteLink = functions.https.onCall(async (data, context) => {
 exports.acceptInvite = functions.https.onCall(async (data, context) => {
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
 
+  await checkRateLimit(context.auth.uid, 'acceptInvite');
+
   const { code } = data;
   const caregiverId = context.auth.uid;
 
@@ -38,6 +63,11 @@ exports.acceptInvite = functions.https.onCall(async (data, context) => {
   if (inviteData.expiresAt.toDate() < new Date()) throw new functions.https.HttpsError('failed-precondition', 'Invite expired');
 
   const patientId = inviteData.patientId;
+
+  // Prevent self-invitation
+  if (caregiverId === patientId) {
+    throw new functions.https.HttpsError('invalid-argument', 'Cannot accept your own invite');
+  }
 
   // Read patient profile to get name for caregiver dashboard
   const patientDoc = await db.collection('users').doc(patientId).get();
@@ -78,10 +108,60 @@ exports.revokeAccess = functions.https.onCall(async (data, context) => {
   const { caregiverId, linkId } = data;
   const patientId = context.auth.uid;
 
+  // Verify link belongs to this patient
+  const linkDoc = await db.collection('users').doc(patientId).collection('caregiverLinks').doc(linkId).get();
+  if (!linkDoc.exists) {
+    throw new functions.https.HttpsError('not-found', 'Caregiver link not found');
+  }
+
   const batch = db.batch();
   batch.delete(db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId));
   batch.delete(db.collection('users').doc(patientId).collection('caregiverLinks').doc(linkId));
   await batch.commit();
+
+  return { success: true };
+});
+
+// Delete user account — server-side cleanup of all user data + auth
+exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
+  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+
+  const uid = context.auth.uid;
+
+  // Delete all subcollections under users/{uid}
+  const subcollections = ['medications', 'schedules', 'reminders', 'adherenceRecords', 'caregiverLinks'];
+  for (const col of subcollections) {
+    const snapshot = await db.collection('users').doc(uid).collection(col).get();
+    const batch = db.batch();
+    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+    if (snapshot.docs.length > 0) await batch.commit();
+  }
+
+  // Delete caregiverAccess docs where this user is a caregiver
+  const caregiverPatientsSnapshot = await db.collection('caregiverAccess').doc(uid).collection('patients').get();
+  if (caregiverPatientsSnapshot.docs.length > 0) {
+    const batch = db.batch();
+    caregiverPatientsSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  }
+  // Also delete the caregiverAccess/{uid} parent doc if it exists
+  await db.collection('caregiverAccess').doc(uid).delete().catch(() => {});
+
+  // Delete caregiverAccess docs where this user is a PATIENT (collectionGroup query)
+  const patientLinksSnapshot = await db.collectionGroup('patients')
+    .where('patientId', '==', uid)
+    .get();
+  if (patientLinksSnapshot.docs.length > 0) {
+    const batch = db.batch();
+    patientLinksSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  }
+
+  // Delete the user document
+  await db.collection('users').doc(uid).delete();
+
+  // Delete the Firebase Auth account
+  await admin.auth().deleteUser(uid);
 
   return { success: true };
 });
@@ -103,9 +183,10 @@ exports.cleanupExpiredInvites = functions.pubsub.schedule('every 24 hours').onRu
 
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  const bytes = crypto.randomBytes(8);
   let code = '';
   for (let i = 0; i < 8; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(bytes[i] % chars.length);
   }
   return code;
 }

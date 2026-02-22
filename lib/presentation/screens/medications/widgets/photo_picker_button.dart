@@ -23,8 +23,8 @@ class PhotoPickerButton extends StatelessWidget {
 
       if (pickedFile == null) return;
 
-      // Copy to app documents directory
-      final appDir = await getApplicationDocumentsDirectory();
+      // Copy to app support directory (app-private, not accessible to other apps)
+      final appDir = await getApplicationSupportDirectory();
       final fileName = 'med_photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
 

@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:my_pill/data/models/user_profile.dart';
+import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 import 'package:my_pill/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:my_pill/presentation/screens/onboarding/login_screen.dart';
 import 'package:my_pill/presentation/screens/home/home_screen.dart';
 import 'package:my_pill/presentation/screens/medications/medications_list_screen.dart';
 import 'package:my_pill/presentation/screens/medications/add_medication_screen.dart';
@@ -26,9 +29,10 @@ import 'package:flutter/material.dart';
 
 part 'app_router_provider.g.dart';
 
-/// A ChangeNotifier that listens to user settings changes
+/// A ChangeNotifier that listens to user settings and auth state changes
 class RouterRefreshNotifier extends ChangeNotifier {
   UserProfile? _settings;
+  bool _isAuthenticated = false;
 
   void update(UserProfile? settings) {
     if (_settings?.onboardingComplete != settings?.onboardingComplete ||
@@ -37,6 +41,13 @@ class RouterRefreshNotifier extends ChangeNotifier {
       notifyListeners();
     }
     _settings = settings;
+  }
+
+  void updateAuth(bool isAuthenticated) {
+    if (_isAuthenticated != isAuthenticated) {
+      _isAuthenticated = isAuthenticated;
+      notifyListeners();
+    }
   }
 }
 
@@ -47,6 +58,12 @@ RouterRefreshNotifier routerRefreshNotifier(Ref ref) {
   ref.listen(userSettingsProvider, (previous, next) {
     next.whenData((settings) {
       notifier.update(settings);
+    });
+  });
+
+  ref.listen(authStateProvider, (previous, next) {
+    next.whenData((user) {
+      notifier.updateAuth(user != null);
     });
   });
 
@@ -71,14 +88,18 @@ Raw<GoRouter> appRouter(Ref ref) {
     redirect: (context, state) {
       final isSplashRoute = state.matchedLocation == '/splash';
       final isOnboardingRoute = state.matchedLocation == '/onboarding';
+      final isLoginRoute = state.matchedLocation == '/login';
       final isInviteRoute = state.matchedLocation.startsWith('/invite/');
 
       // Allow splash and invite deep links to pass through
       if (isSplashRoute || isInviteRoute) return null;
 
-      // If we don't have settings yet, stay on onboarding
+      final isAuthenticated = FirebaseAuth.instance.currentUser != null;
+
+      // If we don't have settings yet, allow onboarding/login
       if (currentSettings == null) {
-        return isOnboardingRoute ? null : '/onboarding';
+        if (isOnboardingRoute || isLoginRoute) return null;
+        return '/onboarding';
       }
 
       final onboardingComplete = currentSettings!.onboardingComplete;
@@ -89,8 +110,18 @@ Raw<GoRouter> appRouter(Ref ref) {
         return '/onboarding';
       }
 
-      // Completed onboarding but on onboarding screen -> redirect to home
+      // Completed onboarding but on onboarding screen -> go to login
       if (onboardingComplete && isOnboardingRoute) {
+        return '/login';
+      }
+
+      // Not authenticated -> redirect to login (check BEFORE home redirect)
+      if (!isAuthenticated && !isLoginRoute && onboardingComplete) {
+        return '/login';
+      }
+
+      // Authenticated but on login screen -> redirect to appropriate home
+      if (isAuthenticated && isLoginRoute) {
         return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
       }
 
@@ -109,6 +140,13 @@ Raw<GoRouter> appRouter(Ref ref) {
         path: '/onboarding',
         name: RouteNames.onboarding,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+
+      // Standalone route: Login
+      GoRoute(
+        path: '/login',
+        name: RouteNames.login,
+        builder: (context, state) => const LoginScreen(),
       ),
 
       // Standalone route: Deep link invite handler
@@ -295,6 +333,7 @@ class _PatientShellScreenState extends State<_PatientShellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
@@ -324,6 +363,7 @@ class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
