@@ -180,7 +180,7 @@
   "localTime": "Local Time Adaptation",
   "localTimeDesc": "Adjust to local timezone",
   "affectedMedications": "Affected Medications",
-  "consultDoctor": "Consult your doctor for 3+ timezone changes",
+  "consultDoctor": "Consult your doctor for 3+ hour time differences",
 
   "settingsTitle": "Settings",
   "account": "Account",
@@ -325,8 +325,7 @@
   "weeklyMonthlyReports": "Weekly and monthly reports",
   "detailedAdherenceStats": "Detailed adherence statistics",
   "sharableWithDoctors": "Sharable with doctors and caregivers",
-  "unlimitedCaregivers": "Unlimited caregivers",
-  "cancel": "Cancel",
+  "unlimitedCaregiversBenefit": "Unlimited caregivers",
   "close": "Close",
   "backupAndSync": "Backup & Sync",
   "syncWithCloud": "Sync your data with the cloud",

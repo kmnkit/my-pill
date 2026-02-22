@@ -162,7 +162,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
             _buildBenefitItem(l10n.weeklyMonthlyReports),
             _buildBenefitItem(l10n.detailedAdherenceStats),
             _buildBenefitItem(l10n.sharableWithDoctors),
-            _buildBenefitItem(l10n.unlimitedCaregivers),
+            _buildBenefitItem(l10n.unlimitedCaregiversBenefit),
           ],
         ),
         actions: [

@@ -423,7 +423,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get affectedMedications => 'Affected Medications';
 
   @override
-  String get consultDoctor => 'Consult your doctor for 3+ timezone changes';
+  String get consultDoctor =>
+      'Consult your doctor for 3+ hour time differences';
 
   @override
   String get settingsTitle => 'Settings';
@@ -716,7 +717,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAds => 'No Ads';
 
   @override
-  String get unlimitedCaregivers => 'Unlimited caregivers';
+  String get unlimitedCaregivers => 'Unlimited Caregivers';
 
   @override
   String get pdfReports => 'PDF Reports';
@@ -813,6 +814,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sharableWithDoctors => 'Sharable with doctors and caregivers';
+
+  @override
+  String get unlimitedCaregiversBenefit => 'Unlimited caregivers';
 
   @override
   String get close => 'Close';
