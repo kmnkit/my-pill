@@ -66,7 +66,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingNameHint => '名前を入力';
 
   @override
-  String get onboardingNameSkip => 'スキップ';
+  String get onboardingNameSkip => '今はスキップ';
 
   @override
   String get onboardingRoleTitle => 'くすりどきをどのように使いますか？';
@@ -136,7 +136,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String medicationsToday(int count, int taken) {
-    return '今日の薬 $count種類、$taken種類服用済み';
+    return '今日のお薬 $count種類、$taken種類服用済み';
   }
 
   @override
@@ -522,7 +522,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacyNoticeTitle => 'プライバシーについて';
 
   @override
-  String get privacyNotice1 => 'サポーターは服薬遵守状況とスケジュールのみ閲覧できます';
+  String get privacyNotice1 => 'サポーターは服薬状況とスケジュールのみ閲覧できます';
 
   @override
   String get privacyNotice2 => '個人的なメモやその他の健康データはあなただけに表示されます';
@@ -809,7 +809,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get syncWithCloud => 'データをクラウドと同期';
 
   @override
-  String get lastSync => '最終同期:';
+  String get lastSync => '最終同期：';
 
   @override
   String get never => '未同期';
@@ -850,7 +850,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get missedDoseAlerts => '服用忘れアラート';
 
   @override
-  String get missedDoseAlertsSubtitle => '患者が薬を飲み忘れた時に通知を受け取る';
+  String get missedDoseAlertsSubtitle => '患者がお薬を飲み忘れた時に通知を受け取る';
 
   @override
   String get lowStockAlerts => '在庫不足アラート';
@@ -886,7 +886,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noAdsDescription => '広告なしの快適な体験';
 
   @override
-  String get unlimitedCaregiversDescription => '無制限の家族と連携';
+  String get unlimitedCaregiversDescription => '無制限のサポーターと連携';
 
   @override
   String get pdfReportsDescription => '詳細な服薬レポートを出力';
@@ -912,7 +912,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get noCaregiversLinked => 'まだサポーターがリンクされていません';
+  String get noCaregiversLinked => 'まだサポーターが連携されていません';
 
   @override
   String get revokeAccessTitle => 'アクセスを取り消す';
