@@ -115,7 +115,7 @@ class AccountSection extends ConsumerWidget {
                   label: l10n.linkWithGoogle,
                   onPressed: () => _linkWithGoogle(context, ref),
                   variant: MpButtonVariant.secondary,
-                  icon: Icons.g_mobiledata,
+                  iconWidget: Image.asset('assets/icons/google-logo.png', width: 20, height: 20),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 if (Platform.isIOS)

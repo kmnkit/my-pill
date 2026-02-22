@@ -82,7 +82,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Image.asset(
-            'assets/icons/icon.png',
+            'assets/images/app_icon.png',
             width: 150,
             height: 150,
           ),

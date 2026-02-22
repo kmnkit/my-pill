@@ -235,7 +235,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   variant: Platform.isIOS
                       ? MpButtonVariant.secondary
                       : MpButtonVariant.primary,
-                  icon: Icons.g_mobiledata,
+                  iconWidget: Image.asset('assets/icons/google-logo.png', width: 20, height: 20),
                 ),
                 const SizedBox(height: AppSpacing.lg),
 
