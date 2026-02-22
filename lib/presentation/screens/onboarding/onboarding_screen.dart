@@ -22,6 +22,9 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   bool _isLoading = false;
 
+  // Role selection state: 'patient' or 'caregiver', defaults to patient
+  String _selectedRole = 'patient';
+
   Future<void> _completeAndNavigate() async {
     final authService = ref.read(authServiceProvider);
     final firebaseUser = authService.currentUser;
@@ -32,9 +35,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             displayName: firebaseUser.displayName,
           );
     }
+    // Save the selected role before completing onboarding
+    await ref.read(userSettingsProvider.notifier).updateUserRole(_selectedRole);
     await ref.read(userSettingsProvider.notifier).completeOnboarding();
     if (mounted) {
-      context.go('/home');
+      if (_selectedRole == 'caregiver') {
+        context.go('/caregiver/patients');
+      } else {
+        context.go('/home');
+      }
     }
   }
 
@@ -154,7 +163,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   TextButton(
                     onPressed: () => _setLanguage('en'),
                     child: Text(
-                      'EN',
+                      'English',
                       style: textTheme.labelLarge?.copyWith(
                         color: currentLanguage == 'en'
                             ? AppColors.primary
@@ -170,7 +179,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   TextButton(
                     onPressed: () => _setLanguage('ja'),
                     child: Text(
-                      'JP',
+                      '日本語',
                       style: textTheme.labelLarge?.copyWith(
                         color: currentLanguage == 'ja'
                             ? AppColors.primary
@@ -224,6 +233,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     textTheme: textTheme,
                   ),
                 ],
+              ),
+
+              const SizedBox(height: AppSpacing.xxxl),
+
+              // Role selection
+              _RoleSelector(
+                selectedRole: _selectedRole,
+                onRoleSelected: (role) {
+                  setState(() {
+                    _selectedRole = role;
+                  });
+                },
+                l10n: l10n,
+                textTheme: textTheme,
               ),
 
               const Spacer(),
@@ -295,6 +318,131 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ],
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RoleSelector extends StatelessWidget {
+  const _RoleSelector({
+    required this.selectedRole,
+    required this.onRoleSelected,
+    required this.l10n,
+    required this.textTheme,
+  });
+
+  final String selectedRole;
+  final ValueChanged<String> onRoleSelected;
+  final AppLocalizations? l10n;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          l10n?.onboardingRoleTitle ?? 'How will you use Kusuridoki?',
+          style: textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: [
+            Expanded(
+              child: _RoleCard(
+                role: 'patient',
+                label: l10n?.onboardingRolePatient ?? 'Patient',
+                description: l10n?.onboardingRolePatientDesc ??
+                    "I'm managing my own medications",
+                icon: Icons.person,
+                isSelected: selectedRole == 'patient',
+                onTap: () => onRoleSelected('patient'),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _RoleCard(
+                role: 'caregiver',
+                label: l10n?.onboardingRoleCaregiver ?? 'Caregiver',
+                description: l10n?.onboardingRoleCaregiverDesc ??
+                    "I'm helping someone else",
+                icon: Icons.favorite,
+                isSelected: selectedRole == 'caregiver',
+                onTap: () => onRoleSelected('caregiver'),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _RoleCard extends StatelessWidget {
+  const _RoleCard({
+    required this.role,
+    required this.label,
+    required this.description,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String role;
+  final String label;
+  final String description;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withValues(alpha: 0.1)
+              : colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: isSelected ? AppColors.primary : AppColors.textMuted,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              label,
+              style: textTheme.titleSmall?.copyWith(
+                color: isSelected ? AppColors.primary : null,
+                fontWeight: isSelected ? FontWeight.w600 : null,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              description,
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.textMuted,
+                fontSize: 11,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

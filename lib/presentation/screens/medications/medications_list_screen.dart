@@ -191,16 +191,14 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
           if (_bannerAd != null)
             Container(
               width: MediaQuery.of(context).size.width,
-              height: _bannerAd!.size.height.toDouble(),
+              padding: const EdgeInsets.only(top: AppSpacing.lg),
               color: Theme.of(context).brightness == Brightness.dark
                   ? AppColors.cardDark
                   : AppColors.cardLight,
-              child: Center(
-                child: SizedBox(
-                  width: _bannerAd!.size.width.toDouble(),
-                  height: _bannerAd!.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd!),
-                ),
+              child: SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
               ),
             ),
         ],

@@ -64,6 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     child: AdWidget(ad: _bannerAd!),
                   ),
                 ),
+                const SizedBox(height: AppSpacing.lg),
               ],
             ],
           ),
