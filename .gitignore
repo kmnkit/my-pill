@@ -49,9 +49,14 @@ app.*.map.json
 # Firebase configuration files (contain API keys)
 ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+lib/firebase_options.dart
+firebase.json
 
 # Firebase cache
 .firebase/
+
+# Wrangler (Cloudflare)
+.wrangler/
 
 # Cloud Functions dependencies
 functions/node_modules/
