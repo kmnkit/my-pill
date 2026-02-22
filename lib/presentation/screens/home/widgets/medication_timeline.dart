@@ -71,15 +71,20 @@ class MedicationTimeline extends ConsumerWidget {
                         return const SizedBox.shrink();
                       }
 
+                      final reminder = reminders[i];
                       return TimelineCard(
                         medicationName: medication.name,
                         dosage: '${medication.dosage}${medication.dosageUnit.label}',
-                        time: DateFormat('h:mm a').format(reminders[i].scheduledTime),
-                        badgeVariant: _getBadgeVariant(reminders[i].status),
-                        badgeLabel: _getBadgeLabel(reminders[i].status, l10n),
+                        time: DateFormat('h:mm a').format(reminder.scheduledTime),
+                        badgeVariant: _getBadgeVariant(reminder.status),
+                        badgeLabel: _getBadgeLabel(reminder.status, l10n),
                         pillShape: medication.shape,
                         pillColor: medication.color,
                         medicationId: medication.id,
+                        reminderStatus: reminder.status,
+                        onMarkTaken: reminder.status == ReminderStatus.pending
+                            ? () => ref.read(todayRemindersProvider.notifier).markAsTaken(reminder.id)
+                            : null,
                       );
                     },
                     loading: () => const SizedBox(

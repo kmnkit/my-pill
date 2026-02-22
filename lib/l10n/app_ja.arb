@@ -507,5 +507,6 @@
   "failedToStart": "起動に失敗しました: {error}",
   "@failedToStart": { "placeholders": { "error": { "type": "String" } } },
   "off": "34%オフ",
-  "unit": "単位"
+  "unit": "単位",
+  "markAsTaken": "服用済みにする"
 }

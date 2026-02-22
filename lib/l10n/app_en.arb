@@ -507,5 +507,6 @@
   "failedToStart": "Failed to start: {error}",
   "@failedToStart": { "placeholders": { "error": { "type": "String" } } },
   "off": "34% OFF",
-  "unit": "Unit"
+  "unit": "Unit",
+  "markAsTaken": "Mark as taken"
 }

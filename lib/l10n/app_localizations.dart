@@ -2581,6 +2581,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unit'**
   String get unit;
+
+  /// No description provided for @markAsTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as taken'**
+  String get markAsTaken;
 }
 
 class _AppLocalizationsDelegate

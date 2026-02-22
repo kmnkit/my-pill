@@ -1347,4 +1347,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unit => 'Unit';
+
+  @override
+  String get markAsTaken => 'Mark as taken';
 }
