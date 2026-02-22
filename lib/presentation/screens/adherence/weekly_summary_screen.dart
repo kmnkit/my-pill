@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
-import 'package:my_pill/data/providers/interstitial_provider.dart';
-import 'package:my_pill/data/providers/ad_provider.dart';
-import 'package:my_pill/data/providers/iap_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/adherence_chart.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/medication_breakdown.dart';
@@ -19,22 +16,6 @@ class WeeklySummaryScreen extends ConsumerStatefulWidget {
 }
 
 class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Record screen entry as an action and maybe show interstitial
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(interstitialControllerProvider).recordAction();
-      ref.read(interstitialControllerProvider).maybeShow(
-        adService: ref.read(adServiceProvider),
-        adsRemoved: ref.read(adsRemovedProvider),
-      ).catchError((e) {
-        debugPrint('Interstitial error: $e');
-        return false;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final overallAdherenceAsync = ref.watch(overallAdherenceProvider);
