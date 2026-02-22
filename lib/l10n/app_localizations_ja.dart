@@ -1311,4 +1311,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get unit => '単位';
+
+  @override
+  String get markAsTaken => '服用済みにする';
 }

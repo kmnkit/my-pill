@@ -4,6 +4,8 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
@@ -19,6 +21,8 @@ class TimelineCard extends StatelessWidget {
     required this.pillShape,
     required this.pillColor,
     required this.medicationId,
+    required this.reminderStatus,
+    this.onMarkTaken,
   });
 
   final String medicationName;
@@ -29,10 +33,13 @@ class TimelineCard extends StatelessWidget {
   final PillShape pillShape;
   final PillColor pillColor;
   final String medicationId;
+  final ReminderStatus reminderStatus;
+  final VoidCallback? onMarkTaken;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return MpCard(
       onTap: () => context.go('/medications/$medicationId'),
@@ -79,6 +86,26 @@ class TimelineCard extends StatelessWidget {
               ),
             ],
           ),
+
+          // Inline mark-as-taken button for pending reminders
+          if (reminderStatus == ReminderStatus.pending && onMarkTaken != null) ...[
+            const SizedBox(width: AppSpacing.sm),
+            IconButton(
+              onPressed: onMarkTaken,
+              icon: const Icon(Icons.check_circle_outline),
+              color: AppColors.primary,
+              tooltip: l10n.markAsTaken,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+            ),
+          ] else if (reminderStatus == ReminderStatus.taken) ...[
+            const SizedBox(width: AppSpacing.sm),
+            Icon(
+              Icons.check_circle,
+              color: AppColors.success,
+              size: 24,
+            ),
+          ],
         ],
       ),
     );
