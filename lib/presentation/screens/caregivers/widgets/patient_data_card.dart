@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/patient_card.dart';
 
 class PatientDataCard extends ConsumerWidget {
@@ -24,11 +25,12 @@ class PatientDataCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final adherenceAsync = ref.watch(patientDailyAdherenceProvider(patientId));
     final medicationsAsync = ref.watch(patientMedicationStatusProvider(patientId));
 
     final adherenceText = adherenceAsync.when(
-      loading: () => 'Loading...',
+      loading: () => l10n.loading,
       error: (_, _) => 'N/A',
       data: (value) => '${value.toStringAsFixed(0)}%',
     );
@@ -41,7 +43,7 @@ class PatientDataCard extends ConsumerWidget {
 
     // Show skeleton/loading state if both are still loading
     if (adherenceAsync.isLoading && medicationsAsync.isLoading) {
-      return _buildLoadingCard(context);
+      return _buildLoadingCard(context, l10n);
     }
 
     return PatientCard(
@@ -52,7 +54,7 @@ class PatientDataCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildLoadingCard(BuildContext context) {
+  Widget _buildLoadingCard(BuildContext context, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
@@ -84,7 +86,7 @@ class PatientDataCard extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      'Loading adherence...',
+                      l10n.loadingAdherence,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.textMuted,
                           ),

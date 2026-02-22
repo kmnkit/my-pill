@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class InventoryUpdateDialog extends StatefulWidget {
   const InventoryUpdateDialog({
@@ -55,26 +56,27 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
   }
 
   bool _validate() {
+    final l10n = AppLocalizations.of(context)!;
     final remaining = int.tryParse(_remainingController.text);
     final total = int.tryParse(_totalController.text);
 
     if (remaining == null || total == null) {
-      setState(() => _errorText = 'Please enter valid numbers');
+      setState(() => _errorText = l10n.pleaseEnterValidNumbers);
       return false;
     }
 
     if (remaining < 0) {
-      setState(() => _errorText = 'Remaining must be 0 or greater');
+      setState(() => _errorText = l10n.remainingMustBeZeroOrGreater);
       return false;
     }
 
     if (total <= 0) {
-      setState(() => _errorText = 'Total must be greater than 0');
+      setState(() => _errorText = l10n.totalMustBeGreaterThanZero);
       return false;
     }
 
     if (remaining > total) {
-      setState(() => _errorText = 'Remaining cannot exceed total');
+      setState(() => _errorText = l10n.remainingCannotExceedTotal);
       return false;
     }
 
@@ -107,12 +109,13 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AlertDialog(
       title: Text(
-        'Update Inventory',
+        l10n.updateInventory,
         style: textTheme.titleLarge?.copyWith(
           color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
         ),
@@ -125,7 +128,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             TextField(
               controller: _remainingController,
               decoration: InputDecoration(
-                labelText: 'Remaining',
+                labelText: l10n.remaining,
                 border: const OutlineInputBorder(),
                 errorText: _errorText,
               ),
@@ -136,9 +139,9 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             const SizedBox(height: AppSpacing.lg),
             TextField(
               controller: _totalController,
-              decoration: const InputDecoration(
-                labelText: 'Total',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.total,
+                border: const OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -146,7 +149,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(
-              'Quick Actions',
+              l10n.quickActions,
               style: textTheme.labelMedium?.copyWith(
                 color: AppColors.textMuted,
                 fontWeight: FontWeight.w600,
@@ -182,7 +185,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             OutlinedButton.icon(
               onPressed: _refill,
               icon: const Icon(Icons.refresh, size: AppSpacing.iconSm),
-              label: const Text('Refill (Set Remaining = Total)'),
+              label: Text(l10n.refillSetRemaining),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.success,
               ),
@@ -194,7 +197,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
-            'Cancel',
+            l10n.cancel,
             style: TextStyle(color: AppColors.textMuted),
           ),
         ),
@@ -204,7 +207,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textOnPrimary,
           ),
-          child: const Text('Save'),
+          child: Text(l10n.save),
         ),
       ],
     );

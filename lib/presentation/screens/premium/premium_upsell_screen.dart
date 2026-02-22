@@ -227,7 +227,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
               isSelected: _isYearly,
               title: l10n.premiumYearly,
               price: l10n.premiumYearlyPrice,
-              badge: '34% OFF',
+              badge: l10n.off,
               onTap: () => setState(() => _isYearly = true),
             ),
           ],

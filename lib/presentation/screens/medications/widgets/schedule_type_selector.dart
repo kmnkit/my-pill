@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_radio_option.dart';
 
 class ScheduleTypeSelector extends StatelessWidget {
@@ -15,33 +16,34 @@ class ScheduleTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         MpRadioOption<ScheduleType>(
           value: ScheduleType.daily,
           groupValue: selectedType,
           onChanged: onTypeSelected,
-          label: 'Daily',
+          label: l10n.daily,
           icon: Icons.calendar_today,
-          description: 'Take every day at the same time',
+          description: l10n.dailyDesc,
         ),
         const SizedBox(height: AppSpacing.md),
         MpRadioOption<ScheduleType>(
           value: ScheduleType.specificDays,
           groupValue: selectedType,
           onChanged: onTypeSelected,
-          label: 'Specific Days',
+          label: l10n.specificDays,
           icon: Icons.date_range,
-          description: 'Take on selected days of the week',
+          description: l10n.specificDaysDesc,
         ),
         const SizedBox(height: AppSpacing.md),
         MpRadioOption<ScheduleType>(
           value: ScheduleType.interval,
           groupValue: selectedType,
           onChanged: onTypeSelected,
-          label: 'Interval',
+          label: l10n.interval,
           icon: Icons.schedule,
-          description: 'Take every X hours or days',
+          description: l10n.intervalDesc,
         ),
       ],
     );

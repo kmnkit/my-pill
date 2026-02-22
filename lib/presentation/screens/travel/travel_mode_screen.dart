@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/timezone_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/travel/widgets/affected_med_list.dart';
 import 'package:my_pill/presentation/screens/travel/widgets/location_display.dart';
 import 'package:my_pill/presentation/screens/travel/widgets/timezone_mode_selector.dart';
@@ -14,10 +15,11 @@ class TravelModeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final timezoneState = ref.watch(timezoneSettingsProvider);
 
     return Scaffold(
-      appBar: const MpAppBar(title: 'Travel Mode', showBack: true),
+      appBar: MpAppBar(title: l10n.travelMode, showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -30,14 +32,14 @@ class TravelModeScreen extends ConsumerWidget {
               onChanged: (_) {
                 ref.read(timezoneSettingsProvider.notifier).toggleEnabled();
               },
-              label: 'Enable Travel Mode',
+              label: l10n.enableTravelMode,
             ),
             if (timezoneState.enabled) ...[
               const SizedBox(height: AppSpacing.xl),
               const TimezoneModeSelector(),
               const SizedBox(height: AppSpacing.xl),
               Text(
-                'Affected Medications',
+                l10n.affectedMedications,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -55,7 +57,7 @@ class TravelModeScreen extends ConsumerWidget {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
-                        'Consult your doctor for 3+ timezone changes',
+                        l10n.consultDoctor,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textMuted,
                             ),

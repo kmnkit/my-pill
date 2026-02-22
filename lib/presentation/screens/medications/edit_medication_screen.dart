@@ -12,6 +12,7 @@ import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/interstitial_provider.dart';
 import 'package:my_pill/data/providers/ad_provider.dart';
 import 'package:my_pill/data/providers/iap_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/inventory_editor.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/photo_picker_button.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/pill_color_picker.dart';
@@ -70,11 +71,12 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final medicationAsync = ref.watch(medicationProvider(widget.medicationId));
 
     return Scaffold(
-      appBar: const MpAppBar(
-        title: 'Edit Medication',
+      appBar: MpAppBar(
+        title: l10n.editMedication,
         showBack: true,
       ),
       body: medicationAsync.when(
@@ -94,7 +96,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
-                  'Error loading medication',
+                  l10n.errorLoadingMedication,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -122,7 +124,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     Text(
-                      'Medication not found',
+                      l10n.medicationNotFound,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
@@ -140,8 +142,8 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
               children: [
                 MpTextField(
                   controller: _nameController,
-                  label: 'Medication Name',
-                  hint: 'e.g., Aspirin',
+                  label: l10n.medicationName,
+                  hint: l10n.dosageHint,
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Row(
@@ -151,7 +153,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                       flex: 2,
                       child: MpTextField(
                         controller: _dosageController,
-                        label: 'Dosage',
+                        label: l10n.dosage,
                         hint: '100',
                         keyboardType: TextInputType.number,
                       ),
@@ -162,7 +164,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Unit',
+                            l10n.dosageUnit,
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                           const SizedBox(height: AppSpacing.sm),
@@ -194,7 +196,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xxl),
-                const MpSectionHeader(title: 'Pill Shape'),
+                MpSectionHeader(title: l10n.pillShape),
                 PillShapeSelector(
                   selectedShape: _selectedShape,
                   onShapeSelected: (shape) {
@@ -204,7 +206,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   },
                 ),
                 const SizedBox(height: AppSpacing.xxl),
-                const MpSectionHeader(title: 'Pill Color'),
+                MpSectionHeader(title: l10n.pillColor),
                 PillColorPicker(
                   selectedColor: _selectedColor,
                   onColorSelected: (color) {
@@ -216,7 +218,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                 const SizedBox(height: AppSpacing.xxl),
                 const PhotoPickerButton(),
                 const SizedBox(height: AppSpacing.xxl),
-                const MpSectionHeader(title: 'Schedule Type'),
+                MpSectionHeader(title: l10n.scheduleType),
                 ScheduleTypeSelector(
                   selectedType: _selectedScheduleType,
                   onTypeSelected: (type) {
@@ -226,7 +228,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   },
                 ),
                 const SizedBox(height: AppSpacing.xxl),
-                const MpSectionHeader(title: 'Inventory'),
+                MpSectionHeader(title: l10n.inventory),
                 InventoryEditor(
                   count: _inventoryCount,
                   onCountChanged: (newCount) {
@@ -236,15 +238,15 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   },
                 ),
                 const SizedBox(height: AppSpacing.xxl),
-                const MpSectionHeader(title: 'Critical Alert'),
+                MpSectionHeader(title: l10n.criticalMedication),
                 const SizedBox(height: AppSpacing.sm),
                 SwitchListTile(
                   title: Text(
-                    'Mark as Critical Medication',
+                    l10n.criticalMedicationLabel,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    'Critical medications use high-priority alerts that can bypass Do Not Disturb',
+                    l10n.criticalMedicationDesc,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textMuted,
                         ),
@@ -260,7 +262,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                 ),
                 const SizedBox(height: AppSpacing.xxl),
                 MpButton(
-                  label: _isSaving ? 'Updating...' : 'Update Medication',
+                  label: _isSaving ? l10n.updating : l10n.updateMedication,
                   onPressed: _isSaving ? null : () => _updateMedication(medication),
                 ),
               ],
@@ -272,16 +274,18 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
   }
 
   Future<void> _updateMedication(Medication originalMedication) async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a medication name')),
+        SnackBar(content: Text(l10n.pleaseEnterMedicationName)),
       );
       return;
     }
 
     if (_dosageController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a dosage')),
+        SnackBar(content: Text(l10n.pleaseEnterDosage)),
       );
       return;
     }
@@ -289,7 +293,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
     final dosageValue = double.tryParse(_dosageController.text.trim());
     if (dosageValue == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid number for dosage')),
+        SnackBar(content: Text(l10n.pleaseEnterValidDosage)),
       );
       return;
     }
@@ -323,7 +327,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error updating medication: $e')),
+          SnackBar(content: Text(l10n.errorUpdatingMedication(e.toString()))),
         );
       }
     } finally {

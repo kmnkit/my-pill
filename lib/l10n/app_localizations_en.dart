@@ -1065,4 +1065,286 @@ class AppLocalizationsEn extends AppLocalizations {
   String textSizeSemanticLabel(String label) {
     return 'Text size $label';
   }
+
+  @override
+  String get criticalMedication => 'Critical Medication';
+
+  @override
+  String get criticalMedicationLabel => 'Mark as Critical Medication';
+
+  @override
+  String get criticalMedicationDesc =>
+      'Critical medications use high-priority alerts that can bypass Do Not Disturb';
+
+  @override
+  String get saving => 'Saving...';
+
+  @override
+  String get updating => 'Updating...';
+
+  @override
+  String get updateMedication => 'Update Medication';
+
+  @override
+  String get pleaseEnterMedicationName => 'Please enter a medication name';
+
+  @override
+  String get pleaseEnterDosage => 'Please enter a dosage';
+
+  @override
+  String get pleaseEnterValidDosage => 'Please enter a valid number for dosage';
+
+  @override
+  String errorSavingMedication(String error) {
+    return 'Error saving medication: $error';
+  }
+
+  @override
+  String errorUpdatingMedication(String error) {
+    return 'Error updating medication: $error';
+  }
+
+  @override
+  String get errorLoadingMedication => 'Error loading medication';
+
+  @override
+  String get errorLoadingMedications => 'Error loading medications';
+
+  @override
+  String get medicationNotFound => 'Medication not found';
+
+  @override
+  String get noMedicationsFound => 'No medications found';
+
+  @override
+  String get searchMedicationsHint => 'Search medications...';
+
+  @override
+  String get dosageHint => 'e.g., Aspirin';
+
+  @override
+  String get schedule => 'Schedule';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get noScheduleConfigured => 'No schedule configured';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get times => 'Times';
+
+  @override
+  String get days => 'Days';
+
+  @override
+  String everyNHoursLabel(int hours) {
+    return 'Every $hours hours';
+  }
+
+  @override
+  String get added => 'Added';
+
+  @override
+  String get noHistoryYet => 'No history yet';
+
+  @override
+  String get errorLoadingHistory => 'Error loading history';
+
+  @override
+  String get errorLoadingSchedule => 'Error loading schedule';
+
+  @override
+  String get deleteMedicationTitle => 'Delete Medication';
+
+  @override
+  String get howOften => 'How often?';
+
+  @override
+  String get howManyTimesPerDay => 'How many times per day?';
+
+  @override
+  String get whatTimes => 'What times?';
+
+  @override
+  String get whichDays => 'Which days?';
+
+  @override
+  String get whatTime => 'What time?';
+
+  @override
+  String get every => 'Every';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get daysUnit => 'days';
+
+  @override
+  String get addAnotherTimeLabel => 'Add another time';
+
+  @override
+  String get dailyDesc => 'Take every day at the same time';
+
+  @override
+  String get specificDaysDesc => 'Take on selected days of the week';
+
+  @override
+  String get intervalDesc => 'Take every X hours or days';
+
+  @override
+  String get remaining => 'Remaining';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String get refillSetRemaining => 'Refill (Set Remaining = Total)';
+
+  @override
+  String get pleaseEnterValidNumbers => 'Please enter valid numbers';
+
+  @override
+  String get remainingMustBeZeroOrGreater => 'Remaining must be 0 or greater';
+
+  @override
+  String get totalMustBeGreaterThanZero => 'Total must be greater than 0';
+
+  @override
+  String get remainingCannotExceedTotal => 'Remaining cannot exceed total';
+
+  @override
+  String get myPatients => 'My Patients';
+
+  @override
+  String get noPatientsLinked => 'No patients linked';
+
+  @override
+  String get noPatientsLinkedDesc =>
+      'Ask patients to share their invite code with you';
+
+  @override
+  String get alertTypes => 'Alert Types';
+
+  @override
+  String get missedDose => 'Missed Dose';
+
+  @override
+  String get missedDoseDesc =>
+      'Get notified when a patient misses their scheduled medication';
+
+  @override
+  String get lowStockLabel => 'Low Stock';
+
+  @override
+  String get lowStockDesc =>
+      'Receive alerts when medication inventory is running low';
+
+  @override
+  String get noNotificationsYet => 'No notifications yet';
+
+  @override
+  String get notificationsWillAppear =>
+      'You\'ll be notified when your patients take or miss medications';
+
+  @override
+  String get alertsWillAppear =>
+      'Alerts will appear when patients miss doses or have low medication stock';
+
+  @override
+  String get invitation => 'Invitation';
+
+  @override
+  String get youveBeenInvited => 'You\'ve been invited!';
+
+  @override
+  String inviteCodeLabel(String code) {
+    return 'Invite Code: $code';
+  }
+
+  @override
+  String get acceptInvitation => 'Accept Invitation';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get successfullyLinked => 'Successfully linked as caregiver!';
+
+  @override
+  String failedToAcceptInvite(String error) {
+    return 'Failed to accept invite: $error';
+  }
+
+  @override
+  String get inviteLinkGenerated => 'Invite link generated successfully!';
+
+  @override
+  String failedToGenerateInvite(String error) {
+    return 'Failed to generate invite: $error';
+  }
+
+  @override
+  String get cannotAddMoreCaregivers => 'Cannot add more caregivers';
+
+  @override
+  String get generateInviteLink => 'Generate Invite Link';
+
+  @override
+  String get generating => 'Generating...';
+
+  @override
+  String get generateInviteLinkDesc =>
+      'Generate an invite link to share with your caregiver';
+
+  @override
+  String get newLink => 'New Link';
+
+  @override
+  String get linkCopied => 'Link copied!';
+
+  @override
+  String get processingInvite => 'Processing invite...';
+
+  @override
+  String get inviteAccepted => 'Invite accepted successfully!';
+
+  @override
+  String get joinMeOnMyPill => 'Join me on MyPill';
+
+  @override
+  String get link => 'Link';
+
+  @override
+  String get line => 'LINE';
+
+  @override
+  String get sms => 'SMS';
+
+  @override
+  String get loadingAdherence => 'Loading adherence...';
+
+  @override
+  String get positionQrCode => 'Position the QR code within the frame';
+
+  @override
+  String get noScheduledMedications => 'No scheduled medications';
+
+  @override
+  String failedToStart(String error) {
+    return 'Failed to start: $error';
+  }
+
+  @override
+  String get off => '34% OFF';
+
+  @override
+  String get unit => 'Unit';
 }

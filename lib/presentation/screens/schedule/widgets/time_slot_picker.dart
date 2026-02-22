@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_time_picker.dart';
 
 class TimeSlotPicker extends StatefulWidget {
@@ -81,7 +82,7 @@ class _TimeSlotPickerState extends State<TimeSlotPicker> {
           TextButton.icon(
             onPressed: _addTimeSlot,
             icon: const Icon(Icons.add),
-            label: const Text('Add another time'),
+            label: Text(AppLocalizations.of(context)!.addAnotherTimeLabel),
           ),
         ],
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 
 class QrScannerScreen extends StatefulWidget {
@@ -16,8 +17,10 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const MpAppBar(title: 'Scan QR Code', showBack: true),
+      appBar: MpAppBar(title: l10n.scanQrCode, showBack: true),
       body: Stack(
         children: [
           MobileScanner(
@@ -64,7 +67,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                'Position the QR code within the frame',
+                l10n.positionQrCode,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.white,
