@@ -47,32 +47,31 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: AppSpacing.md),
-        Row(
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
           children: [5, 10, 15, 30].map((duration) {
             final isSelected = _snoozeDuration == duration;
-            return Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.sm),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() => _snoozeDuration = duration);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : (isDark ? AppColors.cardDark : AppColors.cardLight),
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                  ),
-                  child: Text(
-                    '$duration ${l10n.minuteShort}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
-                        ),
-                  ),
+            return GestureDetector(
+              onTap: () {
+                setState(() => _snoozeDuration = duration);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                  vertical: AppSpacing.md,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary
+                      : (isDark ? AppColors.cardDark : AppColors.cardLight),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                ),
+                child: Text(
+                  '$duration ${l10n.minuteShort}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                      ),
                 ),
               ),
             );

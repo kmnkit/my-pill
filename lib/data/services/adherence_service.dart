@@ -80,12 +80,10 @@ class AdherenceService {
   Future<Map<String, double?>> getWeeklyAdherence() async {
     final result = <String, double?>{};
     final now = DateTime.now();
-    final dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
     for (int i = 6; i >= 0; i--) {
       final date = now.subtract(Duration(days: i));
       final adherence = await getDailyAdherence(date);
-      result[dayNames[date.weekday - 1]] = adherence;
+      result[date.weekday.toString()] = adherence;
     }
     return result;
   }

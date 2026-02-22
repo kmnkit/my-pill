@@ -1051,4 +1051,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get minuteShort => 'min';
+
+  @override
+  String get noData => 'No Data';
+
+  @override
+  String get noEmail => 'No email';
+
+  @override
+  String get needsImprovement => 'Needs Improvement';
+
+  @override
+  String get startTrackingMessage =>
+      'Start tracking your medications to see your adherence score.';
+
+  @override
+  String get excellentMessage =>
+      'Keep up the great work! Your consistency is impressive.';
+
+  @override
+  String get goodMessage =>
+      'You\'re doing well! A few missed doses here and there.';
+
+  @override
+  String get fairMessage => 'Room for improvement. Try setting more reminders.';
+
+  @override
+  String get needsImprovementMessage =>
+      'Let\'s work on building a consistent routine together.';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get byMedication => 'By Medication';
+
+  @override
+  String get noMedicationData => 'No medication data available';
+
+  @override
+  String get adsRemovedSuccess => 'Ads removed successfully!';
+
+  @override
+  String get processingEllipsis => 'Processing...';
+
+  @override
+  String textSizeSemanticLabel(String label) {
+    return 'Text size $label';
+  }
 }

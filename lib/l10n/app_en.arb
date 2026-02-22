@@ -407,5 +407,25 @@
   "@errorDeactivatingAccount": { "placeholders": { "error": { "type": "String" } } },
   "errorDeletingAccount": "Error deleting account: {error}",
   "@errorDeletingAccount": { "placeholders": { "error": { "type": "String" } } },
-  "minuteShort": "min"
+  "minuteShort": "min",
+
+  "noData": "No Data",
+  "noEmail": "No email",
+  "needsImprovement": "Needs Improvement",
+  "startTrackingMessage": "Start tracking your medications to see your adherence score.",
+  "excellentMessage": "Keep up the great work! Your consistency is impressive.",
+  "goodMessage": "You're doing well! A few missed doses here and there.",
+  "fairMessage": "Room for improvement. Try setting more reminders.",
+  "needsImprovementMessage": "Let's work on building a consistent routine together.",
+  "thisWeek": "This Week",
+  "byMedication": "By Medication",
+  "noMedicationData": "No medication data available",
+  "adsRemovedSuccess": "Ads removed successfully!",
+  "processingEllipsis": "Processing...",
+  "textSizeSemanticLabel": "Text size {label}",
+  "@textSizeSemanticLabel": {
+    "placeholders": {
+      "label": {"type": "String"}
+    }
+  }
 }
