@@ -698,7 +698,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noAds => '広告なし';
 
   @override
-  String get unlimitedCaregivers => '介護者無制限';
+  String get unlimitedCaregivers => '無制限の介護者連携';
 
   @override
   String get pdfReports => 'PDFレポート出力';
@@ -795,6 +795,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get sharableWithDoctors => '医師や介護者と共有可能';
+
+  @override
+  String get unlimitedCaregiversBenefit => '介護者無制限';
 
   @override
   String get close => '閉じる';

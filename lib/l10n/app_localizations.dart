@@ -881,7 +881,7 @@ abstract class AppLocalizations {
   /// No description provided for @consultDoctor.
   ///
   /// In en, this message translates to:
-  /// **'Consult your doctor for 3+ timezone changes'**
+  /// **'Consult your doctor for 3+ hour time differences'**
   String get consultDoctor;
 
   /// No description provided for @settingsTitle.
@@ -1427,7 +1427,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlimitedCaregivers.
   ///
   /// In en, this message translates to:
-  /// **'Unlimited caregivers'**
+  /// **'Unlimited Caregivers'**
   String get unlimitedCaregivers;
 
   /// No description provided for @pdfReports.
@@ -1615,6 +1615,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sharable with doctors and caregivers'**
   String get sharableWithDoctors;
+
+  /// No description provided for @unlimitedCaregiversBenefit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited caregivers'**
+  String get unlimitedCaregiversBenefit;
 
   /// No description provided for @close.
   ///
