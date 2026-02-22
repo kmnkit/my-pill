@@ -147,7 +147,7 @@
   },
   "skip": "Skip",
   "medication": "Medication",
-  "pillsRemaining": "{count} capsules remaining",
+  "pillsRemaining": "{count} pills remaining",
   "@pillsRemaining": {
     "placeholders": {"count": {"type": "int"}}
   },
@@ -268,7 +268,7 @@
   "@appleSignInFailed": { "placeholders": { "error": { "type": "String" } } },
   "linkFailed": "Failed to link account: {error}",
   "@linkFailed": { "placeholders": { "error": { "type": "String" } } },
-  "appleSignInCancelled": "Sign in was cancelled",
+  "appleSignInCancelled": "Apple sign in was cancelled",
   "appleCredentialAlreadyInUse": "This Apple account is already linked to another user",
   "appleInvalidCredential": "Apple sign in failed. Please try again",
   "appleOperationNotAllowed": "Apple sign in is not enabled for this app",

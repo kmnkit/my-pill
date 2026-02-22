@@ -9,7 +9,7 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appTitle => 'クスリドキ';
+  String get appTitle => 'くすりどき';
 
   @override
   String get onboardingHeadline => 'あなたの信頼できる服薬管理パートナー';
@@ -81,7 +81,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingRolePatientDesc => '自分のお薬を管理します';
 
   @override
-  String get onboardingRoleCaregiver => '介護者';
+  String get onboardingRoleCaregiver => 'サポーター';
 
   @override
   String get onboardingRoleCaregiverDesc => '他の人のお薬管理をサポートします';
@@ -205,7 +205,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get takePhoto => '写真を撮影・アップロード';
 
   @override
-  String get scheduleType => 'スケジュールタイプ';
+  String get scheduleType => '服用スケジュール';
 
   @override
   String get inventory => '在庫';
@@ -344,17 +344,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pillsRemaining(int count) {
-    return '残り$countカプセル';
+    return '残り$count錠';
   }
 
   @override
-  String get weeklyAdherence => '週間服薬遵守率';
+  String get weeklyAdherence => '週間の服薬状況';
 
   @override
-  String get overallAdherence => '全体の服薬遵守率';
+  String get overallAdherence => '全体の服薬状況';
 
   @override
-  String get adherenceRate => '服薬遵守率';
+  String get adherenceRate => '服薬率';
 
   @override
   String adherenceRatePercent(int percent) {
@@ -362,19 +362,19 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get excellent => '優秀';
+  String get excellent => 'とても良い';
 
   @override
   String get good => '良好';
 
   @override
-  String get fair => '普通';
+  String get fair => 'まあまあ';
 
   @override
   String get poor => '要改善';
 
   @override
-  String get keepItUp => '素晴らしいです！この調子で続けましょう！';
+  String get keepItUp => '素晴らしいです！この調子で続けましょう。';
 
   @override
   String get medicationBreakdown => 'お薬別の詳細';
@@ -492,16 +492,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get removeAds => '広告を削除';
 
   @override
-  String get upgradeMessage => 'アップグレードして快適な体験を';
+  String get upgradeMessage => 'アップグレードしてもっと快適に使いましょう';
 
   @override
-  String get switchToCaregiverView => '介護者ビューに切り替え';
+  String get switchToCaregiverView => 'サポータービューに切り替え';
 
   @override
-  String get familyCaregivers => 'ご家族と介護者';
+  String get familyCaregivers => 'ご家族とサポーター';
 
   @override
-  String get linkedCaregivers => '連携中の介護者';
+  String get linkedCaregivers => '連携中のサポーター';
 
   @override
   String get connected => '連携中';
@@ -510,7 +510,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get revokeAccess => 'アクセスを取り消す';
 
   @override
-  String get inviteCaregiver => '介護者を招待';
+  String get inviteCaregiver => 'サポーターを招待';
 
   @override
   String get scanQrCode => 'QRコードをスキャン';
@@ -522,7 +522,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacyNoticeTitle => 'プライバシーについて';
 
   @override
-  String get privacyNotice1 => '介護者は服薬遵守状況とスケジュールのみ閲覧できます';
+  String get privacyNotice1 => 'サポーターは服薬遵守状況とスケジュールのみ閲覧できます';
 
   @override
   String get privacyNotice2 => '個人的なメモやその他の健康データはあなただけに表示されます';
@@ -638,7 +638,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get appleSignInCancelled => 'サインインがキャンセルされました';
+  String get appleSignInCancelled => 'Appleサインインがキャンセルされました';
 
   @override
   String get appleCredentialAlreadyInUse => 'このAppleアカウントは既に別のユーザーに連携されています';
@@ -698,7 +698,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noAds => '広告なし';
 
   @override
-  String get unlimitedCaregivers => '無制限の介護者連携';
+  String get unlimitedCaregivers => '無制限のサポーター連携';
 
   @override
   String get pdfReports => 'PDFレポート出力';
@@ -721,10 +721,10 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get caregiverLimitReached => '無料プランでは介護者は1名までです';
+  String get caregiverLimitReached => '無料プランではサポーターは1名までです';
 
   @override
-  String get upgradeToPremium => 'プレミアムにアップグレードして無制限に';
+  String get upgradeToPremium => 'プレミアムにアップグレードして無制限で使おう';
 
   @override
   String get tryPremium => 'プレミアムを試す';
@@ -757,7 +757,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeature => 'プレミアム機能';
 
   @override
-  String get unlockThisFeature => 'この機能を解除するにはプレミアムにアップグレードしてください';
+  String get unlockThisFeature => 'この機能を使うにはプレミアムにアップグレードしてください';
 
   @override
   String get selectReportPeriod => 'レポート期間を選択';
@@ -794,10 +794,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get detailedAdherenceStats => '詳細な服薬統計';
 
   @override
-  String get sharableWithDoctors => '医師や介護者と共有可能';
+  String get sharableWithDoctors => '医師やサポーターと共有可能';
 
   @override
-  String get unlimitedCaregiversBenefit => '介護者無制限';
+  String get unlimitedCaregiversBenefit => 'サポーター無制限';
 
   @override
   String get close => '閉じる';
@@ -868,16 +868,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dataSharingPreferences => 'データ共有設定';
 
   @override
-  String get dataSharingSubtitle => '介護者と共有する情報を管理します';
+  String get dataSharingSubtitle => 'サポーターと共有する情報を管理します';
 
   @override
-  String get shareAdherenceData => '服薬データを介護者と共有';
+  String get shareAdherenceData => '服薬データをサポーターと共有';
 
   @override
-  String get shareMedicationList => 'お薬リストを介護者と共有';
+  String get shareMedicationList => 'お薬リストをサポーターと共有';
 
   @override
-  String get allowCaregiverNotifications => '介護者への通知を許可';
+  String get allowCaregiverNotifications => 'サポーターへの通知を許可';
 
   @override
   String get manageSubscription => 'サブスクリプション管理';
@@ -912,7 +912,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get noCaregiversLinked => 'まだ介護者がリンクされていません';
+  String get noCaregiversLinked => 'まだサポーターがリンクされていません';
 
   @override
   String get revokeAccessTitle => 'アクセスを取り消す';
@@ -935,7 +935,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String errorLoadingCaregivers(String error) {
-    return '介護者の読み込みエラー: $error';
+    return 'サポーターの読み込みエラー: $error';
   }
 
   @override
@@ -975,7 +975,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteAccountConfirmTitle => '本当によろしいですか？';
 
   @override
-  String get deleteAccountConfirmMessage => 'すべてのお薬、スケジュール、履歴、介護者連携が完全に削除されます。';
+  String get deleteAccountConfirmMessage =>
+      'すべてのお薬、スケジュール、履歴、サポーター連携が完全に削除されます。';
 
   @override
   String get deleteEverything => 'すべて削除';

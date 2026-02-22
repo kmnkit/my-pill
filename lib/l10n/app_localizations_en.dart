@@ -352,7 +352,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String pillsRemaining(int count) {
-    return '$count capsules remaining';
+    return '$count pills remaining';
   }
 
   @override
@@ -651,7 +651,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get appleSignInCancelled => 'Sign in was cancelled';
+  String get appleSignInCancelled => 'Apple sign in was cancelled';
 
   @override
   String get appleCredentialAlreadyInUse =>
