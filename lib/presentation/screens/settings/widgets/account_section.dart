@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -75,9 +76,13 @@ class AccountSection extends ConsumerWidget {
         }
 
         final isAnonymous = user.isAnonymous;
-        final displayName = user.displayName ??
+        final userProfile = ref.watch(userSettingsProvider).value;
+        final displayName = userProfile?.name ??
+                           user.displayName ??
                            (user.email?.split('@').first ?? l10n.guestUser);
-        final email = user.email ?? l10n.noEmail;
+        final email = userProfile?.email ??
+                     user.email ??
+                     l10n.noEmail;
         final initials = _getInitials(displayName);
 
         if (isAnonymous) {
@@ -201,7 +206,8 @@ class AccountSection extends ConsumerWidget {
   Future<void> _linkWithApple(BuildContext context, WidgetRef ref) async {
     try {
       final authService = ref.read(authServiceProvider);
-      await authService.linkWithApple();
+      final result = await authService.linkWithApple();
+      if (result == null) return; // User cancelled
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(

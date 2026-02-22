@@ -8,6 +8,7 @@ import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/providers/timezone_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 
@@ -22,11 +23,13 @@ class AffectedMedList extends ConsumerWidget {
     final timezoneService = ref.watch(timezoneServiceProvider);
     final timeFormat = DateFormat('h:mm a');
 
+    final l10n = AppLocalizations.of(context)!;
+
     return medicationsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(
         child: Text(
-          'Error loading medications: $error',
+          l10n.errorLoadingMedications,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.error,
               ),
@@ -37,7 +40,7 @@ class AffectedMedList extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(
             child: Text(
-              'Error loading schedules: $error',
+              l10n.errorLoadingSchedule,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.error,
                   ),
@@ -105,7 +108,7 @@ class AffectedMedList extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.lg),
                   child: Text(
-                    'No scheduled medications',
+                    l10n.noScheduledMedications,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textMuted,
                         ),

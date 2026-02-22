@@ -1037,4 +1037,279 @@ class AppLocalizationsJa extends AppLocalizations {
   String textSizeSemanticLabel(String label) {
     return 'テキストサイズ $label';
   }
+
+  @override
+  String get criticalMedication => '重要な薬';
+
+  @override
+  String get criticalMedicationLabel => '重要な薬として設定';
+
+  @override
+  String get criticalMedicationDesc => '重要な薬は「おやすみモード」を無視する高優先度アラートを使用します';
+
+  @override
+  String get saving => '保存中...';
+
+  @override
+  String get updating => '更新中...';
+
+  @override
+  String get updateMedication => 'お薬を更新';
+
+  @override
+  String get pleaseEnterMedicationName => 'お薬の名前を入力してください';
+
+  @override
+  String get pleaseEnterDosage => '用量を入力してください';
+
+  @override
+  String get pleaseEnterValidDosage => '有効な数値を入力してください';
+
+  @override
+  String errorSavingMedication(String error) {
+    return 'お薬の保存に失敗しました: $error';
+  }
+
+  @override
+  String errorUpdatingMedication(String error) {
+    return 'お薬の更新に失敗しました: $error';
+  }
+
+  @override
+  String get errorLoadingMedication => 'お薬の読み込みに失敗しました';
+
+  @override
+  String get errorLoadingMedications => 'お薬リストの読み込みに失敗しました';
+
+  @override
+  String get medicationNotFound => 'お薬が見つかりません';
+
+  @override
+  String get noMedicationsFound => 'お薬が見つかりません';
+
+  @override
+  String get searchMedicationsHint => 'お薬を検索...';
+
+  @override
+  String get dosageHint => '例: アスピリン';
+
+  @override
+  String get schedule => 'スケジュール';
+
+  @override
+  String get status => 'ステータス';
+
+  @override
+  String get noScheduleConfigured => 'スケジュール未設定';
+
+  @override
+  String get type => '種類';
+
+  @override
+  String get times => '時間';
+
+  @override
+  String get days => '日';
+
+  @override
+  String everyNHoursLabel(int hours) {
+    return '$hours時間ごと';
+  }
+
+  @override
+  String get added => '追加日';
+
+  @override
+  String get noHistoryYet => '履歴がありません';
+
+  @override
+  String get errorLoadingHistory => '履歴の読み込みに失敗しました';
+
+  @override
+  String get errorLoadingSchedule => 'スケジュールの読み込みに失敗しました';
+
+  @override
+  String get deleteMedicationTitle => 'お薬を削除';
+
+  @override
+  String get howOften => 'どのくらいの頻度で？';
+
+  @override
+  String get howManyTimesPerDay => '1日に何回？';
+
+  @override
+  String get whatTimes => '何時に？';
+
+  @override
+  String get whichDays => 'どの曜日に？';
+
+  @override
+  String get whatTime => '何時に？';
+
+  @override
+  String get every => '毎';
+
+  @override
+  String get hours => '時間';
+
+  @override
+  String get daysUnit => '日';
+
+  @override
+  String get addAnotherTimeLabel => '時間を追加';
+
+  @override
+  String get dailyDesc => '毎日同じ時間に服用';
+
+  @override
+  String get specificDaysDesc => '選択した曜日に服用';
+
+  @override
+  String get intervalDesc => 'X時間またはX日ごとに服用';
+
+  @override
+  String get remaining => '残り';
+
+  @override
+  String get total => '合計';
+
+  @override
+  String get quickActions => 'クイック操作';
+
+  @override
+  String get refillSetRemaining => '補充 (残り = 合計に設定)';
+
+  @override
+  String get pleaseEnterValidNumbers => '有効な数値を入力してください';
+
+  @override
+  String get remainingMustBeZeroOrGreater => '残りは0以上にしてください';
+
+  @override
+  String get totalMustBeGreaterThanZero => '合計は0より大きくしてください';
+
+  @override
+  String get remainingCannotExceedTotal => '残りは合計を超えられません';
+
+  @override
+  String get myPatients => '担当患者';
+
+  @override
+  String get noPatientsLinked => '連携された患者がいません';
+
+  @override
+  String get noPatientsLinkedDesc => '患者に招待コードを共有してもらいましょう';
+
+  @override
+  String get alertTypes => 'アラートの種類';
+
+  @override
+  String get missedDose => '飲み忘れ';
+
+  @override
+  String get missedDoseDesc => '患者が予定された薬を飲み忘れた時に通知を受け取ります';
+
+  @override
+  String get lowStockLabel => '在庫不足';
+
+  @override
+  String get lowStockDesc => 'お薬の在庫が少なくなった時にアラートを受け取ります';
+
+  @override
+  String get noNotificationsYet => '通知はまだありません';
+
+  @override
+  String get notificationsWillAppear => '患者がお薬を服用・飲み忘れた時に通知されます';
+
+  @override
+  String get alertsWillAppear => '患者が飲み忘れや在庫不足の時にアラートが表示されます';
+
+  @override
+  String get invitation => '招待';
+
+  @override
+  String get youveBeenInvited => '招待されました！';
+
+  @override
+  String inviteCodeLabel(String code) {
+    return '招待コード: $code';
+  }
+
+  @override
+  String get acceptInvitation => '招待を受ける';
+
+  @override
+  String get decline => '辞退';
+
+  @override
+  String get successfullyLinked => '介護者として連携されました！';
+
+  @override
+  String failedToAcceptInvite(String error) {
+    return '招待の受け入れに失敗しました: $error';
+  }
+
+  @override
+  String get inviteLinkGenerated => '招待リンクが生成されました！';
+
+  @override
+  String failedToGenerateInvite(String error) {
+    return '招待の生成に失敗しました: $error';
+  }
+
+  @override
+  String get cannotAddMoreCaregivers => 'これ以上介護者を追加できません';
+
+  @override
+  String get generateInviteLink => '招待リンクを生成';
+
+  @override
+  String get generating => '生成中...';
+
+  @override
+  String get generateInviteLinkDesc => '介護者と共有する招待リンクを生成します';
+
+  @override
+  String get newLink => '新しいリンク';
+
+  @override
+  String get linkCopied => 'リンクがコピーされました！';
+
+  @override
+  String get processingInvite => '招待を処理中...';
+
+  @override
+  String get inviteAccepted => '招待が受け入れられました！';
+
+  @override
+  String get joinMeOnMyPill => 'MyPillで一緒に管理しましょう';
+
+  @override
+  String get link => 'リンク';
+
+  @override
+  String get line => 'LINE';
+
+  @override
+  String get sms => 'SMS';
+
+  @override
+  String get loadingAdherence => '服薬状況を読み込み中...';
+
+  @override
+  String get positionQrCode => '枠内にQRコードを配置してください';
+
+  @override
+  String get noScheduledMedications => 'スケジュールされたお薬がありません';
+
+  @override
+  String failedToStart(String error) {
+    return '起動に失敗しました: $error';
+  }
+
+  @override
+  String get off => '34%オフ';
+
+  @override
+  String get unit => '単位';
 }

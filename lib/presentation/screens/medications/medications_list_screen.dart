@@ -6,6 +6,7 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/services/ad_service.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
@@ -51,12 +52,13 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final medicationsAsync = ref.watch(medicationListProvider);
 
     return Scaffold(
       appBar: MpAppBar(
-        title: 'My Medications',
+        title: l10n.myMedications,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -71,7 +73,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: MpTextField(
               controller: _searchController,
-              hint: 'Search medications...',
+              hint: l10n.searchMedicationsHint,
               prefixIcon: Icons.search,
               onChanged: (value) {
                 setState(() {
@@ -94,8 +96,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                   return MpEmptyState(
                     icon: Icons.medication,
                     title: _searchQuery.isEmpty
-                        ? 'No medications added yet'
-                        : 'No medications found',
+                        ? l10n.noMedications
+                        : l10n.noMedicationsFound,
                   );
                 }
 
@@ -148,7 +150,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                   ),
                                   const SizedBox(height: AppSpacing.xs),
                                   MpBadge(
-                                    label: isLowStock ? 'Low' : 'OK',
+                                    label: isLowStock ? l10n.lowStock : 'OK',
                                     variant: isLowStock
                                         ? MpBadgeVariant.lowStock
                                         : MpBadgeVariant.connected,
@@ -175,11 +177,11 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Error loading medications'),
+                    Text(l10n.errorLoadingMedications),
                     const SizedBox(height: AppSpacing.md),
                     TextButton(
                       onPressed: () => ref.invalidate(medicationListProvider),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),

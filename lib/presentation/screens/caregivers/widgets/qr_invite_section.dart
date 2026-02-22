@@ -9,12 +9,12 @@ import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/data/providers/caregiver_provider.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 import 'package:my_pill/presentation/shared/widgets/premium_gate.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
 import 'package:my_pill/presentation/router/route_names.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
 
 class QrInviteSection extends ConsumerStatefulWidget {
   const QrInviteSection({super.key});
@@ -48,6 +48,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
       final result = await cfService.generateInviteLink();
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
           _generatedUrl = result.url;
           _generatedCode = result.code;
@@ -55,22 +56,23 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invite link generated successfully!'),
+          SnackBar(
+            content: Text(l10n.inviteLinkGenerated),
             backgroundColor: AppColors.success,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
           _isGenerating = false;
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to generate invite: $e'),
+            content: Text(l10n.failedToGenerateInvite(e.toString())),
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 3),
           ),
@@ -86,8 +88,8 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
     if (isPremium) {
       // Should not happen, but show generic error
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cannot add more caregivers'),
+        SnackBar(
+          content: Text(l10n.cannotAddMoreCaregivers),
           backgroundColor: AppColors.error,
         ),
       );
@@ -142,20 +144,22 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const MpSectionHeader(title: 'Invite Caregiver'),
+        MpSectionHeader(title: l10n.inviteCaregiver),
         MpCard(
           child: _generatedUrl == null
-              ? _buildGenerateButton()
-              : _buildInviteContent(),
+              ? _buildGenerateButton(l10n)
+              : _buildInviteContent(l10n),
         ),
       ],
     );
   }
 
-  Widget _buildGenerateButton() {
+  Widget _buildGenerateButton(AppLocalizations l10n) {
     return Column(
       children: [
         Icon(
@@ -165,7 +169,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         ),
         const SizedBox(height: AppSpacing.lg),
         Text(
-          'Generate an invite link to share with your caregiver',
+          l10n.generateInviteLinkDesc,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textMuted,
@@ -181,7 +185,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.add_link),
-          label: Text(_isGenerating ? 'Generating...' : 'Generate Invite Link'),
+          label: Text(_isGenerating ? l10n.generating : l10n.generateInviteLink),
         ),
         const SizedBox(height: AppSpacing.lg),
         const Divider(),
@@ -189,13 +193,13 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         OutlinedButton.icon(
           onPressed: () => _scanQrCode(context),
           icon: const Icon(Icons.qr_code_scanner),
-          label: const Text('Scan QR Code'),
+          label: Text(l10n.scanQrCode),
         ),
       ],
     );
   }
 
-  Widget _buildInviteContent() {
+  Widget _buildInviteContent(AppLocalizations l10n) {
     return Column(
       children: [
         QrImageView(
@@ -219,14 +223,14 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             _buildShareButton(
               context,
               Icons.link,
-              'Link',
+              l10n.link,
               () => _copyLink(context, _generatedUrl!),
             ),
             const SizedBox(width: AppSpacing.lg),
             _buildShareButton(
               context,
               Icons.message,
-              'LINE',
+              l10n.line,
               () => _shareViaApp(_generatedUrl!),
             ),
             const SizedBox(width: AppSpacing.lg),
@@ -240,7 +244,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             _buildShareButton(
               context,
               Icons.sms,
-              'SMS',
+              l10n.sms,
               () => _shareViaApp(_generatedUrl!),
             ),
           ],
@@ -252,7 +256,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
               child: OutlinedButton.icon(
                 onPressed: () => _scanQrCode(context),
                 icon: const Icon(Icons.qr_code_scanner),
-                label: const Text('Scan QR Code'),
+                label: Text(l10n.scanQrCode),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -260,7 +264,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
               child: OutlinedButton.icon(
                 onPressed: _generateInvite,
                 icon: const Icon(Icons.refresh),
-                label: const Text('New Link'),
+                label: Text(l10n.newLink),
               ),
             ),
           ],
@@ -272,21 +276,23 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
   Future<void> _copyLink(BuildContext context, String inviteUrl) async {
     await Clipboard.setData(ClipboardData(text: inviteUrl));
     if (context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Link copied!'),
+        SnackBar(
+          content: Text(l10n.linkCopied),
           backgroundColor: AppColors.success,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
   }
 
   Future<void> _shareViaApp(String inviteUrl) async {
+    final l10n = AppLocalizations.of(context)!;
     await SharePlus.instance.share(
       ShareParams(
         text: inviteUrl,
-        subject: 'Join me on MyPill',
+        subject: l10n.joinMeOnMyPill,
       ),
     );
   }
@@ -299,10 +305,11 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
     );
 
     if (code != null && context.mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Processing invite...'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(l10n.processingInvite),
+          duration: const Duration(seconds: 2),
         ),
       );
 
@@ -311,19 +318,21 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         await cfService.acceptInvite(code);
 
         if (context.mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invite accepted successfully!'),
+            SnackBar(
+              content: Text(l10n.inviteAccepted),
               backgroundColor: AppColors.success,
-              duration: Duration(seconds: 3),
+              duration: const Duration(seconds: 3),
             ),
           );
         }
       } catch (e) {
         if (context.mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to accept invite: $e'),
+              content: Text(l10n.failedToAcceptInvite(e.toString())),
               backgroundColor: AppColors.error,
               duration: const Duration(seconds: 3),
             ),

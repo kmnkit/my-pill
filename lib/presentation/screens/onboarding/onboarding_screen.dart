@@ -23,6 +23,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   bool _isLoading = false;
 
   Future<void> _completeAndNavigate() async {
+    final authService = ref.read(authServiceProvider);
+    final firebaseUser = authService.currentUser;
+    if (firebaseUser != null) {
+      await ref.read(userSettingsProvider.notifier).syncWithFirebaseUser(
+            firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+          );
+    }
     await ref.read(userSettingsProvider.notifier).completeOnboarding();
     if (mounted) {
       context.go('/home');
@@ -33,7 +42,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     setState(() => _isLoading = true);
     try {
       final authService = ref.read(authServiceProvider);
-      await authService.signInWithApple();
+      final result = await authService.signInWithApple();
+      if (result == null) {
+        // User cancelled
+        if (mounted) setState(() => _isLoading = false);
+        return;
+      }
       await _completeAndNavigate();
     } on AppleSignInException catch (e) {
       if (mounted && e.error.shouldShowSnackbar) {
@@ -97,9 +111,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       await _completeAndNavigate();
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to start: ${e.toString()}'),
+            content: Text(l10n.failedToStart(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

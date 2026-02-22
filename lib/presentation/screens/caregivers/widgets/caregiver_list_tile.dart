@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/models/caregiver_link.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -36,6 +37,8 @@ class CaregiverListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return MpCard(
       child: Row(
         children: [
@@ -67,7 +70,7 @@ class CaregiverListTile extends StatelessWidget {
                     Icon(Icons.person_remove, size: AppSpacing.iconMd, color: AppColors.error),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
-                      'Revoke Access',
+                      l10n.revokeAccess,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.error,
                           ),

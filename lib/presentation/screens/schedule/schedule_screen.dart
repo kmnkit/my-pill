@@ -7,6 +7,7 @@ import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/day_selector.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/dosage_multiplier.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/frequency_selector.dart';
@@ -36,9 +37,10 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: const MpAppBar(
-        title: 'Set Schedule',
+      appBar: MpAppBar(
+        title: l10n.setSchedule,
         showBack: true,
       ),
       body: SingleChildScrollView(
@@ -47,7 +49,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'How often?',
+              l10n.howOften,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: AppSpacing.md),
@@ -62,7 +64,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             const SizedBox(height: AppSpacing.xxl),
             if (_selectedType == ScheduleType.daily) ...[
               Text(
-                'How many times per day?',
+                l10n.howManyTimesPerDay,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -76,7 +78,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                'What times?',
+                l10n.whatTimes,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -91,7 +93,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ],
             if (_selectedType == ScheduleType.specificDays) ...[
               Text(
-                'Which days?',
+                l10n.whichDays,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -104,7 +106,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               ),
               const SizedBox(height: AppSpacing.xxl),
               Text(
-                'What time?',
+                l10n.whatTime,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -119,7 +121,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ],
             if (_selectedType == ScheduleType.interval) ...[
               Text(
-                'How often?',
+                l10n.howOften,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
@@ -133,7 +135,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ],
             const SizedBox(height: AppSpacing.xxxl),
             MpButton(
-              label: 'Continue',
+              label: l10n.continueButton,
               onPressed: _saveSchedule,
             ),
           ],

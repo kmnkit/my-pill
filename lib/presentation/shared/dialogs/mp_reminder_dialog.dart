@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
 enum ReminderAction { take, snooze, skip }
@@ -39,6 +40,7 @@ class MpReminderDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Dialog(
       elevation: 0,
       backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : AppColors.surfaceLight,
@@ -48,7 +50,7 @@ class MpReminderDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Medication', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.textMuted)),
+            Text(l10n.medication, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.textMuted)),
             const SizedBox(height: AppSpacing.sm),
             Text(time, style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: AppColors.primary)),
             const SizedBox(height: AppSpacing.lg),
@@ -61,18 +63,18 @@ class MpReminderDialog extends StatelessWidget {
             ],
             const SizedBox(height: AppSpacing.xxl),
             MpButton(
-              label: 'Take Now',
+              label: l10n.takeNow,
               onPressed: () => Navigator.of(context).pop(ReminderAction.take),
             ),
             const SizedBox(height: AppSpacing.sm),
             MpButton(
-              label: 'Snooze 15 min',
+              label: l10n.snoozeMinutes(15),
               variant: MpButtonVariant.secondary,
               onPressed: () => Navigator.of(context).pop(ReminderAction.snooze),
             ),
             const SizedBox(height: AppSpacing.sm),
             MpButton(
-              label: 'Skip',
+              label: l10n.skip,
               variant: MpButtonVariant.text,
               onPressed: () => Navigator.of(context).pop(ReminderAction.skip),
             ),

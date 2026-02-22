@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -12,8 +13,10 @@ class CaregiverAlertsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: const MpAppBar(title: 'Alerts'),
+      appBar: MpAppBar(title: l10n.alerts),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -22,11 +25,11 @@ class CaregiverAlertsScreen extends ConsumerWidget {
             children: [
               MpEmptyState(
                 icon: Icons.warning_amber,
-                title: 'No alerts',
-                description: 'Alerts will appear when patients miss doses or have low medication stock',
+                title: l10n.alerts,
+                description: l10n.alertsWillAppear,
               ),
               const SizedBox(height: AppSpacing.xxxl),
-              const MpSectionHeader(title: 'Alert Types'),
+              MpSectionHeader(title: l10n.alertTypes),
               const SizedBox(height: AppSpacing.md),
               MpCard(
                 child: Row(
@@ -42,12 +45,12 @@ class CaregiverAlertsScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Missed Dose',
+                            l10n.missedDose,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
-                            'Get notified when a patient misses their scheduled medication',
+                            l10n.missedDoseDesc,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: AppColors.textMuted,
                                 ),
@@ -73,12 +76,12 @@ class CaregiverAlertsScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Low Stock',
+                            l10n.lowStockLabel,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
-                            'Receive alerts when medication inventory is running low',
+                            l10n.lowStockDesc,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: AppColors.textMuted,
                                 ),

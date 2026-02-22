@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 
 class HistoryListItem extends StatelessWidget {
@@ -47,7 +48,9 @@ class HistoryListItem extends StatelessWidget {
             ),
           ),
           MpBadge(
-            label: wasTaken ? 'Taken' : 'Missed',
+            label: wasTaken
+                ? AppLocalizations.of(context)!.taken
+                : AppLocalizations.of(context)!.missed,
             variant: wasTaken ? MpBadgeVariant.taken : MpBadgeVariant.missed,
           ),
         ],

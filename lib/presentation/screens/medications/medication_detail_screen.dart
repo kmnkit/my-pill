@@ -10,6 +10,7 @@ import 'package:my_pill/data/providers/adherence_provider.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/adherence_badge.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/history_list_item.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
@@ -32,11 +33,12 @@ class MedicationDetailScreen extends ConsumerWidget {
   });
 
   Future<void> _handleDelete(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await MpConfirmDialog.show(
       context,
-      title: 'Delete Medication',
-      message: 'Are you sure you want to delete this medication? This action cannot be undone.',
-      confirmLabel: 'Delete',
+      title: l10n.deleteMedicationTitle,
+      message: l10n.deleteMedicationConfirm,
+      confirmLabel: l10n.delete,
       isDestructive: true,
     );
 
@@ -50,6 +52,7 @@ class MedicationDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final medicationAsync = ref.watch(medicationProvider(medicationId));
     final adherenceAsync = ref.watch(medicationAdherenceProvider(medicationId));
     final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
@@ -80,8 +83,8 @@ class MedicationDetailScreen extends ConsumerWidget {
       body: medicationAsync.when(
         data: (medication) {
           if (medication == null) {
-            return const Center(
-              child: Text('Medication not found'),
+            return Center(
+              child: Text(l10n.medicationNotFound),
             );
           }
 
@@ -140,12 +143,12 @@ class MedicationDetailScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Inventory',
+                            l10n.inventory,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           if (isLowStock)
-                            const MpBadge(
-                              label: 'Low Stock',
+                            MpBadge(
+                              label: l10n.lowStock,
                               variant: MpBadgeVariant.lowStock,
                             ),
                         ],
@@ -157,7 +160,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       MpButton(
-                        label: 'Update Inventory',
+                        label: l10n.updateInventory,
                         variant: MpButtonVariant.secondary,
                         onPressed: () async {
                           final result = await InventoryUpdateDialog.show(
@@ -186,7 +189,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Schedule',
+                        l10n.schedule,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: AppSpacing.md),
@@ -194,21 +197,21 @@ class MedicationDetailScreen extends ConsumerWidget {
                         data: (schedules) {
                           if (schedules.isEmpty) {
                             return _InfoRow(
-                              label: 'Status',
-                              value: 'No schedule configured',
+                              label: l10n.status,
+                              value: l10n.noScheduleConfigured,
                             );
                           }
                           final schedule = schedules.first;
                           return Column(
                             children: [
                               _InfoRow(
-                                label: 'Type',
+                                label: l10n.type,
                                 value: schedule.type.label,
                               ),
                               if (schedule.times.isNotEmpty) ...[
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
-                                  label: 'Times',
+                                  label: l10n.times,
                                   value: schedule.times.join(', '),
                                 ),
                               ],
@@ -216,21 +219,21 @@ class MedicationDetailScreen extends ConsumerWidget {
                                   schedule.specificDays.isNotEmpty) ...[
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
-                                  label: 'Days',
-                                  value: _formatDays(schedule.specificDays),
+                                  label: l10n.days,
+                                  value: _formatDays(schedule.specificDays, l10n),
                                 ),
                               ],
                               if (schedule.type == ScheduleType.interval &&
                                   schedule.intervalHours != null) ...[
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
-                                  label: 'Interval',
-                                  value: 'Every ${schedule.intervalHours} hours',
+                                  label: l10n.interval,
+                                  value: l10n.everyNHoursLabel(schedule.intervalHours!),
                                 ),
                               ],
                               const SizedBox(height: AppSpacing.sm),
                               _InfoRow(
-                                label: 'Added',
+                                label: l10n.added,
                                 value: DateFormat('MMM d, yyyy').format(medication.createdAt),
                               ),
                             ],
@@ -240,8 +243,8 @@ class MedicationDetailScreen extends ConsumerWidget {
                           child: CircularProgressIndicator.adaptive(),
                         ),
                         error: (_, _) => _InfoRow(
-                          label: 'Status',
-                          value: 'Error loading schedule',
+                          label: l10n.status,
+                          value: l10n.errorLoadingSchedule,
                         ),
                       ),
                     ],
@@ -250,17 +253,17 @@ class MedicationDetailScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.xxl),
 
                 // Recent history
-                const MpSectionHeader(title: 'Recent History'),
+                MpSectionHeader(title: l10n.recentHistory),
                 const SizedBox(height: AppSpacing.md),
                 historyAsync.when(
                   data: (records) {
                     if (records.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Padding(
-                          padding: EdgeInsets.all(AppSpacing.xl),
+                          padding: const EdgeInsets.all(AppSpacing.xl),
                           child: Text(
-                            'No history yet',
-                            style: TextStyle(color: AppColors.textMuted),
+                            l10n.noHistoryYet,
+                            style: const TextStyle(color: AppColors.textMuted),
                           ),
                         ),
                       );
@@ -281,12 +284,12 @@ class MedicationDetailScreen extends ConsumerWidget {
                       child: CircularProgressIndicator.adaptive(),
                     ),
                   ),
-                  error: (_, _) => const Center(
+                  error: (_, _) => Center(
                     child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.xl),
+                      padding: const EdgeInsets.all(AppSpacing.xl),
                       child: Text(
-                        'Error loading history',
-                        style: TextStyle(color: AppColors.textMuted),
+                        l10n.errorLoadingHistory,
+                        style: const TextStyle(color: AppColors.textMuted),
                       ),
                     ),
                   ),
@@ -314,11 +317,11 @@ class MedicationDetailScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Error loading medication: $error'),
+              Text(l10n.errorLoadingMedication),
               const SizedBox(height: AppSpacing.md),
               TextButton(
                 onPressed: () => ref.invalidate(medicationProvider(medicationId)),
-                child: const Text('Retry'),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -357,7 +360,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-String _formatDays(List<int> days) {
+String _formatDays(List<int> days, AppLocalizations l10n) {
   const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   return days.map((d) => d >= 0 && d < 7 ? dayNames[d] : '?').join(', ');
 }

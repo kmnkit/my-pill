@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/timezone_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class LocationDisplay extends ConsumerWidget {
@@ -42,6 +43,7 @@ class LocationDisplay extends ConsumerWidget {
       }
     }
 
+    final l10n = AppLocalizations.of(context)!;
     final currentCity = getCityName(timezoneState.currentTimezone);
     final currentTz = getTimezoneDisplay(timezoneState.currentTimezone);
     final homeCity = getCityName(timezoneState.homeTimezone);
@@ -58,7 +60,7 @@ class LocationDisplay extends ConsumerWidget {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
-                  'Current: $currentCity ($currentTz)',
+                  '${l10n.currentLocation}: $currentCity ($currentTz)',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -71,7 +73,7 @@ class LocationDisplay extends ConsumerWidget {
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
-                  'Home: $homeCity ($homeTz)',
+                  '${l10n.homeLocation}: $homeCity ($homeTz)',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textMuted,
                       ),
@@ -81,7 +83,7 @@ class LocationDisplay extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            'Time difference: $timeDiff',
+            l10n.timeDifference(timeDiff),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textMuted,
                 ),

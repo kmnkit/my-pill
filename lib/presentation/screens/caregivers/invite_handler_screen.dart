@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -33,9 +34,10 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
 
       if (!mounted) return;
 
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Successfully linked as caregiver!'),
+        SnackBar(
+          content: Text(l10n.successfullyLinked),
           backgroundColor: AppColors.success,
         ),
       );
@@ -46,9 +48,10 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
 
       setState(() => _isProcessing = false);
 
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to accept invite: $e'),
+          content: Text(l10n.failedToAcceptInvite(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -65,12 +68,13 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: const MpAppBar(
-        title: 'Invitation',
+      appBar: MpAppBar(
+        title: l10n.invitation,
         showBack: true,
       ),
       body: SafeArea(
@@ -97,7 +101,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     ),
                     const SizedBox(height: AppSpacing.xl),
                     Text(
-                      "You've been invited!",
+                      l10n.youveBeenInvited,
                       style: textTheme.headlineSmall?.copyWith(
                         color: isDark
                             ? AppColors.textPrimaryDark
@@ -108,7 +112,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Text(
-                      'Invite Code: ${widget.inviteCode}',
+                      l10n.inviteCodeLabel(widget.inviteCode),
                       style: textTheme.bodyMedium?.copyWith(
                         color: AppColors.textMuted,
                       ),
@@ -119,14 +123,14 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                       const CircularProgressIndicator()
                     else ...[
                       MpButton(
-                        label: 'Accept Invitation',
+                        label: l10n.acceptInvitation,
                         onPressed: _acceptInvitation,
                         icon: Icons.check,
                         variant: MpButtonVariant.primary,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       MpButton(
-                        label: 'Decline',
+                        label: l10n.decline,
                         onPressed: _decline,
                         icon: Icons.close,
                         variant: MpButtonVariant.text,

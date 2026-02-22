@@ -2059,6 +2059,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Text size {label}'**
   String textSizeSemanticLabel(String label);
+
+  /// No description provided for @criticalMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical Medication'**
+  String get criticalMedication;
+
+  /// No description provided for @criticalMedicationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Critical Medication'**
+  String get criticalMedicationLabel;
+
+  /// No description provided for @criticalMedicationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical medications use high-priority alerts that can bypass Do Not Disturb'**
+  String get criticalMedicationDesc;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @updating.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating...'**
+  String get updating;
+
+  /// No description provided for @updateMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Medication'**
+  String get updateMedication;
+
+  /// No description provided for @pleaseEnterMedicationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a medication name'**
+  String get pleaseEnterMedicationName;
+
+  /// No description provided for @pleaseEnterDosage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a dosage'**
+  String get pleaseEnterDosage;
+
+  /// No description provided for @pleaseEnterValidDosage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number for dosage'**
+  String get pleaseEnterValidDosage;
+
+  /// No description provided for @errorSavingMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving medication: {error}'**
+  String errorSavingMedication(String error);
+
+  /// No description provided for @errorUpdatingMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating medication: {error}'**
+  String errorUpdatingMedication(String error);
+
+  /// No description provided for @errorLoadingMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading medication'**
+  String get errorLoadingMedication;
+
+  /// No description provided for @errorLoadingMedications.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading medications'**
+  String get errorLoadingMedications;
+
+  /// No description provided for @medicationNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication not found'**
+  String get medicationNotFound;
+
+  /// No description provided for @noMedicationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No medications found'**
+  String get noMedicationsFound;
+
+  /// No description provided for @searchMedicationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search medications...'**
+  String get searchMedicationsHint;
+
+  /// No description provided for @dosageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Aspirin'**
+  String get dosageHint;
+
+  /// No description provided for @schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get schedule;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @noScheduleConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedule configured'**
+  String get noScheduleConfigured;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @times.
+  ///
+  /// In en, this message translates to:
+  /// **'Times'**
+  String get times;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get days;
+
+  /// No description provided for @everyNHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {hours} hours'**
+  String everyNHoursLabel(int hours);
+
+  /// No description provided for @added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get added;
+
+  /// No description provided for @noHistoryYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet'**
+  String get noHistoryYet;
+
+  /// No description provided for @errorLoadingHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading history'**
+  String get errorLoadingHistory;
+
+  /// No description provided for @errorLoadingSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading schedule'**
+  String get errorLoadingSchedule;
+
+  /// No description provided for @deleteMedicationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Medication'**
+  String get deleteMedicationTitle;
+
+  /// No description provided for @howOften.
+  ///
+  /// In en, this message translates to:
+  /// **'How often?'**
+  String get howOften;
+
+  /// No description provided for @howManyTimesPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'How many times per day?'**
+  String get howManyTimesPerDay;
+
+  /// No description provided for @whatTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'What times?'**
+  String get whatTimes;
+
+  /// No description provided for @whichDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Which days?'**
+  String get whichDays;
+
+  /// No description provided for @whatTime.
+  ///
+  /// In en, this message translates to:
+  /// **'What time?'**
+  String get whatTime;
+
+  /// No description provided for @every.
+  ///
+  /// In en, this message translates to:
+  /// **'Every'**
+  String get every;
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// No description provided for @daysUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get daysUnit;
+
+  /// No description provided for @addAnotherTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another time'**
+  String get addAnotherTimeLabel;
+
+  /// No description provided for @dailyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take every day at the same time'**
+  String get dailyDesc;
+
+  /// No description provided for @specificDaysDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take on selected days of the week'**
+  String get specificDaysDesc;
+
+  /// No description provided for @intervalDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take every X hours or days'**
+  String get intervalDesc;
+
+  /// No description provided for @remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get remaining;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @refillSetRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Refill (Set Remaining = Total)'**
+  String get refillSetRemaining;
+
+  /// No description provided for @pleaseEnterValidNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter valid numbers'**
+  String get pleaseEnterValidNumbers;
+
+  /// No description provided for @remainingMustBeZeroOrGreater.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining must be 0 or greater'**
+  String get remainingMustBeZeroOrGreater;
+
+  /// No description provided for @totalMustBeGreaterThanZero.
+  ///
+  /// In en, this message translates to:
+  /// **'Total must be greater than 0'**
+  String get totalMustBeGreaterThanZero;
+
+  /// No description provided for @remainingCannotExceedTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining cannot exceed total'**
+  String get remainingCannotExceedTotal;
+
+  /// No description provided for @myPatients.
+  ///
+  /// In en, this message translates to:
+  /// **'My Patients'**
+  String get myPatients;
+
+  /// No description provided for @noPatientsLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'No patients linked'**
+  String get noPatientsLinked;
+
+  /// No description provided for @noPatientsLinkedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask patients to share their invite code with you'**
+  String get noPatientsLinkedDesc;
+
+  /// No description provided for @alertTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Types'**
+  String get alertTypes;
+
+  /// No description provided for @missedDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed Dose'**
+  String get missedDose;
+
+  /// No description provided for @missedDoseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified when a patient misses their scheduled medication'**
+  String get missedDoseDesc;
+
+  /// No description provided for @lowStockLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Low Stock'**
+  String get lowStockLabel;
+
+  /// No description provided for @lowStockDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive alerts when medication inventory is running low'**
+  String get lowStockDesc;
+
+  /// No description provided for @noNotificationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get noNotificationsYet;
+
+  /// No description provided for @notificationsWillAppear.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be notified when your patients take or miss medications'**
+  String get notificationsWillAppear;
+
+  /// No description provided for @alertsWillAppear.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts will appear when patients miss doses or have low medication stock'**
+  String get alertsWillAppear;
+
+  /// No description provided for @invitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation'**
+  String get invitation;
+
+  /// No description provided for @youveBeenInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve been invited!'**
+  String get youveBeenInvited;
+
+  /// No description provided for @inviteCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Code: {code}'**
+  String inviteCodeLabel(String code);
+
+  /// No description provided for @acceptInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Invitation'**
+  String get acceptInvitation;
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get decline;
+
+  /// No description provided for @successfullyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully linked as caregiver!'**
+  String get successfullyLinked;
+
+  /// No description provided for @failedToAcceptInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to accept invite: {error}'**
+  String failedToAcceptInvite(String error);
+
+  /// No description provided for @inviteLinkGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite link generated successfully!'**
+  String get inviteLinkGenerated;
+
+  /// No description provided for @failedToGenerateInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate invite: {error}'**
+  String failedToGenerateInvite(String error);
+
+  /// No description provided for @cannotAddMoreCaregivers.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot add more caregivers'**
+  String get cannotAddMoreCaregivers;
+
+  /// No description provided for @generateInviteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Invite Link'**
+  String get generateInviteLink;
+
+  /// No description provided for @generating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generating;
+
+  /// No description provided for @generateInviteLinkDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate an invite link to share with your caregiver'**
+  String get generateInviteLinkDesc;
+
+  /// No description provided for @newLink.
+  ///
+  /// In en, this message translates to:
+  /// **'New Link'**
+  String get newLink;
+
+  /// No description provided for @linkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied!'**
+  String get linkCopied;
+
+  /// No description provided for @processingInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing invite...'**
+  String get processingInvite;
+
+  /// No description provided for @inviteAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite accepted successfully!'**
+  String get inviteAccepted;
+
+  /// No description provided for @joinMeOnMyPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Join me on MyPill'**
+  String get joinMeOnMyPill;
+
+  /// No description provided for @link.
+  ///
+  /// In en, this message translates to:
+  /// **'Link'**
+  String get link;
+
+  /// No description provided for @line.
+  ///
+  /// In en, this message translates to:
+  /// **'LINE'**
+  String get line;
+
+  /// No description provided for @sms.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS'**
+  String get sms;
+
+  /// No description provided for @loadingAdherence.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading adherence...'**
+  String get loadingAdherence;
+
+  /// No description provided for @positionQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Position the QR code within the frame'**
+  String get positionQrCode;
+
+  /// No description provided for @noScheduledMedications.
+  ///
+  /// In en, this message translates to:
+  /// **'No scheduled medications'**
+  String get noScheduledMedications;
+
+  /// No description provided for @failedToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start: {error}'**
+  String failedToStart(String error);
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'34% OFF'**
+  String get off;
+
+  /// No description provided for @unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get unit;
 }
 
 class _AppLocalizationsDelegate

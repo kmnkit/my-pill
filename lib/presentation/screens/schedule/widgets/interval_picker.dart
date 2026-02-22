@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class IntervalPicker extends StatefulWidget {
   const IntervalPicker({
@@ -39,6 +40,7 @@ class _IntervalPickerState extends State<IntervalPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
@@ -50,7 +52,7 @@ class _IntervalPickerState extends State<IntervalPicker> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Every', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.every, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(width: AppSpacing.md),
           Container(
             width: 80,
@@ -82,9 +84,9 @@ class _IntervalPickerState extends State<IntervalPicker> {
           DropdownButton<String>(
             value: _unit,
             underline: const SizedBox(),
-            items: const [
-              DropdownMenuItem(value: 'hours', child: Text('hours')),
-              DropdownMenuItem(value: 'days', child: Text('days')),
+            items: [
+              DropdownMenuItem(value: 'hours', child: Text(l10n.hours)),
+              DropdownMenuItem(value: 'days', child: Text(l10n.daysUnit)),
             ],
             onChanged: (value) {
               if (value != null) {

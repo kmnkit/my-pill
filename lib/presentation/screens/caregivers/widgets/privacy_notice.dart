@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
 class PrivacyNotice extends StatelessWidget {
@@ -8,6 +9,8 @@ class PrivacyNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return MpCard(
       color: AppColors.info.withValues(alpha: 0.1),
       child: Row(
@@ -20,14 +23,14 @@ class PrivacyNotice extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Caregivers can view your medication schedule and adherence.',
+                  l10n.privacyNotice1,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  'You can revoke access at any time.',
+                  l10n.privacyNotice2,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textMuted,
                       ),
