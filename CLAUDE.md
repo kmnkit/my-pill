@@ -51,10 +51,16 @@ flutter pub run flutter_launcher_icons:main                        # Regenerate 
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) on PRs to main/develop:
+GitHub Actions (`.github/workflows/`):
+
+**ci.yml** — PRs and pushes to main/develop:
 - `flutter analyze --fatal-infos`
 - `flutter test --coverage`
 - Codecov upload
+- Android APK build (main push only)
+- iOS build (main push only)
+
+**deploy-firebase.yml** — Firebase deployment
 
 ## Architecture
 
@@ -201,7 +207,7 @@ firebase emulators:start --only functions,firestore
 - **Framework**: `mockito` with `@GenerateMocks` (run `build_runner` after adding annotations)
 - **Provider testing**: `ProviderContainer` with `overrides`
 - **Widget testing**: `ProviderScope` wrapper with mocked providers
-- **Existing coverage**: medication inventory, adherence rating, timezone conversions
+- **Current test files**: `test/core/`, `test/data/` (services, repositories), `test/mock_firebase.dart`
 
 ## Gotchas
 
@@ -220,6 +226,9 @@ firebase emulators:start --only functions,firestore
 - `docs/product_requirements_document_ja.md` — PRD (Japanese)
 - `docs/iOS_APP_STORE_DEPLOYMENT_GUIDE.md` — iOS deployment steps
 - `docs/APP_STORE_METADATA.md` — Store listing metadata
+- `docs/APP_STORE_PREPARATION.md` — App Store preparation guide
+- `docs/CONSUMER_PANEL_INSIGHTS.md` — Consumer panel insights
+- `docs/progress.md` — Development progress tracking
 
 ## AGENTS.md Hierarchy
 
