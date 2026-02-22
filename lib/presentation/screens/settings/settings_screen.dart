@@ -112,7 +112,11 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (confirmed == true && context.mounted) {
                     try {
-                      // 1. Invalidate all user-data providers
+                      // 1. Sign out from Firebase first
+                      await AuthService().signOut();
+                      // 2. Clear user data (preserves onboardingComplete/language)
+                      await StorageService().clearUserData();
+                      // 3. Invalidate all user-data providers
                       ref.invalidate(medicationListProvider);
                       ref.invalidate(scheduleListProvider);
                       ref.invalidate(todayRemindersProvider);
@@ -120,10 +124,6 @@ class SettingsScreen extends ConsumerWidget {
                       ref.invalidate(weeklyAdherenceProvider);
                       ref.invalidate(caregiverLinksProvider);
                       ref.invalidate(userSettingsProvider);
-                      // 2. Clear Hive local storage
-                      await StorageService().clearAll();
-                      // 3. Sign out from Firebase
-                      await AuthService().signOut();
                       if (context.mounted) {
                         context.go('/login');
                       }
@@ -169,6 +169,9 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (secondConfirm == true && context.mounted) {
                     try {
+                      // Re-authenticate before deletion
+                      final reauthed = await AuthService().reauthenticate();
+                      if (!reauthed) return; // User cancelled
                       // Server-side deletion of all user data + auth account
                       await CloudFunctionsService().deleteAccount();
                       // Clear local data

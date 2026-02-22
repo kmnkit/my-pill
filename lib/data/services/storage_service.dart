@@ -262,6 +262,8 @@ class StorageService {
   }
 
   // --- Utility ---
+
+  /// Clear all data including app settings. Use for account deletion.
   Future<void> clearAll() async {
     await Hive.deleteBoxFromDisk(_medicationsBox);
     await Hive.deleteBoxFromDisk(_schedulesBox);
@@ -269,5 +271,37 @@ class StorageService {
     await Hive.deleteBoxFromDisk(_adherenceBox);
     await Hive.deleteBoxFromDisk(_settingsBox);
     await Hive.deleteBoxFromDisk(_caregiverLinksBox);
+  }
+
+  /// Clear user data only, preserving app settings (onboardingComplete, language).
+  /// Use for sign-out to avoid redirecting back to onboarding.
+  Future<void> clearUserData() async {
+    await Hive.deleteBoxFromDisk(_medicationsBox);
+    await Hive.deleteBoxFromDisk(_schedulesBox);
+    await Hive.deleteBoxFromDisk(_remindersBox);
+    await Hive.deleteBoxFromDisk(_adherenceBox);
+    await Hive.deleteBoxFromDisk(_caregiverLinksBox);
+
+    // Reset personal info in settings but preserve app preferences
+    final box = await _openBox(_settingsBox);
+    final json = box.get('user_profile');
+    if (json != null) {
+      final profile = UserProfile.fromJson(
+        jsonDecode(json) as Map<String, dynamic>,
+      );
+      final cleaned = profile.copyWith(
+        id: '',
+        name: null,
+        email: null,
+        usesPrivateEmail: false,
+        removeAds: false,
+        travelModeEnabled: false,
+        homeTimezone: null,
+        userRole: 'patient',
+        // Preserved: onboardingComplete, language, highContrast, textSize,
+        // notificationsEnabled, criticalAlerts, snoozeDuration
+      );
+      await box.put('user_profile', jsonEncode(cleaned.toJson()));
+    }
   }
 }

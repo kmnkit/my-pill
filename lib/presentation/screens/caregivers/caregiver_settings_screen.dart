@@ -104,9 +104,9 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
                   ),
                 );
                 if (confirmed == true && context.mounted) {
-                  _invalidateAllProviders();
-                  await StorageService().clearAll();
                   await ref.read(authServiceProvider).signOut();
+                  await StorageService().clearUserData();
+                  _invalidateAllProviders();
                   if (context.mounted) {
                     context.go('/login');
                   }
@@ -136,9 +136,9 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
                 if (confirmed == true && context.mounted) {
                   try {
-                    _invalidateAllProviders();
-                    await StorageService().clearAll();
                     await AuthService().signOut();
+                    await StorageService().clearUserData();
+                    _invalidateAllProviders();
                     if (context.mounted) {
                       context.go('/login');
                     }
@@ -189,6 +189,9 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
                 if (secondConfirm == true && context.mounted) {
                   try {
+                    // Re-authenticate before deletion
+                    final reauthed = await AuthService().reauthenticate();
+                    if (!reauthed) return; // User cancelled
                     await CloudFunctionsService().deleteAccount();
                     await StorageService().clearAll();
                     if (context.mounted) {

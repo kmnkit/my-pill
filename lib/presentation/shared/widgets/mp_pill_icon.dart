@@ -17,6 +17,17 @@ class MpPillIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget iconWidget = Icon(shape.icon, color: color.color, size: size);
+
+    // Stretch oval horizontally to distinguish from round
+    if (shape == PillShape.oval) {
+      iconWidget = Transform.scale(
+        scaleX: 1.4,
+        scaleY: 0.75,
+        child: iconWidget,
+      );
+    }
+
     return Semantics(
       label: 'Medication icon: ${shape.name} ${color.name}',
       child: Container(
@@ -27,7 +38,7 @@ class MpPillIcon extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         ),
         child: ExcludeSemantics(
-          child: Icon(shape.icon, color: color.color, size: size),
+          child: iconWidget,
         ),
       ),
     );

@@ -102,6 +102,12 @@ class MockAuthService implements AuthService {
   }
 
   @override
+  Future<bool> reauthenticate() async {
+    _checkFailure();
+    return _currentUser != null;
+  }
+
+  @override
   Future<void> deleteAccount() async {
     _checkFailure();
     _currentUser = null;
@@ -370,6 +376,28 @@ class MockStorageService implements StorageService {
     _adherenceRecords.clear();
     _caregiverLinks.clear();
     _userProfile = null;
+  }
+
+  @override
+  Future<void> clearUserData() async {
+    _medications.clear();
+    _schedules.clear();
+    _reminders.clear();
+    _adherenceRecords.clear();
+    _caregiverLinks.clear();
+    // Preserve app settings (onboardingComplete, language) but reset personal info
+    if (_userProfile != null) {
+      _userProfile = _userProfile!.copyWith(
+        id: '',
+        name: null,
+        email: null,
+        usesPrivateEmail: false,
+        removeAds: false,
+        travelModeEnabled: false,
+        homeTimezone: null,
+        userRole: 'patient',
+      );
+    }
   }
 
   /// Get current state for assertions
