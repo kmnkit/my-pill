@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
@@ -113,12 +112,6 @@ class AccountSection extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 MpButton(
-                  label: l10n.signIn,
-                  onPressed: () => context.push('/login'),
-                  variant: MpButtonVariant.primary,
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                MpButton(
                   label: l10n.linkWithGoogle,
                   onPressed: () => _linkWithGoogle(context, ref),
                   variant: MpButtonVariant.secondary,
@@ -141,7 +134,6 @@ class AccountSection extends ConsumerWidget {
         final isPrivateEmail = AuthService.isPrivateRelayEmail(user.email);
 
         return MpCard(
-          onTap: () => context.push('/login'),
           child: Row(
             children: [
               MpAvatar(initials: initials, size: 56.0),

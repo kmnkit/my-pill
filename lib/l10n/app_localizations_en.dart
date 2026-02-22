@@ -30,6 +30,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alreadyHaveAccount => 'I already have an account';
 
   @override
+  String get tryWithoutAccount => 'Try without an account';
+
+  @override
+  String get localDataOnlyNotice =>
+      'Without an account, your data is stored only on this device.';
+
+  @override
   String get onboardingWelcomeTitle => 'Welcome to Kusuridoki';
 
   @override
@@ -628,35 +635,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get or => 'or';
 
   @override
-  String get createAccount => 'Create Account';
-
-  @override
-  String get forgotPassword => 'Forgot password?';
-
-  @override
-  String get emailHint => 'your@email.com';
-
-  @override
-  String get passwordHint => 'Enter your password';
-
-  @override
-  String get emailRequired => 'Email is required';
-
-  @override
-  String get validEmail => 'Enter a valid email';
-
-  @override
-  String get passwordRequired => 'Password is required';
-
-  @override
-  String get passwordMinLength => 'Password must be at least 6 characters';
-
-  @override
-  String signInFailed(String error) {
-    return 'Sign in failed: $error';
-  }
-
-  @override
   String googleSignInFailed(String error) {
     return 'Google sign in failed: $error';
   }
@@ -665,22 +643,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String appleSignInFailed(String error) {
     return 'Apple sign in failed: $error';
   }
-
-  @override
-  String accountCreationFailed(String error) {
-    return 'Account creation failed: $error';
-  }
-
-  @override
-  String get resetEmailSent => 'Password reset email sent';
-
-  @override
-  String resetEmailFailed(String error) {
-    return 'Failed to send reset email: $error';
-  }
-
-  @override
-  String get enterEmail => 'Please enter your email address';
 
   @override
   String linkFailed(String error) {

@@ -4,7 +4,6 @@ import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 import 'package:my_pill/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:my_pill/presentation/screens/onboarding/login_screen.dart';
 import 'package:my_pill/presentation/screens/home/home_screen.dart';
 import 'package:my_pill/presentation/screens/medications/medications_list_screen.dart';
 import 'package:my_pill/presentation/screens/medications/add_medication_screen.dart';
@@ -30,13 +29,6 @@ final GoRouter appRouter = GoRouter(
       path: '/onboarding',
       name: RouteNames.onboarding,
       builder: (context, state) => const OnboardingScreen(),
-    ),
-
-    // Standalone route: Login
-    GoRoute(
-      path: '/login',
-      name: RouteNames.login,
-      builder: (context, state) => const LoginScreen(),
     ),
 
     // Standalone route: Deep link invite handler

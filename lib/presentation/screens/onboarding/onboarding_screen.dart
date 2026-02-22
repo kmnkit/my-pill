@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
+import 'package:my_pill/data/services/auth_service.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
@@ -18,14 +22,79 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   bool _isLoading = false;
 
-  Future<void> _handleGetStarted() async {
+  Future<void> _completeAndNavigate() async {
+    await ref.read(userSettingsProvider.notifier).completeOnboarding();
+    if (mounted) {
+      context.go('/home');
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() => _isLoading = true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.signInWithApple();
+      await _completeAndNavigate();
+    } on AppleSignInException catch (e) {
+      if (mounted && e.error.shouldShowSnackbar) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.error.getLocalizedMessage(context)),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.appleSignInFailed(e.toString())),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.signInWithGoogle();
+      if (result == null) {
+        // User cancelled
+        if (mounted) setState(() => _isLoading = false);
+        return;
+      }
+      await _completeAndNavigate();
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.googleSignInFailed(e.toString())),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _continueAnonymously() async {
     setState(() => _isLoading = true);
     try {
       final authService = ref.read(authServiceProvider);
       await authService.signInAnonymously();
-      if (mounted) {
-        context.go('/home');
-      }
+      await _completeAndNavigate();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +121,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final l10n = AppLocalizations.of(context);
     final settingsAsync = ref.watch(userSettingsProvider);
 
-    final currentLanguage = settingsAsync.whenOrNull(data: (s) => s.language) ?? 'en';
+    final currentLanguage =
+        settingsAsync.whenOrNull(data: (s) => s.language) ?? 'en';
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -71,20 +141,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     child: Text(
                       'EN',
                       style: textTheme.labelLarge?.copyWith(
-                        color: currentLanguage == 'en' ? AppColors.primary : AppColors.textMuted,
+                        color: currentLanguage == 'en'
+                            ? AppColors.primary
+                            : AppColors.textMuted,
                       ),
                     ),
                   ),
                   Text(
                     ' | ',
-                    style: textTheme.labelLarge?.copyWith(color: AppColors.textMuted),
+                    style: textTheme.labelLarge
+                        ?.copyWith(color: AppColors.textMuted),
                   ),
                   TextButton(
                     onPressed: () => _setLanguage('ja'),
                     child: Text(
                       'JP',
                       style: textTheme.labelLarge?.copyWith(
-                        color: currentLanguage == 'ja' ? AppColors.primary : AppColors.textMuted,
+                        color: currentLanguage == 'ja'
+                            ? AppColors.primary
+                            : AppColors.textMuted,
                       ),
                     ),
                   ),
@@ -106,7 +181,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
                   // Headline
                   Text(
-                    l10n?.onboardingHeadline ?? 'Your reliable medication companion',
+                    l10n?.onboardingHeadline ??
+                        'Your reliable medication companion',
                     style: textTheme.headlineLarge,
                     textAlign: TextAlign.center,
                   ),
@@ -121,13 +197,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: AppSpacing.lg),
                   _FeatureRow(
                     icon: Icons.access_time,
-                    text: l10n?.onboardingFeature2 ?? 'Works across timezones',
+                    text: l10n?.onboardingFeature2 ??
+                        'Works across timezones',
                     textTheme: textTheme,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   _FeatureRow(
                     icon: Icons.groups,
-                    text: l10n?.onboardingFeature3 ?? 'Keep family connected',
+                    text: l10n?.onboardingFeature3 ??
+                        'Keep family connected',
                     textTheme: textTheme,
                   ),
                 ],
@@ -135,20 +213,69 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
               const Spacer(),
 
-              // Bottom section
+              // Bottom section: Sign-in buttons
               if (_isLoading)
                 const Center(child: CircularProgressIndicator())
               else ...[
+                // Apple Sign-In (iOS only, primary CTA)
+                if (Platform.isIOS) ...[
+                  MpButton(
+                    label: l10n?.signInWithApple ?? 'Sign in with Apple',
+                    onPressed: _signInWithApple,
+                    variant: MpButtonVariant.primary,
+                    icon: Icons.apple,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                ],
+
+                // Google Sign-In
                 MpButton(
-                  label: l10n?.getStarted ?? 'Get Started',
-                  onPressed: _handleGetStarted,
-                  variant: MpButtonVariant.primary,
+                  label: l10n?.signInWithGoogle ?? 'Sign in with Google',
+                  onPressed: _signInWithGoogle,
+                  variant: Platform.isIOS
+                      ? MpButtonVariant.secondary
+                      : MpButtonVariant.primary,
+                  icon: Icons.g_mobiledata,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+
+                // Divider
+                Row(
+                  children: [
+                    const Expanded(child: Divider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md),
+                      child: Text(
+                        l10n?.or ?? 'or',
+                        style: textTheme.bodySmall?.copyWith(
+                          color: AppColors.textMuted,
+                        ),
+                      ),
+                    ),
+                    const Expanded(child: Divider()),
+                  ],
                 ),
                 const SizedBox(height: AppSpacing.md),
+
+                // Anonymous / try without account
                 MpButton(
-                  label: l10n?.alreadyHaveAccount ?? 'I already have an account',
-                  onPressed: () => context.push('/login'),
+                  label: l10n?.tryWithoutAccount ??
+                      'Try without an account',
+                  onPressed: _continueAnonymously,
                   variant: MpButtonVariant.text,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+
+                // Disclaimer
+                Text(
+                  l10n?.localDataOnlyNotice ??
+                      'Without an account, your data is stored only on this device.',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ],
