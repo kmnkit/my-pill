@@ -125,7 +125,7 @@ class SettingsScreen extends ConsumerWidget {
                       // 3. Sign out from Firebase
                       await AuthService().signOut();
                       if (context.mounted) {
-                        context.go('/onboarding');
+                        context.go('/login');
                       }
                     } catch (e) {
                       if (context.mounted) {
@@ -174,7 +174,7 @@ class SettingsScreen extends ConsumerWidget {
                       // Clear local data
                       await StorageService().clearAll();
                       if (context.mounted) {
-                        context.go('/onboarding');
+                        context.go('/login');
                       }
                     } catch (e) {
                       if (context.mounted) {

@@ -25,7 +25,7 @@ class UserSettings extends _$UserSettings {
     // New user - onboardingComplete defaults to false
     return const UserProfile(
       id: 'local',
-      name: 'User',
+      name: null,
       language: 'en',
       highContrast: false,
       textSize: 'normal',
@@ -48,7 +48,9 @@ class UserSettings extends _$UserSettings {
     final updated = current.copyWith(
       id: uid,
       email: email ?? current.email,
-      name: displayName ?? current.name,
+      name: (displayName != null && displayName.isNotEmpty)
+          ? displayName
+          : current.name,
     );
     await updateProfile(updated);
   }

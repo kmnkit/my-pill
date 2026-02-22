@@ -77,9 +77,11 @@ class AccountSection extends ConsumerWidget {
 
         final isAnonymous = user.isAnonymous;
         final userProfile = ref.watch(userSettingsProvider).value;
-        final displayName = userProfile?.name ??
-                           user.displayName ??
-                           (user.email?.split('@').first ?? l10n.guestUser);
+        final profileName = userProfile?.name;
+        // Fallback chain: profile name (if not null/empty/legacy 'User') -> Firebase displayName -> email prefix -> guest
+        final displayName = (profileName != null && profileName.isNotEmpty && profileName != 'User')
+            ? profileName
+            : (user.displayName ?? (user.email?.split('@').first ?? l10n.guestUser));
         final email = userProfile?.email ??
                      user.email ??
                      l10n.noEmail;
