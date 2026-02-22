@@ -10,7 +10,7 @@
   "getStarted": "はじめる",
   "alreadyHaveAccount": "アカウントをお持ちの方",
 
-  "onboardingWelcomeTitle": "MyPillへようこそ",
+  "onboardingWelcomeTitle": "くすりどきへようこそ",
   "onboardingWelcomeSubtitle": "服薬管理パートナーを設定しましょう",
   "onboardingNext": "次へ",
   "onboardingBack": "戻る",
@@ -22,7 +22,7 @@
   "onboardingNameHint": "名前を入力",
   "onboardingNameSkip": "スキップ",
 
-  "onboardingRoleTitle": "MyPillをどのように使いますか？",
+  "onboardingRoleTitle": "くすりどきをどのように使いますか？",
   "onboardingRoleSubtitle": "あなたに最も当てはまるものを選んでください",
   "onboardingRolePatient": "患者",
   "onboardingRolePatientDesc": "自分のお薬を管理します",
@@ -197,6 +197,7 @@
   "safetyPrivacy": "安全とプライバシー",
   "exportHistory": "履歴をエクスポート",
   "privacyPolicy": "プライバシーポリシー",
+  "termsOfService": "利用規約",
   "about": "このアプリについて",
   "version": "バージョン {version}",
   "@version": {

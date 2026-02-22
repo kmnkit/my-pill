@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/constants/app_constants.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/data/services/auth_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
@@ -55,6 +57,20 @@ class SettingsScreen extends ConsumerWidget {
                 l10n.backupAndSync,
                 Icons.cloud_upload,
                 () => BackupSyncDialog.show(context),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _buildListTile(
+                context,
+                l10n.privacyPolicy,
+                Icons.shield_outlined,
+                () => launchUrl(Uri.parse(AppConstants.privacyPolicyUrl)),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _buildListTile(
+                context,
+                l10n.termsOfService,
+                Icons.description_outlined,
+                () => launchUrl(Uri.parse(AppConstants.termsOfServiceUrl)),
               ),
               const SizedBox(height: AppSpacing.xl),
               MpSectionHeader(title: l10n.about),

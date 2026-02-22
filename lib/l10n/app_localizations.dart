@@ -143,7 +143,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcomeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to MyPill'**
+  /// **'Welcome to Kusuridoki'**
   String get onboardingWelcomeTitle;
 
   /// No description provided for @onboardingWelcomeSubtitle.
@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingRoleTitle.
   ///
   /// In en, this message translates to:
-  /// **'How will you use MyPill?'**
+  /// **'How will you use Kusuridoki?'**
   String get onboardingRoleTitle;
 
   /// No description provided for @onboardingRoleSubtitle.
@@ -973,6 +973,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicy;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
 
   /// No description provided for @about.
   ///

@@ -30,7 +30,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alreadyHaveAccount => 'I already have an account';
 
   @override
-  String get onboardingWelcomeTitle => 'Welcome to MyPill';
+  String get onboardingWelcomeTitle => 'Welcome to Kusuridoki';
 
   @override
   String get onboardingWelcomeSubtitle =>
@@ -65,7 +65,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingNameSkip => 'Skip for now';
 
   @override
-  String get onboardingRoleTitle => 'How will you use MyPill?';
+  String get onboardingRoleTitle => 'How will you use Kusuridoki?';
 
   @override
   String get onboardingRoleSubtitle =>
@@ -468,6 +468,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfService => 'Terms of Service';
 
   @override
   String get about => 'About';

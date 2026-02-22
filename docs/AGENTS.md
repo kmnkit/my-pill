@@ -4,7 +4,7 @@
 # docs — Product Documentation
 
 ## Purpose
-Product requirements documents (PRDs) defining the MyPill application's features, target users, technical stack, and design guidelines. Available in both English and Japanese.
+Product requirements documents (PRDs) defining the Kusuridoki application's features, target users, technical stack, and design guidelines. Available in both English and Japanese.
 
 ## Key Files
 

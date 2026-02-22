@@ -1,19 +1,19 @@
 # iOS App Store Deployment Guide
 
-**MyPill v1.0.0** — Complete step-by-step guide for submitting to the App Store.
+**Kusuridoki v1.0.0** — Complete step-by-step guide for submitting to the App Store.
 
 ---
 
 ## Executive Summary
 
-This guide consolidates all iOS App Store submission steps for MyPill. The deployment process is divided into 10 phases, with automated setup mostly complete. Manual configuration is required for team setup and App Store Connect registration before building and submitting to review.
+This guide consolidates all iOS App Store submission steps for Kusuridoki. The deployment process is divided into 10 phases, with automated setup mostly complete. Manual configuration is required for team setup and App Store Connect registration before building and submitting to review.
 
 **Current Status:**
 - Phases 2, 3, 4, 6: COMPLETED (automated setup finished)
 - Phases 1, 5: PENDING (manual steps required)
 - Phases 7-10: BLOCKED (awaiting earlier phases)
 
-**Bundle ID:** `com.gingers.mypill`
+**Bundle ID:** `com.ginger.mypill`
 **App Version:** 1.0.0 (Build 1)
 **Deployment Target:** iOS 13.0+
 **Supported Languages:** English, Japanese
@@ -29,7 +29,7 @@ This phase configures code signing and team credentials in Xcode. Without this, 
 ### Step 1.1: Open Xcode Project
 
 1. Launch Xcode
-2. Open `/Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace` (use `.xcworkspace`, not `.xcodeproj`)
+2. Open `/Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace` (use `.xcworkspace`, not `.xcodeproj`)
 3. Select the **Runner** target in the sidebar
 
 ### Step 1.2: Configure Team Signing
@@ -40,12 +40,12 @@ This phase configures code signing and team credentials in Xcode. Without this, 
    - **Team:** Click the dropdown and select your Apple Developer Team
      - If you don't have a team, create one in [Apple Developer Account](https://developer.apple.com)
      - Your Apple ID must be added to the team with admin rights
-   - **Bundle Identifier:** Confirm it shows `com.gingers.mypill`
+   - **Bundle Identifier:** Confirm it shows `com.ginger.mypill`
 
 **Expected result:**
 ```
 Team: [Your Team Name] (Team ID: XXXXXXXXXX)
-Bundle Identifier: com.gingers.mypill
+Bundle Identifier: com.ginger.mypill
 Automatic signing: ✓ Enabled
 ```
 
@@ -68,7 +68,7 @@ If any are missing, click **+ Capability** and add them.
 
 ### Step 1.5: Verify Entitlements File
 
-The entitlements file at `/Users/gingermarco/develop/my-pill/ios/Runner/Runner.entitlements` should contain:
+The entitlements file at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Runner.entitlements` should contain:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -97,7 +97,7 @@ The entitlements file at `/Users/gingermarco/develop/my-pill/ios/Runner/Runner.e
 
 - ✅ Sign In with Apple entitlement added to Runner.entitlements
 - ✅ Push Notifications capability enabled with aps-environment = "production"
-- ✅ File location: `/Users/gingermarco/develop/my-pill/ios/Runner/Runner.entitlements`
+- ✅ File location: `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Runner.entitlements`
 
 **No further action needed for this phase.**
 
@@ -109,7 +109,7 @@ The entitlements file at `/Users/gingermarco/develop/my-pill/ios/Runner/Runner.e
 
 ### What Was Done
 
-Privacy manifest created at `/Users/gingermarco/develop/my-pill/ios/Runner/PrivacyInfo.xcprivacy` with:
+Privacy manifest created at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/PrivacyInfo.xcprivacy` with:
 
 **Data Collection Declared:**
 - Health data (app functionality)
@@ -150,7 +150,7 @@ To verify it's included in your build:
 
 ### What Was Done
 
-Six permission descriptions added to `/Users/gingermarco/develop/my-pill/ios/Runner/Info.plist`:
+Six permission descriptions added to `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Info.plist`:
 
 ```xml
 <key>NSCameraUsageDescription</key>
@@ -166,7 +166,7 @@ Six permission descriptions added to `/Users/gingermarco/develop/my-pill/ios/Run
 <string>We use tracking to show you personalized ads and improve the app.</string>
 
 <key>NSFaceIDUsageDescription</key>
-<string>Use Face ID for secure login to MyPill.</string>
+<string>Use Face ID for secure login to Kusuridoki.</string>
 
 <key>NSNotificationUsageDescription</key>
 <string>Get reminders when it's time to take your medication.</string>
@@ -201,10 +201,10 @@ Fill in the form with:
 | Field | Value |
 |-------|-------|
 | Platform | iOS |
-| Name | MyPill |
+| Name | Kusuridoki |
 | Primary Language | English |
-| Bundle ID | com.gingers.mypill |
-| SKU | com.gingers.mypill.1 (can be any unique ID) |
+| Bundle ID | com.ginger.mypill |
+| SKU | com.ginger.mypill.1 (can be any unique ID) |
 | User Access | Full Access |
 
 Click **Create** and wait for the app to be registered.
@@ -239,7 +239,7 @@ For each language (English, Japanese):
 2. Select language
 3. Upload 3-5 screenshots
 4. Fill in required fields:
-   - **Name:** MyPill
+   - **Name:** Kusuridoki
    - **Subtitle:** Your medication reminder companion
    - **Description:** (see below)
    - **Keywords:** medication, pill, reminder, health, tracker
@@ -250,7 +250,7 @@ For each language (English, Japanese):
 
 **English Version:**
 ```
-MyPill is a smart medication management app that helps you never miss a dose.
+Kusuridoki is a smart medication management app that helps you never miss a dose.
 
 Key Features:
 ✓ Medication Reminders - Get notified at the exact time
@@ -260,15 +260,15 @@ Key Features:
 ✓ Photo Storage - Save pill photos for easy identification
 ✓ Adherence Reports - View compliance stats at a glance
 
-Build healthy medication habits with MyPill!
+Build healthy medication habits with Kusuridoki!
 
-⚠️ Medical Disclaimer: MyPill does not replace professional medical advice.
+⚠️ Medical Disclaimer: Kusuridoki does not replace professional medical advice.
 Always consult your healthcare provider before taking medications.
 ```
 
 **Japanese Version (日本語):**
 ```
-マイピルは、約の飲み忘れを防ぐスマートな服薬管理アプリです。
+くすりどきは、薬の飲み忘れを防ぐスマートな服薬管理アプリです。
 
 主な機能：
 ✓ 服薬アラーム - 指定した時間に通知を受け取り
@@ -278,10 +278,10 @@ Always consult your healthcare provider before taking medications.
 ✓ 薬の写真保存 - 薬の写真保存で簡単識別
 ✓ 服薬レポート - コンプライアンス統計を一目で確認
 
-マイピルで健康的な服薬習慣を築きましょう！
+くすりどきで健康的な服薬習慣を築きましょう！
 
-⚠️ 医学免責事項：マイピルは専門的な医学的助言に代わりません。
-薬物の使用前に必ず医療提供者に相談してください。
+⚠️ 医療免責事項：くすりどきは専門的な医療相談の代替となるものではありません。
+薬を服用する前に必ず医療提供者にご相談ください。
 ```
 
 ### Step 5.7: Demo Account
@@ -311,7 +311,7 @@ Always consult your healthcare provider before taking medications.
 
 ### What Was Prepared
 
-All marketing materials are documented in `/Users/gingermarco/develop/my-pill/docs/APP_STORE_METADATA.md`:
+All marketing materials are documented in `/Users/gingermarco/develop/flutter/my_pill/docs/APP_STORE_METADATA.md`:
 
 **Screenshots:**
 - Format: 6.7" Display (1290×2796 PNG)
@@ -320,7 +320,7 @@ All marketing materials are documented in `/Users/gingermarco/develop/my-pill/do
 
 **Keywords (SEO):**
 - English: medication, pill, reminder, health, tracker, pharmacy, adherence, caregiver
-- Korean: 약, 복약, 알림, 건강, 기록, 약국, 보호자, 추적
+- Japanese: 薬, 服薬, アラーム, 健康, 記録, 薬局, 介護者, 追跡
 
 **Age Rating:** 4+
 
@@ -342,7 +342,7 @@ Before starting Phase 7:
 
 ### Step 7.1: Update Build Version Numbers
 
-1. Open `/Users/gingermarco/develop/my-pill/pubspec.yaml`
+1. Open `/Users/gingermarco/develop/flutter/my_pill/pubspec.yaml`
 2. Update the version line for your release:
    ```yaml
    version: 1.0.0+1
@@ -359,7 +359,7 @@ Before starting Phase 7:
 ### Step 7.2: Clean Previous Builds
 
 ```bash
-cd /Users/gingermarco/develop/my-pill
+cd /Users/gingermarco/develop/flutter/my_pill
 flutter clean
 cd ios
 rm -rf Pods Podfile.lock
@@ -370,7 +370,7 @@ flutter pub get
 ### Step 7.3: Prepare iOS for Release Build
 
 ```bash
-cd /Users/gingermarco/develop/my-pill/ios
+cd /Users/gingermarco/develop/flutter/my_pill/ios
 pod install --repo-update
 cd ..
 ```
@@ -443,7 +443,7 @@ Upload successful. Your app will be processed and made available soon.
 ### Step 8.4: Verify Upload in App Store Connect
 
 1. Go to [App Store Connect](https://appstoreconnect.apple.com)
-2. Select your app (MyPill)
+2. Select your app (Kusuridoki)
 3. Go to **Build** section
 4. Verify your build appears with status: **Processing**
    - After 5-30 minutes: Status becomes **Ready to Submit**
@@ -551,7 +551,7 @@ In App Store Connect:
 ```
 Version 1.0.0 - Initial Release
 
-Thank you for downloading MyPill!
+Thank you for downloading Kusuridoki!
 
 New Features:
 - Smart medication reminders
@@ -561,14 +561,14 @@ New Features:
 - Photo storage for pill identification
 - Compliance reports and insights
 
-We're committed to helping you never miss a dose. Send feedback to support@mypill.app
+We're committed to helping you never miss a dose. Send feedback to support@kusuridoki.app
 ```
 
 **Japanese:**
 ```
 バージョン 1.0.0 - 初回リリース
 
-MyPill をダウンロードしていただきありがとうございます！
+くすりどき をダウンロードしていただきありがとうございます！
 
 新機能：
 - スマート服薬リマインダー
@@ -674,7 +674,7 @@ Solution:
 
 Solution:
 ```bash
-cd /Users/gingermarco/develop/my-pill
+cd /Users/gingermarco/develop/flutter/my_pill
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 flutter clean
 cd ios && rm -rf Pods Podfile.lock
@@ -739,7 +739,7 @@ Use this checklist to track progress:
 
 - [ ] **Phase 1 Complete:** Team signing configured in Xcode
   - [ ] Apple Developer Team assigned
-  - [ ] Bundle ID: com.gingers.mypill confirmed
+  - [ ] Bundle ID: com.ginger.mypill confirmed
   - [ ] Sign In with Apple capability enabled
   - [ ] Push Notifications capability enabled
 
@@ -841,5 +841,5 @@ For questions or issues:
 ---
 
 **Document Version:** 1.0
-**Last Updated:** February 3, 2025
-**For MyPill v1.0.0**
+**Last Updated:** February 3, 2026
+**For Kusuridoki v1.0.0**

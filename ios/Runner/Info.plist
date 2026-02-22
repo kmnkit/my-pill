@@ -53,15 +53,15 @@
 
 	<!-- Camera Permission (for medication photos) -->
 	<key>NSCameraUsageDescription</key>
-	<string>MyPill uses your camera to take photos of your medications for easy identification.</string>
+	<string>Kusuridoki uses your camera to take photos of your medications for easy identification.</string>
 
 	<!-- Photo Library Read Permission -->
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>MyPill accesses your photo library to let you choose medication photos.</string>
+	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
 
 	<!-- Photo Library Write Permission -->
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>MyPill saves medication photos to your library for your records.</string>
+	<string>Kusuridoki saves medication photos to your library for your records.</string>
 
 	<!-- User Tracking Permission (AdMob) -->
 	<key>NSUserTrackingUsageDescription</key>
@@ -69,7 +69,7 @@
 
 	<!-- Face ID Permission -->
 	<key>NSFaceIDUsageDescription</key>
-	<string>Use Face ID for secure login to MyPill.</string>
+	<string>Use Face ID for secure login to Kusuridoki.</string>
 
 	<!-- Notification Permission -->
 	<key>NSNotificationUsageDescription</key>

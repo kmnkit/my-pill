@@ -10,7 +10,7 @@
   "getStarted": "Get Started",
   "alreadyHaveAccount": "I already have an account",
 
-  "onboardingWelcomeTitle": "Welcome to MyPill",
+  "onboardingWelcomeTitle": "Welcome to Kusuridoki",
   "onboardingWelcomeSubtitle": "Let's set up your medication companion",
   "onboardingNext": "Next",
   "onboardingBack": "Back",
@@ -22,7 +22,7 @@
   "onboardingNameHint": "Enter your name",
   "onboardingNameSkip": "Skip for now",
 
-  "onboardingRoleTitle": "How will you use MyPill?",
+  "onboardingRoleTitle": "How will you use Kusuridoki?",
   "onboardingRoleSubtitle": "Choose the option that best describes you",
   "onboardingRolePatient": "Patient",
   "onboardingRolePatientDesc": "I'm managing my own medications",
@@ -197,6 +197,7 @@
   "safetyPrivacy": "Safety & Privacy",
   "exportHistory": "Export History",
   "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
   "about": "About",
   "version": "Version {version}",
   "@version": {

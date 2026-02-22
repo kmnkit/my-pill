@@ -1,8 +1,8 @@
 # iOS App Store 배포 - 최종 상태 ✅
 
-**프로젝트:** MyPill v1.0.0+1
+**프로젝트:** Kusuridoki v1.0.0+1
 **배포판:** iOS 15.0+
-**Bundle ID:** com.gingers.mypill
+**Bundle ID:** com.ginger.mypill
 **상태:** 85% 완료 - Xcode 프로젝트 정상 (PrivacyInfo.xcprivacy 수정 완료)
 
 ---
@@ -64,7 +64,7 @@ docs/iOS_DEPLOYMENT_STATUS.md
 **이제 Xcode에서 프로젝트를 열 수 있습니다:**
 
 ```bash
-open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
 ```
 
 **필요한 설정:**
@@ -72,7 +72,7 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 2. "+ "버튼 → Apple ID 로그인
 3. Runner target → Signing & Capabilities
 4. Team 드롭다운에서 개발 팀 선택
-5. Bundle ID: `com.gingers.mypill` 확인
+5. Bundle ID: `com.ginger.mypill` 확인
 6. "Automatically manage signing" 체크
 
 **검증:**
@@ -86,8 +86,8 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 
 **단계:**
 1. My Apps → + → New App
-2. Name: "MyPill - Medication Reminder"
-3. Bundle ID: com.gingers.mypill
+2. Name: "Kusuridoki - Medication Reminder"
+3. Bundle ID: com.ginger.mypill
 4. Category: Medical / Health & Fitness
 5. Pricing: Free
 6. In-App Purchase: Premium Subscription (월 $4.99)
@@ -172,7 +172,7 @@ flutter build ios --release --no-codesign
 **즉시:**
 ```bash
 # Xcode 열기
-open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
 ```
 
 **Xcode에서:**
@@ -182,7 +182,7 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 
 **웹에서:**
 1. App Store Connect 로그인
-2. 새 앱 등록 (Bundle ID: com.gingers.mypill)
+2. 새 앱 등록 (Bundle ID: com.ginger.mypill)
 3. 메타데이터 입력
 
 **완료 후:**

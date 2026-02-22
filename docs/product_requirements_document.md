@@ -1,4 +1,4 @@
-# Product Requirements Document (PRD): Medication Management App "MyPill" (Tentative Model)
+# Product Requirements Document (PRD): Medication Management App "Kusuridoki"
 
 ## 1. Product Overview
 A global medication management application designed for the Japanese and English-speaking markets. The app ensures users take their medication on time and allows family members or caregivers to monitor adherence remotely.

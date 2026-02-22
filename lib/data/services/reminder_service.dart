@@ -66,10 +66,20 @@ class ReminderService {
         return schedule.specificDays.contains(date.weekday);
 
       case ScheduleType.interval:
-        // For interval schedules, we generate based on the interval hours
-        // This is a simplified implementation - in production you might want
-        // to track the last dose time more precisely
-        return true;
+        // For interval schedules, check if the date falls on the correct cycle.
+        // Uses intervalHours converted to whole days (minimum 1).
+        final intervalHours = schedule.intervalHours;
+        if (intervalHours == null || intervalHours <= 0) return true;
+
+        final intervalDays = (intervalHours / 24).ceil().clamp(1, 365);
+
+        // Use Unix epoch as a fixed reference so interval cycles are consistent.
+        // Both dates use local time to avoid timezone-related day boundary shifts.
+        final targetDate = DateTime(date.year, date.month, date.day);
+        final daysSinceEpoch =
+            targetDate.difference(DateTime(1970, 1, 1)).inDays;
+
+        return daysSinceEpoch % intervalDays == 0;
     }
   }
 

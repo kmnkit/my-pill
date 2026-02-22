@@ -8,7 +8,7 @@ class SubscriptionService {
   static const String monthlyProductId = 'premium_monthly';
   static const String yearlyProductId = 'premium_yearly';
 
-  final InAppPurchase _iap = InAppPurchase.instance;
+  late final InAppPurchase _iap = InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _subscription;
 
   final _statusController = StreamController<SubscriptionStatus>.broadcast();

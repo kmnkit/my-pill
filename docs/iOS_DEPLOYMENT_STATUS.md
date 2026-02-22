@@ -1,8 +1,8 @@
 # iOS App Store 배포 상태 리포트
 
-**프로젝트:** MyPill - Medication Reminder
+**프로젝트:** Kusuridoki - Medication Reminder
 **배포판:** v1.0.0+1
-**Bundle ID:** com.gingers.mypill
+**Bundle ID:** com.ginger.mypill
 **대상:** iOS 12.0+, 글로벌 전체 지역
 **상태:** 70% 완료 (자동화 부분)
 
@@ -122,7 +122,7 @@
 
 #### Step 1: Xcode 열기
 ```bash
-open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
 ```
 
 #### Step 2: Apple Developer Account 연결
@@ -137,7 +137,7 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 3. **Signing & Capabilities** 탭
 4. **"Automatically manage signing"** 체크
 5. **Team** 드롭다운에서 개발 팀 선택
-6. Bundle ID 확인: `com.gingers.mypill`
+6. Bundle ID 확인: `com.ginger.mypill`
 
 #### Step 4: 검증
 - ✓ Signing Certificate: "Apple Development: [your email]"
@@ -154,9 +154,9 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 
 #### Step 1: 앱 생성
 - My Apps → + → New App
-- Name: **MyPill - Medication Reminder**
+- Name: **Kusuridoki - Medication Reminder**
 - Primary Language: **English (U.S.)**
-- Bundle ID: **com.gingers.mypill**
+- Bundle ID: **com.ginger.mypill**
 - SKU: **mypill-ios-001**
 
 #### Step 2: App Information
@@ -178,7 +178,7 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 #### Step 5: In-App Purchase (프리미엄 구독)
 - Type: **Auto-Renewable Subscription**
 - Subscription Group: **Premium Subscription**
-- Product ID: **com.gingers.mypill.premium.monthly**
+- Product ID: **com.ginger.mypill.premium.monthly**
 - Duration: **1 Month**
 - Price Tier: **5** (₩5,500 KRW / $4.99 USD)
 - Localization: English + Korean
@@ -193,7 +193,7 @@ open /Users/gingermarco/develop/my-pill/ios/Runner.xcworkspace
 
 #### Phase 7: Build & Archive (자동화 가능)
 ```bash
-cd /Users/gingermarco/develop/my-pill
+cd /Users/gingermarco/develop/flutter/my_pill
 flutter clean
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
@@ -210,7 +210,7 @@ xcodebuild \
   -derivedDataPath build \
   -allowProvisioningUpdates \
   archive \
-  -archivePath build/MyPill.xcarchive
+  -archivePath build/Kusuridoki.xcarchive
 cd ..
 ```
 
@@ -322,5 +322,5 @@ Phase 5 (App Store) ────┤
 ---
 
 **마지막 업데이트:** 2026-02-03
-**배포판:** MyPill v1.0.0+1
+**배포판:** Kusuridoki v1.0.0+1
 **상태:** 70% 완료 - Phase 1, 5 수동 설정 대기 중

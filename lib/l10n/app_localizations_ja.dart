@@ -30,7 +30,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alreadyHaveAccount => 'アカウントをお持ちの方';
 
   @override
-  String get onboardingWelcomeTitle => 'MyPillへようこそ';
+  String get onboardingWelcomeTitle => 'くすりどきへようこそ';
 
   @override
   String get onboardingWelcomeSubtitle => '服薬管理パートナーを設定しましょう';
@@ -63,7 +63,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingNameSkip => 'スキップ';
 
   @override
-  String get onboardingRoleTitle => 'MyPillをどのように使いますか？';
+  String get onboardingRoleTitle => 'くすりどきをどのように使いますか？';
 
   @override
   String get onboardingRoleSubtitle => 'あなたに最も当てはまるものを選んでください';
@@ -461,6 +461,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get termsOfService => '利用規約';
 
   @override
   String get about => 'このアプリについて';

@@ -12,61 +12,65 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # State Management (Riverpod 3.x for Dart 3.10)
-  flutter_riverpod: any
-  riverpod_annotation: any
+  flutter_riverpod: ^3.1.0
+  riverpod_annotation: ^4.0.0
   # Routing
-  go_router: any
+  go_router: ^17.0.1
   # Local Storage
-  hive_flutter: any
-  hive: any
+  hive_flutter: ^1.1.0
+  hive: ^2.2.3
   # Firebase
-  firebase_core: any
-  firebase_auth: any
-  cloud_firestore: any
-  cloud_functions: any
-  firebase_messaging: any
+  firebase_core: ^4.4.0
+  firebase_auth: ^6.1.4
+  cloud_firestore: ^6.1.2
+  cloud_functions: ^6.0.6
+  firebase_messaging: ^16.1.1
   # Deep Linking (replaces dead firebase_dynamic_links)
-  app_links: any
+  app_links: ^7.0.0
   # Notifications
-  flutter_local_notifications: any
+  flutter_local_notifications: ^20.0.0
   # UI
-  google_fonts: any
-  fl_chart: any
-  qr_flutter: any
-  mobile_scanner: any
-  image_picker: any
+  google_fonts: ^8.0.0
+  fl_chart: ^1.1.1
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^7.1.4
+  image_picker: ^1.2.1
   # Ads
-  google_mobile_ads: any
-  google_sign_in: any
+  google_mobile_ads: ^7.0.0
+  google_sign_in: ^7.2.0
   # IAP
-  in_app_purchase: any
+  in_app_purchase: ^3.2.3
   # Home Screen Widgets
-  home_widget: any
+  home_widget: ^0.9.0
   # Utilities
-  intl: any
-  timezone: any
-  uuid: any
-  share_plus: any
-  url_launcher: any
-  path_provider: any
-  json_annotation: any
-  freezed_annotation: any
-  collection: any
+  intl: ^0.20.2
+  timezone: ^0.10.1
+  uuid: ^4.5.2
+  share_plus: ^12.0.1
+  url_launcher: ^6.3.2
+  path_provider: ^2.1.5
+  json_annotation: ^4.9.0
+  freezed_annotation: ^3.1.0
+  collection: ^1.19.1
+  # Security
+  flutter_secure_storage: ^9.2.4
   # PDF Generation
-  pdf: any
-  printing: any
+  pdf: ^3.11.3
+  printing: ^5.14.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: any
-  build_runner: any
-  json_serializable: any
-  freezed: any
-  riverpod_generator: any
-  mockito: any
-  firebase_core_platform_interface: any
-  flutter_launcher_icons: any
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.10.5
+  json_serializable: ^6.11.2
+  freezed: ^3.2.3
+  riverpod_generator: ^4.0.0
+  mockito: ^5.6.3
+  firebase_core_platform_interface: ^6.0.2
+  flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
   android: true
