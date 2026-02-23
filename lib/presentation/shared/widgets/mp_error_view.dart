@@ -15,6 +15,17 @@ class MpErrorView extends StatelessWidget {
   final Object error;
   final VoidCallback? onRetry;
 
+  String _getLocalizedMessage(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return switch (ErrorHandler.getErrorCode(error)) {
+      ErrorCode.network => l10n.networkError,
+      ErrorCode.timeout => l10n.timeoutError,
+      ErrorCode.serviceUnavailable => l10n.serviceUnavailable,
+      ErrorCode.permissionDenied => l10n.permissionDenied,
+      ErrorCode.generic => l10n.genericError,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,7 +37,7 @@ class MpErrorView extends StatelessWidget {
             Icon(Icons.error_outline, size: 48, color: AppColors.error),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              ErrorHandler.getMessage(error),
+              _getLocalizedMessage(context),
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),

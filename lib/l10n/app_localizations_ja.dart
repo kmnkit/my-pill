@@ -1343,4 +1343,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get ippokaNameHint => '例：朝の薬、夕の薬';
+
+  @override
+  String get timeoutError => 'リクエストがタイムアウトしました。もう一度お試しください。';
+
+  @override
+  String get defaultUserName => 'ユーザー';
 }

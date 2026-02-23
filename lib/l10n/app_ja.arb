@@ -518,5 +518,8 @@
   "ippokaDesc": "複数の薬を1つの袋にまとめて管理します",
   "packet": "パケット",
   "packs": "包",
-  "ippokaNameHint": "例：朝の薬、夕の薬"
+  "ippokaNameHint": "例：朝の薬、夕の薬",
+
+  "timeoutError": "リクエストがタイムアウトしました。もう一度お試しください。",
+  "defaultUserName": "ユーザー"
 }

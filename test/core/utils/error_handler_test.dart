@@ -3,35 +3,35 @@ import 'package:my_pill/core/utils/error_handler.dart';
 
 void main() {
   group('ErrorHandler', () {
-    group('getMessage', () {
-      test('returns network message for SocketException', () {
-        final message = ErrorHandler.getMessage(Exception('SocketException: Failed'));
-        expect(message, 'No internet connection. Please check your network.');
+    group('getErrorCode', () {
+      test('returns network for SocketException', () {
+        final code = ErrorHandler.getErrorCode(Exception('SocketException: Failed'));
+        expect(code, ErrorCode.network);
       });
 
-      test('returns network message for NetworkException', () {
-        final message = ErrorHandler.getMessage(Exception('NetworkException'));
-        expect(message, 'No internet connection. Please check your network.');
+      test('returns network for NetworkException', () {
+        final code = ErrorHandler.getErrorCode(Exception('NetworkException'));
+        expect(code, ErrorCode.network);
       });
 
-      test('returns timeout message for TimeoutException', () {
-        final message = ErrorHandler.getMessage(Exception('TimeoutException'));
-        expect(message, 'Request timed out. Please try again.');
+      test('returns timeout for TimeoutException', () {
+        final code = ErrorHandler.getErrorCode(Exception('TimeoutException'));
+        expect(code, ErrorCode.timeout);
       });
 
-      test('returns firebase message for FirebaseException', () {
-        final message = ErrorHandler.getMessage(Exception('FirebaseException'));
-        expect(message, 'Service temporarily unavailable. Your data is saved locally.');
+      test('returns serviceUnavailable for FirebaseException', () {
+        final code = ErrorHandler.getErrorCode(Exception('FirebaseException'));
+        expect(code, ErrorCode.serviceUnavailable);
       });
 
-      test('returns permission message for permission-denied', () {
-        final message = ErrorHandler.getMessage(Exception('permission-denied'));
-        expect(message, "You don't have permission to perform this action.");
+      test('returns permissionDenied for permission-denied', () {
+        final code = ErrorHandler.getErrorCode(Exception('permission-denied'));
+        expect(code, ErrorCode.permissionDenied);
       });
 
-      test('returns generic message for unknown error', () {
-        final message = ErrorHandler.getMessage(Exception('something random'));
-        expect(message, 'Something went wrong. Please try again.');
+      test('returns generic for unknown error', () {
+        final code = ErrorHandler.getErrorCode(Exception('something random'));
+        expect(code, ErrorCode.generic);
       });
     });
 

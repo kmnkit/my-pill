@@ -1,5 +1,13 @@
 import 'package:flutter/foundation.dart';
 
+enum ErrorCode {
+  network,
+  timeout,
+  serviceUnavailable,
+  permissionDenied,
+  generic,
+}
+
 abstract final class ErrorHandler {
   // Log error details in debug mode only
   static void debugLog(Object error, StackTrace? stackTrace, String context) {
@@ -11,23 +19,23 @@ abstract final class ErrorHandler {
     }
   }
 
-  // User-friendly error messages
-  static String getMessage(Object error) {
+  // Classify error into an ErrorCode for l10n-friendly handling
+  static ErrorCode getErrorCode(Object error) {
     final message = error.toString();
 
     if (message.contains('SocketException') || message.contains('NetworkException')) {
-      return 'No internet connection. Please check your network.';
+      return ErrorCode.network;
     }
     if (message.contains('TimeoutException')) {
-      return 'Request timed out. Please try again.';
+      return ErrorCode.timeout;
     }
     if (message.contains('FirebaseException')) {
-      return 'Service temporarily unavailable. Your data is saved locally.';
+      return ErrorCode.serviceUnavailable;
     }
     if (message.contains('permission-denied')) {
-      return 'You don\'t have permission to perform this action.';
+      return ErrorCode.permissionDenied;
     }
 
-    return 'Something went wrong. Please try again.';
+    return ErrorCode.generic;
   }
 }

@@ -29,6 +29,7 @@ class HomeWidgetService {
   static Future<void> updateWidget({
     required List<Reminder> todayReminders,
     required Map<String, Medication> medications,
+    required String summaryText,
   }) async {
     try {
       // Calculate summary
@@ -61,7 +62,7 @@ class HomeWidgetService {
       await HomeWidget.saveWidgetData('next_med_name', '');
       await HomeWidget.saveWidgetData('next_med_time', nextMedTime);
       await HomeWidget.saveWidgetData('next_med_dosage', '');
-      await HomeWidget.saveWidgetData('summary_text', '$taken/$total taken');
+      await HomeWidget.saveWidgetData('summary_text', summaryText);
       await HomeWidget.saveWidgetData('last_updated', DateTime.now().toIso8601String());
 
       // Trigger widget update
