@@ -1,10 +1,10 @@
 # Project Progress — Kusuridoki (くすりどき)
 
-## Current Status: Security Remediation Complete (PO/Stakeholder Re-evaluation Pending)
+## Current Status: Security Remediation Complete — All Issues Resolved (L-5 제외)
 
 PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **5.8/10** — 모두 NO-GO 판정.
 **그러나 코드 검증 결과 progress.md가 심각하게 outdated** — 대부분의 "UNFIXED" 이슈가 이미 구현되어 있었음.
-이 문서는 2026-02-23 코드 상태를 정확히 반영하도록 업데이트됨.
+2026-02-23: CRITICAL 3건, HIGH 7건, MEDIUM 7건, LOW 4건 수정 완료. L-5(Android minSdk)만 보류 (android 디렉토리 미생성).
 
 ---
 
@@ -227,6 +227,10 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | M-2 | ✅ Hive 평문 fallback 제거 — `_openBox()` StateError throw |
 | M-4 | ✅ IAP 서버사이드 영수증 저장 Phase A — `verifyReceipt` CF + client fire-and-forget |
 | M-6 | ✅ Deep Link regex 강화 — 서버 charset 일치 + 테스트 추가 |
+| L-1 | ✅ `deleteAccount` user null → StateError throw |
+| L-2 | ✅ 스케줄 폼 빈 times/days 입력 검증 + l10n |
+| L-3 | ✅ 약 복용량 `<= 0` 거부 + l10n |
+| L-4 | ✅ PDF 임시 파일 shareReport() 후 자동 삭제 |
 
 ### 미해결 이슈 (백로그)
 
@@ -239,4 +243,8 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | ~~M-4~~ | ~~IAP 서버사이드 영수증 검증~~ **Phase A 수정됨 (2026-02-23)**, Phase B (Apple/Google API) 별도 스프린트 | ~~MEDIUM~~ PARTIAL |
 | M-5 | Home Widget 약 정보 — **ALREADY SECURE** (카운트+시간만 저장, 프라이버시 주석 추가) | MEDIUM — N/A |
 | ~~M-6~~ | ~~Deep Link 초대 코드 포맷 미검증~~ **수정됨 (2026-02-23)** | ~~MEDIUM~~ RESOLVED |
-| L-1~L-5 | Low priority issues | LOW |
+| ~~L-1~~ | ~~`deleteAccount` user null 시 silent no-op~~ **수정됨 (2026-02-23)** — StateError throw | ~~LOW~~ RESOLVED |
+| ~~L-2~~ | ~~스케줄 폼 입력 검증 없음~~ **수정됨 (2026-02-23)** — 빈 times/days 저장 방지 + l10n | ~~LOW~~ RESOLVED |
+| ~~L-3~~ | ~~약 복용량 음수/0 허용~~ **수정됨 (2026-02-23)** — `<= 0` 거부 + l10n | ~~LOW~~ RESOLVED |
+| ~~L-4~~ | ~~PDF 임시 파일 공유 후 미삭제~~ **수정됨 (2026-02-23)** — shareReport() 후 자동 삭제 | ~~LOW~~ RESOLVED |
+| L-5 | Android minSdk 21 — android 디렉토리 미생성으로 보류 | LOW — DEFERRED |
