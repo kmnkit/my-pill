@@ -77,10 +77,13 @@ class StorageService {
   /// Open an encrypted box
   Future<Box<String>> _openBox(String boxName) async {
     await initializeEncryption();
-    if (_cipher != null) {
-      return await Hive.openBox<String>(boxName, encryptionCipher: _cipher);
+    if (_cipher == null) {
+      throw StateError(
+        'Encryption cipher unavailable after initialization. '
+        'Cannot open unencrypted box for medical data.',
+      );
     }
-    return await Hive.openBox<String>(boxName);
+    return await Hive.openBox<String>(boxName, encryptionCipher: _cipher);
   }
 
   // --- Medications ---

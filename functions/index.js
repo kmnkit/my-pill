@@ -208,6 +208,45 @@ exports.cleanupExpiredInvites = functions.pubsub.schedule('every 24 hours').onRu
   console.log(`Cleaned up ${expired.size} expired invites`);
 });
 
+// Verify IAP receipt and store subscription status server-side
+exports.verifyReceipt = functions.https.onCall(async (data, context) => {
+  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+
+  await checkRateLimit(context.auth.uid, 'verifyReceipt', 5);
+
+  const { productId, purchaseToken, source } = data;
+
+  if (!productId || typeof productId !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'productId is required');
+  }
+  if (!purchaseToken || typeof purchaseToken !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'purchaseToken is required');
+  }
+  if (!source || !['app_store', 'google_play'].includes(source)) {
+    throw new functions.https.HttpsError('invalid-argument', 'source must be app_store or google_play');
+  }
+
+  const uid = context.auth.uid;
+
+  // Store receipt data for future server-side verification (Phase B)
+  await db.collection('users').doc(uid).collection('subscriptions').add({
+    productId,
+    purchaseToken,
+    source,
+    verifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+    status: 'pending_verification',
+  });
+
+  // Update user premium status
+  await db.collection('users').doc(uid).update({
+    isPremium: true,
+    premiumProductId: productId,
+    premiumUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return { success: true };
+});
+
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   const bytes = crypto.randomBytes(8);

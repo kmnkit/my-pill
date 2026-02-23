@@ -18,7 +18,14 @@ class HomeWidgetService {
     }
   }
 
-  /// Update widget with today's medication data
+  /// Update widget with today's medication data.
+  ///
+  /// Privacy design decision: only numeric counts (total, taken, pending) and
+  /// the next scheduled time are written to shared widget storage.
+  /// Medication names and dosage details are intentionally omitted
+  /// (`next_med_name` and `next_med_dosage` are always empty strings) to
+  /// prevent sensitive medical information from being visible on the lock
+  /// screen or accessible via the widget's shared container.
   static Future<void> updateWidget({
     required List<Reminder> todayReminders,
     required Map<String, Medication> medications,

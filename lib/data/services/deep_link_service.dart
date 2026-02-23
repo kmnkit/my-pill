@@ -3,6 +3,13 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 
 class DeepLinkService {
+  /// Invite code validation regex matching the server-side charset.
+  /// Excludes ambiguous characters: 0, 1, I, O, i, o, l
+  @visibleForTesting
+  static final RegExp inviteCodePattern = RegExp(
+    r'^[ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789]{8}$',
+  );
+
   final AppLinks _appLinks = AppLinks();
   final StreamController<String> _inviteCodeController = StreamController<String>.broadcast();
 
@@ -35,8 +42,8 @@ class DeepLinkService {
     // Expected format: https://mypill.app/invite/{code}
     if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'invite') {
       final code = uri.pathSegments[1];
-      // Validate invite code format: alphanumeric, 8 characters
-      if (RegExp(r'^[A-Za-z0-9]{8}$').hasMatch(code)) {
+      // Validate invite code format: server-side charset only, 8 characters
+      if (inviteCodePattern.hasMatch(code)) {
         _inviteCodeController.add(code);
       }
     }
