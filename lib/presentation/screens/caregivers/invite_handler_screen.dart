@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
@@ -43,7 +44,8 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       );
 
       context.go('/home');
-    } catch (e) {
+    } catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'acceptInvite');
       if (!mounted) return;
 
       setState(() => _isProcessing = false);
@@ -51,7 +53,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.failedToAcceptInvite(e.toString())),
+          content: Text(l10n.failedToAcceptInvite),
           backgroundColor: Colors.red,
         ),
       );

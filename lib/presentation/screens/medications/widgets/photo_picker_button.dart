@@ -1,12 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:my_pill/core/utils/photo_encryption.dart';
+import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
-class PhotoPickerButton extends StatelessWidget {
+class PhotoPickerButton extends ConsumerStatefulWidget {
   const PhotoPickerButton({
     super.key,
     this.currentPhotoPath,
@@ -16,25 +21,63 @@ class PhotoPickerButton extends StatelessWidget {
   final String? currentPhotoPath;
   final ValueChanged<String?>? onPhotoChanged;
 
+  @override
+  ConsumerState<PhotoPickerButton> createState() => _PhotoPickerButtonState();
+}
+
+class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
+  Future<Uint8List>? _decryptedImageFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateDecryptionFuture();
+  }
+
+  @override
+  void didUpdateWidget(PhotoPickerButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentPhotoPath != widget.currentPhotoPath) {
+      _updateDecryptionFuture();
+    }
+  }
+
+  void _updateDecryptionFuture() {
+    final path = widget.currentPhotoPath;
+    if (path != null && PhotoEncryption.isEncrypted(path)) {
+      final key = ref.read(storageServiceProvider).encryptionKeyBytes;
+      _decryptedImageFuture = PhotoEncryption.decryptFromFile(path, key);
+    } else {
+      _decryptedImageFuture = null;
+    }
+  }
+
   Future<void> _pickImage(BuildContext context, ImageSource source) async {
     try {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: source);
-
       if (pickedFile == null) return;
 
-      // Copy to app support directory (app-private, not accessible to other apps)
+      final bytes = await File(pickedFile.path).readAsBytes();
       final appDir = await getApplicationSupportDirectory();
-      final fileName = 'med_photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+      final fileName = 'med_photo_${DateTime.now().millisecondsSinceEpoch}';
+      final destPath = '${appDir.path}/$fileName';
 
-      onPhotoChanged?.call(savedImage.path);
-    } catch (e) {
+      final storage = ref.read(storageServiceProvider);
+      final encPath = await PhotoEncryption.encryptAndSave(
+        bytes,
+        destPath,
+        storage.encryptionKeyBytes,
+      );
+
+      widget.onPhotoChanged?.call(encPath);
+    } catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'pickImage');
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.failedToPickImage(e.toString())),
+            content: Text(l10n.failedToPickImage),
             backgroundColor: AppColors.error,
           ),
         );
@@ -66,13 +109,17 @@ class PhotoPickerButton extends StatelessWidget {
                 _pickImage(context, ImageSource.gallery);
               },
             ),
-            if (currentPhotoPath != null)
+            if (widget.currentPhotoPath != null)
               ListTile(
                 leading: const Icon(Icons.delete, color: AppColors.error),
-                title: Text(l10n.removePhoto, style: const TextStyle(color: AppColors.error)),
+                title: Text(l10n.removePhoto,
+                    style: const TextStyle(color: AppColors.error)),
                 onTap: () {
                   Navigator.pop(context);
-                  onPhotoChanged?.call(null);
+                  ref
+                      .read(storageServiceProvider)
+                      .deletePhotoFile(widget.currentPhotoPath);
+                  widget.onPhotoChanged?.call(null);
                 },
               ),
           ],
@@ -96,16 +143,14 @@ class PhotoPickerButton extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         ),
-        child: currentPhotoPath != null
+        child: widget.currentPhotoPath != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd - 2),
+                borderRadius:
+                    BorderRadius.circular(AppSpacing.radiusMd - 2),
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.file(
-                      File(currentPhotoPath!),
-                      fit: BoxFit.cover,
-                    ),
+                    _buildPhotoWidget(),
                     Positioned(
                       bottom: AppSpacing.sm,
                       right: AppSpacing.sm,
@@ -139,14 +184,38 @@ class PhotoPickerButton extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       AppLocalizations.of(context)!.takePhoto,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textMuted,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textMuted,
+                              ),
                     ),
                   ],
                 ),
               ),
       ),
     );
+  }
+
+  Widget _buildPhotoWidget() {
+    if (_decryptedImageFuture != null) {
+      return FutureBuilder<Uint8List>(
+        future: _decryptedImageFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Image.memory(snapshot.data!, fit: BoxFit.cover);
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Icon(Icons.broken_image, color: AppColors.textMuted),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        },
+      );
+    }
+    // Legacy unencrypted photo (pre-migration)
+    return Image.file(File(widget.currentPhotoPath!), fit: BoxFit.cover);
   }
 }

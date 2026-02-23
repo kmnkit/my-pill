@@ -2,6 +2,7 @@
 library;
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/schedule.dart';
@@ -398,6 +399,20 @@ class MockStorageService implements StorageService {
         userRole: 'patient',
       );
     }
+  }
+
+  // --- Photo File Management ---
+  @override
+  Uint8List get encryptionKeyBytes => Uint8List(32); // dummy key for testing
+
+  @override
+  Future<void> deletePhotoFile(String? photoPath) async {
+    // No-op for testing
+  }
+
+  @override
+  Future<void> migrateUnencryptedPhotos() async {
+    // No-op for testing
   }
 
   /// Get current state for assertions

@@ -1,4 +1,16 @@
+import 'package:flutter/foundation.dart';
+
 abstract final class ErrorHandler {
+  // Log error details in debug mode only
+  static void debugLog(Object error, StackTrace? stackTrace, String context) {
+    if (kDebugMode) {
+      debugPrint('[ERROR] $context: $error');
+      if (stackTrace != null) {
+        debugPrint(stackTrace.toString());
+      }
+    }
+  }
+
   // User-friendly error messages
   static String getMessage(Object error) {
     final message = error.toString();
