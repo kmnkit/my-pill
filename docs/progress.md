@@ -1,8 +1,10 @@
 # Project Progress — Kusuridoki (くすりどき)
 
-## Current Status: Post-Remediation (PO Re-evaluation Pending)
+## Current Status: Security Remediation Complete (PO/Stakeholder Re-evaluation Pending)
 
-PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state after the 6-phase remediation plan was executed to address Critical/High issues.
+PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **5.8/10** — 모두 NO-GO 판정.
+**그러나 코드 검증 결과 progress.md가 심각하게 outdated** — 대부분의 "UNFIXED" 이슈가 이미 구현되어 있었음.
+이 문서는 2026-02-23 코드 상태를 정확히 반영하도록 업데이트됨.
 
 ---
 
@@ -58,7 +60,7 @@ PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state afte
 - Made `SubscriptionService._iap` lazy to enable unit testing without platform channels
 - Fixed timezone bug in interval epoch calculation (local vs UTC consistency)
 
-**Verification:** `flutter test` — 75 tests passed, 0 failures. `flutter analyze` — 0 issues.
+**Verification:** `flutter test` — 91 tests passed, 0 failures. `flutter analyze` — 0 issues.
 
 ## Phase 6: progress.md
 - ✅ This file created with honest current-state assessment
@@ -77,7 +79,9 @@ PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state afte
 | reminder_service_test.dart | 18 | ✅ All pass |
 | subscription_service_test.dart | 16 | ✅ All pass |
 | storage_service_test.dart | 2 | ✅ All pass |
-| **Total** | **75** | **✅ All pass** |
+| error_handler_test.dart | 9 | ✅ All pass |
+| photo_encryption_test.dart | 7 | ✅ All pass |
+| **Total** | **91** | **✅ All pass** |
 
 ---
 
@@ -144,19 +148,19 @@ PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state afte
 
 | ID | 이슈 | 위치 | 영향 |
 |----|------|------|------|
-| C-1 | 계정 삭제 시 서버 데이터 미삭제 (Auth만 삭제, Firestore 고아 데이터 잔존) | `auth_service.dart:112-114`, `settings_screen.dart:154-158` | GDPR/APPI + App Store Rule 2 위반 |
-| C-2 | GoRouter 인증 가드 없음 (redirect 콜백 부재, Deep link로 비인증 접근 가능) | `app_router.dart:24-199` | 비인증 사용자 민감 화면 접근 |
-| C-3 | Firebase Storage Rules 파일 없음 (약 사진 등 Storage 사용하나 규칙 부재) | 프로젝트 루트 | 타 사용자 파일 무제한 접근 |
+| C-1 | ~~계정 삭제 시 서버 데이터 미삭제~~ **수정됨 (2026-02-22)** — `deleteUserAccount` CF: 5개 subcollection + caregiverAccess 양방향 + Auth 삭제 + invite/rateLimit 정리 (2026-02-23) | `functions/index.js` | ~~GDPR/APPI + App Store Rule 2 위반~~ RESOLVED |
+| C-2 | ~~GoRouter 인증 가드 없음~~ **수정됨 (2026-02-22)** — `app_router_provider.dart` redirect + refreshListenable. 구버전 `app_router.dart` 삭제 (2026-02-23) | `app_router_provider.dart` | ~~비인증 사용자 민감 화면 접근~~ RESOLVED |
+| C-3 | ~~Firebase Storage Rules 파일 없음~~ **수정됨 (2026-02-22)** — `storage.rules` user-scoped deny-all 존재 + `firebase.json` 배포 설정 추가 (2026-02-23) | `storage.rules`, `firebase.json` | ~~타 사용자 파일 무제한 접근~~ RESOLVED |
 
 ### HIGH (다음 릴리즈 전 수정)
 
 | ID | 이슈 | 위치 |
 |----|------|------|
-| H-1 | 로그아웃 시 Riverpod Provider 상태 미초기화 (이전 사용자 데이터 메모리 잔존) | `auth_service.dart:107-109`, `settings_screen.dart:108-110` |
-| H-2 | `revokeAccess` Cloud Function — linkId 소유권 미검증 (IDOR) | `functions/index.js:75-87` |
-| H-3 | Cloud Functions 레이트 리밋 없음 (초대 코드 브루트포스 가능) | `functions/index.js` 전체 |
-| H-4 | FCM 토큰 + 메시지 페이로드 debugPrint 로깅 | `notification_service.dart:113, 125` |
-| H-5 | Raw Firebase 에러 메시지 사용자 노출 (`e.toString()`, `e.message` → SnackBar) | `add_medication_screen.dart:253`, `edit_medication_screen.dart:329`, `invite_handler_screen.dart:52`, `account_section.dart:198,232`, `photo_picker_button.dart:37` |
+| H-1 | ~~로그아웃 시 Riverpod Provider 상태 미초기화~~ **수정됨 (2026-02-22)** — 로그아웃/계정삭제 시 7개 provider invalidation. DRY 헬퍼 추출 (2026-02-23) | `settings_screen.dart` |
+| H-2 | ~~`revokeAccess` Cloud Function — linkId 소유권 미검증 (IDOR)~~ **수정됨 (2026-02-22)** — linkDoc.exists 소유권 검증 | `functions/index.js` |
+| H-3 | ~~Cloud Functions 레이트 리밋 없음 (초대 코드 브루트포스 가능)~~ **수정됨** — `revokeAccess`(5/분), `deleteUserAccount`(3/분) 레이트 리밋 추가 | `functions/index.js` 전체 |
+| H-4 | ~~FCM 토큰 + 메시지 페이로드 debugPrint 로깅~~ **수정됨 (2026-02-22)** — `kDebugMode` 가드 (release 빌드에서 제거) | `notification_service.dart` |
+| H-5 | ~~Raw Firebase 에러 메시지 사용자 노출~~ **수정됨** — l10n에서 `{error}` 플레이스홀더 제거, `ErrorHandler.debugLog` 추가 | `add_medication_screen.dart`, `edit_medication_screen.dart`, `invite_handler_screen.dart`, `account_section.dart`, `photo_picker_button.dart`, `qr_invite_section.dart` |
 | H-6 | 약 사진 비암호화 저장 (`getApplicationDocumentsDirectory()`에 평문 JPEG) | `photo_picker_button.dart:27-29` |
 | H-7 | `functions/package-lock.json` 미커밋 (Supply Chain 위험) | `functions/` |
 
@@ -164,13 +168,13 @@ PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state afte
 
 | ID | 이슈 | 위치 |
 |----|------|------|
-| M-1 | 초대 코드 `Math.random()` 사용 (CSPRNG 아님) | `functions/index.js:104-111` |
+| M-1 | ~~초대 코드 `Math.random()` 사용~~ **수정됨 (2026-02-22)** — `crypto.randomBytes(8)` CSPRNG | `functions/index.js` |
 | M-2 | Hive 암호화 실패 시 평문 fallback (건강 데이터 비암호화) | `storage_service.dart:45-49` |
 | M-3 | Firestore `invites` 컬렉션 모든 인증 사용자 읽기 가능 | `firestore.rules:47-50` |
 | M-4 | IAP 구독 상태 클라이언트만 검증 (서버사이드 영수증 검증 없음) | `subscription_service.dart:80-103` |
 | M-5 | Home Widget에 약 이름/시간/복용량 평문 저장 | `home_widget_service.dart:55-62` |
 | M-6 | Deep Link 초대 코드 포맷 미검증 | `deep_link_service.dart:31-35` |
-| M-7 | `acceptInvite` 자기 자신 링크 방지 없음 | `functions/index.js:25-72` |
+| M-7 | ~~`acceptInvite` 자기 자신 링크 방지 없음~~ **수정됨 (2026-02-22)** — `caregiverId === patientId` 체크 | `functions/index.js` |
 
 ### LOW (백로그)
 
@@ -193,25 +197,42 @@ PO initial evaluation: **4.5/10 (NO-GO)**. This document reflects the state afte
 | Cloud Functions 인증 확인 | PASS |
 | HTTPS 전용 | PASS |
 | Hive 데이터 암호화 | PARTIAL (fallback 문제) |
-| Storage 규칙 설정 | FAIL — 규칙 파일 없음 |
-| 라우터 인증 가드 | FAIL — redirect 없음 |
-| 계정 삭제 전체 데이터 삭제 | FAIL — Auth만 삭제 |
-| 로그아웃 상태 초기화 | FAIL — Provider 캐시 잔존 |
-| 에러 메시지 사용자 안전 | FAIL — raw exception 노출 |
-| Cloud Functions 레이트 리밋 | FAIL |
-| 초대 코드 CSPRNG | FAIL |
-| FCM 토큰 로깅 없음 | FAIL |
+| 약 사진 암호화 | PASS — AES-256 `.enc` 파일 저장 + 자동 마이그레이션 (2026-02-23) |
+| Storage 규칙 설정 | PASS — `storage.rules` + `firebase.json` 배포 설정 완료 (2026-02-23) |
+| 라우터 인증 가드 | PASS — `app_router_provider.dart` redirect + refreshListenable (2026-02-22) |
+| 계정 삭제 전체 데이터 삭제 | PASS — `deleteUserAccount` CF: subcollections + caregiverAccess + invites + rateLimits + Auth (2026-02-23) |
+| 로그아웃 상태 초기화 | PASS — 7개 provider invalidation + DRY 헬퍼 추출 (2026-02-23) |
+| 에러 메시지 사용자 안전 | PASS — l10n에서 {error} 제거, debugLog 추가 |
+| Cloud Functions 레이트 리밋 | PASS — 전 함수 적용 완료 |
+| 초대 코드 CSPRNG | PASS — `crypto.randomBytes(8)` (2026-02-22) |
+| FCM 토큰 로깅 없음 | PASS — `kDebugMode` 가드 (2026-02-22) |
 
-### 우선순위 수정 순서
+### 수정 완료 이슈 (2026-02-22 ~ 2026-02-23)
 
-1. C-1: `deleteUserAccount` Cloud Function 생성
-2. C-2: GoRouter `redirect` 인증 가드 추가
-3. C-3: `storage.rules` 생성 및 배포
-4. H-1: 로그아웃 시 Provider 전체 초기화
-5. H-2: `revokeAccess`에 linkId 소유권 검증
-6. H-3: Firebase App Check + 레이트 리밋
-7. H-4: FCM 토큰/메시지 로깅 제거
-8. H-5: 에러 메시지 → l10n 매핑
-9. H-6: 약 사진 암호화 또는 경로 변경
-10. H-7: `package-lock.json` 커밋 + `npm ci`
-11. M-1~7: 초대 코드 CSPRNG, 암호화 fallback 등
+| ID | 상태 |
+|----|------|
+| C-1 | ✅ `deleteUserAccount` CF + invite/rateLimit 정리 |
+| C-2 | ✅ GoRouter redirect 인증 가드 + 구버전 라우터 삭제 |
+| C-3 | ✅ `storage.rules` + `firebase.json` 배포 설정 |
+| H-1 | ✅ Provider invalidation + DRY 헬퍼 추출 |
+| H-2 | ✅ `revokeAccess` linkId 소유권 검증 |
+| H-3 | ✅ Cloud Functions 레이트 리밋 |
+| H-4 | ✅ FCM 로깅 `kDebugMode` 가드 |
+| H-5 | ✅ 에러 메시지 l10n 매핑 + `debugLog` |
+| H-6 | ✅ 약 사진 AES-256 암호화 (`.enc`) + 기존 사진 자동 마이그레이션 + 고아 파일 정리 + Add/Edit 화면 사진 상태 연결 |
+| H-7 | ✅ `functions/package-lock.json` 커밋 완료 (`69b27c0`) |
+| M-1 | ✅ 초대 코드 CSPRNG (`crypto.randomBytes`) |
+| M-7 | ✅ 자기 초대 방지 (`caregiverId === patientId`) |
+
+### 미해결 이슈 (백로그)
+
+| ID | 이슈 | 우선순위 |
+|----|------|----------|
+| ~~H-6~~ | ~~약 사진 비암호화 저장~~ **수정됨 (2026-02-23)** — AES-256 암호화 `.enc` 파일 저장 + 기존 사진 자동 마이그레이션 | ~~HIGH~~ RESOLVED |
+| ~~H-7~~ | ~~`functions/package-lock.json` 미커밋~~ **수정됨 (2026-02-23)** — 커밋 `69b27c0`에서 추가 완료 | ~~HIGH~~ RESOLVED |
+| M-2 | Hive 암호화 실패 시 평문 fallback | MEDIUM |
+| M-3 | Firestore `invites` 컬렉션 읽기 권한 | MEDIUM |
+| M-4 | IAP 서버사이드 영수증 검증 없음 | MEDIUM |
+| M-5 | Home Widget 약 정보 평문 저장 | MEDIUM |
+| M-6 | Deep Link 초대 코드 포맷 미검증 | MEDIUM |
+| L-1~L-5 | Low priority issues | LOW |
