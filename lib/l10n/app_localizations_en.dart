@@ -1369,4 +1369,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseSelectAtLeastOneDay => 'Please select at least one day';
+
+  @override
+  String get ippokaModeLabel => 'Dose Pack';
+
+  @override
+  String get ippokaDesc => 'Register as a pre-packaged dose bundle';
+
+  @override
+  String get packet => 'Packet';
+
+  @override
+  String get packs => 'pack(s)';
+
+  @override
+  String get ippokaNameHint => 'e.g. Morning Meds, Evening Meds';
 }

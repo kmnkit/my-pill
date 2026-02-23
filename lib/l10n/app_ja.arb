@@ -512,5 +512,11 @@
   "serviceUnavailable": "サービスが一時的に利用できません。後でお試しください。",
   "dosageMustBePositive": "用量は0より大きい値を入力してください",
   "pleaseSelectAtLeastOneTime": "服用時間を1つ以上選択してください",
-  "pleaseSelectAtLeastOneDay": "曜日を1つ以上選択してください"
+  "pleaseSelectAtLeastOneDay": "曜日を1つ以上選択してください",
+
+  "ippokaModeLabel": "一包化",
+  "ippokaDesc": "複数の薬を1つの袋にまとめて管理します",
+  "packet": "パケット",
+  "packs": "包",
+  "ippokaNameHint": "例：朝の薬、夕の薬"
 }

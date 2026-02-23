@@ -21,6 +21,7 @@ _Medication _$MedicationFromJson(Map<String, dynamic> json) => _Medication(
   inventoryRemaining: (json['inventoryRemaining'] as num?)?.toInt() ?? 30,
   lowStockThreshold: (json['lowStockThreshold'] as num?)?.toInt() ?? 5,
   isCritical: json['isCritical'] as bool? ?? false,
+  isIppoka: json['isIppoka'] as bool? ?? false,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: json['updatedAt'] == null
       ? null
@@ -41,6 +42,7 @@ Map<String, dynamic> _$MedicationToJson(_Medication instance) =>
       'inventoryRemaining': instance.inventoryRemaining,
       'lowStockThreshold': instance.lowStockThreshold,
       'isCritical': instance.isCritical,
+      'isIppoka': instance.isIppoka,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
@@ -50,6 +52,7 @@ const _$DosageUnitEnumMap = {
   DosageUnit.ml: 'ml',
   DosageUnit.pills: 'pills',
   DosageUnit.units: 'units',
+  DosageUnit.packs: 'packs',
 };
 
 const _$PillShapeEnumMap = {
@@ -59,6 +62,7 @@ const _$PillShapeEnumMap = {
   PillShape.square: 'square',
   PillShape.triangle: 'triangle',
   PillShape.hexagon: 'hexagon',
+  PillShape.packet: 'packet',
 };
 
 const _$PillColorEnumMap = {

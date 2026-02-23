@@ -512,5 +512,11 @@
   "serviceUnavailable": "Service temporarily unavailable. Please try again later.",
   "dosageMustBePositive": "Dosage must be greater than zero",
   "pleaseSelectAtLeastOneTime": "Please select at least one time",
-  "pleaseSelectAtLeastOneDay": "Please select at least one day"
+  "pleaseSelectAtLeastOneDay": "Please select at least one day",
+
+  "ippokaModeLabel": "Dose Pack",
+  "ippokaDesc": "Register as a pre-packaged dose bundle",
+  "packet": "Packet",
+  "packs": "pack(s)",
+  "ippokaNameHint": "e.g. Morning Meds, Evening Meds"
 }

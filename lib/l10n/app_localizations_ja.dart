@@ -1328,4 +1328,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get pleaseSelectAtLeastOneDay => '曜日を1つ以上選択してください';
+
+  @override
+  String get ippokaModeLabel => '一包化';
+
+  @override
+  String get ippokaDesc => '複数の薬を1つの袋にまとめて管理します';
+
+  @override
+  String get packet => 'パケット';
+
+  @override
+  String get packs => '包';
+
+  @override
+  String get ippokaNameHint => '例：朝の薬、夕の薬';
 }
