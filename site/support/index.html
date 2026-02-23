@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support — Kusuridoki (くすりどき)</title>
+  <style>
+    :root { --bg: #f8f9fa; --card: #fff; --text: #1a1a2e; --muted: #555; --accent: #4a90d9; --border: #e0e0e0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    .container { max-width: 720px; margin: 0 auto; padding: 40px 24px; }
+    .card { background: var(--card); border-radius: 12px; padding: 40px 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    h2 { font-size: 1.2rem; margin-top: 28px; margin-bottom: 8px; color: var(--accent); }
+    p, li { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; }
+    ul { padding-left: 20px; }
+    a { color: var(--accent); }
+    .lang-switch { text-align: right; margin-bottom: 16px; }
+    .lang-switch a { text-decoration: none; color: var(--accent); font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--accent); border-radius: 6px; }
+    .lang-switch a:hover { background: var(--accent); color: #fff; }
+    .updated { font-size: 0.85rem; color: #999; margin-bottom: 24px; }
+    .contact { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .faq-item { margin-bottom: 20px; }
+    .faq-item h3 { font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+    footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #999; }
+    .section { display: block; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="lang-switch">
+        <a href="#" onclick="switchLang('en'); return false;" id="btn-en">English</a>
+        <a href="#" onclick="switchLang('ja'); return false;" id="btn-ja">日本語</a>
+      </div>
+
+      <!-- English -->
+      <div id="en" class="section">
+        <h1>Support</h1>
+        <p class="updated">Kusuridoki (くすりどき) — Medication Management App</p>
+
+        <h2>Contact Us</h2>
+        <p>If you need help or have any questions, please reach out to us:</p>
+        <p><strong>Email:</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <p>We typically respond within 48 hours.</p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <h3>How do I add a medication?</h3>
+          <p>Tap the "+" button on the home screen, then enter the medication name, dosage, and schedule. You can also add a photo for easy identification.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I set up reminders?</h3>
+          <p>After adding a medication, go to its schedule settings to configure reminder times. Make sure notifications are enabled in your device settings.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How does the caregiver feature work?</h3>
+          <p>Patients can invite caregivers by sharing an invite link or QR code from Settings. Caregivers can then monitor medication adherence. Either party can revoke access at any time.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I delete my account?</h3>
+          <p>Go to Settings and tap "Delete Account." This permanently removes all your data from our servers, including medication records, caregiver links, and authentication information.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I restore my purchases?</h3>
+          <p>Go to Settings and tap "Restore Purchases." This will restore any active premium subscriptions linked to your App Store or Google Play account.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>My reminders are not working</h3>
+          <p>Please check the following:</p>
+          <ul>
+            <li>Notifications are enabled for Kusuridoki in your device settings</li>
+            <li>Battery optimization is not restricting the app (Android)</li>
+            <li>Do Not Disturb mode is not active</li>
+            <li>The app has not been force-closed</li>
+          </ul>
+        </div>
+
+        <div class="faq-item">
+          <h3>Can I use the app on multiple devices?</h3>
+          <p>Yes. Sign in with the same Apple or Google account on each device. Your data will sync automatically via the cloud.</p>
+        </div>
+
+        <div class="contact">
+          <h2>Other Resources</h2>
+          <ul>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Japanese -->
+      <div id="ja" class="section hidden">
+        <h1>サポート</h1>
+        <p class="updated">くすりどき — お薬管理アプリ</p>
+
+        <h2>お問い合わせ</h2>
+        <p>ご不明な点やお困りのことがございましたら、お気軽にご連絡ください：</p>
+        <p><strong>メール：</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <p>通常48時間以内にご返信いたします。</p>
+
+        <h2>よくあるご質問</h2>
+
+        <div class="faq-item">
+          <h3>お薬の追加方法は？</h3>
+          <p>ホーム画面の「+」ボタンをタップし、お薬の名前、用量、スケジュールを入力してください。識別しやすいように写真を追加することもできます。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>リマインダーの設定方法は？</h3>
+          <p>お薬を追加した後、スケジュール設定からリマインダーの時間を設定できます。デバイスの設定で通知が有効になっていることをご確認ください。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>見守り機能の使い方は？</h3>
+          <p>患者は設定画面から招待リンクまたはQRコードを共有して見守り者を招待できます。見守り者は服薬状況を確認できます。どちらからでもいつでもアクセスを取り消すことができます。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>アカウントの削除方法は？</h3>
+          <p>設定画面で「アカウント削除」をタップしてください。服薬記録、見守りリンク、認証情報を含むすべてのデータがサーバーから完全に削除されます。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>購入の復元方法は？</h3>
+          <p>設定画面で「購入を復元」をタップしてください。App StoreまたはGoogle Playアカウントに紐づくプレミアムサブスクリプションが復元されます。</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>リマインダーが届かない場合</h3>
+          <p>以下をご確認ください：</p>
+          <ul>
+            <li>デバイスの設定でくすりどきの通知が有効になっているか</li>
+            <li>バッテリー最適化がアプリを制限していないか（Android）</li>
+            <li>おやすみモードが有効になっていないか</li>
+            <li>アプリが強制終了されていないか</li>
+          </ul>
+        </div>
+
+        <div class="faq-item">
+          <h3>複数のデバイスで使えますか？</h3>
+          <p>はい。各デバイスで同じAppleまたはGoogleアカウントでサインインしてください。クラウドを通じてデータが自動的に同期されます。</p>
+        </div>
+
+        <div class="contact">
+          <h2>その他のリソース</h2>
+          <ul>
+            <li><a href="/privacy-policy">プライバシーポリシー</a></li>
+            <li><a href="/terms">利用規約</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>&copy; 2026 Kusuridoki (くすりどき). All rights reserved.</footer>
+  <script>
+    function switchLang(lang) {
+      document.getElementById('en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('btn-en').style.opacity = lang === 'en' ? '1' : '0.5';
+      document.getElementById('btn-ja').style.opacity = lang === 'ja' ? '1' : '0.5';
+    }
+    const isJa = navigator.language.startsWith('ja');
+    switchLang(isJa ? 'ja' : 'en');
+  </script>
+</body>
+</html>
