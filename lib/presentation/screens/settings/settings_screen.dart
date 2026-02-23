@@ -39,7 +39,12 @@ class SettingsScreen extends ConsumerWidget {
       appBar: MpAppBar(title: l10n.settingsTitle),
       body: userSettingsAsync.when(
         data: (userSettings) => SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.navBarClearance,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -33,7 +33,7 @@ final class UserSettingsProvider
   UserSettings create() => UserSettings();
 }
 
-String _$userSettingsHash() => r'24eee349b40f54b654da7380d8a36a69803049e9';
+String _$userSettingsHash() => r'ff6adbdc030aa6d72f88e6b8b05b1d5424c9c16d';
 
 abstract class _$UserSettings extends $AsyncNotifier<UserProfile> {
   FutureOr<UserProfile> build();

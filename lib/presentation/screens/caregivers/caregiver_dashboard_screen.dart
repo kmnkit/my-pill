@@ -42,6 +42,9 @@ class CaregiverDashboardScreen extends ConsumerWidget {
                     }
 
                     return ListView.builder(
+                      padding: const EdgeInsets.only(
+                        bottom: AppSpacing.navBarClearance,
+                      ),
                       itemCount: patients.length,
                       itemBuilder: (context, index) {
                         final patient = patients[index];

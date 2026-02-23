@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
@@ -25,7 +26,6 @@ import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_progress_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/presentation/router/route_names.dart';
 
 class MedicationDetailScreen extends ConsumerWidget {
   final String medicationId;
@@ -69,10 +69,7 @@ class MedicationDetailScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              context.pushNamed(
-                RouteNames.editMedication,
-                pathParameters: {'id': medicationId},
-              );
+              context.push('/medications/$medicationId/edit');
             },
             iconSize: AppSpacing.iconMd,
           ),
@@ -123,7 +120,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        '${medication.dosage}${medication.dosageUnit.label}',
+                        '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textMuted,
                         ),
@@ -362,7 +359,7 @@ class _InfoRow extends StatelessWidget {
 
 String _formatDays(List<int> days, AppLocalizations l10n) {
   const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  return days.map((d) => d >= 0 && d < 7 ? dayNames[d] : '?').join(', ');
+  return days.map((d) => d >= 1 && d <= 7 ? dayNames[d - 1] : '?').join(', ');
 }
 
 class _EncryptedPhotoWidget extends ConsumerStatefulWidget {

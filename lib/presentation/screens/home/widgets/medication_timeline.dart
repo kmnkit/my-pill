@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
@@ -74,7 +75,7 @@ class MedicationTimeline extends ConsumerWidget {
                       final reminder = reminders[i];
                       return TimelineCard(
                         medicationName: medication.name,
-                        dosage: '${medication.dosage}${medication.dosageUnit.label}',
+                        dosage: '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
                         time: DateFormat('h:mm a').format(reminder.scheduledTime),
                         badgeVariant: _getBadgeVariant(reminder.status),
                         badgeLabel: _getBadgeLabel(reminder.status, l10n),

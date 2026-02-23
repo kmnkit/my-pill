@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/services/ad_service.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
@@ -63,7 +64,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
           IconButton(
             icon: const Icon(Icons.add),
             iconSize: AppSpacing.iconMd,
-            onPressed: () => context.go('/medications/add'),
+            onPressed: () => context.push('/medications/add'),
           ),
         ],
       ),
@@ -102,7 +103,11 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.only(
+                    left: AppSpacing.lg,
+                    right: AppSpacing.lg,
+                    bottom: AppSpacing.navBarClearance,
+                  ),
                   itemCount: filteredMedications.length,
                   itemBuilder: (context, index) {
                     final med = filteredMedications[index];
@@ -111,7 +116,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: AppSpacing.md),
                       child: GestureDetector(
-                        onTap: () => context.go('/medications/${med.id}'),
+                        onTap: () => context.push('/medications/${med.id}'),
                         child: Container(
                           padding: const EdgeInsets.all(AppSpacing.lg),
                           decoration: BoxDecoration(
@@ -132,7 +137,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                     ),
                                     const SizedBox(height: AppSpacing.xs),
                                     Text(
-                                      '${med.dosage}${med.dosageUnit.label}',
+                                      '${med.dosage}${med.dosageUnit.localizedName(l10n)}',
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                             color: AppColors.textMuted,
                                           ),
