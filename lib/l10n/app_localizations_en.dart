@@ -1360,4 +1360,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get serviceUnavailable =>
       'Service temporarily unavailable. Please try again later.';
+
+  @override
+  String get dosageMustBePositive => 'Dosage must be greater than zero';
+
+  @override
+  String get pleaseSelectAtLeastOneTime => 'Please select at least one time';
+
+  @override
+  String get pleaseSelectAtLeastOneDay => 'Please select at least one day';
 }

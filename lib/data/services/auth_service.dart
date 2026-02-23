@@ -145,6 +145,9 @@ class AuthService {
 
   // Delete account — delegates to Cloud Function for server-side full data cleanup
   Future<void> deleteAccount() async {
+    if (_auth.currentUser == null) {
+      throw StateError('Cannot delete account: no user is signed in');
+    }
     await CloudFunctionsService().deleteAccount();
   }
 

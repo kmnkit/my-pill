@@ -145,6 +145,22 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   }
 
   void _saveSchedule() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (_times.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneTime)),
+      );
+      return;
+    }
+
+    if (_selectedType == ScheduleType.specificDays && _selectedDays.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneDay)),
+      );
+      return;
+    }
+
     final schedule = Schedule(
       id: const Uuid().v4(),
       medicationId: widget.medicationId,

@@ -98,15 +98,21 @@ class ReportService {
     return file;
   }
 
-  /// Share report via system share dialog
+  /// Share report via system share dialog, then clean up the temp file.
   Future<void> shareReport(File pdf, String reportType) async {
-    await SharePlus.instance.share(
-      ShareParams(
-        files: [XFile(pdf.path)],
-        subject: 'MyPill $reportType Report',
-        text: 'Medication adherence report from MyPill',
-      ),
-    );
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(pdf.path)],
+          subject: 'Kusuridoki $reportType Report',
+          text: 'Medication adherence report from Kusuridoki',
+        ),
+      );
+    } finally {
+      if (await pdf.exists()) {
+        await pdf.delete();
+      }
+    }
   }
 
   // Private helper methods for PDF building
