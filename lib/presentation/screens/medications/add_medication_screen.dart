@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
@@ -29,7 +30,8 @@ class AddMedicationScreen extends ConsumerStatefulWidget {
   const AddMedicationScreen({super.key});
 
   @override
-  ConsumerState<AddMedicationScreen> createState() => _AddMedicationScreenState();
+  ConsumerState<AddMedicationScreen> createState() =>
+      _AddMedicationScreenState();
 }
 
 class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
@@ -42,6 +44,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   ScheduleType _selectedScheduleType = ScheduleType.daily;
   int _inventoryCount = 30;
   bool _isCritical = false;
+  bool _isIppoka = false;
   bool _isSaving = false;
   String? _photoPath;
 
@@ -57,19 +60,47 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: MpAppBar(
-        title: l10n.addMedication,
-        showBack: true,
-      ),
+      appBar: MpAppBar(title: l10n.addMedication, showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SwitchListTile(
+              title: Text(
+                l10n.ippokaModeLabel,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Text(
+                l10n.ippokaDesc,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.textMuted),
+              ),
+              value: _isIppoka,
+              onChanged: (value) {
+                setState(() {
+                  _isIppoka = value;
+                  if (value) {
+                    _selectedShape = PillShape.packet;
+                    _dosageUnit = DosageUnit.packs;
+                    _dosageController.text = '1';
+                  } else {
+                    _selectedShape = PillShape.round;
+                    _dosageUnit = DosageUnit.mg;
+                    _dosageController.text = '';
+                  }
+                });
+              },
+              activeTrackColor: AppColors.primary,
+              contentPadding: EdgeInsets.zero,
+            ),
+            const SizedBox(height: AppSpacing.lg),
             MpTextField(
               controller: _nameController,
               label: l10n.medicationName,
-              hint: l10n.dosageHint,
+              hint: _isIppoka ? l10n.ippokaNameHint : l10n.dosageHint,
             ),
             const SizedBox(height: AppSpacing.lg),
             Row(
@@ -102,10 +133,12 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                           ),
                         ),
                         items: DosageUnit.values
-                            .map((unit) => DropdownMenuItem(
-                                  value: unit,
-                                  child: Text(unit.label),
-                                ))
+                            .map(
+                              (unit) => DropdownMenuItem(
+                                value: unit,
+                                child: Text(unit.localizedName(l10n)),
+                              ),
+                            )
                             .toList(),
                         onChanged: (value) {
                           if (value != null) {
@@ -121,26 +154,28 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.xxl),
-            MpSectionHeader(title: l10n.pillShape),
-            PillShapeSelector(
-              selectedShape: _selectedShape,
-              onShapeSelected: (shape) {
-                setState(() {
-                  _selectedShape = shape;
-                });
-              },
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            MpSectionHeader(title: l10n.pillColor),
-            PillColorPicker(
-              selectedColor: _selectedColor,
-              onColorSelected: (color) {
-                setState(() {
-                  _selectedColor = color;
-                });
-              },
-            ),
+            if (!_isIppoka) ...[
+              const SizedBox(height: AppSpacing.md),
+              MpSectionHeader(title: l10n.pillShape),
+              PillShapeSelector(
+                selectedShape: _selectedShape,
+                onShapeSelected: (shape) {
+                  setState(() {
+                    _selectedShape = shape;
+                  });
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              MpSectionHeader(title: l10n.pillColor),
+              PillColorPicker(
+                selectedColor: _selectedColor,
+                onColorSelected: (color) {
+                  setState(() {
+                    _selectedColor = color;
+                  });
+                },
+              ),
+            ],
             const SizedBox(height: AppSpacing.xxl),
             PhotoPickerButton(
               currentPhotoPath: _photoPath,
@@ -178,9 +213,9 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
               ),
               subtitle: Text(
                 l10n.criticalMedicationDesc,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textMuted,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
               ),
               value: _isCritical,
               onChanged: (value) {
@@ -206,31 +241,31 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     if (_nameController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseEnterMedicationName)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.pleaseEnterMedicationName)));
       return;
     }
 
     if (_dosageController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseEnterDosage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.pleaseEnterDosage)));
       return;
     }
 
     final dosageValue = double.tryParse(_dosageController.text.trim());
     if (dosageValue == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseEnterValidDosage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.pleaseEnterValidDosage)));
       return;
     }
 
     if (dosageValue <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.dosageMustBePositive)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.dosageMustBePositive)));
       return;
     }
 
@@ -247,6 +282,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
         inventoryTotal: _inventoryCount,
         inventoryRemaining: _inventoryCount,
         isCritical: _isCritical,
+        isIppoka: _isIppoka,
         photoPath: _photoPath,
         createdAt: DateTime.now(),
       );
@@ -255,10 +291,12 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
 
       // Record action for interstitial frequency capping
       ref.read(interstitialControllerProvider).recordAction();
-      await ref.read(interstitialControllerProvider).maybeShow(
-        adService: ref.read(adServiceProvider),
-        adsRemoved: ref.read(adsRemovedProvider),
-      );
+      await ref
+          .read(interstitialControllerProvider)
+          .maybeShow(
+            adService: ref.read(adServiceProvider),
+            adsRemoved: ref.read(adsRemovedProvider),
+          );
 
       if (mounted) {
         context.pop();
@@ -266,9 +304,9 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
     } catch (e, st) {
       ErrorHandler.debugLog(e, st, 'addMedication');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.errorSavingMedication)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorSavingMedication)));
       }
     } finally {
       if (mounted) {

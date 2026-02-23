@@ -2635,6 +2635,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select at least one day'**
   String get pleaseSelectAtLeastOneDay;
+
+  /// No description provided for @ippokaModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose Pack'**
+  String get ippokaModeLabel;
+
+  /// No description provided for @ippokaDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Register as a pre-packaged dose bundle'**
+  String get ippokaDesc;
+
+  /// No description provided for @packet.
+  ///
+  /// In en, this message translates to:
+  /// **'Packet'**
+  String get packet;
+
+  /// No description provided for @packs.
+  ///
+  /// In en, this message translates to:
+  /// **'pack(s)'**
+  String get packs;
+
+  /// No description provided for @ippokaNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Morning Meds, Evening Meds'**
+  String get ippokaNameHint;
 }
 
 class _AppLocalizationsDelegate

@@ -6,7 +6,8 @@ enum PillShape {
   oval(label: 'Oval', icon: Icons.circle_outlined),
   square(label: 'Square', icon: Icons.square_outlined),
   triangle(label: 'Triangle', icon: Icons.change_history_outlined),
-  hexagon(label: 'Hexagon', icon: Icons.hexagon_outlined);
+  hexagon(label: 'Hexagon', icon: Icons.hexagon_outlined),
+  packet(label: 'Packet', icon: Icons.inventory_2_outlined);
 
   const PillShape({required this.label, required this.icon});
   final String label;

@@ -21,6 +21,7 @@ abstract class Medication with _$Medication {
     @Default(30) int inventoryRemaining,
     @Default(5) int lowStockThreshold,
     @Default(false) bool isCritical,
+    @Default(false) bool isIppoka,
     required DateTime createdAt,
     DateTime? updatedAt,
   }) = _Medication;

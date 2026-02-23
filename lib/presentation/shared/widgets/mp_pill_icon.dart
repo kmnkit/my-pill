@@ -29,7 +29,9 @@ class MpPillIcon extends StatelessWidget {
     }
 
     return Semantics(
-      label: 'Medication icon: ${shape.name} ${color.name}',
+      label: shape == PillShape.packet
+          ? 'Dose pack icon'
+          : 'Medication icon: ${shape.name} ${color.name}',
       child: Container(
         width: size + 12,
         height: size + 12,

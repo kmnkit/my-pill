@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
@@ -46,6 +47,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
   ScheduleType _selectedScheduleType = ScheduleType.daily;
   int _inventoryCount = 30;
   bool _isCritical = false;
+  bool _isIppoka = false;
   bool _isSaving = false;
   bool _isInitialized = false;
   String? _photoPath;
@@ -67,6 +69,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
     _selectedColor = medication.color;
     _inventoryCount = medication.inventoryRemaining;
     _isCritical = medication.isCritical;
+    _isIppoka = medication.isIppoka;
     _photoPath = medication.photoPath;
 
     _isInitialized = true;
@@ -143,10 +146,41 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SwitchListTile(
+                  title: Text(
+                    l10n.ippokaModeLabel,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    l10n.ippokaDesc,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AppColors.textMuted),
+                  ),
+                  value: _isIppoka,
+                  onChanged: (value) {
+                    setState(() {
+                      _isIppoka = value;
+                      if (value) {
+                        _selectedShape = PillShape.packet;
+                        _dosageUnit = DosageUnit.packs;
+                        _dosageController.text = '1';
+                      } else {
+                        _selectedShape = PillShape.round;
+                        _dosageUnit = DosageUnit.mg;
+                        _dosageController.text = '';
+                      }
+                    });
+                  },
+                  activeTrackColor: AppColors.primary,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: AppSpacing.lg),
                 MpTextField(
                   controller: _nameController,
                   label: l10n.medicationName,
-                  hint: l10n.dosageHint,
+                  hint: _isIppoka ? l10n.ippokaNameHint : l10n.dosageHint,
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Row(
@@ -181,7 +215,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                             items: DosageUnit.values
                                 .map((unit) => DropdownMenuItem(
                                       value: unit,
-                                      child: Text(unit.label),
+                                      child: Text(unit.localizedName(l10n)),
                                     ))
                                 .toList(),
                             onChanged: (value) {
@@ -198,26 +232,28 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xxl),
-                MpSectionHeader(title: l10n.pillShape),
-                PillShapeSelector(
-                  selectedShape: _selectedShape,
-                  onShapeSelected: (shape) {
-                    setState(() {
-                      _selectedShape = shape;
-                    });
-                  },
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-                MpSectionHeader(title: l10n.pillColor),
-                PillColorPicker(
-                  selectedColor: _selectedColor,
-                  onColorSelected: (color) {
-                    setState(() {
-                      _selectedColor = color;
-                    });
-                  },
-                ),
+                if (!_isIppoka) ...[
+                  const SizedBox(height: AppSpacing.xxl),
+                  MpSectionHeader(title: l10n.pillShape),
+                  PillShapeSelector(
+                    selectedShape: _selectedShape,
+                    onShapeSelected: (shape) {
+                      setState(() {
+                        _selectedShape = shape;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  MpSectionHeader(title: l10n.pillColor),
+                  PillColorPicker(
+                    selectedColor: _selectedColor,
+                    onColorSelected: (color) {
+                      setState(() {
+                        _selectedColor = color;
+                      });
+                    },
+                  ),
+                ],
                 const SizedBox(height: AppSpacing.xxl),
                 PhotoPickerButton(
                   currentPhotoPath: _photoPath,
@@ -317,6 +353,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
         color: _selectedColor,
         inventoryRemaining: _inventoryCount,
         isCritical: _isCritical,
+        isIppoka: _isIppoka,
         photoPath: _photoPath,
         updatedAt: DateTime.now(),
       );
