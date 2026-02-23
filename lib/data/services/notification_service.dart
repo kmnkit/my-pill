@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -157,8 +158,8 @@ class NotificationService {
 
     final details = NotificationDetails(android: androidDetails, iOS: iosDetails);
 
-    // Use reminder ID hashCode as notification ID
-    final notificationId = reminder.id.hashCode;
+    // Use deterministic hash for stable notification IDs across sessions
+    final notificationId = _stableId(reminder.id);
 
     await _localNotifications.zonedSchedule(
       id: notificationId,
@@ -199,7 +200,7 @@ class NotificationService {
     final details = NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     await _localNotifications.zonedSchedule(
-      id: reminder.id.hashCode,
+      id: _stableId(reminder.id),
       title: 'CRITICAL: Take $medicationName',
       body: '$dosage - This medication is marked as critical',
       scheduledDate: _convertToTZDateTime(scheduledTime),
@@ -211,7 +212,7 @@ class NotificationService {
 
   // Cancel a scheduled notification
   Future<void> cancelReminder(String reminderId) async {
-    await _localNotifications.cancel(id: reminderId.hashCode);
+    await _localNotifications.cancel(id: _stableId(reminderId));
   }
 
   // Cancel all notifications
@@ -255,7 +256,7 @@ class NotificationService {
     const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     // Use a unique ID based on medication name to avoid duplicate notifications
-    final notificationId = 'low_stock_$medicationName'.hashCode;
+    final notificationId = _stableId('low_stock_$medicationName');
 
     await _localNotifications.show(
       id: notificationId,
@@ -283,5 +284,17 @@ class NotificationService {
   // Helper to convert DateTime to TZDateTime
   static tz.TZDateTime _convertToTZDateTime(DateTime dateTime) {
     return tz.TZDateTime.from(dateTime, tz.local);
+  }
+
+  /// Deterministic, session-stable hash for notification IDs.
+  /// Dart's String.hashCode can vary between VM sessions, so we use FNV-1a 32-bit.
+  static int _stableId(String value) {
+    final bytes = utf8.encode(value);
+    var hash = 0x811c9dc5; // FNV offset basis
+    for (final byte in bytes) {
+      hash ^= byte;
+      hash = (hash * 0x01000193) & 0xFFFFFFFF; // FNV prime, keep 32-bit
+    }
+    return hash & 0x7FFFFFFF; // ensure positive
   }
 }

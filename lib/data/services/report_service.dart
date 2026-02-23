@@ -24,7 +24,7 @@ class ReportService {
     final missed = records.where((r) => r.status == ReminderStatus.missed).length;
     final skipped = records.where((r) => r.status == ReminderStatus.skipped).length;
     final total = taken + missed;
-    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : '100.0';
+    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
     pdf.addPage(
       pw.MultiPage(
@@ -67,7 +67,7 @@ class ReportService {
     final missed = records.where((r) => r.status == ReminderStatus.missed).length;
     final skipped = records.where((r) => r.status == ReminderStatus.skipped).length;
     final total = taken + missed;
-    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : '100.0';
+    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
     pdf.addPage(
       pw.MultiPage(
@@ -226,7 +226,7 @@ class ReportService {
             final taken = medRecords.where((r) => r.status == ReminderStatus.taken).length;
             final missed = medRecords.where((r) => r.status == ReminderStatus.missed).length;
             final total = taken + missed;
-            final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : '100.0';
+            final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
             return [
               med.name,
@@ -259,7 +259,7 @@ class ReportService {
       final taken = dayRecords.where((r) => r.status == ReminderStatus.taken).length;
       final missed = dayRecords.where((r) => r.status == ReminderStatus.missed).length;
       final total = taken + missed;
-      final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : '100.0';
+      final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
       dailyData.add({
         'date': DateFormat('EEE, MMM d').format(date),
@@ -317,7 +317,7 @@ class ReportService {
       final taken = weekRecords.where((r) => r.status == ReminderStatus.taken).length;
       final missed = weekRecords.where((r) => r.status == ReminderStatus.missed).length;
       final total = taken + missed;
-      final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : '100.0';
+      final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
       weeklyData.add({
         'week': 'Week ${i + 1}',

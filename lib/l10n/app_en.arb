@@ -518,5 +518,8 @@
   "ippokaDesc": "Register as a pre-packaged dose bundle",
   "packet": "Packet",
   "packs": "pack(s)",
-  "ippokaNameHint": "e.g. Morning Meds, Evening Meds"
+  "ippokaNameHint": "e.g. Morning Meds, Evening Meds",
+
+  "timeoutError": "Request timed out. Please try again.",
+  "defaultUserName": "User"
 }

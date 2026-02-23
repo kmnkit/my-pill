@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/schedule_provider.dart';
+import 'package:my_pill/data/services/firestore_service.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
-class BackupSyncDialog extends StatefulWidget {
+class BackupSyncDialog extends ConsumerStatefulWidget {
   const BackupSyncDialog({super.key});
 
   static Future<void> show(BuildContext context) {
@@ -15,37 +20,68 @@ class BackupSyncDialog extends StatefulWidget {
   }
 
   @override
-  State<BackupSyncDialog> createState() => _BackupSyncDialogState();
+  ConsumerState<BackupSyncDialog> createState() => _BackupSyncDialogState();
 }
 
-class _BackupSyncDialogState extends State<BackupSyncDialog> {
+class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
   bool _autoSync = true;
   bool _isSyncing = false;
   String? _lastSyncText;
 
   Future<void> _syncNow() async {
+    final l10n = AppLocalizations.of(context)!;
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.signInToSync),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isSyncing = true;
     });
 
-    // Simulate sync operation
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final medications = await ref.read(medicationListProvider.future);
+      final schedules = await ref.read(scheduleListProvider.future);
+      final firestoreService = FirestoreService();
 
-    if (!mounted) return;
+      await firestoreService.syncToCloud(medications, schedules);
 
-    setState(() {
-      _isSyncing = false;
-      _lastSyncText = AppLocalizations.of(context)!.justNow;
-    });
+      if (!mounted) return;
 
-    if (!mounted) return;
+      setState(() {
+        _isSyncing = false;
+        _lastSyncText = l10n.justNow;
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.syncComplete),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.syncComplete),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        _isSyncing = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.syncFailed(e.toString())),
+          backgroundColor: AppColors.error,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   @override

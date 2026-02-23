@@ -5,6 +5,7 @@ import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/data/providers/report_provider.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
@@ -68,7 +69,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
       final reportService = ref.read(reportServiceProvider);
       final storageService = ref.read(storageServiceProvider);
       final medications = await ref.read(medicationListProvider.future);
-      const userName = 'User'; // TODO: Get from user profile when available
+      final userName = ref.read(userSettingsProvider).value?.name ?? l10n.defaultUserName;
 
       final now = DateTime.now();
       late final File file;

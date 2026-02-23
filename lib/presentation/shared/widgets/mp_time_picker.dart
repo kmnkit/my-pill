@@ -16,14 +16,6 @@ class MpTimePicker extends StatelessWidget {
   final ValueChanged<int> onHourChanged;
   final ValueChanged<int> onMinuteChanged;
 
-  String get _displayHour {
-    final h = hour % 12;
-    return (h == 0 ? 12 : h).toString().padLeft(2, '0');
-  }
-
-  String get _displayMinute => minute.toString().padLeft(2, '0');
-  String get _period => hour >= 12 ? 'PM' : 'AM';
-
   Widget _buildColumn(String value, VoidCallback onUp, VoidCallback onDown) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -47,6 +39,13 @@ class MpTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final use24Hour = MediaQuery.of(context).alwaysUse24HourFormat;
+
+    final displayHour = use24Hour
+        ? hour.toString().padLeft(2, '0')
+        : (hour % 12 == 0 ? 12 : hour % 12).toString().padLeft(2, '0');
+    final displayMinute = minute.toString().padLeft(2, '0');
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
@@ -56,11 +55,18 @@ class MpTimePicker extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildColumn(_displayHour, () => onHourChanged((hour + 1) % 24), () => onHourChanged((hour - 1 + 24) % 24)),
+          _buildColumn(displayHour, () => onHourChanged((hour + 1) % 24), () => onHourChanged((hour - 1 + 24) % 24)),
           const Text(':', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600)),
-          _buildColumn(_displayMinute, () => onMinuteChanged((minute + 15) % 60), () => onMinuteChanged((minute - 15 + 60) % 60)),
-          const SizedBox(width: AppSpacing.md),
-          Text(_period, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primary)),
+          _buildColumn(displayMinute, () => onMinuteChanged((minute + 15) % 60), () => onMinuteChanged((minute - 15 + 60) % 60)),
+          if (!use24Hour) ...[
+            const SizedBox(width: AppSpacing.md),
+            Text(
+              hour >= 12
+                  ? MaterialLocalizations.of(context).postMeridiemAbbreviation
+                  : MaterialLocalizations.of(context).anteMeridiemAbbreviation,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primary),
+            ),
+          ],
         ],
       ),
     );

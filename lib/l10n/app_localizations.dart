@@ -2665,6 +2665,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. Morning Meds, Evening Meds'**
   String get ippokaNameHint;
+
+  /// No description provided for @timeoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'Request timed out. Please try again.'**
+  String get timeoutError;
+
+  /// No description provided for @defaultUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get defaultUserName;
 }
 
 class _AppLocalizationsDelegate
