@@ -646,9 +646,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String linkFailed(String error) {
-    return 'Failed to link account: $error';
-  }
+  String get linkFailed => 'Failed to link account. Please try again.';
 
   @override
   String get appleSignInCancelled => 'Apple sign in was cancelled';
@@ -861,9 +859,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get removePhoto => 'Remove Photo';
 
   @override
-  String failedToPickImage(String error) {
-    return 'Failed to pick image: $error';
-  }
+  String get failedToPickImage => 'Failed to pick image. Please try again.';
 
   @override
   String get missedDoseAlerts => 'Missed Dose Alerts';
@@ -1095,14 +1091,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterValidDosage => 'Please enter a valid number for dosage';
 
   @override
-  String errorSavingMedication(String error) {
-    return 'Error saving medication: $error';
-  }
+  String get errorSavingMedication =>
+      'Failed to save medication. Please try again.';
 
   @override
-  String errorUpdatingMedication(String error) {
-    return 'Error updating medication: $error';
-  }
+  String get errorUpdatingMedication =>
+      'Failed to update medication. Please try again.';
 
   @override
   String get errorLoadingMedication => 'Error loading medication';
@@ -1279,9 +1273,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get successfullyLinked => 'Successfully linked as caregiver!';
 
   @override
-  String failedToAcceptInvite(String error) {
-    return 'Failed to accept invite: $error';
-  }
+  String get failedToAcceptInvite =>
+      'Failed to accept invite. Please try again.';
 
   @override
   String get inviteLinkGenerated => 'Invite link generated successfully!';

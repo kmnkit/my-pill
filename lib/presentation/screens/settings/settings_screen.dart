@@ -115,13 +115,7 @@ class SettingsScreen extends ConsumerWidget {
                       // 1. Clear user data first (while widget is still mounted)
                       await StorageService().clearUserData();
                       // 2. Invalidate all user-data providers (before signOut triggers redirect)
-                      ref.invalidate(medicationListProvider);
-                      ref.invalidate(scheduleListProvider);
-                      ref.invalidate(todayRemindersProvider);
-                      ref.invalidate(overallAdherenceProvider);
-                      ref.invalidate(weeklyAdherenceProvider);
-                      ref.invalidate(caregiverLinksProvider);
-                      ref.invalidate(userSettingsProvider);
+                      _invalidateUserProviders(ref);
                       // 3. Sign out last — router redirect handles navigation to /login
                       await ref.read(authServiceProvider).signOut();
                     } catch (e) {
@@ -175,13 +169,7 @@ class SettingsScreen extends ConsumerWidget {
                       // 2. Clear local data first (while widget is still mounted)
                       await StorageService().clearAll();
                       // 3. Invalidate all providers (before signOut triggers redirect)
-                      ref.invalidate(medicationListProvider);
-                      ref.invalidate(scheduleListProvider);
-                      ref.invalidate(todayRemindersProvider);
-                      ref.invalidate(overallAdherenceProvider);
-                      ref.invalidate(weeklyAdherenceProvider);
-                      ref.invalidate(caregiverLinksProvider);
-                      ref.invalidate(userSettingsProvider);
+                      _invalidateUserProviders(ref);
                       // 4. Sign out last — router redirect handles navigation
                       await authService.signOut();
                     } catch (e) {
@@ -233,6 +221,16 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _invalidateUserProviders(WidgetRef ref) {
+    ref.invalidate(medicationListProvider);
+    ref.invalidate(scheduleListProvider);
+    ref.invalidate(todayRemindersProvider);
+    ref.invalidate(overallAdherenceProvider);
+    ref.invalidate(weeklyAdherenceProvider);
+    ref.invalidate(caregiverLinksProvider);
+    ref.invalidate(userSettingsProvider);
   }
 
   Widget _buildListTile(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
@@ -42,6 +43,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   int _inventoryCount = 30;
   bool _isCritical = false;
   bool _isSaving = false;
+  String? _photoPath;
 
   @override
   void dispose() {
@@ -140,7 +142,12 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
               },
             ),
             const SizedBox(height: AppSpacing.xxl),
-            const PhotoPickerButton(),
+            PhotoPickerButton(
+              currentPhotoPath: _photoPath,
+              onPhotoChanged: (path) {
+                setState(() => _photoPath = path);
+              },
+            ),
             const SizedBox(height: AppSpacing.xxl),
             MpSectionHeader(title: l10n.scheduleType),
             ScheduleTypeSelector(
@@ -233,6 +240,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
         inventoryTotal: _inventoryCount,
         inventoryRemaining: _inventoryCount,
         isCritical: _isCritical,
+        photoPath: _photoPath,
         createdAt: DateTime.now(),
       );
 
@@ -248,10 +256,11 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       if (mounted) {
         context.pop();
       }
-    } catch (e) {
+    } catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'addMedication');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.errorSavingMedication(e.toString()))),
+          SnackBar(content: Text(l10n.errorSavingMedication)),
         );
       }
     } finally {

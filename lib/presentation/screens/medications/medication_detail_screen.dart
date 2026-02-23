@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_pill/core/utils/photo_encryption.dart';
+import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
@@ -102,11 +105,8 @@ class MedicationDetailScreen extends ConsumerWidget {
                       if (medication.photoPath != null)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                          child: Image.file(
-                            File(medication.photoPath!),
-                            width: 120,
-                            height: 120,
-                            fit: BoxFit.cover,
+                          child: _EncryptedPhotoWidget(
+                            photoPath: medication.photoPath!,
                           ),
                         )
                       else
@@ -363,4 +363,82 @@ class _InfoRow extends StatelessWidget {
 String _formatDays(List<int> days, AppLocalizations l10n) {
   const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   return days.map((d) => d >= 0 && d < 7 ? dayNames[d] : '?').join(', ');
+}
+
+class _EncryptedPhotoWidget extends ConsumerStatefulWidget {
+  const _EncryptedPhotoWidget({required this.photoPath});
+
+  final String photoPath;
+
+  @override
+  ConsumerState<_EncryptedPhotoWidget> createState() =>
+      _EncryptedPhotoWidgetState();
+}
+
+class _EncryptedPhotoWidgetState
+    extends ConsumerState<_EncryptedPhotoWidget> {
+  Future<Uint8List>? _decryptFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _startDecryption();
+  }
+
+  @override
+  void didUpdateWidget(_EncryptedPhotoWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.photoPath != widget.photoPath) {
+      _startDecryption();
+    }
+  }
+
+  void _startDecryption() {
+    if (PhotoEncryption.isEncrypted(widget.photoPath)) {
+      final key = ref.read(storageServiceProvider).encryptionKeyBytes;
+      _decryptFuture = PhotoEncryption.decryptFromFile(widget.photoPath, key);
+    } else {
+      _decryptFuture = null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_decryptFuture != null) {
+      return FutureBuilder<Uint8List>(
+        future: _decryptFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Image.memory(
+              snapshot.data!,
+              width: 120,
+              height: 120,
+              fit: BoxFit.cover,
+            );
+          }
+          if (snapshot.hasError) {
+            return const SizedBox(
+              width: 120,
+              height: 120,
+              child: Center(
+                child: Icon(Icons.broken_image, color: AppColors.textMuted),
+              ),
+            );
+          }
+          return const SizedBox(
+            width: 120,
+            height: 120,
+            child: Center(child: CircularProgressIndicator.adaptive()),
+          );
+        },
+      );
+    }
+    // Legacy unencrypted photo (pre-migration)
+    return Image.file(
+      File(widget.photoPath),
+      width: 120,
+      height: 120,
+      fit: BoxFit.cover,
+    );
+  }
 }

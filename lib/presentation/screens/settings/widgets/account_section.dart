@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
@@ -192,12 +193,13 @@ class AccountSection extends ConsumerWidget {
         );
         ref.invalidate(authStateProvider);
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'linkWithGoogle');
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         final message = e.code == 'credential-already-in-use'
             ? l10n.accountAlreadyLinked
-            : l10n.linkFailed(e.message ?? '');
+            : l10n.linkFailed;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: AppColors.error),
         );
@@ -226,12 +228,13 @@ class AccountSection extends ConsumerWidget {
           ),
         );
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'linkWithApple');
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         final message = e.code == 'credential-already-in-use'
             ? l10n.accountAlreadyLinked
-            : l10n.linkFailed(e.message ?? '');
+            : l10n.linkFailed;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message), backgroundColor: AppColors.error),
         );

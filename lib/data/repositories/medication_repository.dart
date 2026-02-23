@@ -33,12 +33,26 @@ class MedicationRepository {
 
   /// Update medication details
   Future<void> updateMedication(Medication medication) async {
+    // Clean up old photo file if photo changed
+    final existing = await _storage.getMedication(medication.id);
+    if (existing != null &&
+        existing.photoPath != null &&
+        existing.photoPath != medication.photoPath) {
+      await _storage.deletePhotoFile(existing.photoPath);
+    }
+
     final updated = medication.copyWith(updatedAt: DateTime.now());
     await _storage.saveMedication(updated);
   }
 
-  /// Delete medication (cascade: also delete related schedules, reminders, adherence records)
+  /// Delete medication (cascade: also delete related schedules, reminders, adherence records, photo)
   Future<void> deleteMedication(String id) async {
+    // Delete photo file if exists
+    final medication = await _storage.getMedication(id);
+    if (medication != null) {
+      await _storage.deletePhotoFile(medication.photoPath);
+    }
+
     // Delete related data
     await _storage.deleteRemindersForMedication(id);
     await _storage.deleteAdherenceRecordsForMedication(id);

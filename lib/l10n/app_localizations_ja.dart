@@ -633,9 +633,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String linkFailed(String error) {
-    return 'アカウント連携に失敗しました: $error';
-  }
+  String get linkFailed => 'アカウント連携に失敗しました。もう一度お試しください。';
 
   @override
   String get appleSignInCancelled => 'Appleサインインがキャンセルされました';
@@ -842,9 +840,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get removePhoto => '写真を削除';
 
   @override
-  String failedToPickImage(String error) {
-    return '画像の選択に失敗しました: $error';
-  }
+  String get failedToPickImage => '画像の選択に失敗しました。もう一度お試しください。';
 
   @override
   String get missedDoseAlerts => '服用忘れアラート';
@@ -1065,14 +1061,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pleaseEnterValidDosage => '有効な数値を入力してください';
 
   @override
-  String errorSavingMedication(String error) {
-    return 'お薬の保存に失敗しました: $error';
-  }
+  String get errorSavingMedication => 'お薬の保存に失敗しました。もう一度お試しください。';
 
   @override
-  String errorUpdatingMedication(String error) {
-    return 'お薬の更新に失敗しました: $error';
-  }
+  String get errorUpdatingMedication => 'お薬の更新に失敗しました。もう一度お試しください。';
 
   @override
   String get errorLoadingMedication => 'お薬の読み込みに失敗しました';
@@ -1244,9 +1236,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get successfullyLinked => '介護者として連携されました！';
 
   @override
-  String failedToAcceptInvite(String error) {
-    return '招待の受け入れに失敗しました: $error';
-  }
+  String get failedToAcceptInvite => '招待の受け入れに失敗しました。もう一度お試しください。';
 
   @override
   String get inviteLinkGenerated => '招待リンクが生成されました！';

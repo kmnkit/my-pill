@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_pill/core/utils/photo_encryption.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/models/reminder.dart';
@@ -25,6 +27,18 @@ class StorageService {
   );
 
   HiveCipher? _cipher;
+  Uint8List? _keyBytes;
+
+  /// Raw encryption key bytes for photo encryption.
+  /// Throws [StateError] if encryption has not been initialized.
+  Uint8List get encryptionKeyBytes {
+    if (_keyBytes == null) {
+      throw StateError(
+        'Encryption not initialized. Call initializeEncryption() first.',
+      );
+    }
+    return _keyBytes!;
+  }
 
   /// Initialize encryption - must be called before any storage operations
   Future<void> initializeEncryption() async {
@@ -41,7 +55,8 @@ class StorageService {
       }
 
       final encryptionKey = base64Decode(encodedKey);
-      _cipher = HiveAesCipher(Uint8List.fromList(encryptionKey));
+      _keyBytes = Uint8List.fromList(encryptionKey);
+      _cipher = HiveAesCipher(_keyBytes!);
     } catch (e) {
       debugPrint('Encryption init failed: $e');
       // Re-throw - unencrypted storage is not acceptable for medical data
@@ -49,6 +64,13 @@ class StorageService {
         'Failed to initialize secure storage. Please restart the app. '
         'If the problem persists, reinstall the app.',
       );
+    }
+
+    // Migrate unencrypted photos (best-effort, don't block app on failure)
+    try {
+      await migrateUnencryptedPhotos();
+    } catch (e) {
+      debugPrint('Photo migration failed (will retry on next restart): $e');
     }
   }
 
@@ -261,10 +283,67 @@ class StorageService {
     await box.delete(id);
   }
 
+  // --- Photo File Management ---
+
+  /// Delete a photo file from the filesystem.
+  /// Safe to call with null or non-existent paths.
+  Future<void> deletePhotoFile(String? photoPath) async {
+    if (photoPath == null) return;
+    try {
+      final file = File(photoPath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (e) {
+      debugPrint('Failed to delete photo file: $e');
+    }
+  }
+
+  /// One-time migration of unencrypted photos to AES-256 encrypted .enc files.
+  Future<void> migrateUnencryptedPhotos() async {
+    final box = await _openBox(_settingsBox);
+    if (box.get('photos_migrated') == 'true') return;
+
+    final medications = await getAllMedications();
+    for (final med in medications) {
+      if (med.photoPath == null) continue;
+      if (PhotoEncryption.isEncrypted(med.photoPath!)) continue;
+
+      final file = File(med.photoPath!);
+      if (!await file.exists()) continue;
+
+      final plainBytes = await file.readAsBytes();
+      final encPath = await PhotoEncryption.encryptAndSave(
+        plainBytes,
+        med.photoPath!,
+        _keyBytes!,
+      );
+
+      final updated = med.copyWith(photoPath: encPath);
+      await saveMedication(updated);
+      await file.delete();
+    }
+
+    await box.put('photos_migrated', 'true');
+  }
+
   // --- Utility ---
+
+  /// Delete all medication photo files (best-effort).
+  Future<void> _deleteAllPhotoFiles() async {
+    try {
+      final medications = await getAllMedications();
+      for (final med in medications) {
+        await deletePhotoFile(med.photoPath);
+      }
+    } catch (_) {
+      // Best-effort: box might be corrupted or not yet opened
+    }
+  }
 
   /// Clear all data including app settings. Use for account deletion.
   Future<void> clearAll() async {
+    await _deleteAllPhotoFiles();
     await Hive.deleteBoxFromDisk(_medicationsBox);
     await Hive.deleteBoxFromDisk(_schedulesBox);
     await Hive.deleteBoxFromDisk(_remindersBox);
@@ -276,6 +355,7 @@ class StorageService {
   /// Clear user data only, preserving app settings (onboardingComplete, language).
   /// Use for sign-out to avoid redirecting back to onboarding.
   Future<void> clearUserData() async {
+    await _deleteAllPhotoFiles();
     await Hive.deleteBoxFromDisk(_medicationsBox);
     await Hive.deleteBoxFromDisk(_schedulesBox);
     await Hive.deleteBoxFromDisk(_remindersBox);

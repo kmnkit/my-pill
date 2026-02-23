@@ -105,6 +105,8 @@ exports.acceptInvite = functions.https.onCall(async (data, context) => {
 exports.revokeAccess = functions.https.onCall(async (data, context) => {
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
 
+  await checkRateLimit(context.auth.uid, 'revokeAccess', 5);
+
   const { caregiverId, linkId } = data;
   const patientId = context.auth.uid;
 
@@ -125,6 +127,8 @@ exports.revokeAccess = functions.https.onCall(async (data, context) => {
 // Delete user account — server-side cleanup of all user data + auth
 exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
   if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+
+  await checkRateLimit(context.auth.uid, 'deleteUserAccount', 3);
 
   const uid = context.auth.uid;
 
@@ -156,6 +160,29 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
     patientLinksSnapshot.docs.forEach(doc => batch.delete(doc.ref));
     await batch.commit();
   }
+
+  // Delete pending invites created by this user
+  const pendingInvites = await db.collection('invites')
+    .where('patientId', '==', uid)
+    .get();
+  if (pendingInvites.docs.length > 0) {
+    const batch = db.batch();
+    pendingInvites.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  }
+
+  // Delete rate limit documents for this user
+  const rateLimitIds = [
+    `${uid}_generateInviteLink`,
+    `${uid}_acceptInvite`,
+    `${uid}_revokeAccess`,
+    `${uid}_deleteUserAccount`,
+  ];
+  const rateLimitBatch = db.batch();
+  for (const id of rateLimitIds) {
+    rateLimitBatch.delete(db.collection('rateLimits').doc(id));
+  }
+  await rateLimitBatch.commit();
 
   // Delete the user document
   await db.collection('users').doc(uid).delete();

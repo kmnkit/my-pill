@@ -1301,8 +1301,8 @@ abstract class AppLocalizations {
   /// No description provided for @linkFailed.
   ///
   /// In en, this message translates to:
-  /// **'Failed to link account: {error}'**
-  String linkFailed(String error);
+  /// **'Failed to link account. Please try again.'**
+  String get linkFailed;
 
   /// No description provided for @appleSignInCancelled.
   ///
@@ -1709,8 +1709,8 @@ abstract class AppLocalizations {
   /// No description provided for @failedToPickImage.
   ///
   /// In en, this message translates to:
-  /// **'Failed to pick image: {error}'**
-  String failedToPickImage(String error);
+  /// **'Failed to pick image. Please try again.'**
+  String get failedToPickImage;
 
   /// No description provided for @missedDoseAlerts.
   ///
@@ -2117,14 +2117,14 @@ abstract class AppLocalizations {
   /// No description provided for @errorSavingMedication.
   ///
   /// In en, this message translates to:
-  /// **'Error saving medication: {error}'**
-  String errorSavingMedication(String error);
+  /// **'Failed to save medication. Please try again.'**
+  String get errorSavingMedication;
 
   /// No description provided for @errorUpdatingMedication.
   ///
   /// In en, this message translates to:
-  /// **'Error updating medication: {error}'**
-  String errorUpdatingMedication(String error);
+  /// **'Failed to update medication. Please try again.'**
+  String get errorUpdatingMedication;
 
   /// No description provided for @errorLoadingMedication.
   ///
@@ -2459,8 +2459,8 @@ abstract class AppLocalizations {
   /// No description provided for @failedToAcceptInvite.
   ///
   /// In en, this message translates to:
-  /// **'Failed to accept invite: {error}'**
-  String failedToAcceptInvite(String error);
+  /// **'Failed to accept invite. Please try again.'**
+  String get failedToAcceptInvite;
 
   /// No description provided for @inviteLinkGenerated.
   ///

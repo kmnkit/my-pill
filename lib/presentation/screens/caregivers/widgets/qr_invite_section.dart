@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
@@ -327,12 +328,13 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             ),
           );
         }
-      } catch (e) {
+      } catch (e, st) {
+        ErrorHandler.debugLog(e, st, 'acceptInviteQr');
         if (context.mounted) {
           final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n.failedToAcceptInvite(e.toString())),
+              content: Text(l10n.failedToAcceptInvite),
               backgroundColor: AppColors.error,
               duration: const Duration(seconds: 3),
             ),
