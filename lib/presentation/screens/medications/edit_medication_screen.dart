@@ -342,6 +342,13 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
       return;
     }
 
+    if (dosageValue <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.dosageMustBePositive)),
+      );
+      return;
+    }
+
     setState(() => _isSaving = true);
 
     try {

@@ -22,6 +22,12 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   usesPrivateEmail: json['usesPrivateEmail'] as bool? ?? false,
   onboardingComplete: json['onboardingComplete'] as bool? ?? false,
   userRole: json['userRole'] as String? ?? 'patient',
+  shareAdherenceData: json['shareAdherenceData'] as bool? ?? true,
+  shareMedicationList: json['shareMedicationList'] as bool? ?? true,
+  allowCaregiverNotifications:
+      json['allowCaregiverNotifications'] as bool? ?? true,
+  missedDoseAlerts: json['missedDoseAlerts'] as bool? ?? true,
+  lowStockAlerts: json['lowStockAlerts'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
@@ -41,4 +47,9 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'usesPrivateEmail': instance.usesPrivateEmail,
       'onboardingComplete': instance.onboardingComplete,
       'userRole': instance.userRole,
+      'shareAdherenceData': instance.shareAdherenceData,
+      'shareMedicationList': instance.shareMedicationList,
+      'allowCaregiverNotifications': instance.allowCaregiverNotifications,
+      'missedDoseAlerts': instance.missedDoseAlerts,
+      'lowStockAlerts': instance.lowStockAlerts,
     };

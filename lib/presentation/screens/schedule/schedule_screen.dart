@@ -132,6 +132,20 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                   });
                 },
               ),
+              const SizedBox(height: AppSpacing.xxl),
+              Text(
+                l10n.whatTime,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              TimeSlotPicker(
+                dosageCount: 1,
+                onTimesChanged: (times) {
+                  setState(() {
+                    _times = times;
+                  });
+                },
+              ),
             ],
             const SizedBox(height: AppSpacing.xxxl),
             MpButton(

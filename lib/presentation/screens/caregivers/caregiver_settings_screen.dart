@@ -26,8 +26,6 @@ class CaregiverSettingsScreen extends ConsumerStatefulWidget {
 }
 
 class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScreen> {
-  bool _missedDoseAlerts = true;
-  bool _lowStockAlerts = true;
 
   void _invalidateAllProviders() {
     ref.invalidate(medicationListProvider);
@@ -46,28 +44,39 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
       appBar: MpAppBar(title: l10n.settingsTitle),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.navBarClearance,
+          ),
           children: [
             MpSectionHeader(title: l10n.notifications),
-            SwitchListTile(
-              title: Text(l10n.missedDoseAlerts),
-              subtitle: Text(l10n.missedDoseAlertsSubtitle),
-              value: _missedDoseAlerts,
-              onChanged: (value) {
-                setState(() {
-                  _missedDoseAlerts = value;
-                });
-              },
-            ),
-            SwitchListTile(
-              title: Text(l10n.lowStockAlerts),
-              subtitle: Text(l10n.lowStockAlertsSubtitle),
-              value: _lowStockAlerts,
-              onChanged: (value) {
-                setState(() {
-                  _lowStockAlerts = value;
-                });
-              },
+            ref.watch(userSettingsProvider).when(
+              loading: () => const SizedBox.shrink(),
+              error: (e, st) => const SizedBox.shrink(),
+              data: (settings) => Column(
+                children: [
+                  SwitchListTile(
+                    title: Text(l10n.missedDoseAlerts),
+                    subtitle: Text(l10n.missedDoseAlertsSubtitle),
+                    value: settings.missedDoseAlerts,
+                    onChanged: (value) {
+                      final updated = settings.copyWith(missedDoseAlerts: value);
+                      ref.read(userSettingsProvider.notifier).updateProfile(updated);
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text(l10n.lowStockAlerts),
+                    subtitle: Text(l10n.lowStockAlertsSubtitle),
+                    value: settings.lowStockAlerts,
+                    onChanged: (value) {
+                      final updated = settings.copyWith(lowStockAlerts: value);
+                      ref.read(userSettingsProvider.notifier).updateProfile(updated);
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: AppSpacing.xl),
             MpSectionHeader(title: l10n.account),
@@ -136,11 +145,23 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
 
                 if (confirmed == true && context.mounted) {
                   try {
-                    // 1. Clear user data first (while widget is still mounted)
+                    // 1. Revoke all caregiver links server-side
+                    final links = ref.read(caregiverLinksProvider).value ?? [];
+                    for (final link in links) {
+                      try {
+                        await CloudFunctionsService().revokeAccess(
+                          caregiverId: link.caregiverId,
+                          linkId: link.id,
+                        );
+                      } catch (_) {
+                        // Best-effort cleanup — continue with remaining links
+                      }
+                    }
+                    // 2. Clear user data (while widget is still mounted)
                     await StorageService().clearUserData();
-                    // 2. Invalidate providers (before signOut triggers redirect)
+                    // 3. Invalidate providers (before signOut triggers redirect)
                     _invalidateAllProviders();
-                    // 3. Sign out last — router redirect handles navigation
+                    // 4. Sign out last — router redirect handles navigation
                     await ref.read(authServiceProvider).signOut();
                   } catch (e) {
                     if (context.mounted) {

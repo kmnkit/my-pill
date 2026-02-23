@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
 /// Premium feature gate widget
@@ -88,7 +87,7 @@ class PremiumGate extends ConsumerWidget {
           FilledButton.icon(
             onPressed: () {
               Navigator.of(context).pop();
-              context.push(RouteNames.premium);
+              context.push('/premium');
             },
             icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
             label: Text(l10n.unlockPremium),
@@ -244,7 +243,7 @@ class PremiumInlineUpsell extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           TextButton(
-            onPressed: onTap ?? () => context.push(RouteNames.premium),
+            onPressed: onTap ?? () => context.push('/premium'),
             child: Text(
               l10n.tryPremium,
               style: const TextStyle(

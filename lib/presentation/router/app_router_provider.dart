@@ -91,8 +91,19 @@ Raw<GoRouter> appRouter(Ref ref) {
       final isLoginRoute = state.matchedLocation == '/login';
       final isInviteRoute = state.matchedLocation.startsWith('/invite/');
 
-      // Allow splash and invite deep links to pass through
-      if (isSplashRoute || isInviteRoute) return null;
+      // Allow splash to pass through
+      if (isSplashRoute) return null;
+
+      // Invite deep links require authentication
+      if (isInviteRoute) {
+        final isAuthenticated = FirebaseAuth.instance.currentUser != null;
+        if (!isAuthenticated) {
+          // Preserve invite code in query param for post-auth handling
+          final invitePath = state.matchedLocation;
+          return '/login?redirect=$invitePath';
+        }
+        return null;
+      }
 
       final isAuthenticated = FirebaseAuth.instance.currentUser != null;
 
@@ -166,6 +177,37 @@ Raw<GoRouter> appRouter(Ref ref) {
         builder: (context, state) => const PremiumUpsellScreen(),
       ),
 
+      // Standalone medication sub-routes (no bottom nav)
+      GoRoute(
+        path: '/medications/add',
+        name: RouteNames.addMedication,
+        builder: (context, state) => const AddMedicationScreen(),
+      ),
+      GoRoute(
+        path: '/medications/:id',
+        name: RouteNames.medicationDetail,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return MedicationDetailScreen(medicationId: id);
+        },
+      ),
+      GoRoute(
+        path: '/medications/:id/edit',
+        name: RouteNames.editMedication,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return EditMedicationScreen(medicationId: id);
+        },
+      ),
+      GoRoute(
+        path: '/medications/:id/schedule',
+        name: RouteNames.setSchedule,
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return ScheduleScreen(medicationId: id);
+        },
+      ),
+
       // Patient ShellRoute (default navigation)
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -194,46 +236,13 @@ Raw<GoRouter> appRouter(Ref ref) {
             ],
           ),
 
-          // Tab 2: Medications (with sub-routes)
+          // Tab 2: Medications (list only, sub-routes are standalone)
           StatefulShellBranch(
             routes: [
               GoRoute(
                 path: '/medications',
                 name: RouteNames.medications,
                 builder: (context, state) => const MedicationsListScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'add',
-                    name: RouteNames.addMedication,
-                    builder: (context, state) => const AddMedicationScreen(),
-                  ),
-                  GoRoute(
-                    path: ':id',
-                    name: RouteNames.medicationDetail,
-                    builder: (context, state) {
-                      final id = state.pathParameters['id'] ?? '';
-                      return MedicationDetailScreen(medicationId: id);
-                    },
-                    routes: [
-                      GoRoute(
-                        path: 'edit',
-                        name: RouteNames.editMedication,
-                        builder: (context, state) {
-                          final id = state.pathParameters['id'] ?? '';
-                          return EditMedicationScreen(medicationId: id);
-                        },
-                      ),
-                      GoRoute(
-                        path: 'schedule',
-                        name: RouteNames.setSchedule,
-                        builder: (context, state) {
-                          final id = state.pathParameters['id'] ?? '';
-                          return ScheduleScreen(medicationId: id);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ],
           ),
