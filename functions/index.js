@@ -228,7 +228,7 @@ exports.verifyReceipt = functions.https.onCall(async (data, context) => {
 
   const uid = context.auth.uid;
 
-  // Store receipt data for future server-side verification (Phase B)
+  // Store receipt data for server-side verification
   await db.collection('users').doc(uid).collection('subscriptions').add({
     productId,
     purchaseToken,
@@ -237,14 +237,16 @@ exports.verifyReceipt = functions.https.onCall(async (data, context) => {
     status: 'pending_verification',
   });
 
-  // Update user premium status
+  // Mark as pending — do NOT grant premium until receipt is verified
+  // Phase B: integrate Apple App Store Server API / Google Play Developer API
+  // to verify receipt, then set isPremium: true upon successful validation
   await db.collection('users').doc(uid).update({
-    isPremium: true,
+    premiumPending: true,
     premiumProductId: productId,
     premiumUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
-  return { success: true };
+  return { success: true, status: 'pending_verification' };
 });
 
 function generateCode() {

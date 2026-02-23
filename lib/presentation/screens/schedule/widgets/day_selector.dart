@@ -27,14 +27,15 @@ class _DaySelectorState extends State<DaySelector> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(7, (index) {
-        final isSelected = _selectedDays.contains(index);
+        final dayValue = index + 1; // 1=Mon, 7=Sun (matches DateTime.weekday)
+        final isSelected = _selectedDays.contains(dayValue);
         return GestureDetector(
           onTap: () {
             setState(() {
               if (isSelected) {
-                _selectedDays.remove(index);
+                _selectedDays.remove(dayValue);
               } else {
-                _selectedDays.add(index);
+                _selectedDays.add(dayValue);
               }
               _notifyParent();
             });

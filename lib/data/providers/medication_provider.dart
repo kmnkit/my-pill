@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:my_pill/data/repositories/medication_repository.dart';
 
 part 'medication_provider.g.dart';
 
@@ -26,7 +27,8 @@ class MedicationList extends _$MedicationList {
 
   Future<void> deleteMedication(String id) async {
     final storage = ref.read(storageServiceProvider);
-    await storage.deleteMedication(id);
+    final repository = MedicationRepository(storage);
+    await repository.deleteMedication(id);
     ref.invalidateSelf();
   }
 }

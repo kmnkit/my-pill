@@ -15,17 +15,17 @@ class OverallScore extends StatelessWidget {
 
   String _rating(AppLocalizations l10n) {
     if (percentage == null) return l10n.noData;
-    if (percentage! >= 90) return l10n.excellent;
-    if (percentage! >= 75) return l10n.good;
-    if (percentage! >= 60) return l10n.fair;
+    if (percentage! >= 95) return l10n.excellent;
+    if (percentage! >= 80) return l10n.good;
+    if (percentage! >= 50) return l10n.fair;
     return l10n.needsImprovement;
   }
 
   String _message(AppLocalizations l10n) {
     if (percentage == null) return l10n.startTrackingMessage;
-    if (percentage! >= 90) return l10n.excellentMessage;
-    if (percentage! >= 75) return l10n.goodMessage;
-    if (percentage! >= 60) return l10n.fairMessage;
+    if (percentage! >= 95) return l10n.excellentMessage;
+    if (percentage! >= 80) return l10n.goodMessage;
+    if (percentage! >= 50) return l10n.fairMessage;
     return l10n.needsImprovementMessage;
   }
 

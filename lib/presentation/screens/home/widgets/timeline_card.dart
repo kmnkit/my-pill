@@ -42,7 +42,7 @@ class TimelineCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return MpCard(
-      onTap: () => context.go('/medications/$medicationId'),
+      onTap: () => context.push('/medications/$medicationId'),
       child: Row(
         children: [
           // Pill icon

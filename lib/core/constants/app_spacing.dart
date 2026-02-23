@@ -27,4 +27,8 @@ abstract final class AppSpacing {
   // Button heights
   static const double buttonHeight = 48.0;
   static const double buttonHeightSm = 36.0;
+
+  // Bottom nav bar clearance (nav bar height + margin + extra)
+  // kBottomNavigationBarHeight(56) + lg(16) + sm(8) = 80
+  static const double navBarClearance = 80.0;
 }

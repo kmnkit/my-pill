@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class PillShapeSelector extends StatelessWidget {
   const PillShapeSelector({
@@ -16,6 +18,7 @@ class PillShapeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return GridView.count(
       crossAxisCount: 3,
@@ -51,7 +54,7 @@ class PillShapeSelector extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  shape.label,
+                  shape.localizedName(l10n),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: isSelected ? AppColors.primary : AppColors.textMuted,
                       ),

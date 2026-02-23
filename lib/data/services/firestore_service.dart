@@ -12,7 +12,13 @@ class FirestoreService {
 
   String? get _userId => FirebaseAuth.instance.currentUser?.uid;
 
-  DocumentReference get _userDoc => _db.collection('users').doc(_userId);
+  DocumentReference get _userDoc {
+    final uid = _userId;
+    if (uid == null) {
+      throw StateError('No authenticated user');
+    }
+    return _db.collection('users').doc(uid);
+  }
 
   // --- Medications ---
   CollectionReference get _medicationsCol => _userDoc.collection('medications');

@@ -19,7 +19,12 @@ class CaregiverAlertsScreen extends ConsumerWidget {
       appBar: MpAppBar(title: l10n.alerts),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.navBarClearance,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
