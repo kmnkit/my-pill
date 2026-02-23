@@ -5,7 +5,7 @@ import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/theme/glass_decoration.dart';
 
-enum MpButtonVariant { primary, secondary, text }
+enum MpButtonVariant { primary, secondary, text, destructive }
 
 class MpButton extends StatelessWidget {
   const MpButton({
@@ -69,6 +69,37 @@ class MpButton extends StatelessWidget {
           return _buildSolidSecondary(context, textTheme);
         }
         return _buildGlassSecondary(context, textTheme, isDark);
+
+      case MpButtonVariant.destructive:
+        return Semantics(
+          button: true,
+          label: label,
+          enabled: onPressed != null,
+          child: SizedBox(
+            width: isFullWidth ? double.infinity : null,
+            height: AppSpacing.buttonHeight,
+            child: ElevatedButton.icon(
+              onPressed: onPressed,
+              icon: iconWidget ??
+                  (icon != null
+                      ? Icon(icon, size: AppSpacing.iconMd)
+                      : const SizedBox.shrink()),
+              label: Text(
+                label,
+                style: textTheme.labelLarge
+                    ?.copyWith(color: AppColors.textOnPrimary),
+              ),
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppColors.error,
+                foregroundColor: AppColors.textOnPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                ),
+              ),
+            ),
+          ),
+        );
 
       case MpButtonVariant.text:
         return Semantics(

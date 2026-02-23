@@ -21,6 +21,11 @@ abstract class UserProfile with _$UserProfile {
     @Default(false) bool usesPrivateEmail,
     @Default(false) bool onboardingComplete,
     @Default('patient') String userRole, // 'patient' or 'caregiver'
+    @Default(true) bool shareAdherenceData,
+    @Default(true) bool shareMedicationList,
+    @Default(true) bool allowCaregiverNotifications,
+    @Default(true) bool missedDoseAlerts,
+    @Default(true) bool lowStockAlerts,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>

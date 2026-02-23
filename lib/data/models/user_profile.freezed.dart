@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- String get id; String? get name; String? get email; String get language; bool get highContrast; String get textSize; bool get notificationsEnabled; bool get criticalAlerts; int get snoozeDuration; bool get travelModeEnabled; String? get homeTimezone; bool get removeAds; bool get usesPrivateEmail; bool get onboardingComplete; String get userRole;
+ String get id; String? get name; String? get email; String get language; bool get highContrast; String get textSize; bool get notificationsEnabled; bool get criticalAlerts; int get snoozeDuration; bool get travelModeEnabled; String? get homeTimezone; bool get removeAds; bool get usesPrivateEmail; bool get onboardingComplete; String get userRole;// 'patient' or 'caregiver'
+ bool get shareAdherenceData; bool get shareMedicationList; bool get allowCaregiverNotifications; bool get missedDoseAlerts; bool get lowStockAlerts;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole)&&(identical(other.shareAdherenceData, shareAdherenceData) || other.shareAdherenceData == shareAdherenceData)&&(identical(other.shareMedicationList, shareMedicationList) || other.shareMedicationList == shareMedicationList)&&(identical(other.allowCaregiverNotifications, allowCaregiverNotifications) || other.allowCaregiverNotifications == allowCaregiverNotifications)&&(identical(other.missedDoseAlerts, missedDoseAlerts) || other.missedDoseAlerts == missedDoseAlerts)&&(identical(other.lowStockAlerts, lowStockAlerts) || other.lowStockAlerts == lowStockAlerts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole);
+int get hashCode => Object.hashAll([runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole,shareAdherenceData,shareMedicationList,allowCaregiverNotifications,missedDoseAlerts,lowStockAlerts]);
 
 @override
 String toString() {
-  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole)';
+  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole, shareAdherenceData: $shareAdherenceData, shareMedicationList: $shareMedicationList, allowCaregiverNotifications: $allowCaregiverNotifications, missedDoseAlerts: $missedDoseAlerts, lowStockAlerts: $lowStockAlerts)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole
+ String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole, bool shareAdherenceData, bool shareMedicationList, bool allowCaregiverNotifications, bool missedDoseAlerts, bool lowStockAlerts
 });
 
 
@@ -65,7 +66,7 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,Object? shareAdherenceData = null,Object? shareMedicationList = null,Object? allowCaregiverNotifications = null,Object? missedDoseAlerts = null,Object? lowStockAlerts = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -82,7 +83,12 @@ as String?,removeAds: null == removeAds ? _self.removeAds : removeAds // ignore:
 as bool,usesPrivateEmail: null == usesPrivateEmail ? _self.usesPrivateEmail : usesPrivateEmail // ignore: cast_nullable_to_non_nullable
 as bool,onboardingComplete: null == onboardingComplete ? _self.onboardingComplete : onboardingComplete // ignore: cast_nullable_to_non_nullable
 as bool,userRole: null == userRole ? _self.userRole : userRole // ignore: cast_nullable_to_non_nullable
-as String,
+as String,shareAdherenceData: null == shareAdherenceData ? _self.shareAdherenceData : shareAdherenceData // ignore: cast_nullable_to_non_nullable
+as bool,shareMedicationList: null == shareMedicationList ? _self.shareMedicationList : shareMedicationList // ignore: cast_nullable_to_non_nullable
+as bool,allowCaregiverNotifications: null == allowCaregiverNotifications ? _self.allowCaregiverNotifications : allowCaregiverNotifications // ignore: cast_nullable_to_non_nullable
+as bool,missedDoseAlerts: null == missedDoseAlerts ? _self.missedDoseAlerts : missedDoseAlerts // ignore: cast_nullable_to_non_nullable
+as bool,lowStockAlerts: null == lowStockAlerts ? _self.lowStockAlerts : lowStockAlerts // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -167,10 +173,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole,  bool shareAdherenceData,  bool shareMedicationList,  bool allowCaregiverNotifications,  bool missedDoseAlerts,  bool lowStockAlerts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole,_that.shareAdherenceData,_that.shareMedicationList,_that.allowCaregiverNotifications,_that.missedDoseAlerts,_that.lowStockAlerts);case _:
   return orElse();
 
 }
@@ -188,10 +194,10 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole,  bool shareAdherenceData,  bool shareMedicationList,  bool allowCaregiverNotifications,  bool missedDoseAlerts,  bool lowStockAlerts)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole,_that.shareAdherenceData,_that.shareMedicationList,_that.allowCaregiverNotifications,_that.missedDoseAlerts,_that.lowStockAlerts);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +214,10 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? name,  String? email,  String language,  bool highContrast,  String textSize,  bool notificationsEnabled,  bool criticalAlerts,  int snoozeDuration,  bool travelModeEnabled,  String? homeTimezone,  bool removeAds,  bool usesPrivateEmail,  bool onboardingComplete,  String userRole,  bool shareAdherenceData,  bool shareMedicationList,  bool allowCaregiverNotifications,  bool missedDoseAlerts,  bool lowStockAlerts)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole);case _:
+return $default(_that.id,_that.name,_that.email,_that.language,_that.highContrast,_that.textSize,_that.notificationsEnabled,_that.criticalAlerts,_that.snoozeDuration,_that.travelModeEnabled,_that.homeTimezone,_that.removeAds,_that.usesPrivateEmail,_that.onboardingComplete,_that.userRole,_that.shareAdherenceData,_that.shareMedicationList,_that.allowCaregiverNotifications,_that.missedDoseAlerts,_that.lowStockAlerts);case _:
   return null;
 
 }
@@ -223,7 +229,7 @@ return $default(_that.id,_that.name,_that.email,_that.language,_that.highContras
 @JsonSerializable()
 
 class _UserProfile implements UserProfile {
-  const _UserProfile({required this.id, this.name, this.email, this.language = 'en', this.highContrast = false, this.textSize = 'normal', this.notificationsEnabled = true, this.criticalAlerts = false, this.snoozeDuration = 15, this.travelModeEnabled = false, this.homeTimezone, this.removeAds = false, this.usesPrivateEmail = false, this.onboardingComplete = false, this.userRole = 'patient'});
+  const _UserProfile({required this.id, this.name, this.email, this.language = 'en', this.highContrast = false, this.textSize = 'normal', this.notificationsEnabled = true, this.criticalAlerts = false, this.snoozeDuration = 15, this.travelModeEnabled = false, this.homeTimezone, this.removeAds = false, this.usesPrivateEmail = false, this.onboardingComplete = false, this.userRole = 'patient', this.shareAdherenceData = true, this.shareMedicationList = true, this.allowCaregiverNotifications = true, this.missedDoseAlerts = true, this.lowStockAlerts = true});
   factory _UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
 @override final  String id;
@@ -241,6 +247,12 @@ class _UserProfile implements UserProfile {
 @override@JsonKey() final  bool usesPrivateEmail;
 @override@JsonKey() final  bool onboardingComplete;
 @override@JsonKey() final  String userRole;
+// 'patient' or 'caregiver'
+@override@JsonKey() final  bool shareAdherenceData;
+@override@JsonKey() final  bool shareMedicationList;
+@override@JsonKey() final  bool allowCaregiverNotifications;
+@override@JsonKey() final  bool missedDoseAlerts;
+@override@JsonKey() final  bool lowStockAlerts;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +267,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.language, language) || other.language == language)&&(identical(other.highContrast, highContrast) || other.highContrast == highContrast)&&(identical(other.textSize, textSize) || other.textSize == textSize)&&(identical(other.notificationsEnabled, notificationsEnabled) || other.notificationsEnabled == notificationsEnabled)&&(identical(other.criticalAlerts, criticalAlerts) || other.criticalAlerts == criticalAlerts)&&(identical(other.snoozeDuration, snoozeDuration) || other.snoozeDuration == snoozeDuration)&&(identical(other.travelModeEnabled, travelModeEnabled) || other.travelModeEnabled == travelModeEnabled)&&(identical(other.homeTimezone, homeTimezone) || other.homeTimezone == homeTimezone)&&(identical(other.removeAds, removeAds) || other.removeAds == removeAds)&&(identical(other.usesPrivateEmail, usesPrivateEmail) || other.usesPrivateEmail == usesPrivateEmail)&&(identical(other.onboardingComplete, onboardingComplete) || other.onboardingComplete == onboardingComplete)&&(identical(other.userRole, userRole) || other.userRole == userRole)&&(identical(other.shareAdherenceData, shareAdherenceData) || other.shareAdherenceData == shareAdherenceData)&&(identical(other.shareMedicationList, shareMedicationList) || other.shareMedicationList == shareMedicationList)&&(identical(other.allowCaregiverNotifications, allowCaregiverNotifications) || other.allowCaregiverNotifications == allowCaregiverNotifications)&&(identical(other.missedDoseAlerts, missedDoseAlerts) || other.missedDoseAlerts == missedDoseAlerts)&&(identical(other.lowStockAlerts, lowStockAlerts) || other.lowStockAlerts == lowStockAlerts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole);
+int get hashCode => Object.hashAll([runtimeType,id,name,email,language,highContrast,textSize,notificationsEnabled,criticalAlerts,snoozeDuration,travelModeEnabled,homeTimezone,removeAds,usesPrivateEmail,onboardingComplete,userRole,shareAdherenceData,shareMedicationList,allowCaregiverNotifications,missedDoseAlerts,lowStockAlerts]);
 
 @override
 String toString() {
-  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole)';
+  return 'UserProfile(id: $id, name: $name, email: $email, language: $language, highContrast: $highContrast, textSize: $textSize, notificationsEnabled: $notificationsEnabled, criticalAlerts: $criticalAlerts, snoozeDuration: $snoozeDuration, travelModeEnabled: $travelModeEnabled, homeTimezone: $homeTimezone, removeAds: $removeAds, usesPrivateEmail: $usesPrivateEmail, onboardingComplete: $onboardingComplete, userRole: $userRole, shareAdherenceData: $shareAdherenceData, shareMedicationList: $shareMedicationList, allowCaregiverNotifications: $allowCaregiverNotifications, missedDoseAlerts: $missedDoseAlerts, lowStockAlerts: $lowStockAlerts)';
 }
 
 
@@ -275,7 +287,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole
+ String id, String? name, String? email, String language, bool highContrast, String textSize, bool notificationsEnabled, bool criticalAlerts, int snoozeDuration, bool travelModeEnabled, String? homeTimezone, bool removeAds, bool usesPrivateEmail, bool onboardingComplete, String userRole, bool shareAdherenceData, bool shareMedicationList, bool allowCaregiverNotifications, bool missedDoseAlerts, bool lowStockAlerts
 });
 
 
@@ -292,7 +304,7 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? email = freezed,Object? language = null,Object? highContrast = null,Object? textSize = null,Object? notificationsEnabled = null,Object? criticalAlerts = null,Object? snoozeDuration = null,Object? travelModeEnabled = null,Object? homeTimezone = freezed,Object? removeAds = null,Object? usesPrivateEmail = null,Object? onboardingComplete = null,Object? userRole = null,Object? shareAdherenceData = null,Object? shareMedicationList = null,Object? allowCaregiverNotifications = null,Object? missedDoseAlerts = null,Object? lowStockAlerts = null,}) {
   return _then(_UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -309,7 +321,12 @@ as String?,removeAds: null == removeAds ? _self.removeAds : removeAds // ignore:
 as bool,usesPrivateEmail: null == usesPrivateEmail ? _self.usesPrivateEmail : usesPrivateEmail // ignore: cast_nullable_to_non_nullable
 as bool,onboardingComplete: null == onboardingComplete ? _self.onboardingComplete : onboardingComplete // ignore: cast_nullable_to_non_nullable
 as bool,userRole: null == userRole ? _self.userRole : userRole // ignore: cast_nullable_to_non_nullable
-as String,
+as String,shareAdherenceData: null == shareAdherenceData ? _self.shareAdherenceData : shareAdherenceData // ignore: cast_nullable_to_non_nullable
+as bool,shareMedicationList: null == shareMedicationList ? _self.shareMedicationList : shareMedicationList // ignore: cast_nullable_to_non_nullable
+as bool,allowCaregiverNotifications: null == allowCaregiverNotifications ? _self.allowCaregiverNotifications : allowCaregiverNotifications // ignore: cast_nullable_to_non_nullable
+as bool,missedDoseAlerts: null == missedDoseAlerts ? _self.missedDoseAlerts : missedDoseAlerts // ignore: cast_nullable_to_non_nullable
+as bool,lowStockAlerts: null == lowStockAlerts ? _self.lowStockAlerts : lowStockAlerts // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

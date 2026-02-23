@@ -55,7 +55,7 @@ final class RouterRefreshNotifierProvider
 }
 
 String _$routerRefreshNotifierHash() =>
-    r'3fb6ba9232b76292ea96cc1b7fff2b09f9483520';
+    r'ab22e17a4382934453586c365dc3f060e953be02';
 
 @ProviderFor(appRouter)
 final appRouterProvider = AppRouterProvider._();
@@ -96,4 +96,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'07b079cb6260f4a209a7a539d1e85fec26228f5a';
+String _$appRouterHash() => r'95fd771c7a1dfc7d9811bfa25d92916a173fe4fc';
