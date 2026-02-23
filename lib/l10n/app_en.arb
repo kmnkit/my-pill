@@ -509,5 +509,8 @@
   "networkError": "Network error. Please check your connection.",
   "authError": "Authentication error. Please sign in again.",
   "permissionDenied": "You don't have permission to perform this action.",
-  "serviceUnavailable": "Service temporarily unavailable. Please try again later."
+  "serviceUnavailable": "Service temporarily unavailable. Please try again later.",
+  "dosageMustBePositive": "Dosage must be greater than zero",
+  "pleaseSelectAtLeastOneTime": "Please select at least one time",
+  "pleaseSelectAtLeastOneDay": "Please select at least one day"
 }

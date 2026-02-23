@@ -1319,4 +1319,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get serviceUnavailable => 'サービスが一時的に利用できません。後でお試しください。';
+
+  @override
+  String get dosageMustBePositive => '用量は0より大きい値を入力してください';
+
+  @override
+  String get pleaseSelectAtLeastOneTime => '服用時間を1つ以上選択してください';
+
+  @override
+  String get pleaseSelectAtLeastOneDay => '曜日を1つ以上選択してください';
 }

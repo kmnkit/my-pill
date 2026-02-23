@@ -2617,6 +2617,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Service temporarily unavailable. Please try again later.'**
   String get serviceUnavailable;
+
+  /// No description provided for @dosageMustBePositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage must be greater than zero'**
+  String get dosageMustBePositive;
+
+  /// No description provided for @pleaseSelectAtLeastOneTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one time'**
+  String get pleaseSelectAtLeastOneTime;
+
+  /// No description provided for @pleaseSelectAtLeastOneDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one day'**
+  String get pleaseSelectAtLeastOneDay;
 }
 
 class _AppLocalizationsDelegate
