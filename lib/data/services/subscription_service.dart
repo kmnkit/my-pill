@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:my_pill/data/models/subscription_status.dart';
+import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/iap_service.dart';
 
 class SubscriptionService {
@@ -101,6 +102,21 @@ class SubscriptionService {
 
     _statusController.add(_status);
     onStatusChanged?.call(_status);
+
+    // Fire-and-forget: store receipt server-side for future verification
+    _submitReceiptToServer(purchase);
+  }
+
+  Future<void> _submitReceiptToServer(PurchaseDetails purchase) async {
+    try {
+      await CloudFunctionsService().verifyReceipt(
+        productId: purchase.productID,
+        purchaseToken: purchase.verificationData.serverVerificationData,
+        source: purchase.verificationData.source,
+      );
+    } catch (e) {
+      debugPrint('Server receipt submission failed (will retry on next launch): $e');
+    }
   }
 
   Future<bool> purchaseMonthly() async {

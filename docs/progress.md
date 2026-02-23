@@ -79,9 +79,10 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | reminder_service_test.dart | 18 | ✅ All pass |
 | subscription_service_test.dart | 16 | ✅ All pass |
 | storage_service_test.dart | 2 | ✅ All pass |
+| deep_link_service_test.dart | 4 | ✅ All pass |
 | error_handler_test.dart | 9 | ✅ All pass |
 | photo_encryption_test.dart | 7 | ✅ All pass |
-| **Total** | **91** | **✅ All pass** |
+| **Total** | **95** | **✅ All pass** |
 
 ---
 
@@ -169,11 +170,11 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | ID | 이슈 | 위치 |
 |----|------|------|
 | M-1 | ~~초대 코드 `Math.random()` 사용~~ **수정됨 (2026-02-22)** — `crypto.randomBytes(8)` CSPRNG | `functions/index.js` |
-| M-2 | Hive 암호화 실패 시 평문 fallback (건강 데이터 비암호화) | `storage_service.dart:45-49` |
-| M-3 | Firestore `invites` 컬렉션 모든 인증 사용자 읽기 가능 | `firestore.rules:47-50` |
-| M-4 | IAP 구독 상태 클라이언트만 검증 (서버사이드 영수증 검증 없음) | `subscription_service.dart:80-103` |
-| M-5 | Home Widget에 약 이름/시간/복용량 평문 저장 | `home_widget_service.dart:55-62` |
-| M-6 | Deep Link 초대 코드 포맷 미검증 | `deep_link_service.dart:31-35` |
+| M-2 | ~~Hive 암호화 실패 시 평문 fallback~~ **수정됨 (2026-02-23)** — `_openBox()`에서 평문 fallback 제거, `_cipher == null` 시 StateError throw | `storage_service.dart` |
+| M-3 | Firestore `invites` 컬렉션 읽기 권한 — **FALSE POSITIVE**: `resource.data.patientId == request.auth.uid` 이미 적용 | `firestore.rules:47-50` |
+| M-4 | ~~IAP 구독 상태 클라이언트만 검증~~ **수정됨 Phase A (2026-02-23)** — `verifyReceipt` CF 추가, 서버사이드 영수증 저장 + premium 상태 업데이트. Phase B (Apple/Google API 연동) 별도 | `functions/index.js`, `subscription_service.dart` |
+| M-5 | Home Widget 약 정보 — **ALREADY SECURE**: 약 이름/복용량은 빈 문자열, 카운트+시간만 저장. 프라이버시 설계 주석 추가 | `home_widget_service.dart` |
+| M-6 | ~~Deep Link 초대 코드 regex 과도하게 관대~~ **수정됨 (2026-02-23)** — 서버 charset과 일치하는 strict regex 적용 + 테스트 추가 | `deep_link_service.dart` |
 | M-7 | ~~`acceptInvite` 자기 자신 링크 방지 없음~~ **수정됨 (2026-02-22)** — `caregiverId === patientId` 체크 | `functions/index.js` |
 
 ### LOW (백로그)
@@ -196,7 +197,7 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | Firestore 규칙 사용자 격리 | PASS |
 | Cloud Functions 인증 확인 | PASS |
 | HTTPS 전용 | PASS |
-| Hive 데이터 암호화 | PARTIAL (fallback 문제) |
+| Hive 데이터 암호화 | PASS — 평문 fallback 제거, cipher 없으면 StateError throw (2026-02-23) |
 | 약 사진 암호화 | PASS — AES-256 `.enc` 파일 저장 + 자동 마이그레이션 (2026-02-23) |
 | Storage 규칙 설정 | PASS — `storage.rules` + `firebase.json` 배포 설정 완료 (2026-02-23) |
 | 라우터 인증 가드 | PASS — `app_router_provider.dart` redirect + refreshListenable (2026-02-22) |
@@ -223,6 +224,9 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 | H-7 | ✅ `functions/package-lock.json` 커밋 완료 (`69b27c0`) |
 | M-1 | ✅ 초대 코드 CSPRNG (`crypto.randomBytes`) |
 | M-7 | ✅ 자기 초대 방지 (`caregiverId === patientId`) |
+| M-2 | ✅ Hive 평문 fallback 제거 — `_openBox()` StateError throw |
+| M-4 | ✅ IAP 서버사이드 영수증 저장 Phase A — `verifyReceipt` CF + client fire-and-forget |
+| M-6 | ✅ Deep Link regex 강화 — 서버 charset 일치 + 테스트 추가 |
 
 ### 미해결 이슈 (백로그)
 
@@ -230,9 +234,9 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 |----|------|----------|
 | ~~H-6~~ | ~~약 사진 비암호화 저장~~ **수정됨 (2026-02-23)** — AES-256 암호화 `.enc` 파일 저장 + 기존 사진 자동 마이그레이션 | ~~HIGH~~ RESOLVED |
 | ~~H-7~~ | ~~`functions/package-lock.json` 미커밋~~ **수정됨 (2026-02-23)** — 커밋 `69b27c0`에서 추가 완료 | ~~HIGH~~ RESOLVED |
-| M-2 | Hive 암호화 실패 시 평문 fallback | MEDIUM |
-| M-3 | Firestore `invites` 컬렉션 읽기 권한 | MEDIUM |
-| M-4 | IAP 서버사이드 영수증 검증 없음 | MEDIUM |
-| M-5 | Home Widget 약 정보 평문 저장 | MEDIUM |
-| M-6 | Deep Link 초대 코드 포맷 미검증 | MEDIUM |
+| ~~M-2~~ | ~~Hive 암호화 실패 시 평문 fallback~~ **수정됨 (2026-02-23)** | ~~MEDIUM~~ RESOLVED |
+| M-3 | Firestore `invites` 컬렉션 읽기 권한 — **FALSE POSITIVE** (이미 patientId 검증 적용) | MEDIUM — N/A |
+| ~~M-4~~ | ~~IAP 서버사이드 영수증 검증~~ **Phase A 수정됨 (2026-02-23)**, Phase B (Apple/Google API) 별도 스프린트 | ~~MEDIUM~~ PARTIAL |
+| M-5 | Home Widget 약 정보 — **ALREADY SECURE** (카운트+시간만 저장, 프라이버시 주석 추가) | MEDIUM — N/A |
+| ~~M-6~~ | ~~Deep Link 초대 코드 포맷 미검증~~ **수정됨 (2026-02-23)** | ~~MEDIUM~~ RESOLVED |
 | L-1~L-5 | Low priority issues | LOW |

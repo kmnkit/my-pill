@@ -52,6 +52,24 @@ class CloudFunctionsService {
     }
   }
 
+  /// Submit IAP receipt for server-side storage and premium status update.
+  /// Fire-and-forget safe: callers should catch and log errors.
+  Future<void> verifyReceipt({
+    required String productId,
+    required String purchaseToken,
+    required String source,
+  }) async {
+    final result = await _functions.httpsCallable('verifyReceipt').call({
+      'productId': productId,
+      'purchaseToken': purchaseToken,
+      'source': source,
+    });
+    final data = result.data as Map<String, dynamic>;
+    if (data['success'] != true) {
+      throw Exception('Failed to verify receipt');
+    }
+  }
+
   /// Delete the current user's account and all associated data (server-side)
   /// Throws [FirebaseFunctionsException] on failure
   Future<void> deleteAccount() async {
