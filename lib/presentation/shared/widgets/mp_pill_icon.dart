@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class MpPillIcon extends StatelessWidget {
   const MpPillIcon({
@@ -17,6 +19,7 @@ class MpPillIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Widget iconWidget = Icon(shape.icon, color: color.color, size: size);
 
     // Stretch oval horizontally to distinguish from round
@@ -28,10 +31,15 @@ class MpPillIcon extends StatelessWidget {
       );
     }
 
+    final label = shape == PillShape.packet
+        ? l10n.dosePackIcon
+        : l10n.medicationIconLabel(
+            shape.localizedName(l10n),
+            color.localizedName(l10n),
+          );
+
     return Semantics(
-      label: shape == PillShape.packet
-          ? 'Dose pack icon'
-          : 'Medication icon: ${shape.name} ${color.name}',
+      label: label,
       child: Container(
         width: size + 12,
         height: size + 12,

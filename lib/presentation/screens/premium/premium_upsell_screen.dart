@@ -43,6 +43,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
             if (!isPremium) ...[
               _buildPlanToggle(l10n),
               _buildPurchaseButton(l10n, subscriptionService),
+              _buildSubscriptionTerms(l10n),
               _buildRestoreButton(l10n, subscriptionService),
             ] else ...[
               _buildPremiumStatus(l10n, status),
@@ -331,6 +332,19 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         onPressed: _isLoading ? null : () => _handlePurchase(service),
         variant: MpButtonVariant.primary,
         icon: Icons.diamond,
+      ),
+    );
+  }
+
+  Widget _buildSubscriptionTerms(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Text(
+        l10n.subscriptionTerms,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textMuted,
+            ),
+        textAlign: TextAlign.center,
       ),
     );
   }

@@ -52,26 +52,37 @@ class NotificationSettings extends ConsumerWidget {
               runSpacing: AppSpacing.sm,
               children: [5, 10, 15, 30].map((duration) {
                 final isSelected = settings.snoozeDuration == duration;
-                return GestureDetector(
-                  onTap: () {
-                    ref.read(userSettingsProvider.notifier).updateSnoozeDuration(duration);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                      vertical: AppSpacing.md,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primary
-                          : (isDark ? AppColors.cardDark : AppColors.cardLight),
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                    ),
-                    child: Text(
-                      '$duration ${l10n.minuteShort}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
-                          ),
+                return Semantics(
+                  button: true,
+                  selected: isSelected,
+                  label: l10n.snoozeMinutesSemanticLabel(
+                    duration,
+                    isSelected ? l10n.selected : l10n.notSelected,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      ref.read(userSettingsProvider.notifier).updateSnoozeDuration(duration);
+                    },
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.md,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primary
+                            : (isDark ? AppColors.cardDark : AppColors.cardLight),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                      ),
+                      child: ExcludeSemantics(
+                        child: Text(
+                          '$duration ${l10n.minuteShort}',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                              ),
+                        ),
+                      ),
                     ),
                   ),
                 );

@@ -61,10 +61,11 @@ class DisplaySettings extends ConsumerWidget {
                     button: true,
                     selected: isSelected,
                     label: '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () {
                         ref.read(userSettingsProvider.notifier).updateTextSize(storedValue);
                       },
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,

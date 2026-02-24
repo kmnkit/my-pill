@@ -29,8 +29,13 @@ class PillShapeSelector extends StatelessWidget {
       childAspectRatio: 1.2,
       children: PillShape.values.map((shape) {
         final isSelected = shape == selectedShape;
-        return GestureDetector(
+        return Semantics(
+          button: true,
+          selected: isSelected,
+          label: shape.localizedName(l10n),
+          child: InkWell(
           onTap: () => onShapeSelected(shape),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -44,24 +49,27 @@ class PillShapeSelector extends StatelessWidget {
                 width: isSelected ? 1.5 : 1,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  shape.icon,
-                  color: isSelected ? AppColors.primary : AppColors.textMuted,
-                  size: AppSpacing.iconLg,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  shape.localizedName(l10n),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: isSelected ? AppColors.primary : AppColors.textMuted,
-                      ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: ExcludeSemantics(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    shape.icon,
+                    color: isSelected ? AppColors.primary : AppColors.textMuted,
+                    size: AppSpacing.iconLg,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    shape.localizedName(l10n),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: isSelected ? AppColors.primary : AppColors.textMuted,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
+          ),
           ),
         );
       }).toList(),
