@@ -1,10 +1,15 @@
 # Project Progress — Kusuridoki (くすりどき)
 
-## Current Status: Security Remediation Complete — All Issues Resolved (L-5 제외)
+## Current Status: App Store 제출 준비 중
 
-PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **5.8/10** — 모두 NO-GO 판정.
-**그러나 코드 검증 결과 progress.md가 심각하게 outdated** — 대부분의 "UNFIXED" 이슈가 이미 구현되어 있었음.
-2026-02-23: CRITICAL 3건, HIGH 7건, MEDIUM 7건, LOW 4건 수정 완료. L-5(Android minSdk)만 보류 (android 디렉토리 미생성).
+- 보안 이슈 전건 수정 완료 (L-5 Android minSdk만 보류)
+- 一包化 (Dose Pack) 기능 구현 완료
+- 약 복용 타이밍 (Dosage Timing) 기능 구현 완료
+- Interstitial 광고 제거 완료
+- QA 3 Phase 버그 수정 완료
+- App Store 메타데이터 및 iOS 다국어 설정 완료
+- 테스트: 1396 passed / 19 failed (settings 관련 테스트 일부 실패)
+- `flutter analyze`: 64 issues (대부분 테스트 파일 deprecated API 경고)
 
 ---
 
@@ -65,37 +70,69 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 ## Phase 6: progress.md
 - ✅ This file created with honest current-state assessment
 
+## Phase 7: 一包化 (Dose Pack) 기능 (2026-02-24)
+- ✅ UserProfile에 medicationStyle 필드 추가 (individual / dosePack)
+- ✅ 온보딩에 medication style 선택 스텝 추가
+- ✅ App Store 메타데이터에 一包化 지원 내용 반영 (EN/JA)
+- ✅ SEO 키워드 확장 (dose pack, 一包化)
+
+## Phase 8: QA 버그 수정 3 Phase (2026-02-24)
+- ✅ Phase 1 — CRITICAL 버그 수정
+- ✅ Phase 2 — HIGH 버그 9건 수정
+- ✅ Phase 3 — MEDIUM 버그 8건 수정
+- ✅ 추가 수정: settings supporter button hidden, anonymous account deletion, bottom nav alignment, greeting null name
+
+## Phase 9: 약 복용 타이밍 (Dosage Timing) 기능 (2026-02-25)
+- ✅ `DosageTiming` enum 추가 (beforeMeal, afterMeal, betweenMeals, atBedtime, onWaking, asNeeded)
+- ✅ `Schedule` 모델에 `dosageTiming` 필드 추가 (nullable)
+- ✅ `DosageTimingSelector` 위젯 (ChoiceChip 기반, 스케줄 화면에서 선택)
+- ✅ 홈 타임라인 카드에 복용 타이밍 라벨 표시
+- ✅ 약 상세 화면에 타이밍 정보 표시
+- ✅ 알림 본문에 복용 타이밍 포함
+- ✅ EN/JA 다국어 지원 (食前/食後/食間/就寝前/起床時/頓服)
+- ✅ `enum_l10n_extensions.dart`에 `DosageTimingL10n` extension 추가
+
+## Phase 10: Interstitial 광고 제거 (2026-02-25)
+- ✅ `InterstitialProvider`, `InterstitialController` 삭제
+- ✅ `AdService`에서 interstitial 관련 코드 제거
+- ✅ `app.dart`에서 interstitial 초기화 제거
+
+## Phase 11: App Store 준비 (2026-02-25)
+- ✅ iOS Info.plist 다국어 설정 (en.lproj, ja.lproj)
+- ✅ iOS 프로젝트 설정 업데이트
+- ✅ 소비자 패널 리뷰 문서 추가
+
+## Phase 12: 대규모 테스트 추가 (2026-02-25)
+- ✅ core (constants, extensions, theme, utils) 테스트 추가
+- ✅ data 레이어 (enums, models, providers, repositories, services) 테스트 추가
+- ✅ presentation 레이어 (screens, shared widgets, dialogs) 테스트 추가
+- ✅ 테스트 헬퍼 유틸리티 추가
+
 ---
 
-## Overall Test Results
+## Overall Test Results (2026-02-25)
 
-| Test File | Tests | Status |
-|-----------|-------|--------|
-| app_theme_test.dart | 4 | ✅ All pass |
-| widget_test.dart | 3 | ✅ All pass |
-| medication_repository_test.dart | 14 | ✅ All pass |
-| adherence_service_test.dart | 10 | ✅ All pass |
-| timezone_service_test.dart | 8 | ✅ All pass |
-| reminder_service_test.dart | 18 | ✅ All pass |
-| subscription_service_test.dart | 16 | ✅ All pass |
-| storage_service_test.dart | 2 | ✅ All pass |
-| deep_link_service_test.dart | 4 | ✅ All pass |
-| error_handler_test.dart | 9 | ✅ All pass |
-| photo_encryption_test.dart | 7 | ✅ All pass |
-| **Total** | **95** | **✅ All pass** |
+| 항목 | 수치 |
+|------|------|
+| **총 테스트** | **1,415** |
+| **Passed** | **1,396** |
+| **Failed** | **19** (settings 관련 테스트 일부) |
+| **flutter analyze** | 64 issues (대부분 테스트 파일 deprecated API 경고) |
 
 ---
 
 ## Known Limitations / Not Yet Verified
 
-- ⏳ NotificationService — singleton + platform binding, requires mock infrastructure refactoring for unit tests
-- ⏳ IapService — singleton + InAppPurchase platform, same limitation as above
-- ⏳ Privacy Policy / Terms of Service URLs — placeholders only, actual pages not hosted
+- ✅ ~~NotificationService~~ — 테스트 추가 완료
+- ✅ ~~IapService~~ — 테스트 추가 완료
+- ✅ ~~Privacy Policy / Terms of Service URLs~~ — CloudFlare Pages에 배포 완료
 - ⏳ Xcode Team signing — requires user's Apple Developer account
 - ⏳ App Store Connect registration — manual process
 - ⏳ TestFlight deployment — not attempted
-- ⏳ Screenshots — not captured
+- ⏳ Screenshots — 스크린샷 시더 유틸리티 추가됨, 실제 캡처는 미완
 - ⏳ AI Drug Safety feature — PRD Low priority, deferred
+- ⏳ Settings 관련 테스트 19건 실패 — 수정 필요
+- ⏳ M-4 Phase B — IAP Apple/Google API 서버사이드 영수증 검증 별도 스프린트
 
 ---
 
@@ -103,7 +140,7 @@ PO initial evaluation: **4.5/10 (NO-GO)** → Stakeholder: **3.5/10** → PO: **
 
 | Gate | Date | Panel Composition | Avg Score | Pass? | Notes |
 |------|------|-------------------|-----------|-------|-------|
-| G1 | - | - | - | - | Not yet conducted |
+| G1 | 2026-02 | 5~7명 가상 패널 | - | - | docs/CONSUMER_PANEL_REVIEW_2026_02.md 참조 |
 | G2 | - | - | - | - | Not yet conducted |
 | G3 | - | - | - | - | Not yet conducted |
 | G4 | - | - | - | - | Not yet conducted |
