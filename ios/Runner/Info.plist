@@ -54,9 +54,7 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Kusuridoki uses your camera to take photos of your medications for easy identification.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Use Face ID for secure login to Kusuridoki.</string>
-	<key>NSNotificationUsageDescription</key>
+<key>NSNotificationUsageDescription</key>
 	<string>Get reminders when it's time to take your medication.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Kusuridoki saves medication photos to your library for your records.</string>
