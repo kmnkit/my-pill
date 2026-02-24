@@ -64,12 +64,17 @@ class LanguageSelector extends ConsumerWidget {
     bool isSelected,
     bool isDark,
   ) {
-    return GestureDetector(
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: displayLabel,
+      child: InkWell(
       onTap: () async {
         if (!isSelected) {
           await ref.read(userSettingsProvider.notifier).updateLanguage(languageCode);
         }
       },
+      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
       child: Container(
         height: AppSpacing.buttonHeight,
         decoration: BoxDecoration(
@@ -79,13 +84,16 @@ class LanguageSelector extends ConsumerWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         ),
         child: Center(
-          child: Text(
-            displayLabel,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
-                ),
+          child: ExcludeSemantics(
+            child: Text(
+              displayLabel,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                  ),
+            ),
           ),
         ),
+      ),
       ),
     );
   }

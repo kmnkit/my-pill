@@ -10,6 +10,7 @@ import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:go_router/go_router.dart';
 
 enum ReportPeriod { weekly, monthly }
 
@@ -174,8 +175,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              // TODO: Navigate to subscription screen
-              // context.push('/settings/subscription');
+              context.push('/premium');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,

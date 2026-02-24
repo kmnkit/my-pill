@@ -109,6 +109,12 @@ class UserSettings extends _$UserSettings {
     await updateProfile(updated);
   }
 
+  Future<void> updateDefaultIppoka(bool value) async {
+    final current = await future;
+    final updated = current.copyWith(defaultIppoka: value);
+    await updateProfile(updated);
+  }
+
   Future<void> completeOnboarding() async {
     final current = await future;
     final updated = current.copyWith(onboardingComplete: true);

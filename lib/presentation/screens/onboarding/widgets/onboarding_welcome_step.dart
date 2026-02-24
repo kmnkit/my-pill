@@ -69,7 +69,7 @@ class OnboardingWelcomeStep extends ConsumerWidget {
 
               // Features
               _FeatureRow(
-                icon: Icons.schedule,
+                icon: Icons.inventory_2_outlined,
                 text: l10n.onboardingFeature1,
               ),
               const SizedBox(height: AppSpacing.lg),

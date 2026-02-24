@@ -5,6 +5,7 @@ import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:my_pill/presentation/shared/widgets/mp_error_view.dart';
 
 class CaregiverDashboardScreen extends ConsumerWidget {
   const CaregiverDashboardScreen({super.key});
@@ -28,9 +29,10 @@ class CaregiverDashboardScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: patientsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(
-                    child: Text('Error: $error'),
+                  loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+                  error: (error, stack) => MpErrorView(
+                    error: error,
+                    onRetry: () => ref.invalidate(caregiverPatientsProvider),
                   ),
                   data: (patients) {
                     if (patients.isEmpty) {

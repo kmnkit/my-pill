@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/services/cloud_functions_service.dart';
 import 'package:my_pill/data/services/storage_service.dart';
+import 'package:my_pill/core/utils/screenshot_seeder.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
 import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialog.dart';
@@ -99,6 +101,25 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                 ),
               ),
+              if (kDebugMode) ...[
+                const SizedBox(height: AppSpacing.xl),
+                MpSectionHeader(title: 'Debug Tools'),
+                _buildListTile(
+                  context,
+                  'Seed Screenshot Data',
+                  Icons.photo_library_outlined,
+                  () async {
+                    final seeder = ScreenshotSeeder(StorageService());
+                    await seeder.seed();
+                    _invalidateUserProviders(ref);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Screenshot data seeded!')),
+                      );
+                    }
+                  },
+                ),
+              ],
               const SizedBox(height: AppSpacing.xl),
               const PremiumBanner(),
               const SizedBox(height: AppSpacing.xl),

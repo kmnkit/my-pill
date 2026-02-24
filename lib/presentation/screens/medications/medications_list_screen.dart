@@ -134,6 +134,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                     Text(
                                       med.name,
                                       style: Theme.of(context).textTheme.titleSmall,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: AppSpacing.xs),
                                     Text(
@@ -141,6 +143,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                             color: AppColors.textMuted,
                                           ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),

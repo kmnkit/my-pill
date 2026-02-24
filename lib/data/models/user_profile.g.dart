@@ -28,6 +28,7 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
       json['allowCaregiverNotifications'] as bool? ?? true,
   missedDoseAlerts: json['missedDoseAlerts'] as bool? ?? true,
   lowStockAlerts: json['lowStockAlerts'] as bool? ?? true,
+  defaultIppoka: json['defaultIppoka'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
@@ -52,4 +53,5 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'allowCaregiverNotifications': instance.allowCaregiverNotifications,
       'missedDoseAlerts': instance.missedDoseAlerts,
       'lowStockAlerts': instance.lowStockAlerts,
+      'defaultIppoka': instance.defaultIppoka,
     };

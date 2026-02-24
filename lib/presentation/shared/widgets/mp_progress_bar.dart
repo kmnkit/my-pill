@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/l10n/app_localizations.dart';
 
 class MpProgressBar extends StatelessWidget {
   const MpProgressBar({
@@ -23,11 +24,12 @@ class MpProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final fillColor = _isLow ? AppColors.warning : AppColors.primary;
     final progressPercent = (_progress * 100).round();
     return Semantics(
       value: '$progressPercent%',
-      label: 'Inventory: $current of $total',
+      label: l10n.inventorySemanticLabel(current, total, progressPercent),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
