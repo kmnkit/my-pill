@@ -111,13 +111,21 @@ class TodayReminders extends _$TodayReminders {
       // Get all medications to build info map
       final medications = await ref.read(medicationListProvider.future);
       if (!ref.mounted) return reminders;
-      final medicationInfo = <String, ({String name, String dosage, bool isCritical})>{};
+      final medicationInfo = <String, ({String name, String dosage, bool isCritical, String? dosageTimingLabel})>{};
 
       for (final med in medications) {
+        // Find dosageTiming from the medication's active schedule
+        String? dosageTimingLabel;
+        final medSchedules = activeSchedules.where((s) => s.medicationId == med.id);
+        if (medSchedules.isNotEmpty && medSchedules.first.dosageTiming != null) {
+          dosageTimingLabel = medSchedules.first.dosageTiming!.label;
+        }
+
         medicationInfo[med.id] = (
           name: med.name,
           dosage: '${med.dosage} ${med.dosageUnit.name}',
           isCritical: med.isCritical,
+          dosageTimingLabel: dosageTimingLabel,
         );
       }
 

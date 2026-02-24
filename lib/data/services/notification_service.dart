@@ -131,7 +131,7 @@ class NotificationService {
   }
 
   // Schedule a local notification for a reminder
-  Future<void> scheduleReminder(Reminder reminder, String medicationName, String dosage) async {
+  Future<void> scheduleReminder(Reminder reminder, String medicationName, String dosage, {String? dosageTimingLabel}) async {
     final scheduledTime = reminder.scheduledTime;
     if (scheduledTime.isBefore(DateTime.now())) return; // Don't schedule past notifications
 
@@ -164,7 +164,7 @@ class NotificationService {
     await _localNotifications.zonedSchedule(
       id: notificationId,
       title: 'Time to take $medicationName',
-      body: '$dosage - Tap to respond',
+      body: dosageTimingLabel != null ? '$dosage ($dosageTimingLabel) - Tap to respond' : '$dosage - Tap to respond',
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -173,7 +173,7 @@ class NotificationService {
   }
 
   // T5.3: Schedule critical alert (iOS - bypasses DND)
-  Future<void> scheduleCriticalReminder(Reminder reminder, String medicationName, String dosage) async {
+  Future<void> scheduleCriticalReminder(Reminder reminder, String medicationName, String dosage, {String? dosageTimingLabel}) async {
     final scheduledTime = reminder.scheduledTime;
     if (scheduledTime.isBefore(DateTime.now())) return;
 
@@ -202,7 +202,7 @@ class NotificationService {
     await _localNotifications.zonedSchedule(
       id: _stableId(reminder.id),
       title: 'CRITICAL: Take $medicationName',
-      body: '$dosage - This medication is marked as critical',
+      body: dosageTimingLabel != null ? '$dosage ($dosageTimingLabel) - This medication is marked as critical' : '$dosage - This medication is marked as critical',
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -223,16 +223,16 @@ class NotificationService {
   // Schedule all reminders for today
   Future<void> scheduleTodayReminders(
     List<Reminder> reminders,
-    Map<String, ({String name, String dosage, bool isCritical})> medicationInfo,
+    Map<String, ({String name, String dosage, bool isCritical, String? dosageTimingLabel})> medicationInfo,
   ) async {
     for (final reminder in reminders) {
       final info = medicationInfo[reminder.medicationId];
       if (info == null) continue;
 
       if (info.isCritical) {
-        await scheduleCriticalReminder(reminder, info.name, info.dosage);
+        await scheduleCriticalReminder(reminder, info.name, info.dosage, dosageTimingLabel: info.dosageTimingLabel);
       } else {
-        await scheduleReminder(reminder, info.name, info.dosage);
+        await scheduleReminder(reminder, info.name, info.dosage, dosageTimingLabel: info.dosageTimingLabel);
       }
     }
   }

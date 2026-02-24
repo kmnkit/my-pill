@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingHeadline => 'Your reliable medication companion';
 
   @override
-  String get onboardingFeature1 => 'Never miss a dose';
+  String get onboardingFeature1 => 'Dose packs & individual pills';
 
   @override
   String get onboardingFeature2 => 'Works across timezones';
@@ -1390,4 +1390,155 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get defaultUserName => 'User';
+
+  @override
+  String get colorWhite => 'White';
+
+  @override
+  String get colorBlue => 'Blue';
+
+  @override
+  String get colorYellow => 'Yellow';
+
+  @override
+  String get colorPink => 'Pink';
+
+  @override
+  String get colorRed => 'Red';
+
+  @override
+  String get colorGreen => 'Green';
+
+  @override
+  String get colorOrange => 'Orange';
+
+  @override
+  String get colorPurple => 'Purple';
+
+  @override
+  String get dayMonday => 'Monday';
+
+  @override
+  String get dayTuesday => 'Tuesday';
+
+  @override
+  String get dayWednesday => 'Wednesday';
+
+  @override
+  String get dayThursday => 'Thursday';
+
+  @override
+  String get dayFriday => 'Friday';
+
+  @override
+  String get daySaturday => 'Saturday';
+
+  @override
+  String get daySunday => 'Sunday';
+
+  @override
+  String get dayMondayShort => 'M';
+
+  @override
+  String get dayTuesdayShort => 'T';
+
+  @override
+  String get dayWednesdayShort => 'W';
+
+  @override
+  String get dayThursdayShort => 'T';
+
+  @override
+  String get dayFridayShort => 'F';
+
+  @override
+  String get daySaturdayShort => 'S';
+
+  @override
+  String get daySundayShort => 'S';
+
+  @override
+  String snoozeMinutesSemanticLabel(int duration, String selected) {
+    return '$duration minutes snooze, $selected';
+  }
+
+  @override
+  String get selected => 'selected';
+
+  @override
+  String get notSelected => 'not selected';
+
+  @override
+  String inventorySemanticLabel(int current, int total, int percent) {
+    return 'Inventory: $current of $total, $percent%';
+  }
+
+  @override
+  String get dosePackIcon => 'Dose pack icon';
+
+  @override
+  String medicationIconLabel(String shape, String color) {
+    return 'Medication icon: $shape $color';
+  }
+
+  @override
+  String get scheduleTypeDaily => 'Daily';
+
+  @override
+  String get scheduleTypeSpecificDays => 'Specific Days';
+
+  @override
+  String get scheduleTypeInterval => 'Interval';
+
+  @override
+  String get errorLoadingPatients =>
+      'Failed to load patients. Please try again.';
+
+  @override
+  String get onboardingMedStyleTitle => 'How do you receive your medication?';
+
+  @override
+  String get onboardingMedStyleSubtitle => 'We\'ll optimize the app for you';
+
+  @override
+  String get onboardingIndividualPills => 'Individual pills or tablets';
+
+  @override
+  String get onboardingIndividualPillsDesc =>
+      'Separate medications from the pharmacy';
+
+  @override
+  String get onboardingDosePack => 'Dose packs (一包化)';
+
+  @override
+  String get onboardingDosePackDesc =>
+      'Pre-packaged sachets bundling multiple meds';
+
+  @override
+  String get dosageTimingTitle => 'Dosage Timing';
+
+  @override
+  String get dosageTimingBeforeMeal => 'Before Meal';
+
+  @override
+  String get dosageTimingAfterMeal => 'After Meal';
+
+  @override
+  String get dosageTimingBetweenMeals => 'Between Meals';
+
+  @override
+  String get dosageTimingAtBedtime => 'At Bedtime';
+
+  @override
+  String get dosageTimingOnWaking => 'On Waking';
+
+  @override
+  String get dosageTimingAsNeeded => 'As Needed';
+
+  @override
+  String get dosageTimingOptional => 'Optional';
+
+  @override
+  String get subscriptionTerms =>
+      'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.';
 }

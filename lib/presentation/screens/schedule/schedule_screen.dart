@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
 import 'package:my_pill/data/models/schedule.dart';
@@ -10,6 +11,7 @@ import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/day_selector.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/dosage_multiplier.dart';
+import 'package:my_pill/presentation/screens/schedule/widgets/dosage_timing_selector.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/frequency_selector.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/interval_picker.dart';
 import 'package:my_pill/presentation/screens/schedule/widgets/time_slot_picker.dart';
@@ -34,6 +36,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   List<String> _times = [];
   List<int> _selectedDays = [];
   int _intervalHours = 8;
+  DosageTiming? _dosageTiming;
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +150,20 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                 },
               ),
             ],
+            const SizedBox(height: AppSpacing.xxl),
+            Text(
+              '${l10n.dosageTimingTitle} (${l10n.dosageTimingOptional})',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            DosageTimingSelector(
+              selectedTiming: _dosageTiming,
+              onChanged: (timing) {
+                setState(() {
+                  _dosageTiming = timing;
+                });
+              },
+            ),
             const SizedBox(height: AppSpacing.xxxl),
             MpButton(
               label: l10n.continueButton,
@@ -185,6 +202,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
       intervalHours: _selectedType == ScheduleType.interval ? _intervalHours : null,
       timezoneMode: TimezoneMode.fixedInterval,
       isActive: true,
+      dosageTiming: _dosageTiming,
     );
 
     await ref.read(scheduleListProvider.notifier).addSchedule(schedule);

@@ -12,8 +12,7 @@ import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/interstitial_provider.dart';
-import 'package:my_pill/data/providers/ad_provider.dart';
+import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/data/providers/iap_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/inventory_editor.dart';
@@ -46,6 +45,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   bool _isCritical = false;
   bool _isIppoka = false;
   bool _isSaving = false;
+  bool _defaultsApplied = false;
   String? _photoPath;
 
   @override
@@ -58,6 +58,20 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    // Apply smart default from user settings (once)
+    if (!_defaultsApplied) {
+      final settingsAsync = ref.read(userSettingsProvider);
+      settingsAsync.whenData((settings) {
+        if (settings.defaultIppoka) {
+          _isIppoka = true;
+          _selectedShape = PillShape.packet;
+          _dosageUnit = DosageUnit.packs;
+          _dosageController.text = '1';
+        }
+        _defaultsApplied = true;
+      });
+    }
 
     return Scaffold(
       appBar: MpAppBar(title: l10n.addMedication, showBack: true),
@@ -288,15 +302,6 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       );
 
       await ref.read(medicationListProvider.notifier).addMedication(medication);
-
-      // Record action for interstitial frequency capping
-      ref.read(interstitialControllerProvider).recordAction();
-      await ref
-          .read(interstitialControllerProvider)
-          .maybeShow(
-            adService: ref.read(adServiceProvider),
-            adsRemoved: ref.read(adsRemovedProvider),
-          );
 
       if (mounted) {
         context.pop();

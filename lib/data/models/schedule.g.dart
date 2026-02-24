@@ -24,6 +24,10 @@ _Schedule _$ScheduleFromJson(Map<String, dynamic> json) => _Schedule(
       $enumDecodeNullable(_$TimezoneModeEnumMap, json['timezoneMode']) ??
       TimezoneMode.fixedInterval,
   isActive: json['isActive'] as bool? ?? true,
+  dosageTiming: $enumDecodeNullable(
+    _$DosageTimingEnumMap,
+    json['dosageTiming'],
+  ),
 );
 
 Map<String, dynamic> _$ScheduleToJson(_Schedule instance) => <String, dynamic>{
@@ -36,6 +40,7 @@ Map<String, dynamic> _$ScheduleToJson(_Schedule instance) => <String, dynamic>{
   'intervalHours': instance.intervalHours,
   'timezoneMode': _$TimezoneModeEnumMap[instance.timezoneMode]!,
   'isActive': instance.isActive,
+  'dosageTiming': _$DosageTimingEnumMap[instance.dosageTiming],
 };
 
 const _$ScheduleTypeEnumMap = {
@@ -47,4 +52,13 @@ const _$ScheduleTypeEnumMap = {
 const _$TimezoneModeEnumMap = {
   TimezoneMode.fixedInterval: 'fixedInterval',
   TimezoneMode.localTime: 'localTime',
+};
+
+const _$DosageTimingEnumMap = {
+  DosageTiming.beforeMeal: 'beforeMeal',
+  DosageTiming.afterMeal: 'afterMeal',
+  DosageTiming.betweenMeals: 'betweenMeals',
+  DosageTiming.atBedtime: 'atBedtime',
+  DosageTiming.onWaking: 'onWaking',
+  DosageTiming.asNeeded: 'asNeeded',
 };

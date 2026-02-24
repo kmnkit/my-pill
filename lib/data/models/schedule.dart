@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
 
@@ -17,6 +18,7 @@ abstract class Schedule with _$Schedule {
     int? intervalHours,
     @Default(TimezoneMode.fixedInterval) TimezoneMode timezoneMode,
     @Default(true) bool isActive,
+    DosageTiming? dosageTiming,
   }) = _Schedule;
 
   factory Schedule.fromJson(Map<String, dynamic> json) =>
