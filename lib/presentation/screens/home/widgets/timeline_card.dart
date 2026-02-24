@@ -23,6 +23,7 @@ class TimelineCard extends StatelessWidget {
     required this.medicationId,
     required this.reminderStatus,
     this.onMarkTaken,
+    this.dosageTimingLabel,
   });
 
   final String medicationName;
@@ -35,6 +36,7 @@ class TimelineCard extends StatelessWidget {
   final String medicationId;
   final ReminderStatus reminderStatus;
   final VoidCallback? onMarkTaken;
+  final String? dosageTimingLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +63,15 @@ class TimelineCard extends StatelessWidget {
                 Text(
                   medicationName,
                   style: textTheme.titleSmall,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   dosage,
                   style: textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -76,7 +82,7 @@ class TimelineCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                time,
+                dosageTimingLabel != null ? '$time $dosageTimingLabel' : time,
                 style: textTheme.bodySmall,
               ),
               const SizedBox(height: AppSpacing.xs),

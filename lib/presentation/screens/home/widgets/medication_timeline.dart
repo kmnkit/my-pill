@@ -6,6 +6,7 @@ import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
+import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
 import 'package:my_pill/presentation/screens/home/widgets/timeline_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
@@ -65,6 +66,7 @@ class MedicationTimeline extends ConsumerWidget {
               Consumer(
                 builder: (context, ref, _) {
                   final medicationAsync = ref.watch(medicationProvider(reminders[i].medicationId));
+                  final schedulesAsync = ref.watch(medicationSchedulesProvider(reminders[i].medicationId));
 
                   return medicationAsync.when(
                     data: (medication) {
@@ -73,6 +75,14 @@ class MedicationTimeline extends ConsumerWidget {
                       }
 
                       final reminder = reminders[i];
+                      final dosageTimingLabel = schedulesAsync.whenOrNull(
+                        data: (schedules) {
+                          if (schedules.isEmpty) return null;
+                          final timing = schedules.first.dosageTiming;
+                          return timing?.localizedName(l10n);
+                        },
+                      );
+
                       return TimelineCard(
                         medicationName: medication.name,
                         dosage: '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
@@ -86,6 +96,7 @@ class MedicationTimeline extends ConsumerWidget {
                         onMarkTaken: reminder.status == ReminderStatus.pending
                             ? () => ref.read(todayRemindersProvider.notifier).markAsTaken(reminder.id)
                             : null,
+                        dosageTimingLabel: dosageTimingLabel,
                       );
                     },
                     loading: () => const SizedBox(

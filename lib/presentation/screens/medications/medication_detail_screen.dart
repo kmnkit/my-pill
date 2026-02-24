@@ -63,7 +63,7 @@ class MedicationDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: MpAppBar(
-        title: 'MyPill',
+        title: l10n.appTitle,
         showBack: true,
         actions: [
           IconButton(
@@ -203,7 +203,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                             children: [
                               _InfoRow(
                                 label: l10n.type,
-                                value: schedule.type.label,
+                                value: schedule.type.localizedName(l10n),
                               ),
                               if (schedule.times.isNotEmpty) ...[
                                 const SizedBox(height: AppSpacing.sm),
@@ -226,6 +226,13 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 _InfoRow(
                                   label: l10n.interval,
                                   value: l10n.everyNHoursLabel(schedule.intervalHours!),
+                                ),
+                              ],
+                              if (schedule.dosageTiming != null) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                _InfoRow(
+                                  label: l10n.dosageTimingTitle,
+                                  value: schedule.dosageTiming!.localizedName(l10n),
                                 ),
                               ],
                               const SizedBox(height: AppSpacing.sm),
@@ -358,7 +365,7 @@ class _InfoRow extends StatelessWidget {
 }
 
 String _formatDays(List<int> days, AppLocalizations l10n) {
-  const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final dayNames = [l10n.mon, l10n.tue, l10n.wed, l10n.thu, l10n.fri, l10n.sat, l10n.sun];
   return days.map((d) => d >= 1 && d <= 7 ? dayNames[d - 1] : '?').join(', ');
 }
 
