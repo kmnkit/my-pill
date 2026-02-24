@@ -37,9 +37,11 @@ class GreetingHeader extends ConsumerWidget {
         userSettings.when(
           data: (profile) {
             final greeting = _getGreeting(l10n);
-            // Only append name if it's not the default "User"
-            final displayText = profile.name != 'User'
-                ? '$greeting, ${profile.name}'
+            // Only append name if it's non-null, non-empty, and not the default "User"
+            final displayText = profile.name != null &&
+                    profile.name!.isNotEmpty &&
+                    profile.name != 'User'
+                ? '$greeting, ${profile.name!}'
                 : greeting;
             return Text(displayText, style: textTheme.headlineLarge);
           },
