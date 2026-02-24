@@ -15,9 +15,10 @@
 
 ## App Description (English - US)
 
-Kusuridoki is a smart medication management app that helps you never miss a dose.
+Kusuridoki is a smart medication management app that supports both individual pills and dose packs (一包化). Never miss a dose again.
 
 Key Features:
+✓ Dose Pack & Individual Pill Support - Manage any medication style
 ✓ Medication Reminders - Get notified at the exact time
 ✓ Adherence Tracking - Check off doses and review history
 ✓ Inventory Management - Track pill count and refill alerts
@@ -31,9 +32,10 @@ Build healthy medication habits with Kusuridoki!
 
 ## App Description (Japanese - 日本語)
 
-くすりどきは、薬の飲み忘れを防ぐスマートな服薬管理アプリです。
+くすりどきは、一包化・個別薬どちらにも対応した、スマートな服薬管理アプリです。飲み忘れゼロを目指しましょう。
 
 主な機能：
+✓ 一包化・個別薬に対応 - どんな服薬スタイルにも最適化
 ✓ 服薬アラーム - 指定した時間に通知を受け取り
 ✓ 服薬記録 - 服薬の有無をチェックして履歴確認
 ✓ 在庫管理 - 薬量を追跡して再購入アラートを受け取り
@@ -46,8 +48,8 @@ Build healthy medication habits with Kusuridoki!
 ⚠️ 医療免責事項：くすりどきは専門的な医療相談の代替となるものではありません。薬を服用する前に必ず医療提供者にご相談ください。
 
 ## Keywords (SEO)
-- English: medication, pill, reminder, health, tracker, pharmacy, adherence, caregiver
-- Japanese: 薬, 服薬, アラーム, 健康, 記録, 薬局, 介護者, 追跡
+- English: medication, pill, reminder, health, tracker, pharmacy, adherence, caregiver, dose pack, medication organizer
+- Japanese: 薬, 服薬, アラーム, 健康, 記録, 薬局, 介護者, 追跡, 一包化, 一包化アプリ, 分包薬
 
 ## Age Rating
 - Content Rating: 4+
