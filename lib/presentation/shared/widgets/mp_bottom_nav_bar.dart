@@ -132,6 +132,8 @@ class MpBottomNavBar extends StatelessWidget {
                     isDark ? AppColors.textMutedDark : AppColors.textMuted,
                 type: BottomNavigationBarType.fixed,
                 showUnselectedLabels: true,
+                selectedFontSize: 12.0,
+                unselectedFontSize: 12.0,
               ),
             ),
           ),
@@ -153,6 +155,8 @@ class MpBottomNavBar extends StatelessWidget {
       unselectedItemColor: AppColors.textMuted,
       type: BottomNavigationBarType.fixed,
       showUnselectedLabels: true,
+      selectedFontSize: 12.0,
+      unselectedFontSize: 12.0,
     );
   }
 }
