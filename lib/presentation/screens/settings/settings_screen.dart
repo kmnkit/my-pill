@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -165,18 +166,38 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (secondConfirm == true && context.mounted) {
                     try {
-                      // Re-authenticate before deletion
-                      final authService = ref.read(authServiceProvider);
-                      final reauthed = await authService.reauthenticate();
-                      if (!reauthed) return; // User cancelled
-                      // 1. Server-side deletion of all user data + auth account
-                      await CloudFunctionsService().deleteAccount();
-                      // 2. Clear local data first (while widget is still mounted)
-                      await StorageService().clearAll();
-                      // 3. Invalidate all providers (before signOut triggers redirect)
-                      _invalidateUserProviders(ref);
-                      // 4. Sign out last — router redirect handles navigation
-                      await authService.signOut();
+                      if (FirebaseAuth.instance.currentUser?.isAnonymous == true) {
+                        // Anonymous path: no server data, delete auth account directly
+                        // 1. Clear local data first (while widget is still mounted)
+                        await StorageService().clearAll();
+                        // 2. Invalidate providers first (before auth deletion triggers redirect)
+                        _invalidateUserProviders(ref);
+                        // 3. Delete auth account — triggers auth stream null → router auto-redirects
+                        try {
+                          await FirebaseAuth.instance.currentUser?.delete();
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'requires-recent-login') {
+                            // Refresh anonymous token and retry
+                            await FirebaseAuth.instance.signInAnonymously();
+                            await FirebaseAuth.instance.currentUser?.delete();
+                          } else {
+                            rethrow;
+                          }
+                        }
+                      } else {
+                        // Authenticated path: re-authenticate, delete server data, then sign out
+                        final authService = ref.read(authServiceProvider);
+                        final reauthed = await authService.reauthenticate();
+                        if (!reauthed) return; // User cancelled
+                        // 1. Server-side deletion of all user data + auth account
+                        await CloudFunctionsService().deleteAccount();
+                        // 2. Clear local data first (while widget is still mounted)
+                        await StorageService().clearAll();
+                        // 3. Invalidate all providers (before signOut triggers redirect)
+                        _invalidateUserProviders(ref);
+                        // 4. Sign out last — router redirect handles navigation
+                        await authService.signOut();
+                      }
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -205,6 +226,7 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: AppSpacing.xxxl),
             ],
           ),
         ),
