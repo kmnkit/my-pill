@@ -8,7 +8,6 @@ import 'package:my_pill/data/services/reminder_service.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/ad_provider.dart';
-import 'package:my_pill/data/providers/interstitial_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 
 class MyPillApp extends ConsumerStatefulWidget {
@@ -30,8 +29,6 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
     // Generate and schedule today's reminders on app start
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _generateAndScheduleReminders();
-      // Pre-load interstitial ad
-      ref.read(adServiceProvider).loadInterstitial();
     });
   }
 
@@ -45,13 +42,8 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state == AppLifecycleState.paused) {
-      ref.read(interstitialControllerProvider).onAppPaused();
-    }
-
     if (state == AppLifecycleState.resumed) {
       _onAppResumed();
-      ref.read(interstitialControllerProvider).onAppResumed();
     }
   }
 
