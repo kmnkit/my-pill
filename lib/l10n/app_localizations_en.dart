@@ -1161,9 +1161,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howOften => 'How often?';
 
   @override
-  String get howManyTimesPerDay => 'How many times per day?';
-
-  @override
   String get whatTimes => 'What times?';
 
   @override
@@ -1180,9 +1177,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get daysUnit => 'days';
-
-  @override
-  String get addAnotherTimeLabel => 'Add another time';
 
   @override
   String get dailyDesc => 'Take every day at the same time';
