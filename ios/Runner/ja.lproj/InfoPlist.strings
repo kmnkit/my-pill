@@ -4,4 +4,3 @@
 "NSNotificationUsageDescription" = "お薬の服用時間にリマインダーを受け取ります。";
 "NSPhotoLibraryAddUsageDescription" = "お薬の写真をフォトライブラリに保存します。";
 "NSPhotoLibraryUsageDescription" = "お薬の写真を選ぶためにフォトライブラリにアクセスします。";
-"NSUserTrackingUsageDescription" = "パーソナライズされた広告を表示し、アプリを改善するためにトラッキングを使用します。";
