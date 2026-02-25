@@ -24,6 +24,12 @@ TEXT_LIGHT = (204, 235, 232)         # light teal-tinted gray for subtitles
 
 CORNER_RADIUS = 40
 SCREENSHOT_SCALE = 0.82
+STATUS_BAR_H = 135  # pixels to cover in base screenshot (pre-scale)
+
+HEADLINE_PADDING = 60       # px each side → 120px total
+SUBTITLE_PADDING = 40       # px each side → 80px total
+MIN_HEADLINE_SIZE = 60
+MIN_SUBTITLE_SIZE = 32
 
 FONT_BOLD = "/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc"
 FONT_REGULAR = "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc"
@@ -71,8 +77,7 @@ SCREENSHOTS = [
         "output": "05_travel.png",
     },
     {
-        # TODO: Replace with settings/privacy screen capture
-        "file": "IMG_0080.PNG",
+        "file": "about_app.png",
         "headline": "あなたの健康データを安全に保護",
         "subtitle": "プライバシーを守る安心設計",
         "accent_word": "安全に保護",
@@ -137,10 +142,30 @@ def draw_text_with_accent(draw, text, accent_word, y, font, accent_color, base_c
         draw.text((x, y), text, fill=base_color, font=font)
 
 
+def fit_font(font_path, text, max_size, min_size, available_w):
+    """Shrink font until text fits within available_w. Returns (font, size)."""
+    size = max_size
+    while size > min_size:
+        font = ImageFont.truetype(font_path, size)
+        bbox = font.getbbox(text)
+        text_w = bbox[2] - bbox[0]
+        if text_w <= available_w:
+            return font, size
+        size -= 2
+    return ImageFont.truetype(font_path, min_size), min_size
+
+
 def generate_screenshot(config):
     """Generate a single App Store screenshot."""
-    headline_font = ImageFont.truetype(FONT_BOLD, 88)
-    subtitle_font = ImageFont.truetype(FONT_REGULAR, 48)
+    headline_available_w = CANVAS_W - HEADLINE_PADDING * 2
+    subtitle_available_w = CANVAS_W - SUBTITLE_PADDING * 2
+
+    headline_font, _ = fit_font(
+        FONT_BOLD, config["headline"], 88, MIN_HEADLINE_SIZE, headline_available_w
+    )
+    subtitle_font, _ = fit_font(
+        FONT_REGULAR, config["subtitle"], 48, MIN_SUBTITLE_SIZE, subtitle_available_w
+    )
 
     canvas = create_gradient_bg(CANVAS_W, CANVAS_H, BG_COLOR_TOP, BG_COLOR_BOT)
     draw = ImageDraw.Draw(canvas)
@@ -167,6 +192,12 @@ def generate_screenshot(config):
     scale = target_w / screenshot.width
     target_h = int(screenshot.height * scale)
     screenshot = screenshot.resize((target_w, target_h), Image.LANCZOS)
+
+    # Cover status bar to hide "Trip Wallet" and other system UI text
+    ss_draw = ImageDraw.Draw(screenshot)
+    cover_h = int(STATUS_BAR_H * scale)
+    ss_draw.rectangle([(0, 0), (target_w, cover_h)], fill=(255, 255, 255, 255))
+
     screenshot = round_corners(screenshot, CORNER_RADIUS)
 
     ss_x = (CANVAS_W - target_w) // 2
