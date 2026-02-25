@@ -460,6 +460,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get extraLarge => '特大';
 
   @override
+  String get features => '機能';
+
+  @override
   String get safetyPrivacy => '安全とプライバシー';
 
   @override

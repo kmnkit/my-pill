@@ -288,6 +288,23 @@ class MockStorageService extends _i1.Mock implements _i2.StorageService {
           as _i4.Future<void>);
 
   @override
+  _i4.Future<String?> getSetting(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getSetting, [key]),
+            returnValue: _i4.Future<String?>.value(),
+          )
+          as _i4.Future<String?>);
+
+  @override
+  _i4.Future<void> saveSetting(String? key, String? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveSetting, [key, value]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
   _i4.Future<void> clearAll() =>
       (super.noSuchMethod(
             Invocation.method(#clearAll, []),

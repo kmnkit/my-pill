@@ -24,8 +24,8 @@ class AdService {
       return 'ca-app-pub-3940256099942544/6300978111';
     }
     return Platform.isAndroid
-        ? 'ca-app-pub-8394008055710959/8841172453'
-        : 'ca-app-pub-8394008055710959/6625781071';
+        ? 'ca-app-pub-8394008055710959/4351346223'
+        : 'ca-app-pub-8394008055710959/3480758892';
   }
 
   bool get adsRemoved => _adsRemoved;

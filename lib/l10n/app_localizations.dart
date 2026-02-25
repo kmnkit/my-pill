@@ -968,6 +968,12 @@ abstract class AppLocalizations {
   /// **'XL'**
   String get extraLarge;
 
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
   /// No description provided for @safetyPrivacy.
   ///
   /// In en, this message translates to:
