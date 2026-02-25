@@ -11,7 +11,6 @@ Feature-specific widgets for schedule configuration including frequency selectio
 | File | Description |
 |------|-------------|
 | `frequency_selector.dart` | `FrequencySelector` — times-per-day selection for daily schedules |
-| `dosage_multiplier.dart` | `DosageMultiplier` — dosage amount per intake adjustment |
 | `interval_picker.dart` | `IntervalPicker` — hour interval selection for interval-based schedules |
 | `day_selector.dart` | `DaySelector` — weekday checkboxes for specific-days schedules (Mon-Sun) |
 | `time_slot_picker.dart` | `TimeSlotPicker` — add/remove/edit time slots for medication times |
