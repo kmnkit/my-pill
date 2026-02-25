@@ -62,9 +62,15 @@ class MedicationDetailScreen extends ConsumerWidget {
     final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
     final historyAsync = ref.watch(medicationHistoryProvider(medicationId));
 
+    final medicationTitle = medicationAsync.when(
+      data: (m) => m?.name ?? l10n.medications,
+      loading: () => '',
+      error: (_, _) => l10n.medications,
+    );
+
     return GradientScaffold(
       appBar: MpAppBar(
-        title: l10n.appTitle,
+        title: medicationTitle,
         showBack: true,
         actions: [
           IconButton(
@@ -206,11 +212,14 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 label: l10n.type,
                                 value: schedule.type.localizedName(l10n),
                               ),
-                              if (schedule.times.isNotEmpty) ...[
+                              if (schedule.dosageSlots.isNotEmpty) ...[
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
-                                  label: l10n.times,
-                                  value: schedule.times.join(', '),
+                                  label: l10n.dosageTimingTitle,
+                                  value: schedule.dosageSlots
+                                      .map((slot) =>
+                                          '${slot.timing.localizedName(l10n)} ${slot.time}')
+                                      .join(', '),
                                 ),
                               ],
                               if (schedule.type == ScheduleType.specificDays &&
@@ -227,13 +236,6 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 _InfoRow(
                                   label: l10n.interval,
                                   value: l10n.everyNHoursLabel(schedule.intervalHours!),
-                                ),
-                              ],
-                              if (schedule.dosageTiming != null) ...[
-                                const SizedBox(height: AppSpacing.sm),
-                                _InfoRow(
-                                  label: l10n.dosageTimingTitle,
-                                  value: schedule.dosageTiming!.localizedName(l10n),
                                 ),
                               ],
                               const SizedBox(height: AppSpacing.sm),
