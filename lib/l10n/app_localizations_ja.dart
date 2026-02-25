@@ -1129,9 +1129,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get howOften => 'どのくらいの頻度で？';
 
   @override
-  String get howManyTimesPerDay => '1日に何回？';
-
-  @override
   String get whatTimes => '何時に？';
 
   @override
@@ -1148,9 +1145,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get daysUnit => '日';
-
-  @override
-  String get addAnotherTimeLabel => '時間を追加';
 
   @override
   String get dailyDesc => '毎日同じ時間に服用';

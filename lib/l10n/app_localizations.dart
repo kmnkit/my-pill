@@ -2246,12 +2246,6 @@ abstract class AppLocalizations {
   /// **'How often?'**
   String get howOften;
 
-  /// No description provided for @howManyTimesPerDay.
-  ///
-  /// In en, this message translates to:
-  /// **'How many times per day?'**
-  String get howManyTimesPerDay;
-
   /// No description provided for @whatTimes.
   ///
   /// In en, this message translates to:
@@ -2287,12 +2281,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'days'**
   String get daysUnit;
-
-  /// No description provided for @addAnotherTimeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Add another time'**
-  String get addAnotherTimeLabel;
 
   /// No description provided for @dailyDesc.
   ///
