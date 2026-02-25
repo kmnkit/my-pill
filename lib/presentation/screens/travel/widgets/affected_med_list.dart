@@ -57,7 +57,7 @@ class AffectedMedList extends ConsumerWidget {
 
             for (final med in medications) {
               final medSchedules = schedules
-                  .where((s) => s.medicationId == med.id && s.isActive && s.times.isNotEmpty)
+                  .where((s) => s.medicationId == med.id && s.isActive && s.dosageSlots.isNotEmpty)
                   .toList();
 
               for (final schedule in medSchedules) {
