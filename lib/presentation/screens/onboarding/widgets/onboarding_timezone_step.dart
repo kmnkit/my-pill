@@ -4,6 +4,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/timezone_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -170,7 +171,7 @@ class _OnboardingTimezoneStepState
               Text(
                 l10n.onboardingTimezoneSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -185,7 +186,7 @@ class _OnboardingTimezoneStepState
                       Text(
                         l10n.onboardingTimezoneDetected,
                         style: textTheme.labelLarge?.copyWith(
-                          color: AppColors.textMuted,
+                          color: context.appColors.textMuted,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),
@@ -346,7 +347,7 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
                     child: Text(
                       l10n.onboardingTimezoneNoResults,
                       style: textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                     ),
                   )
@@ -371,7 +372,7 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
                         subtitle: Text(
                           '$region • $formattedTz',
                           style: textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
+                            color: context.appColors.textMuted,
                           ),
                         ),
                         trailing: isSelected

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
@@ -50,16 +51,16 @@ class MpReminderDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(l10n.medication, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.textMuted)),
+            Text(l10n.medication, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: context.appColors.textMuted)),
             const SizedBox(height: AppSpacing.sm),
             Text(time, style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: AppColors.primary)),
             const SizedBox(height: AppSpacing.lg),
             Text(medicationName, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: AppSpacing.xs),
-            Text(dosage, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted)),
+            Text(dosage, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: context.appColors.textMuted)),
             if (stockRemaining != null) ...[
               const SizedBox(height: AppSpacing.xs),
-              Text(stockRemaining!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted)),
+              Text(stockRemaining!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
             ],
             const SizedBox(height: AppSpacing.xxl),
             MpButton(

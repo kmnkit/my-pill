@@ -6,6 +6,7 @@ import 'package:my_pill/data/services/ad_service.dart';
 import 'package:my_pill/presentation/screens/home/widgets/greeting_header.dart';
 import 'package:my_pill/presentation/screens/home/widgets/low_stock_banner.dart';
 import 'package:my_pill/presentation/screens/home/widgets/medication_timeline.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -43,7 +44,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(

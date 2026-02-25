@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
@@ -156,14 +157,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         style: textTheme.labelLarge?.copyWith(
                           color: currentLanguage == 'en'
                               ? AppColors.primary
-                              : AppColors.textMuted,
+                              : context.appColors.textMuted,
                         ),
                       ),
                     ),
                     Text(
                       ' | ',
                       style: textTheme.labelLarge
-                          ?.copyWith(color: AppColors.textMuted),
+                          ?.copyWith(color: context.appColors.textMuted),
                     ),
                     TextButton(
                       onPressed: () => _setLanguage('ja'),
@@ -172,7 +173,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         style: textTheme.labelLarge?.copyWith(
                           color: currentLanguage == 'ja'
                               ? AppColors.primary
-                              : AppColors.textMuted,
+                              : context.appColors.textMuted,
                         ),
                       ),
                     ),
@@ -267,7 +268,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: Text(
                           l10n?.or ?? 'or',
                           style: textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
+                            color: context.appColors.textMuted,
                           ),
                         ),
                       ),
@@ -289,7 +290,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     l10n?.localDataOnlyNotice ??
                         'Without an account, your data is stored only on this device.',
                     style: textTheme.bodySmall?.copyWith(
-                      color: AppColors.textMuted,
+                      color: context.appColors.textMuted,
                       fontSize: 11,
                     ),
                     textAlign: TextAlign.center,
@@ -344,7 +345,7 @@ class _RoleCard extends StatelessWidget {
             Icon(
               icon,
               size: 32,
-              color: isSelected ? AppColors.primary : AppColors.textMuted,
+              color: isSelected ? AppColors.primary : context.appColors.textMuted,
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
@@ -359,7 +360,7 @@ class _RoleCard extends StatelessWidget {
             Text(
               description,
               style: textTheme.bodySmall?.copyWith(
-                color: AppColors.textMuted,
+                color: context.appColors.textMuted,
                 fontSize: 11,
               ),
               textAlign: TextAlign.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
@@ -30,7 +31,7 @@ class MedicationBreakdown extends StatelessWidget {
                 child: Text(
                   l10n.noMedicationData,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textMuted,
+                    color: context.appColors.textMuted,
                   ),
                 ),
               ),
@@ -75,7 +76,7 @@ class _MedicationRow extends StatelessWidget {
           hasData ? '$percentage%' : l10n.noData,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: !hasData
-                ? AppColors.textMuted
+                ? context.appColors.textMuted
                 : percentage >= 80
                     ? AppColors.success
                     : percentage >= 60

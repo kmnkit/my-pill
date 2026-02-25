@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/models/subscription_status.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
@@ -56,7 +57,7 @@ class PremiumBanner extends ConsumerWidget {
                     Text(
                       l10n.upgradeMessage,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
+                            color: context.appColors.textMuted,
                           ),
                     ),
                   ],
@@ -111,7 +112,7 @@ class PremiumBanner extends ConsumerWidget {
                           '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
                         ),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textMuted,
+                              color: context.appColors.textMuted,
                             ),
                       ),
                     ] else ...[
@@ -119,7 +120,7 @@ class PremiumBanner extends ConsumerWidget {
                       Text(
                         l10n.currentPlan,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textMuted,
+                              color: context.appColors.textMuted,
                             ),
                       ),
                     ],

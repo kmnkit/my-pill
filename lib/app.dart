@@ -7,7 +7,6 @@ import 'package:my_pill/data/services/notification_service.dart';
 import 'package:my_pill/data/services/reminder_service.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/ad_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 
 class MyPillApp extends ConsumerStatefulWidget {

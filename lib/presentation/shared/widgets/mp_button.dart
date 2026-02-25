@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/theme/glass_decoration.dart';
 
 enum MpButtonVariant { primary, secondary, text, destructive }
@@ -117,9 +118,9 @@ class MpButton extends StatelessWidget {
               label: Text(
                 label,
                 style:
-                    textTheme.labelLarge?.copyWith(color: AppColors.textMuted),
+                    textTheme.labelLarge?.copyWith(color: context.appColors.textMuted),
               ),
-              style: TextButton.styleFrom(foregroundColor: AppColors.textMuted),
+              style: TextButton.styleFrom(foregroundColor: context.appColors.textMuted),
             ),
           ),
         );

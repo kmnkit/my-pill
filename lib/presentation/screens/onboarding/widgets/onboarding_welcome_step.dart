@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
@@ -61,7 +62,7 @@ class OnboardingWelcomeStep extends ConsumerWidget {
               Text(
                 l10n.onboardingWelcomeSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -122,7 +123,7 @@ class _LanguageSelector extends StatelessWidget {
         ),
         Text(
           ' | ',
-          style: textTheme.labelLarge?.copyWith(color: AppColors.textMuted),
+          style: textTheme.labelLarge?.copyWith(color: context.appColors.textMuted),
         ),
         _LanguageButton(
           label: 'JP',
@@ -154,7 +155,7 @@ class _LanguageButton extends StatelessWidget {
       child: Text(
         label,
         style: textTheme.labelLarge?.copyWith(
-          color: isSelected ? AppColors.primary : AppColors.textMuted,
+          color: isSelected ? AppColors.primary : context.appColors.textMuted,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),

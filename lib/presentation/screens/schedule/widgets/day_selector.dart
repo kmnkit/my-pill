@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
 class DaySelector extends StatefulWidget {
@@ -80,7 +81,7 @@ class _DaySelectorState extends State<DaySelector> {
                 child: Text(
                   shortDays[index],
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: isSelected ? AppColors.textOnPrimary : AppColors.textMuted,
+                    color: isSelected ? AppColors.textOnPrimary : context.appColors.textMuted,
                   ),
                 ),
               ),

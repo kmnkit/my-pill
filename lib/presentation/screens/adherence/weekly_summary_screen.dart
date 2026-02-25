@@ -7,6 +7,7 @@ import 'package:my_pill/presentation/screens/adherence/widgets/adherence_chart.d
 import 'package:my_pill/presentation/screens/adherence/widgets/medication_breakdown.dart';
 import 'package:my_pill/presentation/screens/adherence/widgets/overall_score.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class WeeklySummaryScreen extends ConsumerStatefulWidget {
   const WeeklySummaryScreen({super.key});
@@ -22,7 +23,7 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
     final weeklyAdherenceAsync = ref.watch(weeklyAdherenceProvider);
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(
         title: l10n.weeklySummary,
         showBack: true,

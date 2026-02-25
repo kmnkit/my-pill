@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
@@ -55,14 +56,14 @@ class PillShapeSelector extends StatelessWidget {
                 children: [
                   Icon(
                     shape.icon,
-                    color: isSelected ? AppColors.primary : AppColors.textMuted,
+                    color: isSelected ? AppColors.primary : context.appColors.textMuted,
                     size: AppSpacing.iconLg,
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     shape.localizedName(l10n),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: isSelected ? AppColors.primary : AppColors.textMuted,
+                          color: isSelected ? AppColors.primary : context.appColors.textMuted,
                         ),
                     textAlign: TextAlign.center,
                   ),

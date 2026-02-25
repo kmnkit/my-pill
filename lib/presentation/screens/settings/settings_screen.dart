@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_constants.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
@@ -27,8 +28,10 @@ import 'package:my_pill/presentation/screens/settings/widgets/notification_setti
 import 'package:my_pill/presentation/screens/settings/widgets/premium_banner.dart';
 import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:my_pill/presentation/router/route_names.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -38,7 +41,7 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final userSettingsAsync = ref.watch(userSettingsProvider);
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(title: l10n.settingsTitle),
       body: userSettingsAsync.when(
         data: (userSettings) => SingleChildScrollView(
@@ -58,6 +61,21 @@ class SettingsScreen extends ConsumerWidget {
               const NotificationSettings(),
               const SizedBox(height: AppSpacing.xl),
               const DisplaySettings(),
+              const SizedBox(height: AppSpacing.xl),
+              MpSectionHeader(title: l10n.features),
+              _buildListTile(
+                context,
+                l10n.familyCaregivers,
+                Icons.family_restroom,
+                () => context.goNamed(RouteNames.familyCaregivers),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _buildListTile(
+                context,
+                l10n.travelMode,
+                Icons.flight_takeoff,
+                () => context.goNamed(RouteNames.travelMode),
+              ),
               const SizedBox(height: AppSpacing.xl),
               MpSectionHeader(title: l10n.safetyPrivacy),
               _buildListTile(
@@ -97,7 +115,7 @@ class SettingsScreen extends ConsumerWidget {
                 trailing: Text(
                   l10n.version('1.0.0'),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                 ),
               ),
@@ -290,7 +308,7 @@ class SettingsScreen extends ConsumerWidget {
     Color? textColor,
   }) {
     return ListTile(
-      leading: Icon(icon, size: AppSpacing.iconMd, color: textColor ?? AppColors.textPrimary),
+      leading: Icon(icon, size: AppSpacing.iconMd, color: textColor ?? context.appColors.textPrimary),
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -299,7 +317,7 @@ class SettingsScreen extends ConsumerWidget {
       ),
       trailing: trailing ??
           (onTap != null
-              ? Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted)
+              ? Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted)
               : null),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,

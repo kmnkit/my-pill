@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
 
@@ -100,7 +101,7 @@ class _OnboardingNameStepState extends State<OnboardingNameStep> {
               Text(
                 l10n.onboardingNameSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -124,7 +125,7 @@ class _OnboardingNameStepState extends State<OnboardingNameStep> {
             child: Text(
               l10n.onboardingNameSkip,
               style: textTheme.bodyLarge?.copyWith(
-                color: AppColors.textMuted,
+                color: context.appColors.textMuted,
               ),
             ),
           ),

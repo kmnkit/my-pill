@@ -39,18 +39,18 @@ abstract final class AppTypography {
     double s(double base) => base * scaleFactor;
 
     return TextTheme(
-      headlineLarge: GoogleFonts.lexend(fontSize: s(28), fontWeight: w(FontWeight.w700), height: 1.2),
-      headlineMedium: GoogleFonts.lexend(fontSize: s(24), fontWeight: w(FontWeight.w600), height: 1.25),
-      headlineSmall: GoogleFonts.lexend(fontSize: s(20), fontWeight: w(FontWeight.w600), height: 1.3),
-      titleLarge: GoogleFonts.lexend(fontSize: s(18), fontWeight: w(FontWeight.w500), height: 1.35),
-      titleMedium: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w500), height: 1.4),
-      titleSmall: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w500), height: 1.4),
-      bodyLarge: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w400), height: 1.5),
-      bodyMedium: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w400), height: 1.5),
-      bodySmall: GoogleFonts.lexend(fontSize: s(12), fontWeight: w(FontWeight.w400), height: 1.5),
-      labelLarge: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w600), height: 1.4),
-      labelMedium: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w500), height: 1.4),
-      labelSmall: GoogleFonts.lexend(fontSize: s(12), fontWeight: w(FontWeight.w500), height: 1.4),
+      headlineLarge: GoogleFonts.lexend(fontSize: s(28), fontWeight: w(FontWeight.w700), height: 1.2).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      headlineMedium: GoogleFonts.lexend(fontSize: s(24), fontWeight: w(FontWeight.w600), height: 1.25).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      headlineSmall: GoogleFonts.lexend(fontSize: s(20), fontWeight: w(FontWeight.w600), height: 1.3).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      titleLarge: GoogleFonts.lexend(fontSize: s(18), fontWeight: w(FontWeight.w500), height: 1.35).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      titleMedium: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w500), height: 1.4).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      titleSmall: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w500), height: 1.4).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      bodyLarge: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w400), height: 1.5).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      bodyMedium: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w400), height: 1.5).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      bodySmall: GoogleFonts.lexend(fontSize: s(12), fontWeight: w(FontWeight.w400), height: 1.5).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      labelLarge: GoogleFonts.lexend(fontSize: s(16), fontWeight: w(FontWeight.w600), height: 1.4).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      labelMedium: GoogleFonts.lexend(fontSize: s(14), fontWeight: w(FontWeight.w500), height: 1.4).copyWith(fontFamilyFallback: ['NotoSansJP']),
+      labelSmall: GoogleFonts.lexend(fontSize: s(12), fontWeight: w(FontWeight.w500), height: 1.4).copyWith(fontFamilyFallback: ['NotoSansJP']),
     );
   }
 }

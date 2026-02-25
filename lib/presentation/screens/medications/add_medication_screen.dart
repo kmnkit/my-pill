@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
@@ -13,7 +14,6 @@ import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/iap_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/inventory_editor.dart';
 import 'package:my_pill/presentation/screens/medications/widgets/photo_picker_button.dart';
@@ -24,6 +24,7 @@ import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class AddMedicationScreen extends ConsumerStatefulWidget {
   const AddMedicationScreen({super.key});
@@ -73,7 +74,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       });
     }
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(title: l10n.addMedication, showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -90,7 +91,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
-                    ?.copyWith(color: AppColors.textMuted),
+                    ?.copyWith(color: context.appColors.textMuted),
               ),
               value: _isIppoka,
               onChanged: (value) {
@@ -229,7 +230,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 l10n.criticalMedicationDesc,
                 style: Theme.of(
                   context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
               ),
               value: _isCritical,
               onChanged: (value) {

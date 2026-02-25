@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
@@ -68,7 +69,7 @@ class AccountSection extends ConsumerWidget {
                 Text(
                   l10n.signInToAccess,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                 ),
               ],
@@ -110,7 +111,7 @@ class AccountSection extends ConsumerWidget {
                           Text(
                             l10n.signInToSync,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textMuted,
+                                  color: context.appColors.textMuted,
                                 ),
                           ),
                         ],
@@ -159,7 +160,7 @@ class AccountSection extends ConsumerWidget {
                       Text(
                         l10n.emailHidden,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textMuted,
+                              color: context.appColors.textMuted,
                               fontStyle: FontStyle.italic,
                             ),
                       )
@@ -167,13 +168,13 @@ class AccountSection extends ConsumerWidget {
                       Text(
                         email,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textMuted,
+                              color: context.appColors.textMuted,
                             ),
                       ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted),
             ],
           ),
         );

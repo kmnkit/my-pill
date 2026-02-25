@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
@@ -110,7 +111,7 @@ class AffectedMedList extends ConsumerWidget {
                   child: Text(
                     l10n.noScheduledMedications,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textMuted,
+                          color: context.appColors.textMuted,
                         ),
                   ),
                 ),
@@ -160,7 +161,7 @@ class AffectedMedList extends ConsumerWidget {
                             child: Text(
                               '${timeInfo.homeTime} $homeLabel / ${timeInfo.localTime} $localLabel',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textMuted,
+                                    color: context.appColors.textMuted,
                                   ),
                             ),
                           );

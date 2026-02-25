@@ -49,7 +49,7 @@ class MpCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         border: Border.all(
           color: borderColor ??
-              (isDark ? AppColors.glassBorderDark : AppColors.glassBorder),
+              (isDark ? AppColors.glassBorderDark : AppColors.glassBorderLight),
           width: 1,
         ),
         boxShadow: [
@@ -72,7 +72,23 @@ class MpCard extends StatelessWidget {
     );
 
     if (onTap != null) {
-      return GestureDetector(onTap: onTap, child: glassCard);
+      return Semantics(
+        button: true,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: blurAmount, sigmaY: blurAmount),
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                onTap: onTap,
+                child: cardContent,
+              ),
+            ),
+          ),
+        ),
+      );
     }
     return glassCard;
   }
@@ -92,7 +108,17 @@ class MpCard extends StatelessWidget {
     );
 
     if (onTap != null) {
-      return GestureDetector(onTap: onTap, child: container);
+      return Semantics(
+        button: true,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+            onTap: onTap,
+            child: container,
+          ),
+        ),
+      );
     }
     return container;
   }

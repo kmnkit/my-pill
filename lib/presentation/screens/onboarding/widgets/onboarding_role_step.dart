@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_radio_option.dart';
 
@@ -88,7 +89,7 @@ class _OnboardingRoleStepState extends State<OnboardingRoleStep> {
               Text(
                 l10n.onboardingRoleSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
@@ -172,7 +173,7 @@ class PremiumLockedCard extends StatelessWidget {
                 Text(
                   l10n.premiumFeature,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textMuted,
+                    color: context.appColors.textMuted,
                   ),
                   textAlign: TextAlign.center,
                 ),

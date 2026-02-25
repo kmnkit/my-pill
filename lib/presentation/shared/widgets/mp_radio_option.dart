@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 
 class MpRadioOption<T> extends StatelessWidget {
   const MpRadioOption({
@@ -43,7 +44,7 @@ class MpRadioOption<T> extends StatelessWidget {
         child: Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, color: _isSelected ? AppColors.primary : AppColors.textMuted, size: AppSpacing.iconMd),
+              Icon(icon, color: _isSelected ? AppColors.primary : context.appColors.textMuted, size: AppSpacing.iconMd),
               const SizedBox(width: AppSpacing.md),
             ],
             Expanded(
@@ -54,7 +55,7 @@ class MpRadioOption<T> extends StatelessWidget {
                     color: _isSelected ? AppColors.primary : null,
                   )),
                   if (description != null)
-                    Text(description!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted)),
+                    Text(description!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
                 ],
               ),
             ),

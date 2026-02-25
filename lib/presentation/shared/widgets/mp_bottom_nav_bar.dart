@@ -8,6 +8,18 @@ import 'package:my_pill/l10n/app_localizations.dart';
 
 enum MpNavMode { patient, caregiver }
 
+class _NavItem {
+  const _NavItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+}
+
 class MpBottomNavBar extends StatelessWidget {
   const MpBottomNavBar({
     super.key,
@@ -20,48 +32,48 @@ class MpBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onTap;
   final MpNavMode mode;
 
-  List<BottomNavigationBarItem> _patientItems(AppLocalizations l10n) => [
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.home_outlined),
-          activeIcon: const Icon(Icons.home),
+  List<_NavItem> _patientItems(AppLocalizations l10n) => [
+        _NavItem(
+          icon: Icons.home_outlined,
+          activeIcon: Icons.home,
           label: l10n.home,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.calendar_today_outlined),
-          activeIcon: const Icon(Icons.calendar_today),
+        _NavItem(
+          icon: Icons.calendar_today_outlined,
+          activeIcon: Icons.calendar_today,
           label: l10n.adherence,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.medication_outlined),
-          activeIcon: const Icon(Icons.medication),
+        _NavItem(
+          icon: Icons.medication_outlined,
+          activeIcon: Icons.medication,
           label: l10n.medications,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.settings_outlined),
-          activeIcon: const Icon(Icons.settings),
+        _NavItem(
+          icon: Icons.settings_outlined,
+          activeIcon: Icons.settings,
           label: l10n.settings,
         ),
       ];
 
-  List<BottomNavigationBarItem> _caregiverItems(AppLocalizations l10n) => [
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.people_outlined),
-          activeIcon: const Icon(Icons.people),
+  List<_NavItem> _caregiverItems(AppLocalizations l10n) => [
+        _NavItem(
+          icon: Icons.people_outlined,
+          activeIcon: Icons.people,
           label: l10n.patients,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.notifications_outlined),
-          activeIcon: const Icon(Icons.notifications),
+        _NavItem(
+          icon: Icons.notifications_outlined,
+          activeIcon: Icons.notifications,
           label: l10n.notifications,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.warning_amber_outlined),
-          activeIcon: const Icon(Icons.warning_amber),
+        _NavItem(
+          icon: Icons.warning_amber_outlined,
+          activeIcon: Icons.warning_amber,
           label: l10n.alerts,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.settings_outlined),
-          activeIcon: const Icon(Icons.settings),
+        _NavItem(
+          icon: Icons.settings_outlined,
+          activeIcon: Icons.settings,
           label: l10n.settings,
         ),
       ];
@@ -72,7 +84,6 @@ class MpBottomNavBar extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isHighContrast = MediaQuery.of(context).highContrast;
 
-    // Use solid style for high contrast mode
     if (isHighContrast) {
       return _buildSolidNavBar(context, l10n, isDark);
     }
@@ -80,9 +91,66 @@ class MpBottomNavBar extends StatelessWidget {
     return _buildGlassNavBar(context, l10n, isDark);
   }
 
+  Widget _buildNavItems({
+    required List<_NavItem> items,
+    required Color selectedColor,
+    required Color unselectedColor,
+  }) {
+    return SizedBox(
+      height: 56,
+      child: Row(
+        children: List.generate(items.length, (index) {
+          final item = items[index];
+          final isSelected = index == currentIndex;
+          final color = isSelected ? selectedColor : unselectedColor;
+
+          return Expanded(
+            child: Semantics(
+              selected: isSelected,
+              label: item.label,
+              button: true,
+              excludeSemantics: true,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onTap(index),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      isSelected ? item.activeIcon : item.icon,
+                      size: 24,
+                      color: color,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.label,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: color,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   Widget _buildGlassNavBar(
-      BuildContext context, AppLocalizations l10n, bool isDark) {
+    BuildContext context,
+    AppLocalizations l10n,
+    bool isDark,
+  ) {
     final blurAmount = GlassDecoration.getBlurAmount(context, strong: true);
+    final items =
+        mode == MpNavMode.patient ? _patientItems(l10n) : _caregiverItems(l10n);
 
     return Container(
       margin: const EdgeInsets.fromLTRB(
@@ -114,27 +182,13 @@ class MpBottomNavBar extends StatelessWidget {
                 ),
               ],
             ),
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                splashFactory: NoSplash.splashFactory,
-                highlightColor: Colors.transparent,
-              ),
-              child: BottomNavigationBar(
-                currentIndex: currentIndex,
-                onTap: onTap,
-                items: mode == MpNavMode.patient
-                    ? _patientItems(l10n)
-                    : _caregiverItems(l10n),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                selectedItemColor: AppColors.primary,
-                unselectedItemColor:
-                    isDark ? AppColors.textMutedDark : AppColors.textMuted,
-                type: BottomNavigationBarType.fixed,
-                showUnselectedLabels: true,
-                selectedFontSize: 12.0,
-                unselectedFontSize: 12.0,
-              ),
+            child: _buildNavItems(
+              items: items,
+              selectedColor:
+                  isDark ? AppColors.primaryBright : AppColors.primary,
+              unselectedColor: isDark
+                  ? AppColors.navUnselectedDark
+                  : AppColors.navUnselectedLight,
             ),
           ),
         ),
@@ -143,20 +197,22 @@ class MpBottomNavBar extends StatelessWidget {
   }
 
   Widget _buildSolidNavBar(
-      BuildContext context, AppLocalizations l10n, bool isDark) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items:
-          mode == MpNavMode.patient ? _patientItems(l10n) : _caregiverItems(l10n),
-      elevation: 0,
-      backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
-      selectedItemColor: AppColors.primary,
-      unselectedItemColor: AppColors.textMuted,
-      type: BottomNavigationBarType.fixed,
-      showUnselectedLabels: true,
-      selectedFontSize: 12.0,
-      unselectedFontSize: 12.0,
+    BuildContext context,
+    AppLocalizations l10n,
+    bool isDark,
+  ) {
+    final items =
+        mode == MpNavMode.patient ? _patientItems(l10n) : _caregiverItems(l10n);
+
+    return Container(
+      color: isDark ? AppColors.surfaceDark : Colors.white,
+      child: _buildNavItems(
+        items: items,
+        selectedColor:
+            isDark ? AppColors.hcPrimaryDark : AppColors.hcPrimary,
+        unselectedColor:
+            isDark ? AppColors.hcTextMutedDark : AppColors.hcTextMuted,
+      ),
     );
   }
 }

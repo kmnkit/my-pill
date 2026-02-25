@@ -271,7 +271,7 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -400));
+          find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pumpAndSettle();
 
       final tile = find.text('Backup & Sync');
@@ -544,7 +544,7 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -400));
+          find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Backup & Sync'));

@@ -6,6 +6,7 @@ import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_error_view.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverDashboardScreen extends ConsumerWidget {
   const CaregiverDashboardScreen({super.key});
@@ -15,7 +16,7 @@ class CaregiverDashboardScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final patientsAsync = ref.watch(caregiverPatientsProvider);
 
-    return Scaffold(
+    return GradientScaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),

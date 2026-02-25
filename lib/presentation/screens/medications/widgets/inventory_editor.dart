@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 
 class InventoryEditor extends StatelessWidget {
   const InventoryEditor({
@@ -27,7 +28,7 @@ class InventoryEditor extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.remove_circle_outline),
-            color: count > 0 ? AppColors.primary : AppColors.textMuted,
+            color: count > 0 ? AppColors.primary : context.appColors.textMuted,
             iconSize: AppSpacing.iconLg,
             onPressed: count > 0 ? () => onCountChanged(count - 1) : null,
           ),
