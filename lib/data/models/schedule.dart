@@ -11,6 +11,7 @@ part 'schedule.g.dart';
 abstract class Schedule with _$Schedule {
   const Schedule._();
 
+  @JsonSerializable(explicitToJson: true)
   const factory Schedule({
     required String id,
     required String medicationId,

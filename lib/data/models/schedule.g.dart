@@ -31,7 +31,7 @@ Map<String, dynamic> _$ScheduleToJson(_Schedule instance) => <String, dynamic>{
   'id': instance.id,
   'medicationId': instance.medicationId,
   'type': _$ScheduleTypeEnumMap[instance.type]!,
-  'dosageSlots': instance.dosageSlots,
+  'dosageSlots': instance.dosageSlots.map((e) => e.toJson()).toList(),
   'specificDays': instance.specificDays,
   'intervalHours': instance.intervalHours,
   'timezoneMode': _$TimezoneModeEnumMap[instance.timezoneMode]!,

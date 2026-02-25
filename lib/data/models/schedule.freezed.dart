@@ -213,8 +213,8 @@ return $default(_that.id,_that.medicationId,_that.type,_that.dosageSlots,_that.s
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Schedule extends Schedule {
   const _Schedule({required this.id, required this.medicationId, required this.type, final  List<DosageTimeSlot> dosageSlots = const [], final  List<int> specificDays = const [], this.intervalHours, this.timezoneMode = TimezoneMode.fixedInterval, this.isActive = true}): _dosageSlots = dosageSlots,_specificDays = specificDays,super._();
   factory _Schedule.fromJson(Map<String, dynamic> json) => _$ScheduleFromJson(json);
