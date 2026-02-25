@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
 class InventoryUpdateDialog extends StatefulWidget {
@@ -111,13 +112,11 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return AlertDialog(
       title: Text(
         l10n.updateInventory,
         style: textTheme.titleLarge?.copyWith(
-          color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+          color: context.appColors.textPrimary,
         ),
       ),
       content: SingleChildScrollView(
@@ -151,7 +150,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
             Text(
               l10n.quickActions,
               style: textTheme.labelMedium?.copyWith(
-                color: AppColors.textMuted,
+                color: context.appColors.textMuted,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -198,7 +197,7 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             l10n.cancel,
-            style: TextStyle(color: AppColors.textMuted),
+            style: TextStyle(color: context.appColors.textMuted),
           ),
         ),
         ElevatedButton(

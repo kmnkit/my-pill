@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 
 class AdherenceBadge extends StatelessWidget {
@@ -34,7 +35,7 @@ class AdherenceBadge extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.adherenceRate,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textMuted,
+              color: context.appColors.textMuted,
             ),
           ),
         ],

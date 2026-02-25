@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
@@ -25,14 +26,14 @@ class PrivacyNotice extends StatelessWidget {
                 Text(
                   l10n.privacyNotice1,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   l10n.privacyNotice2,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                 ),
               ],

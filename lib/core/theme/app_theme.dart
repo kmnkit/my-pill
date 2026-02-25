@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/constants/app_typography.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 
 /// Configuration for building a theme variant.
 class _ThemeConfig {
@@ -61,7 +62,7 @@ abstract final class AppTheme {
     textMuted: AppColors.textMuted,
     border: AppColors.borderLight,
     navSelected: AppColors.primary,
-    navUnselected: AppColors.textMuted,
+    navUnselected: AppColors.navUnselectedLight,
     textButtonForeground: AppColors.primary,
   );
 
@@ -79,7 +80,7 @@ abstract final class AppTheme {
     textMuted: AppColors.textMutedDark,
     border: AppColors.borderDark,
     navSelected: AppColors.primaryBright,
-    navUnselected: AppColors.textMutedDark,
+    navUnselected: AppColors.navUnselectedDark,
     textButtonForeground: AppColors.primaryBright,
   );
 
@@ -324,6 +325,12 @@ abstract final class AppTheme {
         ),
         side: BorderSide.none,
       ),
+      extensions: [
+        AppColorsExtension(
+          textMuted: config.textMuted,
+          textPrimary: config.textPrimary,
+        ),
+      ],
     );
   }
 }

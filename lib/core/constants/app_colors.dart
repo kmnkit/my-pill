@@ -40,6 +40,10 @@ abstract final class AppColors {
   static const Color pillOrange = Color(0xFFF59E0B);
   static const Color pillPurple = Color(0xFF8B5CF6);
 
+  // Nav Bar Unselected (neutral blue-gray, hue 218-220 — distinct from teal hue 174-176)
+  static const Color navUnselectedLight = Color(0xFF6B7280); // H=220 S=9% L=46%
+  static const Color navUnselectedDark = Color(0xFF9CA3AF);  // H=218 S=11% L=65%
+
   // Borders
   static const Color borderLight = Color(0xFFE2E8F0);
   static const Color borderDark = Color(0xFF2D4A47);
@@ -66,6 +70,7 @@ abstract final class AppColors {
   static const Color glassWhite = Color(0x26FFFFFF); // 15% white
   static const Color glassWhiteStrong = Color(0x4DFFFFFF); // 30% white
   static const Color glassBorder = Color(0x33FFFFFF); // 20% white border
+  static const Color glassBorderLight = Color(0x1A000000); // 10% black for light mode
 
   // Glassmorphism - Dark
   static const Color glassDark = Color(0x26000000); // 15% black

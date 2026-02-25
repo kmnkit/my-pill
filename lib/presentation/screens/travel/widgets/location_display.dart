@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/timezone_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
@@ -69,13 +70,13 @@ class LocationDisplay extends ConsumerWidget {
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
-              Icon(Icons.home, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              Icon(Icons.home, size: AppSpacing.iconMd, color: context.appColors.textMuted),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   '${l10n.homeLocation}: $homeCity ($homeTz)',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                 ),
               ),
@@ -85,7 +86,7 @@ class LocationDisplay extends ConsumerWidget {
           Text(
             l10n.timeDifference(timeDiff),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
           ),
         ],

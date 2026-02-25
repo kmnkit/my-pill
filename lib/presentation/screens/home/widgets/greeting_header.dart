@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
 import 'package:my_pill/data/providers/reminder_provider.dart';
 import 'package:my_pill/data/providers/settings_provider.dart';
@@ -57,7 +57,7 @@ class GreetingHeader extends ConsumerWidget {
         const SizedBox(height: AppSpacing.xs),
         Text(
           formattedDate,
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+          style: textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
         ),
         const SizedBox(height: AppSpacing.xs),
         // Medication count
@@ -69,7 +69,7 @@ class GreetingHeader extends ConsumerWidget {
                 .length;
             return Text(
               l10n.medicationsToday(total, taken),
-              style: textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+              style: textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
             );
           },
           loading: () => const SizedBox.shrink(),

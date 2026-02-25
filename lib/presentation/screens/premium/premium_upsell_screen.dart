@@ -6,8 +6,10 @@ import 'package:my_pill/data/services/subscription_service.dart';
 import 'package:my_pill/data/services/ad_service.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class PremiumUpsellScreen extends ConsumerStatefulWidget {
   const PremiumUpsellScreen({super.key});
@@ -27,7 +29,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     final isPremium = ref.watch(isPremiumProvider);
     final status = ref.watch(subscriptionStatusProvider);
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: AppBar(
         title: Text(l10n.premium),
         leading: IconButton(
@@ -103,7 +105,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
           Text(
             l10n.upgradeMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
             textAlign: TextAlign.center,
           ),
@@ -193,7 +195,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                 Text(
                   feature.description,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -342,7 +344,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       child: Text(
         l10n.subscriptionTerms,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textMuted,
+              color: context.appColors.textMuted,
             ),
         textAlign: TextAlign.center,
       ),
@@ -357,7 +359,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         child: Text(
           l10n.restorePurchases,
           style: TextStyle(
-            color: _isLoading ? AppColors.textMuted : AppColors.primary,
+            color: _isLoading ? context.appColors.textMuted : AppColors.primary,
           ),
         ),
       ),
@@ -396,7 +398,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                   '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
                 ),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textMuted,
+                      color: context.appColors.textMuted,
                     ),
               ),
             ],

@@ -40,6 +40,8 @@ dependencies:
   google_sign_in: ^7.2.0
   # IAP
   in_app_purchase: ^3.2.3
+  # In-App Review
+  in_app_review: ^2.0.10
   # Home Screen Widgets
   home_widget: ^0.9.0
   # Utilities
@@ -85,3 +87,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/fonts/
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Regular.ttf

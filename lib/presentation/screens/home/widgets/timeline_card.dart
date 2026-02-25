@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
@@ -43,76 +45,82 @@ class TimelineCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
 
-    return MpCard(
-      onTap: () => context.push('/medications/$medicationId'),
-      child: Row(
-        children: [
-          // Pill icon
-          MpPillIcon(
-            shape: pillShape,
-            color: pillColor,
-            size: AppSpacing.iconLg,
-          ),
-          const SizedBox(width: AppSpacing.md),
+    return Semantics(
+      label: '$medicationName, $time, $badgeLabel',
+      child: MpCard(
+        onTap: () => context.push('/medications/$medicationId'),
+        child: Row(
+          children: [
+            // Pill icon
+            MpPillIcon(
+              shape: pillShape,
+              color: pillColor,
+              size: AppSpacing.iconLg,
+            ),
+            const SizedBox(width: AppSpacing.md),
 
-          // Medication info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            // Medication info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    medicationName,
+                    style: textTheme.titleSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    dosage,
+                    style: textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            // Time and badge
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  medicationName,
-                  style: textTheme.titleSmall,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  dosageTimingLabel != null ? '$time $dosageTimingLabel' : time,
+                  style: textTheme.bodySmall,
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(
-                  dosage,
-                  style: textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                MpBadge(
+                  label: badgeLabel,
+                  variant: badgeVariant,
                 ),
               ],
             ),
-          ),
 
-          // Time and badge
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                dosageTimingLabel != null ? '$time $dosageTimingLabel' : time,
-                style: textTheme.bodySmall,
+            // Inline mark-as-taken button for pending reminders
+            if (reminderStatus == ReminderStatus.pending && onMarkTaken != null) ...[
+              const SizedBox(width: AppSpacing.sm),
+              IconButton(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  onMarkTaken?.call();
+                },
+                icon: const Icon(Icons.check_circle_outline),
+                color: AppColors.primary,
+                tooltip: l10n.markAsTaken,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
               ),
-              const SizedBox(height: AppSpacing.xs),
-              MpBadge(
-                label: badgeLabel,
-                variant: badgeVariant,
+            ] else if (reminderStatus == ReminderStatus.taken) ...[
+              const SizedBox(width: AppSpacing.sm),
+              Icon(
+                Icons.check_circle,
+                color: AppColors.success,
+                size: 24,
               ),
             ],
-          ),
-
-          // Inline mark-as-taken button for pending reminders
-          if (reminderStatus == ReminderStatus.pending && onMarkTaken != null) ...[
-            const SizedBox(width: AppSpacing.sm),
-            IconButton(
-              onPressed: onMarkTaken,
-              icon: const Icon(Icons.check_circle_outline),
-              color: AppColors.primary,
-              tooltip: l10n.markAsTaken,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-            ),
-          ] else if (reminderStatus == ReminderStatus.taken) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Icon(
-              Icons.check_circle,
-              color: AppColors.success,
-              size: 24,
-            ),
           ],
-        ],
+        ),
       ),
     );
   }

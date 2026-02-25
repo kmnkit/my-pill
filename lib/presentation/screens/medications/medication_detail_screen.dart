@@ -6,8 +6,8 @@ import 'package:my_pill/core/utils/photo_encryption.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
@@ -26,6 +26,7 @@ import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_progress_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class MedicationDetailScreen extends ConsumerWidget {
   final String medicationId;
@@ -61,7 +62,7 @@ class MedicationDetailScreen extends ConsumerWidget {
     final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
     final historyAsync = ref.watch(medicationHistoryProvider(medicationId));
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(
         title: l10n.appTitle,
         showBack: true,
@@ -122,7 +123,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       Text(
                         '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textMuted,
+                          color: context.appColors.textMuted,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -267,7 +268,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(AppSpacing.xl),
                           child: Text(
                             l10n.noHistoryYet,
-                            style: const TextStyle(color: AppColors.textMuted),
+                            style: TextStyle(color: context.appColors.textMuted),
                           ),
                         ),
                       );
@@ -293,7 +294,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       padding: const EdgeInsets.all(AppSpacing.xl),
                       child: Text(
                         l10n.errorLoadingHistory,
-                        style: const TextStyle(color: AppColors.textMuted),
+                        style: TextStyle(color: context.appColors.textMuted),
                       ),
                     ),
                   ),
@@ -352,7 +353,7 @@ class _InfoRow extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textMuted,
+            color: context.appColors.textMuted,
           ),
         ),
         Text(
@@ -421,11 +422,11 @@ class _EncryptedPhotoWidgetState
             );
           }
           if (snapshot.hasError) {
-            return const SizedBox(
+            return SizedBox(
               width: 120,
               height: 120,
               child: Center(
-                child: Icon(Icons.broken_image, color: AppColors.textMuted),
+                child: Icon(Icons.broken_image, color: context.appColors.textMuted),
               ),
             );
           }

@@ -10,6 +10,7 @@ import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_progr
 import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_role_step.dart';
 import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_timezone_step.dart';
 import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_welcome_step.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -77,8 +78,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+    return GradientScaffold(
       body: SafeArea(
         child: Column(
           children: [

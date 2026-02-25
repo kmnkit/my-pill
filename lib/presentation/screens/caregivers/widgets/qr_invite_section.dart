@@ -7,6 +7,7 @@ import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/data/providers/caregiver_provider.dart';
 import 'package:my_pill/data/providers/subscription_provider.dart';
@@ -166,14 +167,14 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         Icon(
           Icons.qr_code_2,
           size: 80,
-          color: AppColors.textMuted,
+          color: context.appColors.textMuted,
         ),
         const SizedBox(height: AppSpacing.lg),
         Text(
           l10n.generateInviteLinkDesc,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textMuted,
+                color: context.appColors.textMuted,
               ),
         ),
         const SizedBox(height: AppSpacing.xl),
@@ -213,7 +214,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         Text(
           'Code: $_generatedCode',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textMuted,
+                color: context.appColors.textMuted,
                 fontFamily: 'monospace',
               ),
         ),
@@ -373,7 +374,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
           ),
         ],

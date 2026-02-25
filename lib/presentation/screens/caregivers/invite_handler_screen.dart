@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/providers/invite_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
@@ -107,7 +108,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                       style: textTheme.headlineSmall?.copyWith(
                         color: isDark
                             ? AppColors.textPrimaryDark
-                            : AppColors.textPrimary,
+                            : context.appColors.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
@@ -116,7 +117,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     Text(
                       l10n.inviteCodeLabel(widget.inviteCode),
                       style: textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                       textAlign: TextAlign.center,
                     ),

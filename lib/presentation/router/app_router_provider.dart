@@ -343,6 +343,7 @@ class _PatientShellScreenState extends State<_PatientShellScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      backgroundColor: Colors.transparent,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
@@ -373,6 +374,7 @@ class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      backgroundColor: Colors.transparent,
       body: widget.navigationShell,
       bottomNavigationBar: MpBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
 
@@ -55,7 +55,7 @@ class MpConfirmDialog extends StatelessWidget {
           children: [
             Text(title, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: AppSpacing.sm),
-            Text(message, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted), textAlign: TextAlign.center),
+            Text(message, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted), textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.xxl),
             MpButton(
               label: resolvedConfirmLabel,

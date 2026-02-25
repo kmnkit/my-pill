@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/utils/error_handler.dart';
 import 'package:my_pill/core/utils/photo_encryption.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
@@ -176,9 +177,9 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.camera_alt_outlined,
-                      color: AppColors.textMuted,
+                      color: context.appColors.textMuted,
                       size: AppSpacing.iconXl,
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -186,7 +187,7 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
                       AppLocalizations.of(context)!.takePhoto,
                       style:
                           Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textMuted,
+                                color: context.appColors.textMuted,
                               ),
                     ),
                   ],
@@ -205,8 +206,8 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
             return Image.memory(snapshot.data!, fit: BoxFit.cover);
           }
           if (snapshot.hasError) {
-            return const Center(
-              child: Icon(Icons.broken_image, color: AppColors.textMuted),
+            return Center(
+              child: Icon(Icons.broken_image, color: context.appColors.textMuted),
             );
           }
           return const Center(

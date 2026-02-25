@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/providers/adherence_provider.dart';
 import 'package:my_pill/data/providers/auth_provider.dart';
 import 'package:my_pill/data/providers/caregiver_provider.dart';
@@ -17,6 +18,7 @@ import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverSettingsScreen extends ConsumerStatefulWidget {
   const CaregiverSettingsScreen({super.key});
@@ -40,7 +42,7 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(title: l10n.settingsTitle),
       body: SafeArea(
         child: ListView(
@@ -132,7 +134,7 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
                       color: AppColors.error,
                     ),
               ),
-              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 final confirmed = await MpConfirmDialog.show(
@@ -185,7 +187,7 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
                       color: AppColors.error,
                     ),
               ),
-              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 // First confirmation

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
@@ -47,16 +47,16 @@ class MpMedicationCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
-                    Text(dosage, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted)),
+                    Text(dosage, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
                     if (time != null) ...[
                       const SizedBox(width: AppSpacing.sm),
-                      Text(time!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted)),
+                      Text(time!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
                     ],
                   ],
                 ),
                 if (stockText != null) ...[
                   const SizedBox(height: AppSpacing.xs),
-                  Text(stockText!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted)),
+                  Text(stockText!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
                 ],
               ],
             ),
@@ -65,7 +65,7 @@ class MpMedicationCard extends StatelessWidget {
             MpBadge(label: badgeLabel!, variant: badgeVariant!),
             const SizedBox(width: AppSpacing.sm),
           ],
-          const Icon(Icons.chevron_right, color: AppColors.textMuted),
+          Icon(Icons.chevron_right, color: context.appColors.textMuted),
         ],
       ),
     );

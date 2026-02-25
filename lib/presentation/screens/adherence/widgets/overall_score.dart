@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
 import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
 
@@ -40,7 +41,7 @@ class OverallScore extends StatelessWidget {
           Text(
             displayText,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              color: percentage != null ? AppColors.primary : AppColors.textMuted,
+              color: percentage != null ? AppColors.primary : context.appColors.textMuted,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -53,7 +54,7 @@ class OverallScore extends StatelessWidget {
           Text(
             _message(l10n),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textMuted,
+              color: context.appColors.textMuted,
             ),
             textAlign: TextAlign.center,
           ),

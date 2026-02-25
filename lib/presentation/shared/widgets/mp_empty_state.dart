@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:my_pill/core/theme/app_colors_extension.dart';
 
 class MpEmptyState extends StatelessWidget {
   const MpEmptyState({
@@ -26,12 +26,12 @@ class MpEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 64, color: AppColors.textMuted),
+            Icon(icon, size: 64, color: context.appColors.textMuted),
             const SizedBox(height: AppSpacing.lg),
             Text(title, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
             if (description != null) ...[
               const SizedBox(height: AppSpacing.sm),
-              Text(description!, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted), textAlign: TextAlign.center),
+              Text(description!, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted), textAlign: TextAlign.center),
             ],
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: AppSpacing.xxl),
