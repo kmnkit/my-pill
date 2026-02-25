@@ -244,13 +244,11 @@ void main() {
           id: 'sched-1',
           medicationId: 'med-001',
           type: ScheduleType.daily,
-          times: [],
         );
         const schedule2 = Schedule(
           id: 'sched-2',
           medicationId: 'med-001',
           type: ScheduleType.daily,
-          times: [],
         );
         when(mockStorage.getMedication('med-001'))
             .thenAnswer((_) async => med);

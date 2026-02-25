@@ -2,8 +2,10 @@ import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/adherence_record.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/reminder.dart';
@@ -151,8 +153,7 @@ class ScreenshotDataSeeder {
         id: 'sch-amlodipine',
         medicationId: _medAmlodipine,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['08:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Metformin: daily morning + evening
@@ -160,8 +161,10 @@ class ScreenshotDataSeeder {
         id: 'sch-metformin',
         medicationId: _medMetformin,
         type: ScheduleType.daily,
-        timesPerDay: 2,
-        times: ['08:00', '20:00'],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+          DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Vitamin D: daily morning
@@ -169,8 +172,7 @@ class ScreenshotDataSeeder {
         id: 'sch-vitamin-d',
         medicationId: _medVitaminD,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['08:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Omeprazole: daily before breakfast
@@ -178,8 +180,7 @@ class ScreenshotDataSeeder {
         id: 'sch-omeprazole',
         medicationId: _medOmeprazole,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['07:30'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '07:30')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Iron: daily afternoon
@@ -187,8 +188,7 @@ class ScreenshotDataSeeder {
         id: 'sch-iron',
         medicationId: _medIronSupplement,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['13:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.noon, time: '13:00')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Cetirizine: daily evening
@@ -196,8 +196,7 @@ class ScreenshotDataSeeder {
         id: 'sch-allergy',
         medicationId: _medAllergy,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['21:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.evening, time: '21:00')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
     ];

@@ -2,8 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/providers/storage_service_provider.dart';
@@ -16,8 +18,7 @@ Schedule _makeSchedule(String id, String medicationId) => Schedule(
       id: id,
       medicationId: medicationId,
       type: ScheduleType.daily,
-      timesPerDay: 1,
-      times: const ['08:00'],
+      dosageSlots: const [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
       timezoneMode: TimezoneMode.fixedInterval,
     );
 
@@ -81,7 +82,10 @@ void main() {
     test('updateSchedule saves updated schedule and invalidates provider',
         () async {
       final schedule = _makeSchedule('sched-1', 'med-1');
-      final updated = schedule.copyWith(timesPerDay: 2);
+      final updated = schedule.copyWith(dosageSlots: [
+        const DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+        const DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+      ]);
 
       when(mockStorage.getAllSchedules())
           .thenAnswer((_) async => [schedule]);

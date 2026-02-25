@@ -4,8 +4,10 @@ import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/adherence_record.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/reminder.dart';
@@ -112,8 +114,7 @@ class ScreenshotSeeder {
         id: 'seed-sch-ippoka',
         medicationId: meds[0].id,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['08:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Amlodipine: daily 09:00, 21:00
@@ -121,8 +122,10 @@ class ScreenshotSeeder {
         id: 'seed-sch-amlodipine',
         medicationId: meds[1].id,
         type: ScheduleType.daily,
-        timesPerDay: 2,
-        times: ['09:00', '21:00'],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '09:00'),
+          DosageTimeSlot(timing: DosageTiming.evening, time: '21:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Vitamin D: daily 12:00
@@ -130,8 +133,7 @@ class ScreenshotSeeder {
         id: 'seed-sch-vitamind',
         medicationId: meds[2].id,
         type: ScheduleType.daily,
-        timesPerDay: 1,
-        times: ['12:00'],
+        dosageSlots: [DosageTimeSlot(timing: DosageTiming.noon, time: '12:00')],
         timezoneMode: TimezoneMode.localTime,
       ),
     ];
