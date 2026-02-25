@@ -6,6 +6,7 @@ import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/l10n/app_localizations.dart';
@@ -22,21 +23,29 @@ class ScheduleScreen extends ConsumerStatefulWidget {
   const ScheduleScreen({
     super.key,
     required this.medicationId,
+    this.initialScheduleType,
   });
 
   final String medicationId;
+  final ScheduleType? initialScheduleType;
 
   @override
   ConsumerState<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
 class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
-  ScheduleType _selectedType = ScheduleType.daily;
+  late ScheduleType _selectedType;
   int _dosageCount = 1;
   List<String> _times = [];
   List<int> _selectedDays = [];
   int _intervalHours = 8;
-  DosageTiming? _dosageTiming;
+  List<DosageTiming> _dosageTimings = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.initialScheduleType ?? ScheduleType.daily;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,15 +161,15 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
             ],
             const SizedBox(height: AppSpacing.xxl),
             Text(
-              '${l10n.dosageTimingTitle} (${l10n.dosageTimingOptional})',
+              '${l10n.dosageTimingTitle} (${l10n.dosageTimingRequired})',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: AppSpacing.md),
             DosageTimingSelector(
-              selectedTiming: _dosageTiming,
-              onChanged: (timing) {
+              selectedTimings: _dosageTimings,
+              onChanged: (timings) {
                 setState(() {
-                  _dosageTiming = timing;
+                  _dosageTimings = timings;
                 });
               },
             ),
@@ -192,17 +201,30 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
       return;
     }
 
+    if (_dosageTimings.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneTime)),
+      );
+      return;
+    }
+
     final schedule = Schedule(
       id: const Uuid().v4(),
       medicationId: widget.medicationId,
       type: _selectedType,
-      timesPerDay: _dosageCount,
-      times: _times,
+      dosageSlots: List.generate(
+        _dosageTimings.length,
+        (i) => DosageTimeSlot(
+          timing: _dosageTimings[i],
+          time: i < _times.length
+              ? _times[i]
+              : DosageTimeSlot.withDefault(_dosageTimings[i]).time,
+        ),
+      ),
       specificDays: _selectedDays,
       intervalHours: _selectedType == ScheduleType.interval ? _intervalHours : null,
       timezoneMode: TimezoneMode.fixedInterval,
       isActive: true,
-      dosageTiming: _dosageTiming,
     );
 
     await ref.read(scheduleListProvider.notifier).addSchedule(schedule);

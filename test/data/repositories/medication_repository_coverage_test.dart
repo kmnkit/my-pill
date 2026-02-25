@@ -3,7 +3,9 @@ import 'package:mockito/mockito.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/repositories/medication_repository.dart';
@@ -165,7 +167,7 @@ void main() {
             id: 'sched-$i',
             medicationId: 'med-001',
             type: ScheduleType.daily,
-            times: const ['08:00'],
+            dosageSlots: const [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
           ),
         );
 

@@ -2,8 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/reminder.dart';
 import 'package:my_pill/data/models/schedule.dart';
 import 'package:my_pill/data/services/reminder_service.dart';
@@ -36,7 +38,7 @@ void main() {
         id: id,
         medicationId: medicationId,
         type: type,
-        times: times,
+        dosageSlots: times.map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t)).toList(),
         specificDays: specificDays,
         intervalHours: intervalHours,
         timezoneMode: TimezoneMode.fixedInterval,

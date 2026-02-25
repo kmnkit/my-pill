@@ -7,7 +7,9 @@ import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 import 'package:my_pill/data/models/medication.dart';
 import 'package:my_pill/data/models/reminder.dart';
 import 'package:my_pill/data/models/schedule.dart';
@@ -132,7 +134,7 @@ Schedule _makeSchedule({
       id: id,
       medicationId: medicationId,
       type: type,
-      times: times,
+      dosageSlots: times.map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t)).toList(),
       isActive: isActive,
       specificDays: specificDays,
       intervalHours: intervalHours,

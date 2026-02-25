@@ -9,9 +9,11 @@ import 'package:my_pill/data/models/user_profile.dart';
 import 'package:my_pill/data/enums/dosage_unit.dart';
 import 'package:my_pill/data/enums/pill_color.dart';
 import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:my_pill/data/enums/dosage_timing.dart';
 import 'package:my_pill/data/enums/schedule_type.dart';
 import 'package:my_pill/data/enums/reminder_status.dart';
 import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:my_pill/data/models/dosage_time_slot.dart';
 
 /// Test data factory for creating test fixtures
 class TestData {
@@ -103,8 +105,10 @@ class TestData {
         id: 'schedule-1',
         medicationId: 'med-1',
         type: ScheduleType.daily,
-        timesPerDay: 2,
-        times: ['08:00', '20:00'],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+          DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
         isActive: true,
       );
@@ -113,8 +117,9 @@ class TestData {
         id: 'schedule-2',
         medicationId: 'med-2',
         type: ScheduleType.specificDays,
-        timesPerDay: 1,
-        times: ['09:00'],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '09:00'),
+        ],
         specificDays: [1, 3, 5], // Mon, Wed, Fri
         timezoneMode: TimezoneMode.fixedInterval,
         isActive: true,
@@ -124,8 +129,9 @@ class TestData {
         id: 'schedule-3',
         medicationId: 'med-3',
         type: ScheduleType.interval,
-        timesPerDay: 1,
-        times: ['10:00'],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '10:00'),
+        ],
         intervalHours: 8,
         timezoneMode: TimezoneMode.fixedInterval,
         isActive: true,
@@ -275,8 +281,7 @@ class TestData {
     String? id,
     required String medicationId,
     ScheduleType type = ScheduleType.daily,
-    int timesPerDay = 1,
-    List<String> times = const ['08:00'],
+    List<DosageTimeSlot> dosageSlots = const [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
     List<int> specificDays = const [],
     int? intervalHours,
   }) {
@@ -284,8 +289,7 @@ class TestData {
       id: id ?? 'schedule-${DateTime.now().millisecondsSinceEpoch}',
       medicationId: medicationId,
       type: type,
-      timesPerDay: timesPerDay,
-      times: times,
+      dosageSlots: dosageSlots,
       specificDays: specificDays,
       intervalHours: intervalHours,
       timezoneMode: TimezoneMode.fixedInterval,
