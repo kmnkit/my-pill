@@ -415,6 +415,17 @@ class MockStorageService implements StorageService {
     // No-op for testing
   }
 
+  // --- Generic Settings ---
+  final Map<String, String> _settings = {};
+
+  @override
+  Future<String?> getSetting(String key) async => _settings[key];
+
+  @override
+  Future<void> saveSetting(String key, String value) async {
+    _settings[key] = value;
+  }
+
   /// Get current state for assertions
   Map<String, Medication> get medications => Map.unmodifiable(_medications);
   Map<String, Schedule> get schedules => Map.unmodifiable(_schedules);

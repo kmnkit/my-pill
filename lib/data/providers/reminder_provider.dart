@@ -7,6 +7,7 @@ import 'package:my_pill/data/providers/schedule_provider.dart';
 import 'package:my_pill/data/providers/medication_provider.dart';
 import 'package:my_pill/data/services/reminder_service.dart';
 import 'package:my_pill/data/services/notification_service.dart';
+import 'package:my_pill/data/services/review_service.dart';
 
 part 'reminder_provider.g.dart';
 
@@ -31,6 +32,9 @@ class TodayReminders extends _$TodayReminders {
 
       // Invalidate to refresh UI
       ref.invalidateSelf();
+
+      // Check if eligible for in-app review (non-blocking)
+      ReviewService(storage).requestReviewIfEligible();
     } catch (e) {
       debugPrint('Failed to mark reminder as taken: $e');
       rethrow;

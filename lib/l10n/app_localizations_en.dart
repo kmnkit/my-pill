@@ -469,6 +469,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extraLarge => 'XL';
 
   @override
+  String get features => 'Features';
+
+  @override
   String get safetyPrivacy => 'Safety & Privacy';
 
   @override

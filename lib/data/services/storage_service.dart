@@ -344,6 +344,20 @@ class StorageService {
     }
   }
 
+  // --- Generic Settings ---
+
+  Future<String?> getSetting(String key) async {
+    final box = await _openBox(_settingsBox);
+    final value = box.get(key);
+    if (value == null) return null;
+    return value.toString();
+  }
+
+  Future<void> saveSetting(String key, String value) async {
+    final box = await _openBox(_settingsBox);
+    await box.put(key, value);
+  }
+
   /// Clear all data including app settings. Use for account deletion.
   Future<void> clearAll() async {
     await _deleteAllPhotoFiles();
