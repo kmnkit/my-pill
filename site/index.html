@@ -1,43 +1,415 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kusuridoki</title>
+  <title>くすりどき - 一包化も個別薬も、まとめて管理</title>
+  <meta name="description" content="くすりどきは、一包化・個別薬どちらにも対応した服薬管理アプリです。リマインダー、在庫管理、週間レポート、家族の見守り機能で毎日の服薬習慣をサポートします。">
+  <meta name="keywords" content="服薬管理,薬,リマインダー,一包化,分包薬,服薬記録,在庫管理,見守り,服薬アラーム,飲み忘れ,タイムゾーン,旅行,家族">
+  <meta name="theme-color" content="#0D9488">
+
+  <!-- OG Tags -->
+  <meta property="og:title" content="くすりどき - 一包化も個別薬も、まとめて管理">
+  <meta property="og:description" content="服薬リマインダー・在庫管理・週間レポート・家族の見守り。毎日の服薬習慣をサポートする無料アプリ。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kusuridoki.hobbylabo.dev/">
+  <meta property="og:image" content="https://kusuridoki.hobbylabo.dev/images/app_icon.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="くすりどき">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="くすりどき - 一包化も個別薬も、まとめて管理">
+  <meta name="twitter:description" content="服薬リマインダー・在庫管理・週間レポート・家族の見守り。毎日の服薬習慣をサポートする無料アプリ。">
+  <meta name="twitter:image" content="https://kusuridoki.hobbylabo.dev/images/app_icon.png">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "くすりどき",
+    "alternateName": "Kusuridoki",
+    "operatingSystem": "iOS",
+    "applicationCategory": "HealthApplication",
+    "description": "一包化・個別薬どちらにも対応した服薬管理アプリ。リマインダー、在庫管理、週間レポート、家族の見守り機能。",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "HobbyLabo"
+    }
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F0FDFA',
+              100: '#CCFBF1',
+              200: '#99F6E4',
+              400: '#2DD4BF',
+              500: '#0D9488',
+              600: '#0EA699',
+              700: '#0F766E',
+              800: '#065F56',
+              900: '#134E4A',
+            },
+            accent: '#F59E0B',
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
   <style>
-    :root { --bg: #f8f9fa; --text: #1a1a2e; --accent: #4a90d9; --card: #fff; --border: #e0e0e0; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-    .container { max-width: 720px; margin: 0 auto; padding: 40px 24px; }
-    h1 { font-size: 2rem; margin-bottom: 8px; }
-    .subtitle { color: #666; margin-bottom: 32px; }
-    .links a { display: inline-block; margin-right: 16px; padding: 12px 24px; background: var(--accent); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; }
-    .links a:hover { opacity: 0.9; }
-    .lang { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
-    footer { margin-top: 48px; color: #999; font-size: 0.85rem; }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #0D9488 0%, #0EA699 40%, #065F56 100%);
+    }
+
+    .glass-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+    }
+
+    .screenshot-shadow {
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Kusuridoki (&#12367;&#12377;&#12426;&#12393;&#12365;)</h1>
-    <p class="subtitle">Your reliable medication management companion.</p>
-    <div class="links">
-      <a href="/privacy-policy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/support">Support</a>
+
+<body class="bg-brand-50 text-gray-800 font-sans">
+
+  <!-- Hero Section -->
+  <section class="hero-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 left-10 w-32 h-32 rounded-full bg-white"></div>
+      <div class="absolute bottom-20 right-20 w-48 h-48 rounded-full bg-white"></div>
+      <div class="absolute top-1/2 left-1/3 w-24 h-24 rounded-full bg-white"></div>
     </div>
-    <div class="lang">
-      <h2>&#26085;&#26412;&#35486;</h2>
-      <div class="links" style="margin-top: 12px;">
-        <a href="/privacy-policy#ja">&#12503;&#12521;&#12452;&#12496;&#12471;&#12540;&#12509;&#12522;&#12471;&#12540;</a>
-        <a href="/terms#ja">&#21033;&#29992;&#35215;&#32004;</a>
-        <a href="/support#ja">&#12469;&#12509;&#12540;&#12488;</a>
+
+    <div class="relative max-w-4xl mx-auto px-6 py-16 md:py-24 text-center text-white">
+      <!-- App Icon -->
+      <div class="mb-8">
+        <img src="images/app_icon.png" alt="くすりどき アプリアイコン" width="96" height="96"
+          class="mx-auto rounded-2xl shadow-lg float-animation">
+      </div>
+
+      <!-- Catchcopy -->
+      <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">
+        一包化も個別薬も、<br class="md:hidden">まとめて管理
+      </h1>
+      <p class="text-lg md:text-xl opacity-90 mb-10 max-w-xl mx-auto leading-relaxed">
+        服薬リマインダー・在庫管理・週間レポート・家族の見守り
+      </p>
+
+      <!-- CTA -->
+      <div class="flex flex-col items-center gap-4 mb-6">
+        <a href="#"
+          class="inline-flex items-center gap-3 bg-black text-white font-semibold px-7 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 text-base">
+          <svg class="w-8 h-8" viewBox="0 0 496.255 608.728" fill="white">
+            <path
+              d="M273.81 52.973C313.806.257 369.41 0 369.41 0s8.271 49.562-31.463 97.306c-42.426 50.98-90.649 42.638-90.649 42.638s-9.055-40.094 26.512-86.971zM252.385 174.662c20.576 0 58.764-28.284 108.471-28.284 85.562 0 119.222 60.883 119.222 60.883s-65.833 33.659-65.833 115.331c0 92.133 82.01 123.885 82.01 123.885s-57.328 161.357-134.628 161.357c-35.565 0-63.215-23.967-100.688-23.967-38.188 0-76.084 24.861-100.766 24.861C89.33 608.73 0 455.666 0 332.628c0-121.052 75.612-184.554 146.533-184.554 46.105 0 81.883 26.588 105.852 26.588z" />
+          </svg>
+          <span class="flex flex-col items-start leading-tight">
+            <span class="text-xs font-normal opacity-80">Download on the</span>
+            <span class="text-lg font-semibold -mt-0.5">App Store</span>
+          </span>
+        </a>
+        <span class="text-white/70 text-sm">まもなくリリース</span>
       </div>
     </div>
-    <footer>
-      <p>Contact: <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
-      <p>&copy; 2026 HobbyLabo. All rights reserved.</p>
-    </footer>
-  </div>
+  </section>
+
+  <!-- 3 Key Differentiators -->
+  <section class="max-w-4xl mx-auto px-6 py-16 md:py-20">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900">
+      くすりどきが選ばれる理由
+    </h2>
+    <p class="text-center text-gray-500 mb-12 max-w-lg mx-auto">
+      他のアプリにはない、3つの独自機能
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Card 1: Ippoka -->
+      <div class="glass-card rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow">
+        <div class="feature-icon bg-brand-100 text-brand-500 mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2 text-gray-900">一包化対応</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          一包化（分包薬）にも個別薬にも対応。複数の薬をまとめて管理できるから、複雑な処方でも安心です。
+        </p>
+      </div>
+
+      <!-- Card 2: Mimamori -->
+      <div class="glass-card rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow">
+        <div class="feature-icon bg-amber-100 text-amber-600 mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2 text-gray-900">家族の見守り</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          離れて暮らすご家族の服薬状況をスマホで確認。QRコードで簡単に連携でき、さりげない見守りを実現します。
+        </p>
+      </div>
+
+      <!-- Card 3: Timezone -->
+      <div class="glass-card rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow">
+        <div class="feature-icon bg-blue-100 text-blue-600 mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold mb-2 text-gray-900">タイムゾーン対応</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          海外旅行や出張時も、トラベルモードが服薬時間を自動調整。時差があっても、薬の時間は迷いません。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots Gallery -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900">
+        アプリ画面
+      </h2>
+      <p class="text-center text-gray-500 mb-12">
+        シンプルで使いやすいデザイン
+      </p>
+
+      <div class="flex justify-center gap-4 md:gap-8 overflow-x-auto pb-4">
+        <div class="flex-shrink-0 w-48 md:w-56">
+          <img src="images/screenshot_home.png" alt="ホーム画面 - 今日の服薬タイムライン" class="rounded-2xl screenshot-shadow w-full"
+            loading="lazy">
+          <p class="text-center text-sm text-gray-500 mt-3">ホーム画面</p>
+        </div>
+        <div class="flex-shrink-0 w-48 md:w-56">
+          <img src="images/screenshot_caregiver.png" alt="見守り画面 - 家族の服薬状況を確認"
+            class="rounded-2xl screenshot-shadow w-full" loading="lazy">
+          <p class="text-center text-sm text-gray-500 mt-3">見守り機能</p>
+        </div>
+        <div class="flex-shrink-0 w-48 md:w-56">
+          <img src="images/screenshot_travel.png" alt="トラベルモード - タイムゾーン自動調整"
+            class="rounded-2xl screenshot-shadow w-full" loading="lazy">
+          <p class="text-center text-sm text-gray-500 mt-3">トラベルモード</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Summary -->
+  <section class="max-w-4xl mx-auto px-6 py-16 md:py-20">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900">
+      充実の機能
+    </h2>
+
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div class="flex items-start gap-4 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <div class="feature-icon bg-brand-500 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 mb-1">服薬リマインダー</h3>
+          <p class="text-gray-600 text-sm">設定した時間に通知でお知らせ。飲み忘れ防止をサポートします。</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <div class="feature-icon bg-green-600 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 mb-1">在庫管理</h3>
+          <p class="text-gray-600 text-sm">薬の残量を自動追跡。少なくなったらお知らせします。</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <div class="feature-icon bg-purple-600 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 mb-1">週間レポート</h3>
+          <p class="text-gray-600 text-sm">服薬状況をグラフで可視化。PDF出力で医療従事者との共有も簡単。</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <div class="feature-icon bg-rose-500 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 mb-1">服薬記録</h3>
+          <p class="text-gray-600 text-sm">ワンタップで服薬を記録。毎日の服薬習慣をサポートします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy / Trust -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-100 mb-6">
+        <svg class="w-8 h-8 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      </div>
+      <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+        プライバシーを守ります
+      </h2>
+      <p class="text-gray-600 max-w-lg mx-auto mb-8 leading-relaxed">
+        あなたの健康データは暗号化して安全に保護されます。第三者への販売は一切行いません。安心してご利用ください。
+      </p>
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          データ暗号化
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          ローカル優先保存
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          データ販売なし
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="hero-gradient py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center text-white">
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">
+        毎日の服薬管理を、もっとかんたんに
+      </h2>
+      <p class="opacity-90 mb-8 max-w-md mx-auto">
+        くすりどきで、安心の服薬習慣をはじめましょう
+      </p>
+      <a href="#"
+        class="inline-flex items-center gap-3 bg-black text-white font-semibold px-7 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 text-base">
+        <svg class="w-8 h-8" viewBox="0 0 496.255 608.728" fill="white">
+          <path
+            d="M273.81 52.973C313.806.257 369.41 0 369.41 0s8.271 49.562-31.463 97.306c-42.426 50.98-90.649 42.638-90.649 42.638s-9.055-40.094 26.512-86.971zM252.385 174.662c20.576 0 58.764-28.284 108.471-28.284 85.562 0 119.222 60.883 119.222 60.883s-65.833 33.659-65.833 115.331c0 92.133 82.01 123.885 82.01 123.885s-57.328 161.357-134.628 161.357c-35.565 0-63.215-23.967-100.688-23.967-38.188 0-76.084 24.861-100.766 24.861C89.33 608.73 0 455.666 0 332.628c0-121.052 75.612-184.554 146.533-184.554 46.105 0 81.883 26.588 105.852 26.588z" />
+        </svg>
+        <span class="flex flex-col items-start leading-tight">
+          <span class="text-xs font-normal opacity-80">Download on the</span>
+          <span class="text-lg font-semibold -mt-0.5">App Store</span>
+        </span>
+      </a>
+      <p class="text-white/60 text-sm mt-4">まもなくリリース</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <!-- Links (JA) -->
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="https://kusuridoki.hobbylabo.dev/privacy-policy#ja"
+          class="hover:text-white transition-colors">プライバシーポリシー</a>
+        <a href="https://kusuridoki.hobbylabo.dev/terms#ja" class="hover:text-white transition-colors">利用規約</a>
+        <a href="https://kusuridoki.hobbylabo.dev/support#ja" class="hover:text-white transition-colors">サポート</a>
+        <a href="mailto:support@hobbylabo.dev" class="hover:text-white transition-colors">お問い合わせ</a>
+      </div>
+
+      <!-- Links (EN) -->
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="https://kusuridoki.hobbylabo.dev/privacy-policy" class="hover:text-white transition-colors">Privacy
+          Policy</a>
+        <a href="https://kusuridoki.hobbylabo.dev/terms" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="https://kusuridoki.hobbylabo.dev/support" class="hover:text-white transition-colors">Support</a>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="border-t border-gray-800 pt-8 text-center">
+        <p class="text-xs text-gray-500 mb-4 max-w-lg mx-auto leading-relaxed">
+          ※ 本アプリは医療機器ではなく、医療従事者による診断・治療・助言に代わるものではありません。
+        </p>
+        <p class="text-xs text-gray-500">
+          &copy; 2026 HobbyLabo. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
 </body>
+
 </html>
