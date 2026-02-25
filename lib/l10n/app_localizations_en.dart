@@ -700,7 +700,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumMonthly => 'Monthly Plan';
 
   @override
-  String get premiumYearly => 'Yearly Plan (34% off)';
+  String get premiumYearly => 'Yearly Plan';
 
   @override
   String get premiumMonthlyPrice => '¥480/mo';
@@ -1521,27 +1521,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dosageTimingTitle => 'Dosage Timing';
 
   @override
-  String get dosageTimingBeforeMeal => 'Before Meal';
+  String get dosageTimingMorning => 'Morning';
 
   @override
-  String get dosageTimingAfterMeal => 'After Meal';
+  String get dosageTimingNoon => 'Noon';
 
   @override
-  String get dosageTimingBetweenMeals => 'Between Meals';
+  String get dosageTimingEvening => 'Evening';
 
   @override
-  String get dosageTimingAtBedtime => 'At Bedtime';
+  String get dosageTimingBedtime => 'Before Bed';
 
   @override
-  String get dosageTimingOnWaking => 'On Waking';
-
-  @override
-  String get dosageTimingAsNeeded => 'As Needed';
-
-  @override
-  String get dosageTimingOptional => 'Optional';
+  String get dosageTimingRequired => 'Required';
 
   @override
   String get subscriptionTerms =>
       'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.';
+
+  @override
+  String get selectDosageTiming => 'When do you take it?';
+
+  @override
+  String get adjustTimes => 'Adjust Times';
+
+  @override
+  String timeRangeHint(String timing, String min, String max) {
+    return '$timing: $min:00 ~ $max:59';
+  }
+
+  @override
+  String get pleaseSelectAtLeastOneTiming =>
+      'Please select at least one timing';
+
+  @override
+  String timeOutOfRange(String min, String max) {
+    return 'Time must be between $min:00 and $max:59';
+  }
 }

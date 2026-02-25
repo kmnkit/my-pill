@@ -681,7 +681,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumMonthly => '月額プラン';
 
   @override
-  String get premiumYearly => '年額プラン (34%お得)';
+  String get premiumYearly => '年額プラン';
 
   @override
   String get premiumMonthlyPrice => '¥480/月';
@@ -1477,27 +1477,40 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dosageTimingTitle => '服用タイミング';
 
   @override
-  String get dosageTimingBeforeMeal => '食前';
+  String get dosageTimingMorning => '朝';
 
   @override
-  String get dosageTimingAfterMeal => '食後';
+  String get dosageTimingNoon => '昼';
 
   @override
-  String get dosageTimingBetweenMeals => '食間';
+  String get dosageTimingEvening => '夕';
 
   @override
-  String get dosageTimingAtBedtime => '就寝前';
+  String get dosageTimingBedtime => '寝る前';
 
   @override
-  String get dosageTimingOnWaking => '起床時';
-
-  @override
-  String get dosageTimingAsNeeded => '頓服';
-
-  @override
-  String get dosageTimingOptional => '任意';
+  String get dosageTimingRequired => '必須';
 
   @override
   String get subscriptionTerms =>
       'お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。';
+
+  @override
+  String get selectDosageTiming => 'いつ服用しますか？';
+
+  @override
+  String get adjustTimes => '時間を調整';
+
+  @override
+  String timeRangeHint(String timing, String min, String max) {
+    return '$timing: $min:00 ~ $max:59';
+  }
+
+  @override
+  String get pleaseSelectAtLeastOneTiming => '少なくとも1つのタイミングを選択してください';
+
+  @override
+  String timeOutOfRange(String min, String max) {
+    return '時間は$min:00から$max:59の間である必要があります';
+  }
 }
