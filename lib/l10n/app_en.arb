@@ -282,7 +282,7 @@
   "weeklySummary": "Weekly Summary",
   "premium": "Premium",
   "premiumMonthly": "Monthly Plan",
-  "premiumYearly": "Yearly Plan (34% off)",
+  "premiumYearly": "Yearly Plan",
   "premiumMonthlyPrice": "¥480/mo",
   "premiumYearlyPrice": "¥3,800/yr",
   "unlockPremium": "Upgrade to Premium",
@@ -589,13 +589,30 @@
   "onboardingDosePackDesc": "Pre-packaged sachets bundling multiple meds",
 
   "dosageTimingTitle": "Dosage Timing",
-  "dosageTimingBeforeMeal": "Before Meal",
-  "dosageTimingAfterMeal": "After Meal",
-  "dosageTimingBetweenMeals": "Between Meals",
-  "dosageTimingAtBedtime": "At Bedtime",
-  "dosageTimingOnWaking": "On Waking",
-  "dosageTimingAsNeeded": "As Needed",
-  "dosageTimingOptional": "Optional",
+  "dosageTimingMorning": "Morning",
+  "dosageTimingNoon": "Noon",
+  "dosageTimingEvening": "Evening",
+  "dosageTimingBedtime": "Before Bed",
+  "dosageTimingRequired": "Required",
 
-  "subscriptionTerms": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings."
+  "subscriptionTerms": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.",
+
+  "selectDosageTiming": "When do you take it?",
+  "adjustTimes": "Adjust Times",
+  "timeRangeHint": "{timing}: {min}:00 ~ {max}:59",
+  "@timeRangeHint": {
+    "placeholders": {
+      "timing": {"type": "String"},
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  },
+  "pleaseSelectAtLeastOneTiming": "Please select at least one timing",
+  "timeOutOfRange": "Time must be between {min}:00 and {max}:59",
+  "@timeOutOfRange": {
+    "placeholders": {
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  }
 }

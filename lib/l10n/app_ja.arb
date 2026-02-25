@@ -282,7 +282,7 @@
   "weeklySummary": "週間サマリー",
   "premium": "プレミアム",
   "premiumMonthly": "月額プラン",
-  "premiumYearly": "年額プラン (34%お得)",
+  "premiumYearly": "年額プラン",
   "premiumMonthlyPrice": "¥480/月",
   "premiumYearlyPrice": "¥3,800/年",
   "unlockPremium": "プレミアムにアップグレード",
@@ -589,13 +589,30 @@
   "onboardingDosePackDesc": "複数の薬をまとめた分包薬",
 
   "dosageTimingTitle": "服用タイミング",
-  "dosageTimingBeforeMeal": "食前",
-  "dosageTimingAfterMeal": "食後",
-  "dosageTimingBetweenMeals": "食間",
-  "dosageTimingAtBedtime": "就寝前",
-  "dosageTimingOnWaking": "起床時",
-  "dosageTimingAsNeeded": "頓服",
-  "dosageTimingOptional": "任意",
+  "dosageTimingMorning": "朝",
+  "dosageTimingNoon": "昼",
+  "dosageTimingEvening": "夕",
+  "dosageTimingBedtime": "寝る前",
+  "dosageTimingRequired": "必須",
 
-  "subscriptionTerms": "お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。"
+  "subscriptionTerms": "お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。",
+
+  "selectDosageTiming": "いつ服用しますか？",
+  "adjustTimes": "時間を調整",
+  "timeRangeHint": "{timing}: {min}:00 ~ {max}:59",
+  "@timeRangeHint": {
+    "placeholders": {
+      "timing": {"type": "String"},
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  },
+  "pleaseSelectAtLeastOneTiming": "少なくとも1つのタイミングを選択してください",
+  "timeOutOfRange": "時間は{min}:00から{max}:59の間である必要があります",
+  "@timeOutOfRange": {
+    "placeholders": {
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  }
 }

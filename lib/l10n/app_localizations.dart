@@ -1397,7 +1397,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumYearly.
   ///
   /// In en, this message translates to:
-  /// **'Yearly Plan (34% off)'**
+  /// **'Yearly Plan'**
   String get premiumYearly;
 
   /// No description provided for @premiumMonthlyPrice.
@@ -2918,53 +2918,71 @@ abstract class AppLocalizations {
   /// **'Dosage Timing'**
   String get dosageTimingTitle;
 
-  /// No description provided for @dosageTimingBeforeMeal.
+  /// No description provided for @dosageTimingMorning.
   ///
   /// In en, this message translates to:
-  /// **'Before Meal'**
-  String get dosageTimingBeforeMeal;
+  /// **'Morning'**
+  String get dosageTimingMorning;
 
-  /// No description provided for @dosageTimingAfterMeal.
+  /// No description provided for @dosageTimingNoon.
   ///
   /// In en, this message translates to:
-  /// **'After Meal'**
-  String get dosageTimingAfterMeal;
+  /// **'Noon'**
+  String get dosageTimingNoon;
 
-  /// No description provided for @dosageTimingBetweenMeals.
+  /// No description provided for @dosageTimingEvening.
   ///
   /// In en, this message translates to:
-  /// **'Between Meals'**
-  String get dosageTimingBetweenMeals;
+  /// **'Evening'**
+  String get dosageTimingEvening;
 
-  /// No description provided for @dosageTimingAtBedtime.
+  /// No description provided for @dosageTimingBedtime.
   ///
   /// In en, this message translates to:
-  /// **'At Bedtime'**
-  String get dosageTimingAtBedtime;
+  /// **'Before Bed'**
+  String get dosageTimingBedtime;
 
-  /// No description provided for @dosageTimingOnWaking.
+  /// No description provided for @dosageTimingRequired.
   ///
   /// In en, this message translates to:
-  /// **'On Waking'**
-  String get dosageTimingOnWaking;
-
-  /// No description provided for @dosageTimingAsNeeded.
-  ///
-  /// In en, this message translates to:
-  /// **'As Needed'**
-  String get dosageTimingAsNeeded;
-
-  /// No description provided for @dosageTimingOptional.
-  ///
-  /// In en, this message translates to:
-  /// **'Optional'**
-  String get dosageTimingOptional;
+  /// **'Required'**
+  String get dosageTimingRequired;
 
   /// No description provided for @subscriptionTerms.
   ///
   /// In en, this message translates to:
   /// **'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.'**
   String get subscriptionTerms;
+
+  /// No description provided for @selectDosageTiming.
+  ///
+  /// In en, this message translates to:
+  /// **'When do you take it?'**
+  String get selectDosageTiming;
+
+  /// No description provided for @adjustTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Times'**
+  String get adjustTimes;
+
+  /// No description provided for @timeRangeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{timing}: {min}:00 ~ {max}:59'**
+  String timeRangeHint(String timing, String min, String max);
+
+  /// No description provided for @pleaseSelectAtLeastOneTiming.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one timing'**
+  String get pleaseSelectAtLeastOneTiming;
+
+  /// No description provided for @timeOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Time must be between {min}:00 and {max}:59'**
+  String timeOutOfRange(String min, String max);
 }
 
 class _AppLocalizationsDelegate
