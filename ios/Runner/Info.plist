@@ -60,8 +60,6 @@
 	<string>Kusuridoki saves medication photos to your library for your records.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We use tracking to show you personalized ads and improve the app.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -223,10 +221,7 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>
