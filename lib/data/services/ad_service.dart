@@ -9,7 +9,7 @@ class AdService {
   AdService._();
 
   // Set to true to hide ads for screenshots
-  static const bool _hideAdsForScreenshots = true;
+  static const bool _hideAdsForScreenshots = false;
 
   bool _initialized = false;
   bool _adsRemoved = false;

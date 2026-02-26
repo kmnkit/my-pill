@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:my_pill/core/constants/app_colors.dart';
 import 'package:my_pill/core/constants/app_spacing.dart';
 import 'package:my_pill/core/theme/app_colors_extension.dart';
 import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
@@ -102,6 +103,12 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                         title: _searchQuery.isEmpty
                             ? l10n.noMedications
                             : l10n.noMedicationsFound,
+                        actionLabel: _searchQuery.isEmpty
+                            ? l10n.addMedication
+                            : null,
+                        onAction: _searchQuery.isEmpty
+                            ? () => context.push('/medications/add')
+                            : null,
                       )
                     : ListView.builder(
                         padding: EdgeInsets.only(
@@ -133,13 +140,27 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          med.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                med.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            if (med.isCritical) ...[
+                                              const SizedBox(width: AppSpacing.xs),
+                                              Icon(
+                                                Icons.priority_high,
+                                                size: 16,
+                                                color: AppColors.warning,
+                                              ),
+                                            ],
+                                          ],
                                         ),
                                         const SizedBox(height: AppSpacing.xs),
                                         Text(
