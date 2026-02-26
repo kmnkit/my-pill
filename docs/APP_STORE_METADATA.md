@@ -11,11 +11,11 @@
 
 | # | File | Headline (JA) | ASO Keywords |
 |---|------|---------------|-------------|
-| 1 | `01_home.png` | 一包化も個別薬も、まとめて管理 | 一包化 |
-| 2 | `02_medication.png` | 分包薬もワンタップで服薬記録 | 分包薬, 服薬記録 |
+| 1 | `01_home.png` | 毎日の服薬をワンタップで記録 | 服薬記録 |
+| 2 | `02_travel.png` | 海外旅行中も時差に自動対応 | 旅行, タイムゾーン |
 | 3 | `03_caregiver.png` | 離れた家族の服薬を見守り | 見守り, 家族 |
-| 4 | `04_weekly_report.png` | 週間レポートで服薬率を確認 | 服薬率 |
-| 5 | `05_travel.png` | 海外旅行中も時差に自動対応 | 旅行, タイムゾーン |
+| 4 | `04_medication.png` | 一包化も個別薬も、まとめて管理 | 一包化 |
+| 5 | `05_weekly_report.png` | 週間レポートで服薬率を確認 | 服薬率 |
 | 6 | `06_privacy.png` | あなたの健康データを安全に保護 | 安全 |
 
 ---
@@ -34,9 +34,9 @@ Smart medication manager for dose packs and individual pills. Reminders, invento
 
 ## Keywords (100 chars max)
 
-### Japanese (90 chars)
+### Japanese (94 chars)
 
-服薬管理,薬,リマインダー,一包化,分包薬,服薬記録,在庫管理,見守り,服薬アラーム,飲み忘れ,タイムゾーン,旅行,家族,服薬率,処方薬,ADHD
+服薬管理,薬,リマインダー,一包化,分包薬,服薬記録,在庫管理,見守り,服薬アラーム,飲み忘れ,タイムゾーン,旅行,家族,服薬率,処方薬,お薬手帳,高齢者
 
 ### English (100 chars)
 
