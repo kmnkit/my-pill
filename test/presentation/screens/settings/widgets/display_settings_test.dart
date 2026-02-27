@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/display_settings.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/display_settings.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -37,8 +37,8 @@ const _defaultProfile = UserProfile(
 );
 
 List<dynamic> _overrides(UserProfile profile) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+];
 
 void main() {
   group('DisplaySettings', () {
@@ -154,7 +154,9 @@ void main() {
       expect(find.text('Text Size'), findsOneWidget);
     });
 
-    testWidgets('high contrast toggle is off when highContrast is false', (tester) async {
+    testWidgets('high contrast toggle is off when highContrast is false', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const DisplaySettings(),
@@ -168,7 +170,9 @@ void main() {
       expect(gestures, findsAtLeastNWidgets(1));
     });
 
-    testWidgets('high contrast toggle is on when highContrast is true', (tester) async {
+    testWidgets('high contrast toggle is on when highContrast is true', (
+      tester,
+    ) async {
       const hcProfile = UserProfile(
         id: 'user-004',
         language: 'en',
@@ -288,7 +292,9 @@ void main() {
       expect(find.textContaining('Error'), findsOneWidget);
     });
 
-    testWidgets('renders with unknown textSize defaults to Normal', (tester) async {
+    testWidgets('renders with unknown textSize defaults to Normal', (
+      tester,
+    ) async {
       const unknownProfile = UserProfile(
         id: 'user-005',
         language: 'en',

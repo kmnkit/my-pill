@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/premium_banner.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/premium_banner.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
 List<dynamic> _freeOverrides() => [
-      isPremiumProvider.overrideWith((ref) => false),
-      subscriptionStatusProvider.overrideWith(
-        (ref) => const SubscriptionStatus(isPremium: false),
-      ),
-    ];
+  isPremiumProvider.overrideWith((ref) => false),
+  subscriptionStatusProvider.overrideWith(
+    (ref) => const SubscriptionStatus(isPremium: false),
+  ),
+];
 
 List<dynamic> _premiumOverrides({DateTime? expiresAt}) => [
-      isPremiumProvider.overrideWith((ref) => true),
-      subscriptionStatusProvider.overrideWith(
-        (ref) => SubscriptionStatus(isPremium: true, expiresAt: expiresAt),
-      ),
-    ];
+  isPremiumProvider.overrideWith((ref) => true),
+  subscriptionStatusProvider.overrideWith(
+    (ref) => SubscriptionStatus(isPremium: true, expiresAt: expiresAt),
+  ),
+];
 
 void main() {
   group('PremiumBanner — free user', () {
@@ -96,7 +96,9 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
     });
 
-    testWidgets('shows Manage Subscription button for premium user', (tester) async {
+    testWidgets('shows Manage Subscription button for premium user', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const PremiumBanner(),
@@ -133,7 +135,9 @@ void main() {
       expect(find.textContaining('2026-12-31'), findsOneWidget);
     });
 
-    testWidgets('does not show upgrade message for premium user', (tester) async {
+    testWidgets('does not show upgrade message for premium user', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const PremiumBanner(),

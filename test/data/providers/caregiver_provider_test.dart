@@ -1,22 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
 
 import 'settings_provider_test.mocks.dart';
 
 void main() {
   CaregiverLink makeLink(String id) => CaregiverLink(
-        id: id,
-        patientId: 'patient-1',
-        caregiverId: 'caregiver-$id',
-        caregiverName: 'Caregiver $id',
-        status: 'connected',
-        linkedAt: DateTime(2024, 1, 1),
-      );
+    id: id,
+    patientId: 'patient-1',
+    caregiverId: 'caregiver-$id',
+    caregiverName: 'Caregiver $id',
+    status: 'connected',
+    linkedAt: DateTime(2024, 1, 1),
+  );
 
   group('CaregiverLinks notifier', () {
     late MockStorageService mockStorage;
@@ -30,9 +30,7 @@ void main() {
       when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => links);
 
       final container = ProviderContainer(
-        overrides: [
-          storageServiceProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
       );
       addTearDown(container.dispose);
 
@@ -47,9 +45,7 @@ void main() {
       when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => []);
 
       final container = ProviderContainer(
-        overrides: [
-          storageServiceProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
       );
       addTearDown(container.dispose);
 
@@ -63,9 +59,7 @@ void main() {
       when(mockStorage.saveCaregiverLink(any)).thenAnswer((_) async {});
 
       final container = ProviderContainer(
-        overrides: [
-          storageServiceProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
       );
       addTearDown(container.dispose);
 
@@ -73,8 +67,7 @@ void main() {
       await container.read(caregiverLinksProvider.future);
 
       // After addLink, storage should return the new link
-      when(mockStorage.getAllCaregiverLinks())
-          .thenAnswer((_) async => [link]);
+      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => [link]);
 
       await container.read(caregiverLinksProvider.notifier).addLink(link);
 
@@ -88,14 +81,11 @@ void main() {
 
     test('removeLink deletes from storage and invalidates', () async {
       final link = makeLink('1');
-      when(mockStorage.getAllCaregiverLinks())
-          .thenAnswer((_) async => [link]);
+      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => [link]);
       when(mockStorage.deleteCaregiverLink(any)).thenAnswer((_) async {});
 
       final container = ProviderContainer(
-        overrides: [
-          storageServiceProvider.overrideWithValue(mockStorage),
-        ],
+        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
       );
       addTearDown(container.dispose);
 
@@ -132,8 +122,9 @@ void main() {
     test('returns false when at max capacity', () async {
       final container = ProviderContainer(
         overrides: [
-          caregiverLinksProvider
-              .overrideWith(() => _FakeCaregiverLinks([makeLink('1')])),
+          caregiverLinksProvider.overrideWith(
+            () => _FakeCaregiverLinks([makeLink('1')]),
+          ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
@@ -147,7 +138,8 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-              () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')])),
+            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+          ),
           maxCaregiversProvider.overrideWithValue(999),
         ],
       );
@@ -168,21 +160,26 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      final result = await container.read(remainingCaregiverSlotsProvider.future);
+      final result = await container.read(
+        remainingCaregiverSlotsProvider.future,
+      );
       expect(result, 5);
     });
 
     test('returns 0 when at capacity', () async {
       final container = ProviderContainer(
         overrides: [
-          caregiverLinksProvider
-              .overrideWith(() => _FakeCaregiverLinks([makeLink('1')])),
+          caregiverLinksProvider.overrideWith(
+            () => _FakeCaregiverLinks([makeLink('1')]),
+          ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
 
-      final result = await container.read(remainingCaregiverSlotsProvider.future);
+      final result = await container.read(
+        remainingCaregiverSlotsProvider.future,
+      );
       expect(result, 0);
     });
 
@@ -190,13 +187,16 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-              () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')])),
+            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+          ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
 
-      final result = await container.read(remainingCaregiverSlotsProvider.future);
+      final result = await container.read(
+        remainingCaregiverSlotsProvider.future,
+      );
       expect(result, 0);
     });
 
@@ -204,13 +204,16 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-              () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')])),
+            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+          ),
           maxCaregiversProvider.overrideWithValue(5),
         ],
       );
       addTearDown(container.dispose);
 
-      final result = await container.read(remainingCaregiverSlotsProvider.future);
+      final result = await container.read(
+        remainingCaregiverSlotsProvider.future,
+      );
       expect(result, 3);
     });
   });

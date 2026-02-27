@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/apple_auth_error.dart';
-import 'package:my_pill/data/services/auth_service.dart';
+import 'package:kusuridoki/data/enums/apple_auth_error.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
 
 /// AuthService tests verify the API surface of the service and all pure-logic
 /// helpers. Full integration tests require a Firebase emulator because
@@ -24,7 +24,9 @@ void main() {
   group('AppleAuthError — fromCode', () {
     test('returns userCancelled for "user-cancelled"', () {
       expect(
-          AppleAuthError.fromCode('user-cancelled'), AppleAuthError.userCancelled);
+        AppleAuthError.fromCode('user-cancelled'),
+        AppleAuthError.userCancelled,
+      );
     });
 
     test('maps iOS "canceled" shorthand to userCancelled', () {
@@ -67,7 +69,10 @@ void main() {
     });
 
     test('returns unknown for unrecognised code', () {
-      expect(AppleAuthError.fromCode('some-random-error'), AppleAuthError.unknown);
+      expect(
+        AppleAuthError.fromCode('some-random-error'),
+        AppleAuthError.unknown,
+      );
     });
 
     test('returns unknown for empty string', () {
@@ -117,8 +122,11 @@ void main() {
 
     test('every code is non-empty', () {
       for (final error in AppleAuthError.values) {
-        expect(error.code, isNotEmpty,
-            reason: '${error.name} should have a non-empty code');
+        expect(
+          error.code,
+          isNotEmpty,
+          reason: '${error.name} should have a non-empty code',
+        );
       }
     });
   });
@@ -141,7 +149,9 @@ void main() {
     });
 
     test('toString includes the error code', () {
-      final ex = AppleSignInException(error: AppleAuthError.networkRequestFailed);
+      final ex = AppleSignInException(
+        error: AppleAuthError.networkRequestFailed,
+      );
       expect(ex.toString(), contains('network-request-failed'));
     });
 
@@ -157,7 +167,8 @@ void main() {
 
     test('can be thrown and caught as Exception', () {
       expect(
-        () => throw AppleSignInException(error: AppleAuthError.invalidCredential),
+        () =>
+            throw AppleSignInException(error: AppleAuthError.invalidCredential),
         throwsA(isA<AppleSignInException>()),
       );
     });
@@ -185,13 +196,15 @@ void main() {
       );
     });
 
-    test('returns true for uppercase private relay domain (case-insensitive)',
-        () {
-      expect(
-        AuthService.isPrivateRelayEmail('user@PRIVATERELAY.APPLEID.COM'),
-        isTrue,
-      );
-    });
+    test(
+      'returns true for uppercase private relay domain (case-insensitive)',
+      () {
+        expect(
+          AuthService.isPrivateRelayEmail('user@PRIVATERELAY.APPLEID.COM'),
+          isTrue,
+        );
+      },
+    );
 
     test('returns true for mixed-case private relay domain', () {
       expect(

@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 class OnboardingWelcomeStep extends ConsumerWidget {
   final VoidCallback onNext;
 
-  const OnboardingWelcomeStep({
-    super.key,
-    required this.onNext,
-  });
+  const OnboardingWelcomeStep({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     final settingsAsync = ref.watch(userSettingsProvider);
-    final currentLanguage = settingsAsync.whenOrNull(
-      data: (settings) => settings.language,
-    ) ?? 'en';
+    final currentLanguage =
+        settingsAsync.whenOrNull(data: (settings) => settings.language) ?? 'en';
 
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -43,11 +39,7 @@ class OnboardingWelcomeStep extends ConsumerWidget {
           Column(
             children: [
               // App icon
-              Icon(
-                Icons.health_and_safety,
-                size: 80,
-                color: AppColors.primary,
-              ),
+              Icon(Icons.health_and_safety, size: 80, color: AppColors.primary),
               const SizedBox(height: AppSpacing.xl),
 
               // Welcome title
@@ -79,10 +71,7 @@ class OnboardingWelcomeStep extends ConsumerWidget {
                 text: l10n.onboardingFeature2,
               ),
               const SizedBox(height: AppSpacing.lg),
-              _FeatureRow(
-                icon: Icons.groups,
-                text: l10n.onboardingFeature3,
-              ),
+              _FeatureRow(icon: Icons.groups, text: l10n.onboardingFeature3),
             ],
           ),
 
@@ -123,7 +112,9 @@ class _LanguageSelector extends StatelessWidget {
         ),
         Text(
           ' | ',
-          style: textTheme.labelLarge?.copyWith(color: context.appColors.textMuted),
+          style: textTheme.labelLarge?.copyWith(
+            color: context.appColors.textMuted,
+          ),
         ),
         _LanguageButton(
           label: 'JP',
@@ -167,10 +158,7 @@ class _FeatureRow extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const _FeatureRow({
-    required this.icon,
-    required this.text,
-  });
+  const _FeatureRow({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -180,9 +168,7 @@ class _FeatureRow extends StatelessWidget {
       children: [
         Icon(icon, color: AppColors.primary, size: 28),
         const SizedBox(width: AppSpacing.lg),
-        Expanded(
-          child: Text(text, style: textTheme.bodyLarge),
-        ),
+        Expanded(child: Text(text, style: textTheme.bodyLarge)),
       ],
     );
   }

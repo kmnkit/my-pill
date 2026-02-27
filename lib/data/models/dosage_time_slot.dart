@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
 
 part 'dosage_time_slot.freezed.dart';
 part 'dosage_time_slot.g.dart';
@@ -27,9 +27,6 @@ abstract class DosageTimeSlot with _$DosageTimeSlot {
   /// Parses the [time] string ("HH:mm") into a [TimeOfDay].
   TimeOfDay get timeOfDay {
     final parts = time.split(':');
-    return TimeOfDay(
-      hour: int.parse(parts[0]),
-      minute: int.parse(parts[1]),
-    );
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
   }
 }

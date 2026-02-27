@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class DosageTimingSelector extends StatelessWidget {
   const DosageTimingSelector({
@@ -34,9 +34,7 @@ class DosageTimingSelector extends StatelessWidget {
             } else {
               updated.removeWhere((s) => s.timing == timing);
             }
-            updated.sort(
-              (a, b) => a.timing.index.compareTo(b.timing.index),
-            );
+            updated.sort((a, b) => a.timing.index.compareTo(b.timing.index));
             onChanged(updated);
           },
         );

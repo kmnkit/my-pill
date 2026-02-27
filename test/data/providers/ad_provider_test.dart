@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/providers/ad_provider.dart';
-import 'package:my_pill/data/services/ad_service.dart';
+import 'package:kusuridoki/data/providers/ad_provider.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
 
 void main() {
   group('adServiceProvider', () {
@@ -12,9 +12,7 @@ void main() {
     test('can be overridden with a value', () {
       final service = AdService();
       final container = ProviderContainer(
-        overrides: [
-          adServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [adServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
@@ -26,9 +24,7 @@ void main() {
     test('returns AdService instance when overridden', () {
       final service = AdService();
       final container = ProviderContainer(
-        overrides: [
-          adServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [adServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
@@ -39,9 +35,7 @@ void main() {
     test('setAdsRemoved updates state on overridden service', () {
       final service = AdService();
       final container = ProviderContainer(
-        overrides: [
-          adServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [adServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 

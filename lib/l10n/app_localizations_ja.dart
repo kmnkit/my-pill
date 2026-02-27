@@ -1239,9 +1239,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get inviteLinkGenerated => '招待リンクが生成されました！';
 
   @override
-  String failedToGenerateInvite(String error) {
-    return '招待の生成に失敗しました: $error';
-  }
+  String get failedToGenerateInvite => '招待の生成に失敗しました。もう一度お試しください。';
 
   @override
   String get cannotAddMoreCaregivers => 'これ以上介護者を追加できません';

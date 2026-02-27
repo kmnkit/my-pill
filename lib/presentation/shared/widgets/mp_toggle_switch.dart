@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 
 class MpToggleSwitch extends StatelessWidget {
   const MpToggleSwitch({

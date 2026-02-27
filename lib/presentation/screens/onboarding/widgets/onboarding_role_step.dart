@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
 
 enum UserRole { patient, caregiver }
 
@@ -70,11 +70,7 @@ class _OnboardingRoleStepState extends State<OnboardingRoleStep> {
           Column(
             children: [
               // Icon
-              Icon(
-                Icons.people_outline,
-                size: 80,
-                color: AppColors.primary,
-              ),
+              Icon(Icons.people_outline, size: 80, color: AppColors.primary),
               const SizedBox(height: AppSpacing.xl),
 
               // Title

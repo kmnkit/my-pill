@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class DaySelector extends StatefulWidget {
-  const DaySelector({
-    super.key,
-    this.onDaysChanged,
-  });
+  const DaySelector({super.key, this.onDaysChanged});
 
   final ValueChanged<List<int>>? onDaysChanged;
 
@@ -23,24 +20,24 @@ class _DaySelectorState extends State<DaySelector> {
   }
 
   List<String> _shortDays(AppLocalizations l10n) => [
-        l10n.dayMondayShort,
-        l10n.dayTuesdayShort,
-        l10n.dayWednesdayShort,
-        l10n.dayThursdayShort,
-        l10n.dayFridayShort,
-        l10n.daySaturdayShort,
-        l10n.daySundayShort,
-      ];
+    l10n.dayMondayShort,
+    l10n.dayTuesdayShort,
+    l10n.dayWednesdayShort,
+    l10n.dayThursdayShort,
+    l10n.dayFridayShort,
+    l10n.daySaturdayShort,
+    l10n.daySundayShort,
+  ];
 
   List<String> _fullDays(AppLocalizations l10n) => [
-        l10n.dayMonday,
-        l10n.dayTuesday,
-        l10n.dayWednesday,
-        l10n.dayThursday,
-        l10n.dayFriday,
-        l10n.daySaturday,
-        l10n.daySunday,
-      ];
+    l10n.dayMonday,
+    l10n.dayTuesday,
+    l10n.dayWednesday,
+    l10n.dayThursday,
+    l10n.dayFriday,
+    l10n.daySaturday,
+    l10n.daySunday,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +78,9 @@ class _DaySelectorState extends State<DaySelector> {
                 child: Text(
                   shortDays[index],
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: isSelected ? AppColors.textOnPrimary : context.appColors.textMuted,
+                    color: isSelected
+                        ? AppColors.textOnPrimary
+                        : context.appColors.textMuted,
                   ),
                 ),
               ),

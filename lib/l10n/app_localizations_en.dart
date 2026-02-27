@@ -1277,9 +1277,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inviteLinkGenerated => 'Invite link generated successfully!';
 
   @override
-  String failedToGenerateInvite(String error) {
-    return 'Failed to generate invite: $error';
-  }
+  String get failedToGenerateInvite =>
+      'Failed to generate invite. Please try again.';
 
   @override
   String get cannotAddMoreCaregivers => 'Cannot add more caregivers';

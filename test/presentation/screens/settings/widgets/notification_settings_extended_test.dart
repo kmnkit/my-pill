@@ -3,12 +3,12 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/notification_settings.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/notification_settings.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -37,23 +37,22 @@ UserProfile _profile({
   bool notificationsEnabled = true,
   bool criticalAlerts = false,
   int snoozeDuration = 15,
-}) =>
-    UserProfile(
-      id: 'test',
-      language: 'en',
-      highContrast: false,
-      textSize: 'normal',
-      notificationsEnabled: notificationsEnabled,
-      criticalAlerts: criticalAlerts,
-      snoozeDuration: snoozeDuration,
-      travelModeEnabled: false,
-      removeAds: false,
-      onboardingComplete: true,
-    );
+}) => UserProfile(
+  id: 'test',
+  language: 'en',
+  highContrast: false,
+  textSize: 'normal',
+  notificationsEnabled: notificationsEnabled,
+  criticalAlerts: criticalAlerts,
+  snoozeDuration: snoozeDuration,
+  travelModeEnabled: false,
+  removeAds: false,
+  onboardingComplete: true,
+);
 
 List<dynamic> _overrides(UserProfile p) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(p)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(p)),
+];
 
 // ---------------------------------------------------------------------------
 // Tests
@@ -65,8 +64,9 @@ void main() {
     // Error state renders SizedBox.shrink (no content)
     // -----------------------------------------------------------------------
 
-    testWidgets('error state renders SizedBox.shrink with no visible text',
-        (tester) async {
+    testWidgets('error state renders SizedBox.shrink with no visible text', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -121,8 +121,9 @@ void main() {
     // Snooze chip selection: each value selects correct chip color
     // -----------------------------------------------------------------------
 
-    testWidgets('snooze chip 5 is highlighted when snoozeDuration is 5',
-        (tester) async {
+    testWidgets('snooze chip 5 is highlighted when snoozeDuration is 5', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -135,18 +136,20 @@ void main() {
       final containers = tester
           .widgetList<Container>(find.byType(Container))
           .where((c) {
-        final decoration = c.decoration;
-        if (decoration is BoxDecoration) {
-          return decoration.color == AppColors.primary;
-        }
-        return false;
-      }).toList();
+            final decoration = c.decoration;
+            if (decoration is BoxDecoration) {
+              return decoration.color == AppColors.primary;
+            }
+            return false;
+          })
+          .toList();
 
       expect(containers, isNotEmpty);
     });
 
-    testWidgets('snooze chip 10 is highlighted when snoozeDuration is 10',
-        (tester) async {
+    testWidgets('snooze chip 10 is highlighted when snoozeDuration is 10', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -158,18 +161,20 @@ void main() {
       final containers = tester
           .widgetList<Container>(find.byType(Container))
           .where((c) {
-        final decoration = c.decoration;
-        if (decoration is BoxDecoration) {
-          return decoration.color == AppColors.primary;
-        }
-        return false;
-      }).toList();
+            final decoration = c.decoration;
+            if (decoration is BoxDecoration) {
+              return decoration.color == AppColors.primary;
+            }
+            return false;
+          })
+          .toList();
 
       expect(containers, isNotEmpty);
     });
 
-    testWidgets('snooze chip 30 is highlighted when snoozeDuration is 30',
-        (tester) async {
+    testWidgets('snooze chip 30 is highlighted when snoozeDuration is 30', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -181,12 +186,13 @@ void main() {
       final containers = tester
           .widgetList<Container>(find.byType(Container))
           .where((c) {
-        final decoration = c.decoration;
-        if (decoration is BoxDecoration) {
-          return decoration.color == AppColors.primary;
-        }
-        return false;
-      }).toList();
+            final decoration = c.decoration;
+            if (decoration is BoxDecoration) {
+              return decoration.color == AppColors.primary;
+            }
+            return false;
+          })
+          .toList();
 
       expect(containers, isNotEmpty);
     });
@@ -251,8 +257,9 @@ void main() {
       expect(find.text('Snooze Duration'), findsOneWidget);
     });
 
-    testWidgets('tapping already-selected snooze chip 15 does not throw',
-        (tester) async {
+    testWidgets('tapping already-selected snooze chip 15 does not throw', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -274,8 +281,9 @@ void main() {
     // criticalAlerts = true: toggle reflects state
     // -----------------------------------------------------------------------
 
-    testWidgets('critical alerts toggle present when criticalAlerts is true',
-        (tester) async {
+    testWidgets('critical alerts toggle present when criticalAlerts is true', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -291,13 +299,15 @@ void main() {
     // notificationsEnabled = false: widget still renders
     // -----------------------------------------------------------------------
 
-    testWidgets('push notifications disabled: widget renders without error',
-        (tester) async {
+    testWidgets('push notifications disabled: widget renders without error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
           overrides: _overrides(
-              _profile(notificationsEnabled: false, criticalAlerts: true)),
+            _profile(notificationsEnabled: false, criticalAlerts: true),
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -310,8 +320,9 @@ void main() {
     // Dark theme: card background uses AppColors.cardDark
     // -----------------------------------------------------------------------
 
-    testWidgets('renders in dark theme and non-selected chip uses dark color',
-        (tester) async {
+    testWidgets('renders in dark theme and non-selected chip uses dark color', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         _DarkThemeWrapper(
           overrides: _overrides(_profile(snoozeDuration: 5)),
@@ -324,12 +335,13 @@ void main() {
       final containers = tester
           .widgetList<Container>(find.byType(Container))
           .where((c) {
-        final decoration = c.decoration;
-        if (decoration is BoxDecoration) {
-          return decoration.color == AppColors.cardDark;
-        }
-        return false;
-      }).toList();
+            final decoration = c.decoration;
+            if (decoration is BoxDecoration) {
+              return decoration.color == AppColors.cardDark;
+            }
+            return false;
+          })
+          .toList();
 
       // At least three non-selected chips should exist (5 is selected)
       expect(containers.length, greaterThanOrEqualTo(3));
@@ -339,8 +351,9 @@ void main() {
     // All 4 snooze chips text present
     // -----------------------------------------------------------------------
 
-    testWidgets('all four snooze chip minute labels are rendered',
-        (tester) async {
+    testWidgets('all four snooze chip minute labels are rendered', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -375,22 +388,24 @@ void main() {
       expect(semantics.hasFlag(SemanticsFlag.isSelected), isTrue);
     });
 
-    testWidgets('snooze chip 5 has Semantics selected=false when not selected',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const NotificationSettings(),
-          overrides: _overrides(_profile(snoozeDuration: 15)),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'snooze chip 5 has Semantics selected=false when not selected',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const NotificationSettings(),
+            overrides: _overrides(_profile(snoozeDuration: 15)),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // chip 5 is NOT selected
-      final semantics = tester.getSemantics(
-        find.bySemanticsLabel(RegExp(r'^5')).first,
-      );
-      expect(semantics.hasFlag(SemanticsFlag.isSelected), isFalse);
-    });
+        // chip 5 is NOT selected
+        final semantics = tester.getSemantics(
+          find.bySemanticsLabel(RegExp(r'^5')).first,
+        );
+        expect(semantics.hasFlag(SemanticsFlag.isSelected), isFalse);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Wrap widget is rendered
@@ -415,10 +430,7 @@ void main() {
 // ---------------------------------------------------------------------------
 
 class _DarkThemeWrapper extends StatelessWidget {
-  const _DarkThemeWrapper({
-    required this.child,
-    required this.overrides,
-  });
+  const _DarkThemeWrapper({required this.child, required this.overrides});
 
   final Widget child;
   final List<dynamic> overrides;

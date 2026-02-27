@@ -2,12 +2,12 @@ import 'package:firebase_auth_platform_interface/firebase_auth_platform_interfac
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/backup_sync_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
@@ -65,26 +65,22 @@ class _FakeFirebaseAuthPlatform extends FirebaseAuthPlatform
       Stream<UserPlatform?>.value(_user);
 
   @override
-  Stream<UserPlatform?> idTokenChanges() =>
-      Stream<UserPlatform?>.value(_user);
+  Stream<UserPlatform?> idTokenChanges() => Stream<UserPlatform?>.value(_user);
 
   @override
-  Stream<UserPlatform?> userChanges() =>
-      Stream<UserPlatform?>.value(_user);
+  Stream<UserPlatform?> userChanges() => Stream<UserPlatform?>.value(_user);
 
   @override
   FirebaseAuthPlatform delegateFor({
     required FirebaseApp app,
     Persistence? persistence,
-  }) =>
-      this;
+  }) => this;
 
   @override
   FirebaseAuthPlatform setInitialValues({
     PigeonUserDetails? currentUser,
     String? languageCode,
-  }) =>
-      this;
+  }) => this;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -131,8 +127,9 @@ void main() {
     // Auto-sync toggle: off -> on
     // -----------------------------------------------------------------------
 
-    testWidgets('toggling auto-sync OFF then ON restores true value',
-        (tester) async {
+    testWidgets('toggling auto-sync OFF then ON restores true value', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -162,37 +159,37 @@ void main() {
     // -----------------------------------------------------------------------
 
     testWidgets(
-        'Sync Now button shows Syncing label while sync is in progress',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildSlowOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'Sync Now button shows Syncing label while sync is in progress',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildSlowOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap Sync Now — triggers _syncNow; FirebaseAuth.instance.currentUser is
-      // null in tests, so a snackbar is shown immediately instead of entering
-      // the slow path. We verify the button is in its initial enabled state.
-      expect(find.text('Sync Now'), findsOneWidget);
-      expect(find.text('Syncing...'), findsNothing);
+        // Tap Sync Now — triggers _syncNow; FirebaseAuth.instance.currentUser is
+        // null in tests, so a snackbar is shown immediately instead of entering
+        // the slow path. We verify the button is in its initial enabled state.
+        expect(find.text('Sync Now'), findsOneWidget);
+        expect(find.text('Syncing...'), findsNothing);
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
-      final syncButton = buttons.firstWhere(
-        (b) => b.label == 'Sync Now',
-        orElse: () => throw TestFailure('No Sync Now button found'),
-      );
-      // Before tapping, onPressed is non-null (enabled)
-      expect(syncButton.onPressed, isNotNull);
-    });
+        final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+        final syncButton = buttons.firstWhere(
+          (b) => b.label == 'Sync Now',
+          orElse: () => throw TestFailure('No Sync Now button found'),
+        );
+        // Before tapping, onPressed is non-null (enabled)
+        expect(syncButton.onPressed, isNotNull);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Sync Now button initial state
     // -----------------------------------------------------------------------
 
-    testWidgets('Sync Now button is enabled on initial render',
-        (tester) async {
+    testWidgets('Sync Now button is enabled on initial render', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -298,32 +295,33 @@ void main() {
     // -----------------------------------------------------------------------
 
     testWidgets(
-        'BackupSyncDialog.show creates a dialog in existing Navigator context',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          Builder(
-            builder: (context) => TextButton(
-              onPressed: () => BackupSyncDialog.show(context),
-              child: const Text('Open'),
+      'BackupSyncDialog.show creates a dialog in existing Navigator context',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            Builder(
+              builder: (context) => TextButton(
+                onPressed: () => BackupSyncDialog.show(context),
+                child: const Text('Open'),
+              ),
             ),
+            overrides: _buildOverrides(),
           ),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Open'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(BackupSyncDialog), findsOneWidget);
+        expect(find.byType(BackupSyncDialog), findsOneWidget);
 
-      // Dismiss via Close
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
+        // Dismiss via Close
+        await tester.tap(find.text('Close'));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(BackupSyncDialog), findsNothing);
-    });
+        expect(find.byType(BackupSyncDialog), findsNothing);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Column layout root
@@ -345,8 +343,9 @@ void main() {
     // Sync Now button cloud_upload icon is removed during syncing
     // -----------------------------------------------------------------------
 
-    testWidgets('Sync Now button has cloud_upload icon when not syncing',
-        (tester) async {
+    testWidgets('Sync Now button has cloud_upload icon when not syncing', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -362,8 +361,9 @@ void main() {
     // ConsumerStatefulWidget: state is preserved across rebuilds
     // -----------------------------------------------------------------------
 
-    testWidgets('toggling switch preserves other dialog content',
-        (tester) async {
+    testWidgets('toggling switch preserves other dialog content', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -416,29 +416,30 @@ void main() {
     });
 
     testWidgets(
-        'tapping Sync Now when not signed in shows Sign in to sync snackbar',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'tapping Sync Now when not signed in shows Sign in to sync snackbar',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap the Sync Now button — currentUser is null so the snackbar branch runs.
-      await tester.tap(find.text('Sync Now'));
-      // Pump once to process the tap callback and show the SnackBar.
-      await tester.pump();
-      // Pump a short duration so the SnackBar animation starts rendering.
-      await tester.pump(const Duration(milliseconds: 100));
+        // Tap the Sync Now button — currentUser is null so the snackbar branch runs.
+        await tester.tap(find.text('Sync Now'));
+        // Pump once to process the tap callback and show the SnackBar.
+        await tester.pump();
+        // Pump a short duration so the SnackBar animation starts rendering.
+        await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Sign in to sync data'), findsOneWidget);
-    });
+        expect(find.text('Sign in to sync data'), findsOneWidget);
+      },
+    );
 
-    testWidgets(
-        'dialog remains open after Sync Now tap when not signed in',
-        (tester) async {
+    testWidgets('dialog remains open after Sync Now tap when not signed in', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -458,33 +459,34 @@ void main() {
     });
 
     testWidgets(
-        'Sync Now button is still enabled after null-user tap (not in syncing state)',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'Sync Now button is still enabled after null-user tap (not in syncing state)',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Sync Now'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
+        await tester.tap(find.text('Sync Now'));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
 
-      // The _isSyncing flag was never set to true because the method returned
-      // early at the null-user guard, so the button stays enabled and shows
-      // "Sync Now" (not "Syncing...").
-      expect(find.text('Sync Now'), findsOneWidget);
-      expect(find.text('Syncing...'), findsNothing);
+        // The _isSyncing flag was never set to true because the method returned
+        // early at the null-user guard, so the button stays enabled and shows
+        // "Sync Now" (not "Syncing...").
+        expect(find.text('Sync Now'), findsOneWidget);
+        expect(find.text('Syncing...'), findsNothing);
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
-      final syncButton = buttons.firstWhere(
-        (b) => b.label == 'Sync Now',
-        orElse: () => throw TestFailure('No Sync Now button found'),
-      );
-      expect(syncButton.onPressed, isNotNull);
-    });
+        final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+        final syncButton = buttons.firstWhere(
+          (b) => b.label == 'Sync Now',
+          orElse: () => throw TestFailure('No Sync Now button found'),
+        );
+        expect(syncButton.onPressed, isNotNull);
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------
@@ -514,118 +516,122 @@ void main() {
     });
 
     testWidgets(
-        'tapping Sync Now when signed in sets _isSyncing=true then catches error and resets',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'tapping Sync Now when signed in sets _isSyncing=true then catches error and resets',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Initially the button shows "Sync Now" (not syncing).
-      expect(find.text('Sync Now'), findsOneWidget);
-      expect(find.text('Syncing...'), findsNothing);
+        // Initially the button shows "Sync Now" (not syncing).
+        expect(find.text('Sync Now'), findsOneWidget);
+        expect(find.text('Syncing...'), findsNothing);
 
-      // Tap Sync Now — _isSyncing becomes true synchronously after setState,
-      // then the async work (providers + FirestoreService) proceeds.
-      await tester.tap(find.text('Sync Now'));
+        // Tap Sync Now — _isSyncing becomes true synchronously after setState,
+        // then the async work (providers + FirestoreService) proceeds.
+        await tester.tap(find.text('Sync Now'));
 
-      // Pump multiple short frames to let setState + async futures + catch all run.
-      for (int i = 0; i < 10; i++) {
-        await tester.pump(const Duration(milliseconds: 100));
-      }
+        // Pump multiple short frames to let setState + async futures + catch all run.
+        for (int i = 0; i < 10; i++) {
+          await tester.pump(const Duration(milliseconds: 100));
+        }
 
-      // After the catch block executes, _isSyncing is reset to false.
-      // The dialog stays open and the button is enabled again.
-      expect(find.text('Backup & Sync'), findsOneWidget);
-    });
-
-    testWidgets(
-        'authenticated Sync Now tap triggers catch block and resets syncing state',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Before tap: button shows "Sync Now".
-      expect(find.text('Sync Now'), findsOneWidget);
-
-      await tester.tap(find.text('Sync Now'));
-
-      // Pump one frame: setState(_isSyncing = true) has executed.
-      await tester.pump();
-
-      // Pump enough frames for the async _syncNow to proceed through
-      // provider reads, FirestoreService construction (which throws in tests
-      // because Firestore is not configured), and the catch block.
-      for (int i = 0; i < 10; i++) {
-        await tester.pump(const Duration(milliseconds: 100));
-      }
-
-      // After the catch block, _isSyncing is reset to false.
-      // The button label returns to "Sync Now" confirming the catch ran.
-      expect(find.text('Sync Now'), findsOneWidget);
-      expect(find.text('Syncing...'), findsNothing);
-
-      // A SnackBar is shown by the catch block (syncFailed message).
-      expect(find.byType(SnackBar), findsOneWidget);
-    });
+        // After the catch block executes, _isSyncing is reset to false.
+        // The dialog stays open and the button is enabled again.
+        expect(find.text('Backup & Sync'), findsOneWidget);
+      },
+    );
 
     testWidgets(
-        'authenticated Sync Now tap: button returns to enabled state after catch',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'authenticated Sync Now tap triggers catch block and resets syncing state',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Sync Now'));
-      for (int i = 0; i < 10; i++) {
-        await tester.pump(const Duration(milliseconds: 100));
-      }
+        // Before tap: button shows "Sync Now".
+        expect(find.text('Sync Now'), findsOneWidget);
 
-      // After the catch block, _isSyncing is false → button label is "Sync Now"
-      // again and onPressed is non-null.
-      expect(find.text('Sync Now'), findsOneWidget);
-      expect(find.text('Syncing...'), findsNothing);
+        await tester.tap(find.text('Sync Now'));
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
-      final syncBtn = buttons.firstWhere(
-        (b) => b.label == 'Sync Now',
-        orElse: () => throw TestFailure('No Sync Now button found'),
-      );
-      expect(syncBtn.onPressed, isNotNull);
-    });
+        // Pump one frame: setState(_isSyncing = true) has executed.
+        await tester.pump();
+
+        // Pump enough frames for the async _syncNow to proceed through
+        // provider reads, FirestoreService construction (which throws in tests
+        // because Firestore is not configured), and the catch block.
+        for (int i = 0; i < 10; i++) {
+          await tester.pump(const Duration(milliseconds: 100));
+        }
+
+        // After the catch block, _isSyncing is reset to false.
+        // The button label returns to "Sync Now" confirming the catch ran.
+        expect(find.text('Sync Now'), findsOneWidget);
+        expect(find.text('Syncing...'), findsNothing);
+
+        // A SnackBar is shown by the catch block (syncFailed message).
+        expect(find.byType(SnackBar), findsOneWidget);
+      },
+    );
 
     testWidgets(
-        'authenticated Sync Now tap: dialog content stays visible after catch',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const BackupSyncDialog(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      'authenticated Sync Now tap: button returns to enabled state after catch',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Sync Now'));
-      for (int i = 0; i < 10; i++) {
-        await tester.pump(const Duration(milliseconds: 100));
-      }
+        await tester.tap(find.text('Sync Now'));
+        for (int i = 0; i < 10; i++) {
+          await tester.pump(const Duration(milliseconds: 100));
+        }
 
-      // Dialog is not dismissed after a sync failure.
-      expect(find.text('Backup & Sync'), findsOneWidget);
-      expect(find.byType(SwitchListTile), findsOneWidget);
-      expect(find.text('Close'), findsOneWidget);
-    });
+        // After the catch block, _isSyncing is false → button label is "Sync Now"
+        // again and onPressed is non-null.
+        expect(find.text('Sync Now'), findsOneWidget);
+        expect(find.text('Syncing...'), findsNothing);
+
+        final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+        final syncBtn = buttons.firstWhere(
+          (b) => b.label == 'Sync Now',
+          orElse: () => throw TestFailure('No Sync Now button found'),
+        );
+        expect(syncBtn.onPressed, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'authenticated Sync Now tap: dialog content stays visible after catch',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const BackupSyncDialog(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Sync Now'));
+        for (int i = 0; i < 10; i++) {
+          await tester.pump(const Duration(milliseconds: 100));
+        }
+
+        // Dialog is not dismissed after a sync failure.
+        expect(find.text('Backup & Sync'), findsOneWidget);
+        expect(find.byType(SwitchListTile), findsOneWidget);
+        expect(find.text('Close'), findsOneWidget);
+      },
+    );
   });
 }

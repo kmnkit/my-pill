@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/patient_card.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_card.dart';
 
 class PatientDataCard extends ConsumerWidget {
   const PatientDataCard({
@@ -20,7 +20,8 @@ class PatientDataCard extends ConsumerWidget {
   String _getInitials(String name) {
     final parts = name.trim().split(' ');
     if (parts.isEmpty) return '';
-    if (parts.length == 1) return parts[0].isEmpty ? '?' : parts[0][0].toUpperCase();
+    if (parts.length == 1)
+      return parts[0].isEmpty ? '?' : parts[0][0].toUpperCase();
     return '${parts[0][0]}${parts[parts.length - 1][0]}'.toUpperCase();
   }
 
@@ -28,7 +29,9 @@ class PatientDataCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final adherenceAsync = ref.watch(patientDailyAdherenceProvider(patientId));
-    final medicationsAsync = ref.watch(patientMedicationStatusProvider(patientId));
+    final medicationsAsync = ref.watch(
+      patientMedicationStatusProvider(patientId),
+    );
 
     final adherenceText = adherenceAsync.when(
       loading: () => l10n.loading,
@@ -89,8 +92,8 @@ class PatientDataCard extends ConsumerWidget {
                     Text(
                       l10n.loadingAdherence,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: context.appColors.textMuted,
-                          ),
+                        color: context.appColors.textMuted,
+                      ),
                     ),
                   ],
                 ),

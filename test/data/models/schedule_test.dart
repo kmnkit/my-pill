@@ -1,32 +1,32 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/schedule.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
 
 void main() {
   group('Schedule', () {
     Schedule buildFull() => Schedule(
-          id: 'sched-001',
-          medicationId: 'med-001',
-          type: ScheduleType.specificDays,
-          dosageSlots: [
-            const DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
-            const DosageTimeSlot(timing: DosageTiming.noon, time: '13:00'),
-            const DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
-          ],
-          specificDays: const [1, 3, 5],
-          intervalHours: 8,
-          timezoneMode: TimezoneMode.localTime,
-          isActive: false,
-        );
+      id: 'sched-001',
+      medicationId: 'med-001',
+      type: ScheduleType.specificDays,
+      dosageSlots: [
+        const DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+        const DosageTimeSlot(timing: DosageTiming.noon, time: '13:00'),
+        const DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+      ],
+      specificDays: const [1, 3, 5],
+      intervalHours: 8,
+      timezoneMode: TimezoneMode.localTime,
+      isActive: false,
+    );
 
     Schedule buildMinimal() => const Schedule(
-          id: 'sched-002',
-          medicationId: 'med-002',
-          type: ScheduleType.daily,
-        );
+      id: 'sched-002',
+      medicationId: 'med-002',
+      type: ScheduleType.daily,
+    );
 
     group('dosageSlots', () {
       test('creates Schedule with dosageSlots correctly', () {
@@ -34,9 +34,7 @@ void main() {
           id: 'sched-1',
           medicationId: 'med-1',
           type: ScheduleType.daily,
-          dosageSlots: [
-            DosageTimeSlot.withDefault(DosageTiming.morning),
-          ],
+          dosageSlots: [DosageTimeSlot.withDefault(DosageTiming.morning)],
         );
 
         expect(schedule.dosageSlots, hasLength(1));
@@ -205,9 +203,7 @@ void main() {
           id: 'sched-1',
           medicationId: 'med-1',
           type: ScheduleType.daily,
-          dosageSlots: [
-            DosageTimeSlot.withDefault(DosageTiming.morning),
-          ],
+          dosageSlots: [DosageTimeSlot.withDefault(DosageTiming.morning)],
         );
 
         final json = schedule.toJson();
@@ -239,9 +235,7 @@ void main() {
 
       test('copies with modified dosageSlots', () {
         final original = buildFull();
-        final newSlots = [
-          DosageTimeSlot.withDefault(DosageTiming.bedtime),
-        ];
+        final newSlots = [DosageTimeSlot.withDefault(DosageTiming.bedtime)];
         final copied = original.copyWith(dosageSlots: newSlots);
 
         expect(copied.dosageSlots, newSlots);
@@ -300,9 +294,9 @@ void main() {
 
       test('instances with different dosageSlots are not equal', () {
         final a = buildFull();
-        final b = a.copyWith(dosageSlots: [
-          DosageTimeSlot.withDefault(DosageTiming.morning),
-        ]);
+        final b = a.copyWith(
+          dosageSlots: [DosageTimeSlot.withDefault(DosageTiming.morning)],
+        );
 
         expect(a, isNot(equals(b)));
       });

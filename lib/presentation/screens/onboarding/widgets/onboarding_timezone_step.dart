@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/timezone_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 /// Common timezones curated list - major cities and regions
 const _commonTimezones = [
@@ -152,11 +152,7 @@ class _OnboardingTimezoneStepState
           Column(
             children: [
               // Icon
-              Icon(
-                Icons.access_time,
-                size: 80,
-                color: AppColors.primary,
-              ),
+              Icon(Icons.access_time, size: 80, color: AppColors.primary),
               const SizedBox(height: AppSpacing.xl),
 
               // Title
@@ -365,8 +361,9 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
                         title: Text(
                           displayName,
                           style: textTheme.titleMedium?.copyWith(
-                            fontWeight:
-                                isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                         subtitle: Text(

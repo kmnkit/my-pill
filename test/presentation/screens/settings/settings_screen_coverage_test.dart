@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -64,31 +64,38 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll to reveal premium banner
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -600));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -600),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
     });
 
-    testWidgets('shows already premium banner for premium user', (tester) async {
+    testWidgets('shows already premium banner for premium user', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
-          overrides: _buildOverrides(
-            isPremium: true,
-            status: _premiumStatus,
-          ),
+          overrides: _buildOverrides(isPremium: true, status: _premiumStatus),
         ),
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -600));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -600),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
     });
 
-    testWidgets('shows error state with errorLoadingSettings message', (tester) async {
+    testWidgets('shows error state with errorLoadingSettings message', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -131,7 +138,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1200));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Log Out'), findsOneWidget);
@@ -146,13 +156,18 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1200));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Delete Account'), findsOneWidget);
     });
 
-    testWidgets('tapping data sharing preferences tile does not throw', (tester) async {
+    testWidgets('tapping data sharing preferences tile does not throw', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -162,7 +177,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll to reveal the tile
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -400),
+      );
       await tester.pumpAndSettle();
 
       final tile = find.text('Data Sharing Preferences');
@@ -171,7 +189,10 @@ void main() {
       await tester.tap(tile);
       await tester.pumpAndSettle();
       // Dialog appears
-      expect(find.text('Control what information you share with your caregivers'), findsOneWidget);
+      expect(
+        find.text('Control what information you share with your caregivers'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('app version tile shows no chevron (no onTap)', (tester) async {
@@ -197,7 +218,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1500));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1500),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Switch to Caregiver View'), findsOneWidget);
@@ -243,7 +267,9 @@ void main() {
       expect(find.text('Settings'), findsOneWidget);
     });
 
-    testWidgets('loading state shows CircularProgressIndicator', (tester) async {
+    testWidgets('loading state shows CircularProgressIndicator', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -260,8 +286,9 @@ void main() {
     // =========================================================================
     // Backup & Sync tile opens dialog
     // =========================================================================
-    testWidgets('tapping backup and sync tile opens BackupSyncDialog',
-        (tester) async {
+    testWidgets('tapping backup and sync tile opens BackupSyncDialog', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -271,7 +298,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -500));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -500),
+      );
       await tester.pumpAndSettle();
 
       final tile = find.text('Backup & Sync');
@@ -298,7 +327,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -400));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -400),
+      );
       await tester.pumpAndSettle();
 
       final tile = find.text('Privacy Policy');
@@ -312,7 +343,9 @@ void main() {
     // =========================================================================
     // Terms of Service tile is tappable
     // =========================================================================
-    testWidgets('terms of service tile is visible and tappable', (tester) async {
+    testWidgets('terms of service tile is visible and tappable', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -322,7 +355,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -400));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -400),
+      );
       await tester.pumpAndSettle();
 
       final tile = find.text('Terms of Service');
@@ -335,40 +370,45 @@ void main() {
     // =========================================================================
     // Deactivate account dialog — cancel does not call signOut
     // =========================================================================
-    testWidgets('tapping log out tile opens confirm dialog and cancel dismisses it',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const SettingsScreen(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'tapping log out tile opens confirm dialog and cancel dismisses it',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const SettingsScreen(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
-      await tester.pumpAndSettle();
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -1200),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Log Out'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Log Out'));
+        await tester.pumpAndSettle();
 
-      // Confirm dialog should appear
-      expect(find.text('Log Out'), findsWidgets);
-      expect(find.text('Cancel'), findsOneWidget);
+        // Confirm dialog should appear
+        expect(find.text('Log Out'), findsWidgets);
+        expect(find.text('Cancel'), findsOneWidget);
 
-      // Tap cancel
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
+        // Tap cancel
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
 
-      // Dialog dismissed — settings screen still shown
-      expect(find.text('Settings'), findsOneWidget);
-    });
+        // Dialog dismissed — settings screen still shown
+        expect(find.text('Settings'), findsOneWidget);
+      },
+    );
 
     // =========================================================================
     // Delete account — first confirm dialog appears then cancel dismisses
     // =========================================================================
-    testWidgets('tapping delete account opens first confirm dialog',
-        (tester) async {
+    testWidgets('tapping delete account opens first confirm dialog', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -378,7 +418,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Delete Account'));
@@ -399,8 +441,9 @@ void main() {
     // =========================================================================
     // Delete account — two-step confirmation flow shows second dialog
     // =========================================================================
-    testWidgets('delete account two-step dialog shows second confirmation',
-        (tester) async {
+    testWidgets('delete account two-step dialog shows second confirmation', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -410,7 +453,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Delete Account'));
@@ -433,8 +478,9 @@ void main() {
     // =========================================================================
     // Retry button in error state calls invalidate
     // =========================================================================
-    testWidgets('tapping retry in error state re-triggers provider load',
-        (tester) async {
+    testWidgets('tapping retry in error state re-triggers provider load', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -459,7 +505,9 @@ void main() {
     // =========================================================================
     // Advanced section header is rendered
     // =========================================================================
-    testWidgets('advanced section header is visible after scroll', (tester) async {
+    testWidgets('advanced section header is visible after scroll', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -469,7 +517,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Advanced'), findsOneWidget);
@@ -478,8 +528,9 @@ void main() {
     // =========================================================================
     // Switch to caregiver view button navigates (GoRouter not wired — no crash)
     // =========================================================================
-    testWidgets('tapping switch to caregiver view button does not throw',
-        (tester) async {
+    testWidgets('tapping switch to caregiver view button does not throw', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -489,7 +540,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1500));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1500),
+      );
       await tester.pumpAndSettle();
 
       final btn = find.text('Switch to Caregiver View');
@@ -502,7 +555,9 @@ void main() {
     // =========================================================================
     // About section version string format
     // =========================================================================
-    testWidgets('about section shows version string with numbers', (tester) async {
+    testWidgets('about section shows version string with numbers', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -533,8 +588,9 @@ void main() {
     // =========================================================================
     // Backup & Sync dialog shows last sync row and close button
     // =========================================================================
-    testWidgets('backup sync dialog shows last sync and close button',
-        (tester) async {
+    testWidgets('backup sync dialog shows last sync and close button', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -544,7 +600,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -500));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -500),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Backup & Sync'));

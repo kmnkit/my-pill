@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:my_pill/core/utils/photo_encryption.dart';
+import 'package:kusuridoki/core/utils/photo_encryption.dart';
 
 void main() {
   group('PhotoEncryption', () {
@@ -36,15 +36,12 @@ void main() {
       expect(encPath, endsWith('.enc'));
       expect(File(encPath).existsSync(), isTrue);
 
-      final decrypted =
-          await PhotoEncryption.decryptFromFile(encPath, testKey);
+      final decrypted = await PhotoEncryption.decryptFromFile(encPath, testKey);
       expect(decrypted, equals(originalBytes));
     });
 
     test('encrypted file differs from original bytes', () async {
-      final originalBytes = Uint8List.fromList(
-        List.generate(256, (i) => i),
-      );
+      final originalBytes = Uint8List.fromList(List.generate(256, (i) => i));
       final destPath = '${tempDir.path}/test_photo2';
 
       final encPath = await PhotoEncryption.encryptAndSave(
@@ -78,20 +75,22 @@ void main() {
       expect(encPath, equals('$destPath.enc'));
     });
 
-    test('encryptAndSave preserves .enc extension if already present',
-        () async {
-      final bytes = Uint8List.fromList([1, 2, 3, 4, 5]);
-      final destPath = '${tempDir.path}/already.enc';
+    test(
+      'encryptAndSave preserves .enc extension if already present',
+      () async {
+        final bytes = Uint8List.fromList([1, 2, 3, 4, 5]);
+        final destPath = '${tempDir.path}/already.enc';
 
-      final encPath = await PhotoEncryption.encryptAndSave(
-        bytes,
-        destPath,
-        testKey,
-      );
+        final encPath = await PhotoEncryption.encryptAndSave(
+          bytes,
+          destPath,
+          testKey,
+        );
 
-      expect(encPath, equals(destPath));
-      expect(encPath, isNot(endsWith('.enc.enc')));
-    });
+        expect(encPath, equals(destPath));
+        expect(encPath, isNot(endsWith('.enc.enc')));
+      },
+    );
 
     test('roundtrip works with empty bytes', () async {
       final originalBytes = Uint8List(0);
@@ -103,13 +102,11 @@ void main() {
         testKey,
       );
 
-      final decrypted =
-          await PhotoEncryption.decryptFromFile(encPath, testKey);
+      final decrypted = await PhotoEncryption.decryptFromFile(encPath, testKey);
       expect(decrypted, equals(originalBytes));
     });
 
-    test('roundtrip works with large payload (simulating real JPEG)',
-        () async {
+    test('roundtrip works with large payload (simulating real JPEG)', () async {
       // ~500KB simulated JPEG
       final originalBytes = Uint8List.fromList(
         List.generate(500 * 1024, (i) => i % 256),
@@ -122,8 +119,7 @@ void main() {
         testKey,
       );
 
-      final decrypted =
-          await PhotoEncryption.decryptFromFile(encPath, testKey);
+      final decrypted = await PhotoEncryption.decryptFromFile(encPath, testKey);
       expect(decrypted, equals(originalBytes));
     });
   });

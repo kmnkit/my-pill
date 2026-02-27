@@ -1,16 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
 
 void main() {
   group('SubscriptionStatus', () {
     final expiresAt = DateTime.utc(2024, 12, 31);
 
     SubscriptionStatus buildFull() => SubscriptionStatus(
-          isPremium: true,
-          productId: 'com.ginger.mypill.premium.monthly',
-          expiresAt: expiresAt,
-          platform: SubscriptionPlatform.appStore,
-        );
+      isPremium: true,
+      productId: 'com.ginger.mypill.premium.monthly',
+      expiresAt: expiresAt,
+      platform: SubscriptionPlatform.appStore,
+    );
 
     SubscriptionStatus buildMinimal() => const SubscriptionStatus();
 
@@ -100,8 +100,9 @@ void main() {
 
       test('copies with modified productId', () {
         final original = buildFull();
-        final copied =
-            original.copyWith(productId: 'com.ginger.mypill.premium.annual');
+        final copied = original.copyWith(
+          productId: 'com.ginger.mypill.premium.annual',
+        );
 
         expect(copied.productId, 'com.ginger.mypill.premium.annual');
         expect(copied.isPremium, original.isPremium);
@@ -109,8 +110,9 @@ void main() {
 
       test('copies with modified platform', () {
         final original = buildFull();
-        final copied =
-            original.copyWith(platform: SubscriptionPlatform.playStore);
+        final copied = original.copyWith(
+          platform: SubscriptionPlatform.playStore,
+        );
 
         expect(copied.platform, SubscriptionPlatform.playStore);
         expect(copied.isPremium, original.isPremium);
@@ -215,17 +217,24 @@ void main() {
 
     group('SubscriptionPlatform enum', () {
       test('has none value', () {
-        expect(SubscriptionPlatform.values, contains(SubscriptionPlatform.none));
+        expect(
+          SubscriptionPlatform.values,
+          contains(SubscriptionPlatform.none),
+        );
       });
 
       test('has appStore value', () {
         expect(
-            SubscriptionPlatform.values, contains(SubscriptionPlatform.appStore));
+          SubscriptionPlatform.values,
+          contains(SubscriptionPlatform.appStore),
+        );
       });
 
       test('has playStore value', () {
-        expect(SubscriptionPlatform.values,
-            contains(SubscriptionPlatform.playStore));
+        expect(
+          SubscriptionPlatform.values,
+          contains(SubscriptionPlatform.playStore),
+        );
       });
     });
   });

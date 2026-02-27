@@ -2465,8 +2465,8 @@ abstract class AppLocalizations {
   /// No description provided for @failedToGenerateInvite.
   ///
   /// In en, this message translates to:
-  /// **'Failed to generate invite: {error}'**
-  String failedToGenerateInvite(String error);
+  /// **'Failed to generate invite. Please try again.'**
+  String get failedToGenerateInvite;
 
   /// No description provided for @cannotAddMoreCaregivers.
   ///

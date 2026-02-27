@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/presentation/screens/home/widgets/medication_timeline.dart';
-import 'package:my_pill/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/medication_timeline.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -75,9 +75,7 @@ List<dynamic> _buildOverrides({
 
   // Override each individual medication provider
   for (final med in medications) {
-    overrides.add(
-      medicationProvider(med.id).overrideWith((ref) async => med),
-    );
+    overrides.add(medicationProvider(med.id).overrideWith((ref) async => med));
   }
 
   return overrides;
@@ -109,7 +107,9 @@ void main() {
       expect(find.byIcon(Icons.calendar_today), findsOneWidget);
     });
 
-    testWidgets('renders timeline card for each reminder with medication', (tester) async {
+    testWidgets('renders timeline card for each reminder with medication', (
+      tester,
+    ) async {
       final med1 = _makeMedication(id: 'med-1', name: 'Aspirin');
       final med2 = _makeMedication(id: 'med-2', name: 'Vitamin C');
       final reminders = [
@@ -140,10 +140,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationTimeline(),
-          overrides: _buildOverrides(
-            reminders: reminders,
-            medications: [med],
-          ),
+          overrides: _buildOverrides(reminders: reminders, medications: [med]),
         ),
       );
       await tester.pumpAndSettle();
@@ -167,7 +164,11 @@ void main() {
     testWidgets('renders taken status reminder', (tester) async {
       final med = _makeMedication(id: 'med-1', name: 'Lisinopril');
       final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1', status: ReminderStatus.taken),
+        _makeReminder(
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.taken,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -183,10 +184,16 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
     });
 
-    testWidgets('renders pending reminder with mark-taken button', (tester) async {
+    testWidgets('renders pending reminder with mark-taken button', (
+      tester,
+    ) async {
       final med = _makeMedication(id: 'med-1', name: 'Atorvastatin');
       final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1', status: ReminderStatus.pending),
+        _makeReminder(
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.pending,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -201,10 +208,16 @@ void main() {
       expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
     });
 
-    testWidgets('renders skipped reminder without action button', (tester) async {
+    testWidgets('renders skipped reminder without action button', (
+      tester,
+    ) async {
       final med = _makeMedication(id: 'med-1', name: 'Omeprazole');
       final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1', status: ReminderStatus.skipped),
+        _makeReminder(
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.skipped,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -241,7 +254,11 @@ void main() {
     });
 
     testWidgets('renders single reminder correctly', (tester) async {
-      final med = _makeMedication(id: 'med-1', name: 'Pantoprazole', dosage: 40);
+      final med = _makeMedication(
+        id: 'med-1',
+        name: 'Pantoprazole',
+        dosage: 40,
+      );
       final reminders = [_makeReminder(id: 'r1', medicationId: 'med-1')];
 
       await tester.pumpWidget(
@@ -256,15 +273,15 @@ void main() {
       expect(find.text('Pantoprazole'), findsOneWidget);
     });
 
-    testWidgets('shows loading indicator while reminders are loading', (tester) async {
+    testWidgets('shows loading indicator while reminders are loading', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationTimeline(),
           overrides: [
             todayRemindersProvider.overrideWith(() => _SlowTodayReminders()),
-            medicationListProvider.overrideWith(
-              () => FakeMedicationList([]),
-            ),
+            medicationListProvider.overrideWith(() => FakeMedicationList([])),
           ],
         ),
       );
@@ -274,15 +291,15 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('shows error message when reminders fail to load', (tester) async {
+    testWidgets('shows error message when reminders fail to load', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationTimeline(),
           overrides: [
             todayRemindersProvider.overrideWith(() => _ErrorTodayReminders()),
-            medicationListProvider.overrideWith(
-              () => FakeMedicationList([]),
-            ),
+            medicationListProvider.overrideWith(() => FakeMedicationList([])),
           ],
         ),
       );
@@ -295,7 +312,11 @@ void main() {
     testWidgets('renders missed reminder badge', (tester) async {
       final med = _makeMedication(id: 'med-1', name: 'Metoprolol');
       final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1', status: ReminderStatus.missed),
+        _makeReminder(
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.missed,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -314,7 +335,11 @@ void main() {
     testWidgets('renders snoozed reminder badge', (tester) async {
       final med = _makeMedication(id: 'med-1', name: 'Ibuprofen');
       final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1', status: ReminderStatus.snoozed),
+        _makeReminder(
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.snoozed,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -330,7 +355,9 @@ void main() {
       expect(find.text('Snoozed'), findsOneWidget);
     });
 
-    testWidgets('hides card when medication not found (null medication)', (tester) async {
+    testWidgets('hides card when medication not found (null medication)', (
+      tester,
+    ) async {
       // Reminder references a medication id that has no matching medication
       final reminders = [
         _makeReminder(id: 'r1', medicationId: 'unknown-med-id'),
@@ -338,16 +365,15 @@ void main() {
 
       // Override the individual medicationProvider to return null
       final overrides = <dynamic>[
-        todayRemindersProvider.overrideWith(() => FakeTodayReminders(reminders)),
+        todayRemindersProvider.overrideWith(
+          () => FakeTodayReminders(reminders),
+        ),
         medicationListProvider.overrideWith(() => FakeMedicationList([])),
         medicationProvider('unknown-med-id').overrideWith((ref) async => null),
       ];
 
       await tester.pumpWidget(
-        createTestableWidget(
-          const MedicationTimeline(),
-          overrides: overrides,
-        ),
+        createTestableWidget(const MedicationTimeline(), overrides: overrides),
       );
       await tester.pumpAndSettle();
 
@@ -355,13 +381,15 @@ void main() {
       expect(find.byType(TimelineCard), findsNothing);
     });
 
-    testWidgets('hides card when individual medication provider errors', (tester) async {
-      final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'bad-med-id'),
-      ];
+    testWidgets('hides card when individual medication provider errors', (
+      tester,
+    ) async {
+      final reminders = [_makeReminder(id: 'r1', medicationId: 'bad-med-id')];
 
       final overrides = <dynamic>[
-        todayRemindersProvider.overrideWith(() => FakeTodayReminders(reminders)),
+        todayRemindersProvider.overrideWith(
+          () => FakeTodayReminders(reminders),
+        ),
         medicationListProvider.overrideWith(() => FakeMedicationList([])),
         medicationProvider('bad-med-id').overrideWith(
           (ref) async => throw Exception('Medication load failed'),
@@ -369,10 +397,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        createTestableWidget(
-          const MedicationTimeline(),
-          overrides: overrides,
-        ),
+        createTestableWidget(const MedicationTimeline(), overrides: overrides),
       );
       await tester.pumpAndSettle();
 
@@ -380,7 +405,9 @@ void main() {
       expect(find.byType(TimelineCard), findsNothing);
     });
 
-    testWidgets('renders multiple reminders with spacing between them', (tester) async {
+    testWidgets('renders multiple reminders with spacing between them', (
+      tester,
+    ) async {
       final med1 = _makeMedication(id: 'med-1', name: 'Drug A');
       final med2 = _makeMedication(id: 'med-2', name: 'Drug B');
       final med3 = _makeMedication(id: 'med-3', name: 'Drug C');

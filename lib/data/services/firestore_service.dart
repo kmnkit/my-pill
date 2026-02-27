@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -40,8 +40,11 @@ class FirestoreService {
 
   // Real-time stream for medications
   Stream<List<Medication>> watchMedications() {
-    return _medicationsCol.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Medication.fromJson(doc.data() as Map<String, dynamic>)).toList());
+    return _medicationsCol.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => Medication.fromJson(doc.data() as Map<String, dynamic>))
+          .toList(),
+    );
   }
 
   // --- Schedules ---
@@ -63,8 +66,11 @@ class FirestoreService {
   }
 
   Stream<List<Schedule>> watchSchedules() {
-    return _schedulesCol.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Schedule.fromJson(doc.data() as Map<String, dynamic>)).toList());
+    return _schedulesCol.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => Schedule.fromJson(doc.data() as Map<String, dynamic>))
+          .toList(),
+    );
   }
 
   // --- Reminders ---
@@ -79,7 +85,10 @@ class FirestoreService {
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
 
     final snapshot = await _remindersCol
-        .where('scheduledTime', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where(
+          'scheduledTime',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
+        )
         .where('scheduledTime', isLessThan: Timestamp.fromDate(endOfDay))
         .get();
 
@@ -93,26 +102,38 @@ class FirestoreService {
   }
 
   // --- Adherence Records ---
-  CollectionReference get _adherenceCol => _userDoc.collection('adherenceRecords');
+  CollectionReference get _adherenceCol =>
+      _userDoc.collection('adherenceRecords');
 
   Future<void> saveAdherenceRecord(AdherenceRecord record) async {
     await _adherenceCol.doc(record.id).set(record.toJson());
   }
 
-  Future<List<AdherenceRecord>> getAdherenceRecords({DateTime? startDate, DateTime? endDate}) async {
+  Future<List<AdherenceRecord>> getAdherenceRecords({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     Query query = _adherenceCol;
 
     if (startDate != null) {
-      query = query.where('date', isGreaterThanOrEqualTo: Timestamp.fromDate(startDate));
+      query = query.where(
+        'date',
+        isGreaterThanOrEqualTo: Timestamp.fromDate(startDate),
+      );
     }
 
     if (endDate != null) {
-      query = query.where('date', isLessThanOrEqualTo: Timestamp.fromDate(endDate));
+      query = query.where(
+        'date',
+        isLessThanOrEqualTo: Timestamp.fromDate(endDate),
+      );
     }
 
     final snapshot = await query.get();
     return snapshot.docs
-        .map((doc) => AdherenceRecord.fromJson(doc.data() as Map<String, dynamic>))
+        .map(
+          (doc) => AdherenceRecord.fromJson(doc.data() as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -130,7 +151,8 @@ class FirestoreService {
   }
 
   // --- Caregiver Links ---
-  CollectionReference get _caregiverLinksCol => _userDoc.collection('caregiverLinks');
+  CollectionReference get _caregiverLinksCol =>
+      _userDoc.collection('caregiverLinks');
 
   Future<void> saveCaregiverLink(CaregiverLink link) async {
     await _caregiverLinksCol.doc(link.id).set(link.toJson());
@@ -139,7 +161,9 @@ class FirestoreService {
   Future<List<CaregiverLink>> getCaregiverLinks() async {
     final snapshot = await _caregiverLinksCol.get();
     return snapshot.docs
-        .map((doc) => CaregiverLink.fromJson(doc.data() as Map<String, dynamic>))
+        .map(
+          (doc) => CaregiverLink.fromJson(doc.data() as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -149,7 +173,10 @@ class FirestoreService {
 
   // --- Sync Logic ---
   // Sync local Hive data to Firestore (upload)
-  Future<void> syncToCloud(List<Medication> medications, List<Schedule> schedules) async {
+  Future<void> syncToCloud(
+    List<Medication> medications,
+    List<Schedule> schedules,
+  ) async {
     final batch = _db.batch();
     for (final med in medications) {
       batch.set(_medicationsCol.doc(med.id), med.toJson());
@@ -162,26 +189,39 @@ class FirestoreService {
 
   // --- Caregiver Dashboard (read-only access to linked patients) ---
   Stream<List<Medication>> watchPatientMedications(String patientId) {
-    return _db.collection('users').doc(patientId).collection('medications')
+    return _db
+        .collection('users')
+        .doc(patientId)
+        .collection('medications')
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Medication.fromJson(doc.data()))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => Medication.fromJson(doc.data()))
+              .toList(),
+        );
   }
 
   Stream<List<Reminder>> watchPatientReminders(String patientId) {
-    return _db.collection('users').doc(patientId).collection('reminders')
+    return _db
+        .collection('users')
+        .doc(patientId)
+        .collection('reminders')
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Reminder.fromJson(doc.data()))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => Reminder.fromJson(doc.data()))
+              .toList(),
+        );
   }
 
   /// Stream of linked patients for caregiver dashboard
   Stream<List<Map<String, dynamic>>> watchLinkedPatients() {
     final caregiverId = _userId;
-    return _db.collection('caregiverAccess').doc(caregiverId)
-      .collection('patients').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => doc.data()).toList());
+    return _db
+        .collection('caregiverAccess')
+        .doc(caregiverId)
+        .collection('patients')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }

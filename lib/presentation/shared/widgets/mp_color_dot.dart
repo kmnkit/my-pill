@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-
+import 'package:kusuridoki/core/constants/app_colors.dart';
 
 class MpColorDot extends StatelessWidget {
   const MpColorDot({
@@ -39,7 +38,13 @@ class MpColorDot extends StatelessWidget {
             ),
           ),
           child: isSelected
-              ? Icon(Icons.check, size: size * 0.5, color: color == Colors.white ? AppColors.primary : Colors.white)
+              ? Icon(
+                  Icons.check,
+                  size: size * 0.5,
+                  color: color.computeLuminance() > 0.7
+                      ? AppColors.primary
+                      : Colors.white,
+                )
               : null,
         ),
       ),

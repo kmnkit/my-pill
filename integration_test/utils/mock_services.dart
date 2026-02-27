@@ -4,15 +4,15 @@ library;
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/services/auth_service.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 /// Mock implementation of AuthService for testing
 class MockAuthService implements AuthService {
@@ -54,7 +54,9 @@ class MockAuthService implements AuthService {
   Future<UserCredential> signInAnonymously() async {
     _checkFailure();
     // Return a mock credential - we just update internal state
-    _currentUser = _MockUser(uid: 'anonymous-${DateTime.now().millisecondsSinceEpoch}');
+    _currentUser = _MockUser(
+      uid: 'anonymous-${DateTime.now().millisecondsSinceEpoch}',
+    );
     _authStateController.add(_currentUser);
     return _MockUserCredential(_currentUser);
   }
@@ -146,11 +148,7 @@ class _MockUser implements User {
   @override
   final String? displayName;
 
-  _MockUser({
-    required this.uid,
-    this.email,
-    this.displayName,
-  });
+  _MockUser({required this.uid, this.email, this.displayName});
 
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -322,14 +320,17 @@ class MockStorageService implements StorageService {
     }
     if (startDate != null) {
       records = records
-          .where((r) =>
-              r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate))
+          .where(
+            (r) =>
+                r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate),
+          )
           .toList();
     }
     if (endDate != null) {
       records = records
-          .where((r) =>
-              r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate))
+          .where(
+            (r) => r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate),
+          )
           .toList();
     }
 
@@ -464,13 +465,15 @@ class MockNotificationService {
     required String dosage,
     required DateTime scheduledTime,
   }) async {
-    _scheduledNotifications.add(ScheduledNotification(
-      id: id,
-      medicationName: medicationName,
-      dosage: dosage,
-      scheduledTime: scheduledTime,
-      isCritical: false,
-    ));
+    _scheduledNotifications.add(
+      ScheduledNotification(
+        id: id,
+        medicationName: medicationName,
+        dosage: dosage,
+        scheduledTime: scheduledTime,
+        isCritical: false,
+      ),
+    );
   }
 
   Future<void> scheduleCriticalReminder({
@@ -479,13 +482,15 @@ class MockNotificationService {
     required String dosage,
     required DateTime scheduledTime,
   }) async {
-    _scheduledNotifications.add(ScheduledNotification(
-      id: id,
-      medicationName: medicationName,
-      dosage: dosage,
-      scheduledTime: scheduledTime,
-      isCritical: true,
-    ));
+    _scheduledNotifications.add(
+      ScheduledNotification(
+        id: id,
+        medicationName: medicationName,
+        dosage: dosage,
+        scheduledTime: scheduledTime,
+        isCritical: true,
+      ),
+    );
   }
 
   Future<void> cancelReminder(String id) async {
@@ -562,14 +567,12 @@ class MockSubscriptionService {
   }
 
   Future<bool> purchaseMonthly() async {
-    setPremium(true,
-        expiresAt: DateTime.now().add(const Duration(days: 30)));
+    setPremium(true, expiresAt: DateTime.now().add(const Duration(days: 30)));
     return true;
   }
 
   Future<bool> purchaseYearly() async {
-    setPremium(true,
-        expiresAt: DateTime.now().add(const Duration(days: 365)));
+    setPremium(true, expiresAt: DateTime.now().add(const Duration(days: 365)));
     return true;
   }
 

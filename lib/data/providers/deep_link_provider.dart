@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/services/deep_link_service.dart';
+import 'package:kusuridoki/data/services/deep_link_service.dart';
 
 part 'deep_link_provider.g.dart';
 

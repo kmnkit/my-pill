@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/providers/timezone_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
 
 class AffectedMedList extends ConsumerWidget {
   const AffectedMedList({super.key});
@@ -31,9 +31,9 @@ class AffectedMedList extends ConsumerWidget {
       error: (error, stack) => Center(
         child: Text(
           l10n.errorLoadingMedications,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.error,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
         ),
       ),
       data: (medications) {
@@ -42,22 +42,30 @@ class AffectedMedList extends ConsumerWidget {
           error: (error, stack) => Center(
             child: Text(
               l10n.errorLoadingSchedule,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.error,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
             ),
           ),
           data: (schedules) {
             // Filter medications that have active schedules with times
-            final medsWithSchedules = <({
-              Medication medication,
-              Schedule schedule,
-              List<({String homeTime, String localTime})> times,
-            })>[];
+            final medsWithSchedules =
+                <
+                  ({
+                    Medication medication,
+                    Schedule schedule,
+                    List<({String homeTime, String localTime})> times,
+                  })
+                >[];
 
             for (final med in medications) {
               final medSchedules = schedules
-                  .where((s) => s.medicationId == med.id && s.isActive && s.dosageSlots.isNotEmpty)
+                  .where(
+                    (s) =>
+                        s.medicationId == med.id &&
+                        s.isActive &&
+                        s.dosageSlots.isNotEmpty,
+                  )
                   .toList();
 
               for (final schedule in medSchedules) {
@@ -74,7 +82,13 @@ class AffectedMedList extends ConsumerWidget {
 
                     // Create DateTime for today with the schedule time
                     final now = DateTime.now();
-                    final homeTime = DateTime(now.year, now.month, now.day, hour, minute);
+                    final homeTime = DateTime(
+                      now.year,
+                      now.month,
+                      now.day,
+                      hour,
+                      minute,
+                    );
 
                     // Adjust time based on timezone settings
                     final localTime = timezoneService.adjustMedicationTime(
@@ -111,8 +125,8 @@ class AffectedMedList extends ConsumerWidget {
                   child: Text(
                     l10n.noScheduledMedications,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: context.appColors.textMuted,
-                        ),
+                      color: context.appColors.textMuted,
+                    ),
                   ),
                 ),
               );
@@ -160,7 +174,8 @@ class AffectedMedList extends ConsumerWidget {
                             padding: const EdgeInsets.only(top: AppSpacing.xs),
                             child: Text(
                               '${timeInfo.homeTime} $homeLabel / ${timeInfo.localTime} $localLabel',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
                                     color: context.appColors.textMuted,
                                   ),
                             ),

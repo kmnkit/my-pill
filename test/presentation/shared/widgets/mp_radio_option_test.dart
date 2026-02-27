@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -76,8 +76,9 @@ void main() {
       expect(selected, 42);
     });
 
-    testWidgets('selected state renders when value equals groupValue',
-        (tester) async {
+    testWidgets('selected state renders when value equals groupValue', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           MpRadioOption<String>(

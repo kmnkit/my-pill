@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
 
 void main() {
   group('PillShape', () {
@@ -101,8 +101,11 @@ void main() {
     group('all values have non-empty labels', () {
       test('every value has a non-empty label', () {
         for (final shape in PillShape.values) {
-          expect(shape.label, isNotEmpty,
-              reason: '${shape.name} should have a non-empty label');
+          expect(
+            shape.label,
+            isNotEmpty,
+            reason: '${shape.name} should have a non-empty label',
+          );
         }
       });
     });
@@ -111,8 +114,11 @@ void main() {
       test('every value has a non-null icon', () {
         for (final shape in PillShape.values) {
           // IconData is a value type; just confirm it is accessible
-          expect(shape.icon, isA<IconData>(),
-              reason: '${shape.name} should have an IconData icon');
+          expect(
+            shape.icon,
+            isA<IconData>(),
+            reason: '${shape.name} should have an IconData icon',
+          );
         }
       });
     });

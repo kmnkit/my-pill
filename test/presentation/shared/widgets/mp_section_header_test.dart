@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -8,28 +8,27 @@ void main() {
   group('MpSectionHeader', () {
     testWidgets('renders title text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpSectionHeader(title: 'My Medications'),
-        ),
+        createTestableWidget(const MpSectionHeader(title: 'My Medications')),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('My Medications'), findsOneWidget);
     });
 
-    testWidgets('does not render action button when actionLabel not provided',
-        (tester) async {
+    testWidgets('does not render action button when actionLabel not provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpSectionHeader(title: 'Section'),
-        ),
+        createTestableWidget(const MpSectionHeader(title: 'Section')),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(TextButton), findsNothing);
     });
 
-    testWidgets('renders action button when actionLabel provided', (tester) async {
+    testWidgets('renders action button when actionLabel provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           MpSectionHeader(

@@ -6,9 +6,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:my_pill/data/enums/apple_auth_error.dart';
-import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/enums/apple_auth_error.dart';
+import 'package:kusuridoki/core/utils/apple_auth_error_messages.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 // Helper: pump a minimal localised app and call [callback] with a BuildContext
 // that has AppLocalizations available.
@@ -89,11 +89,13 @@ void main() {
       });
     });
 
-    testWidgets('credentialAlreadyInUse returns non-empty message',
-        (tester) async {
+    testWidgets('credentialAlreadyInUse returns non-empty message', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
-        final msg =
-            AppleAuthError.credentialAlreadyInUse.getLocalizedMessage(ctx);
+        final msg = AppleAuthError.credentialAlreadyInUse.getLocalizedMessage(
+          ctx,
+        );
         expect(msg, isNotEmpty);
       });
     });
@@ -105,27 +107,33 @@ void main() {
       });
     });
 
-    testWidgets('operationNotAllowed returns non-empty message', (tester) async {
+    testWidgets('operationNotAllowed returns non-empty message', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
         final msg = AppleAuthError.operationNotAllowed.getLocalizedMessage(ctx);
         expect(msg, isNotEmpty);
       });
     });
 
-    testWidgets('providerAlreadyLinked returns non-empty message',
-        (tester) async {
+    testWidgets('providerAlreadyLinked returns non-empty message', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
-        final msg =
-            AppleAuthError.providerAlreadyLinked.getLocalizedMessage(ctx);
+        final msg = AppleAuthError.providerAlreadyLinked.getLocalizedMessage(
+          ctx,
+        );
         expect(msg, isNotEmpty);
       });
     });
 
-    testWidgets('networkRequestFailed returns non-empty message',
-        (tester) async {
+    testWidgets('networkRequestFailed returns non-empty message', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
-        final msg =
-            AppleAuthError.networkRequestFailed.getLocalizedMessage(ctx);
+        final msg = AppleAuthError.networkRequestFailed.getLocalizedMessage(
+          ctx,
+        );
         expect(msg, isNotEmpty);
       });
     });
@@ -139,25 +147,30 @@ void main() {
 
     testWidgets('all enum values produce distinct messages', (tester) async {
       await withLocalizedContext(tester, (ctx) async {
-        final messages =
-            AppleAuthError.values.map((e) => e.getLocalizedMessage(ctx)).toSet();
+        final messages = AppleAuthError.values
+            .map((e) => e.getLocalizedMessage(ctx))
+            .toSet();
         // Every value should map to a unique l10n string.
         expect(messages.length, AppleAuthError.values.length);
       });
     });
 
-    testWidgets('userCancelled message matches expected English string',
-        (tester) async {
+    testWidgets('userCancelled message matches expected English string', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
         final msg = AppleAuthError.userCancelled.getLocalizedMessage(ctx);
         expect(msg, 'Apple sign in was cancelled');
       });
     });
 
-    testWidgets('networkRequestFailed message mentions network', (tester) async {
+    testWidgets('networkRequestFailed message mentions network', (
+      tester,
+    ) async {
       await withLocalizedContext(tester, (ctx) async {
-        final msg =
-            AppleAuthError.networkRequestFailed.getLocalizedMessage(ctx);
+        final msg = AppleAuthError.networkRequestFailed.getLocalizedMessage(
+          ctx,
+        );
         expect(msg.toLowerCase(), contains('network'));
       });
     });

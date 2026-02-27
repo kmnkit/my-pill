@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/patient_data_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_error_view.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_error_view.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverDashboardScreen extends ConsumerWidget {
   const CaregiverDashboardScreen({super.key});
@@ -30,7 +30,8 @@ class CaregiverDashboardScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: patientsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
                   error: (error, stack) => MpErrorView(
                     error: error,
                     onRetry: () => ref.invalidate(caregiverPatientsProvider),
@@ -53,7 +54,9 @@ class CaregiverDashboardScreen extends ConsumerWidget {
                         final patient = patients[index];
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: index < patients.length - 1 ? AppSpacing.lg : 0,
+                            bottom: index < patients.length - 1
+                                ? AppSpacing.lg
+                                : 0,
                           ),
                           child: PatientDataCard(
                             patientId: patient.patientId,

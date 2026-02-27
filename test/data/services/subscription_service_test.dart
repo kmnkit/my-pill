@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/services/subscription_service.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/services/subscription_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -39,12 +39,8 @@ void main() {
       expect(service.maxCaregivers, equals(1));
     });
 
-    test('monthlyProduct is null before initialization', () {
-      expect(service.monthlyProduct, isNull);
-    });
-
-    test('yearlyProduct is null before initialization', () {
-      expect(service.yearlyProduct, isNull);
+    test('productsLoaded is false before initialization', () {
+      expect(service.productsLoaded, isFalse);
     });
   });
 
@@ -89,16 +85,19 @@ void main() {
       expect(service.statusStream.isBroadcast, isTrue);
     });
 
-    test('statusStream does not emit on subscription before any change', () async {
-      final received = <SubscriptionStatus>[];
-      final sub = service.statusStream.listen(received.add);
+    test(
+      'statusStream does not emit on subscription before any change',
+      () async {
+        final received = <SubscriptionStatus>[];
+        final sub = service.statusStream.listen(received.add);
 
-      // Allow microtask queue to flush.
-      await Future<void>.delayed(Duration.zero);
-      await sub.cancel();
+        // Allow microtask queue to flush.
+        await Future<void>.delayed(Duration.zero);
+        await sub.cancel();
 
-      expect(received, isEmpty);
-    });
+        expect(received, isEmpty);
+      },
+    );
   });
 
   group('SubscriptionService — onStatusChanged callback', () {
@@ -113,10 +112,7 @@ void main() {
     });
 
     test('onStatusChanged can be assigned without error', () {
-      expect(
-        () => service.onStatusChanged = (_) {},
-        returnsNormally,
-      );
+      expect(() => service.onStatusChanged = (_) {}, returnsNormally);
     });
 
     test('onStatusChanged starts as null', () {

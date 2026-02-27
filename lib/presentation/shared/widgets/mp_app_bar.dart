@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
 
 class MpAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MpAppBar({

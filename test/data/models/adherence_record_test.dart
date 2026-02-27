@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
 
 void main() {
   group('AdherenceRecord', () {
@@ -9,21 +9,21 @@ void main() {
     final actionTime = DateTime.utc(2024, 1, 15, 8, 3);
 
     AdherenceRecord buildFull() => AdherenceRecord(
-          id: 'adh-001',
-          medicationId: 'med-001',
-          date: date,
-          status: ReminderStatus.taken,
-          scheduledTime: scheduledTime,
-          actionTime: actionTime,
-        );
+      id: 'adh-001',
+      medicationId: 'med-001',
+      date: date,
+      status: ReminderStatus.taken,
+      scheduledTime: scheduledTime,
+      actionTime: actionTime,
+    );
 
     AdherenceRecord buildMinimal() => AdherenceRecord(
-          id: 'adh-002',
-          medicationId: 'med-002',
-          date: date,
-          status: ReminderStatus.missed,
-          scheduledTime: scheduledTime,
-        );
+      id: 'adh-002',
+      medicationId: 'med-002',
+      date: date,
+      status: ReminderStatus.missed,
+      scheduledTime: scheduledTime,
+    );
 
     group('fromJson/toJson', () {
       test('roundtrip preserves all fields', () {

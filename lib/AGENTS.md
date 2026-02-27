@@ -27,7 +27,7 @@ Main Flutter application source code following Clean Architecture with clear sep
 ### Working In This Directory
 - `main.dart` and `app.dart` are rarely modified — changes here affect the entire app
 - Adding new features typically involves: model → service → repository → provider → screen
-- All imports should use package syntax: `package:my_pill/...`
+- All imports should use package syntax: `package:kusuridoki/...`
 - Run `flutter pub run build_runner build --delete-conflicting-outputs` after modifying models or providers
 
 ### Testing Requirements

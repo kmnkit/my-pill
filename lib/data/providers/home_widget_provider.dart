@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/services/home_widget_service.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/services/home_widget_service.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 part 'home_widget_provider.g.dart';
 

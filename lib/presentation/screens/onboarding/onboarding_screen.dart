@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_medication_style_step.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_name_step.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_notification_step.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_progress_indicator.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_role_step.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_timezone_step.dart';
-import 'package:my_pill/presentation/screens/onboarding/widgets/onboarding_welcome_step.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_medication_style_step.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_name_step.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_notification_step.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_progress_indicator.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_role_step.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_timezone_step.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/widgets/onboarding_welcome_step.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -103,9 +103,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 },
                 children: [
                   // Step 0: Welcome
-                  OnboardingWelcomeStep(
-                    onNext: _nextStep,
-                  ),
+                  OnboardingWelcomeStep(onNext: _nextStep),
 
                   // Step 1: Role
                   OnboardingRoleStep(

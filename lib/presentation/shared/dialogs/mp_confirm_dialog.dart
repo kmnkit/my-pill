@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 class MpConfirmDialog extends StatelessWidget {
   const MpConfirmDialog({
@@ -20,7 +20,8 @@ class MpConfirmDialog extends StatelessWidget {
   final String? cancelLabel;
   final bool isDestructive;
 
-  static Future<bool?> show(BuildContext context, {
+  static Future<bool?> show(
+    BuildContext context, {
     required String title,
     required String message,
     String? confirmLabel,
@@ -47,7 +48,9 @@ class MpConfirmDialog extends StatelessWidget {
 
     return Dialog(
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusLg)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
         child: Column(
@@ -55,12 +58,20 @@ class MpConfirmDialog extends StatelessWidget {
           children: [
             Text(title, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: AppSpacing.sm),
-            Text(message, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted), textAlign: TextAlign.center),
+            Text(
+              message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: context.appColors.textMuted,
+              ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: AppSpacing.xxl),
             MpButton(
               label: resolvedConfirmLabel,
               onPressed: () => Navigator.of(context).pop(true),
-              variant: isDestructive ? MpButtonVariant.destructive : MpButtonVariant.primary,
+              variant: isDestructive
+                  ? MpButtonVariant.destructive
+                  : MpButtonVariant.primary,
             ),
             const SizedBox(height: AppSpacing.sm),
             MpButton(

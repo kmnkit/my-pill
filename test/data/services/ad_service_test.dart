@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/ad_service.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
 
 void main() {
   group('AdService', () {
@@ -77,28 +77,37 @@ void main() {
       expect(service.adsRemoved, isFalse);
     });
 
-    test('initialize completes without throwing (swallows platform exception)', () async {
-      final service = AdService();
-      // MobileAds.instance.initialize() throws in unit tests (no platform channel).
-      // initialize() must swallow the error and not propagate it.
-      await expectLater(service.initialize(), completes);
-    });
+    test(
+      'initialize completes without throwing (swallows platform exception)',
+      () async {
+        final service = AdService();
+        // MobileAds.instance.initialize() throws in unit tests (no platform channel).
+        // initialize() must swallow the error and not propagate it.
+        await expectLater(service.initialize(), completes);
+      },
+    );
 
-    test('initialize called multiple times completes without throwing', () async {
-      final service = AdService();
-      await expectLater(service.initialize(), completes);
-      await expectLater(service.initialize(), completes);
-      await expectLater(service.initialize(), completes);
-    });
+    test(
+      'initialize called multiple times completes without throwing',
+      () async {
+        final service = AdService();
+        await expectLater(service.initialize(), completes);
+        await expectLater(service.initialize(), completes);
+        await expectLater(service.initialize(), completes);
+      },
+    );
 
-    test('setAdsRemoved(false) when already false does not throw and state remains false', () {
-      final service = AdService();
-      expect(service.adsRemoved, isFalse);
-      // Calling with false when already false: the if(removed) branch is skipped,
-      // disposeAll() is NOT called, state remains false.
-      service.setAdsRemoved(false);
-      expect(service.adsRemoved, isFalse);
-    });
+    test(
+      'setAdsRemoved(false) when already false does not throw and state remains false',
+      () {
+        final service = AdService();
+        expect(service.adsRemoved, isFalse);
+        // Calling with false when already false: the if(removed) branch is skipped,
+        // disposeAll() is NOT called, state remains false.
+        service.setAdsRemoved(false);
+        expect(service.adsRemoved, isFalse);
+      },
+    );
 
     test('setAdsRemoved(true) then setAdsRemoved(true) again is safe', () {
       final service = AdService();
@@ -133,16 +142,19 @@ void main() {
       expect(service.getMedicationsBannerAd(), isNull);
     });
 
-    test('setAdsRemoved(false) after setAdsRemoved(true) restores false state', () {
-      final service = AdService();
-      service.setAdsRemoved(true);
-      expect(service.adsRemoved, isTrue);
-      service.setAdsRemoved(false);
-      expect(service.adsRemoved, isFalse);
-      // Banner methods still return null (hideAdsForScreenshots = true).
-      expect(service.getHomeBannerAd(), isNull);
-      expect(service.getMedicationsBannerAd(), isNull);
-    });
+    test(
+      'setAdsRemoved(false) after setAdsRemoved(true) restores false state',
+      () {
+        final service = AdService();
+        service.setAdsRemoved(true);
+        expect(service.adsRemoved, isTrue);
+        service.setAdsRemoved(false);
+        expect(service.adsRemoved, isFalse);
+        // Banner methods still return null (hideAdsForScreenshots = true).
+        expect(service.getHomeBannerAd(), isNull);
+        expect(service.getMedicationsBannerAd(), isNull);
+      },
+    );
 
     test('all methods callable in sequence without error', () async {
       final service = AdService();

@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
   const PremiumBanner({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!kPremiumEnabled) return const SizedBox.shrink();
+
     final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
     final status = ref.watch(subscriptionStatusProvider);
@@ -49,16 +52,16 @@ class PremiumBanner extends ConsumerWidget {
                     Text(
                       l10n.premium,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       l10n.upgradeMessage,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: context.appColors.textMuted,
-                          ),
+                        color: context.appColors.textMuted,
+                      ),
                     ),
                   ],
                 ),
@@ -101,9 +104,9 @@ class PremiumBanner extends ConsumerWidget {
                     Text(
                       l10n.alreadyPremium,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.success,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: AppColors.success,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     if (status.expiresAt != null) ...[
                       const SizedBox(height: AppSpacing.xs),
@@ -112,16 +115,16 @@ class PremiumBanner extends ConsumerWidget {
                           '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
                         ),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: context.appColors.textMuted,
-                            ),
+                          color: context.appColors.textMuted,
+                        ),
                       ),
                     ] else ...[
                       const SizedBox(height: AppSpacing.xs),
                       Text(
                         l10n.currentPlan,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: context.appColors.textMuted,
-                            ),
+                          color: context.appColors.textMuted,
+                        ),
                       ),
                     ],
                   ],

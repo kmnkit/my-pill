@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class GreetingHeader extends ConsumerWidget {
   const GreetingHeader({super.key});
@@ -38,26 +38,25 @@ class GreetingHeader extends ConsumerWidget {
           data: (profile) {
             final greeting = _getGreeting(l10n);
             // Only append name if it's non-null, non-empty, and not the default "User"
-            final displayText = profile.name != null &&
+            final displayText =
+                profile.name != null &&
                     profile.name!.isNotEmpty &&
                     profile.name != 'User'
                 ? '$greeting, ${profile.name!}'
                 : greeting;
             return Text(displayText, style: textTheme.headlineLarge);
           },
-          loading: () => Text(
-            _getGreeting(l10n),
-            style: textTheme.headlineLarge,
-          ),
-          error: (error, stackTrace) => Text(
-            _getGreeting(l10n),
-            style: textTheme.headlineLarge,
-          ),
+          loading: () =>
+              Text(_getGreeting(l10n), style: textTheme.headlineLarge),
+          error: (error, stackTrace) =>
+              Text(_getGreeting(l10n), style: textTheme.headlineLarge),
         ),
         const SizedBox(height: AppSpacing.xs),
         Text(
           formattedDate,
-          style: textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
+          style: textTheme.bodyMedium?.copyWith(
+            color: context.appColors.textMuted,
+          ),
         ),
         const SizedBox(height: AppSpacing.xs),
         // Medication count
@@ -69,7 +68,9 @@ class GreetingHeader extends ConsumerWidget {
                 .length;
             return Text(
               l10n.medicationsToday(total, taken),
-              style: textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
+              style: textTheme.bodyMedium?.copyWith(
+                color: context.appColors.textMuted,
+              ),
             );
           },
           loading: () => const SizedBox.shrink(),

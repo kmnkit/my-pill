@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -14,9 +14,7 @@ void main() {
     group('primary variant', () {
       testWidgets('renders ElevatedButton with label', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(
-            MpButton(label: 'Primary', onPressed: () {}),
-          ),
+          createTestableWidget(MpButton(label: 'Primary', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -26,9 +24,7 @@ void main() {
 
       testWidgets('is full width by default', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(
-            MpButton(label: 'Wide', onPressed: () {}),
-          ),
+          createTestableWidget(MpButton(label: 'Wide', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -44,8 +40,9 @@ void main() {
         expect(sizedBox.height, equals(AppSpacing.buttonHeight));
       });
 
-      testWidgets('is not full width when isFullWidth is false',
-          (tester) async {
+      testWidgets('is not full width when isFullWidth is false', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           createTestableWidget(
             MpButton(label: 'Narrow', onPressed: () {}, isFullWidth: false),
@@ -109,9 +106,7 @@ void main() {
 
       testWidgets('renders SizedBox.shrink when no icon', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(
-            MpButton(label: 'No Icon', onPressed: () {}),
-          ),
+          createTestableWidget(MpButton(label: 'No Icon', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -127,9 +122,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final btn = tester.widget<ElevatedButton>(
-          find.byType(ElevatedButton),
-        );
+        final btn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(btn.onPressed, isNull);
       });
 
@@ -291,8 +284,9 @@ void main() {
     // Secondary variant (solid / high contrast)
     // =========================================================================
     group('secondary variant (solid / high contrast)', () {
-      testWidgets('renders OutlinedButton in high contrast mode',
-          (tester) async {
+      testWidgets('renders OutlinedButton in high contrast mode', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MediaQuery(
             data: const MediaQueryData(highContrast: true),
@@ -344,8 +338,9 @@ void main() {
         expect(sizedBox.height, equals(AppSpacing.buttonHeight));
       });
 
-      testWidgets('solid secondary not full width when isFullWidth false',
-          (tester) async {
+      testWidgets('solid secondary not full width when isFullWidth false', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           MediaQuery(
             data: const MediaQueryData(highContrast: true),
@@ -405,8 +400,10 @@ void main() {
                   label: 'Solid IconW',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
-                  iconWidget:
-                      const Icon(Icons.home, key: Key('solid-icon-widget')),
+                  iconWidget: const Icon(
+                    Icons.home,
+                    key: Key('solid-icon-widget'),
+                  ),
                 ),
               ),
             ),
@@ -457,9 +454,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final btn = tester.widget<OutlinedButton>(
-          find.byType(OutlinedButton),
-        );
+        final btn = tester.widget<OutlinedButton>(find.byType(OutlinedButton));
         expect(btn.onPressed, isNull);
       });
     });
@@ -554,8 +549,10 @@ void main() {
               label: 'Del Widget',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
-              iconWidget:
-                  const Icon(Icons.warning, key: Key('del-widget-icon')),
+              iconWidget: const Icon(
+                Icons.warning,
+                key: Key('del-widget-icon'),
+              ),
             ),
           ),
         );
@@ -594,9 +591,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final btn = tester.widget<ElevatedButton>(
-          find.byType(ElevatedButton),
-        );
+        final btn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(btn.onPressed, isNull);
       });
     });
@@ -667,8 +662,7 @@ void main() {
               label: 'Text Widget',
               onPressed: () {},
               variant: MpButtonVariant.text,
-              iconWidget:
-                  const Icon(Icons.info, key: Key('text-widget-icon')),
+              iconWidget: const Icon(Icons.info, key: Key('text-widget-icon')),
             ),
           ),
         );
@@ -707,9 +701,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final btn = tester.widget<TextButton>(
-          find.byType(TextButton),
-        );
+        final btn = tester.widget<TextButton>(find.byType(TextButton));
         expect(btn.onPressed, isNull);
       });
 
@@ -751,8 +743,9 @@ void main() {
         MpButtonVariant.destructive,
         MpButtonVariant.text,
       ]) {
-        testWidgets('${variant.name} without icon renders label',
-            (tester) async {
+        testWidgets('${variant.name} without icon renders label', (
+          tester,
+        ) async {
           await tester.pumpWidget(
             createTestableWidget(
               MpButton(

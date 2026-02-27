@@ -4,15 +4,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/data/services/auth_service.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
-import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -149,8 +149,9 @@ void main() {
     // Error state
     // -----------------------------------------------------------------------
 
-    testWidgets('tapping retry button in error state invalidates provider',
-        (tester) async {
+    testWidgets('tapping retry button in error state invalidates provider', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -183,7 +184,9 @@ void main() {
 
       // Scroll so the About section is visible
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -800));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -800),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('App Version'), findsOneWidget);
@@ -210,8 +213,9 @@ void main() {
     // SafetyPrivacy section tiles tap
     // -----------------------------------------------------------------------
 
-    testWidgets('tapping Backup & Sync tile renders the tile with chevron',
-        (tester) async {
+    testWidgets('tapping Backup & Sync tile renders the tile with chevron', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -229,7 +233,9 @@ void main() {
     // Deactivate (log out) confirmation dialog — cancel path
     // -----------------------------------------------------------------------
 
-    testWidgets('cancelling deactivate dialog does not sign out', (tester) async {
+    testWidgets('cancelling deactivate dialog does not sign out', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -240,7 +246,9 @@ void main() {
 
       // Scroll to advanced section
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Log Out'));
@@ -262,8 +270,9 @@ void main() {
     // Delete account — cancel at first confirmation
     // -----------------------------------------------------------------------
 
-    testWidgets('cancelling first delete account dialog does nothing',
-        (tester) async {
+    testWidgets('cancelling first delete account dialog does nothing', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -274,7 +283,9 @@ void main() {
 
       // Scroll to advanced section
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Delete Account'));
@@ -295,7 +306,9 @@ void main() {
     // Profile with no name (null) still renders
     // -----------------------------------------------------------------------
 
-    testWidgets('renders with null name profile without errors', (tester) async {
+    testWidgets('renders with null name profile without errors', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -311,8 +324,9 @@ void main() {
     // Caregiver-role profile
     // -----------------------------------------------------------------------
 
-    testWidgets('renders with caregiver-role profile without errors',
-        (tester) async {
+    testWidgets('renders with caregiver-role profile without errors', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -350,13 +364,17 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -600));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -600),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('About'), findsOneWidget);
     });
 
-    testWidgets('Advanced section header is visible after scroll', (tester) async {
+    testWidgets('Advanced section header is visible after scroll', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -366,7 +384,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1000));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1000),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Advanced'), findsOneWidget);
@@ -386,7 +406,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       // The tile exists (color is verified by widget existence)
@@ -403,7 +425,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Delete Account'), findsOneWidget);
@@ -413,24 +437,28 @@ void main() {
     // Switch to caregiver view button tap
     // -----------------------------------------------------------------------
 
-    testWidgets('switch to caregiver view button exists and has correct style',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const SettingsScreen(),
-          overrides: _buildOverrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'switch to caregiver view button exists and has correct style',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const SettingsScreen(),
+            overrides: _buildOverrides(),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1500));
-      await tester.pumpAndSettle();
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -1500),
+        );
+        await tester.pumpAndSettle();
 
-      // Verify button is present (navigation via GoRouter handled at runtime)
-      expect(find.text('Switch to Caregiver View'), findsOneWidget);
-      expect(find.byType(TextButton), findsOneWidget);
-    });
+        // Verify button is present (navigation via GoRouter handled at runtime)
+        expect(find.text('Switch to Caregiver View'), findsOneWidget);
+        expect(find.byType(TextButton), findsOneWidget);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Profile variants: snooze 5, 10, 30
@@ -512,8 +540,9 @@ void main() {
     // PremiumBanner scrolled into view for both states
     // -----------------------------------------------------------------------
 
-    testWidgets('PremiumBanner section visible for free user after scroll',
-        (tester) async {
+    testWidgets('PremiumBanner section visible for free user after scroll', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -523,27 +552,29 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -600));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -600),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
     });
 
-    testWidgets('PremiumBanner visible for premium user after scroll',
-        (tester) async {
+    testWidgets('PremiumBanner visible for premium user after scroll', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
-          overrides: _buildOverrides(
-            isPremium: true,
-            status: _premiumStatus,
-          ),
+          overrides: _buildOverrides(isPremium: true, status: _premiumStatus),
         ),
       );
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -600));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -600),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
@@ -553,8 +584,9 @@ void main() {
     // Version trailing text (no chevron path in _buildListTile)
     // -----------------------------------------------------------------------
 
-    testWidgets('version string trailing widget shows version number',
-        (tester) async {
+    testWidgets('version string trailing widget shows version number', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -564,7 +596,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -800));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -800),
+      );
       await tester.pumpAndSettle();
 
       // Both "App Version" label and "Version 1.0.0" trailing text should exist
@@ -579,9 +613,9 @@ void main() {
     // exercises the catch → ScaffoldMessenger.showSnackBar branch.
     // -----------------------------------------------------------------------
 
-    testWidgets(
-        'confirming log out shows error snackbar when storage throws',
-        (tester) async {
+    testWidgets('confirming log out shows error snackbar when storage throws', (
+      tester,
+    ) async {
       final mockAuth = _MockAuthService(signOutThrows: false);
       await tester.pumpWidget(
         createTestableWidget(
@@ -596,7 +630,9 @@ void main() {
 
       // Scroll to Advanced section
       await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1200),
+      );
       await tester.pumpAndSettle();
 
       // Open confirm dialog
@@ -620,42 +656,45 @@ void main() {
     // -----------------------------------------------------------------------
 
     testWidgets(
-        'delete account second confirm with reauth cancelled returns early',
-        (tester) async {
-      final mockAuth = _MockAuthService(reauthResult: false);
-      await tester.pumpWidget(
-        createTestableWidget(
-          const SettingsScreen(),
-          overrides: [
-            ..._buildOverrides(),
-            authServiceProvider.overrideWithValue(mockAuth),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+      'delete account second confirm with reauth cancelled returns early',
+      (tester) async {
+        final mockAuth = _MockAuthService(reauthResult: false);
+        await tester.pumpWidget(
+          createTestableWidget(
+            const SettingsScreen(),
+            overrides: [
+              ..._buildOverrides(),
+              authServiceProvider.overrideWithValue(mockAuth),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Scroll to Advanced section
-      await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
-      await tester.pumpAndSettle();
+        // Scroll to Advanced section
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -1200),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap Delete Account
-      await tester.tap(find.text('Delete Account'));
-      await tester.pumpAndSettle();
+        // Tap Delete Account
+        await tester.tap(find.text('Delete Account'));
+        await tester.pumpAndSettle();
 
-      // First confirm: tap "Continue"
-      await tester.tap(find.text('Continue'));
-      await tester.pumpAndSettle();
+        // First confirm: tap "Continue"
+        await tester.tap(find.text('Continue'));
+        await tester.pumpAndSettle();
 
-      // Second confirm dialog should be shown — tap "Delete Everything"
-      expect(find.text('Delete Everything'), findsOneWidget);
-      await tester.tap(find.text('Delete Everything'));
-      await tester.pumpAndSettle();
+        // Second confirm dialog should be shown — tap "Delete Everything"
+        expect(find.text('Delete Everything'), findsOneWidget);
+        await tester.tap(find.text('Delete Everything'));
+        await tester.pumpAndSettle();
 
-      // reauthenticate() returns false → early return, no snackbar, no crash
-      // Settings screen still visible (no navigation or error)
-      expect(find.text('Settings'), findsOneWidget);
-    });
+        // reauthenticate() returns false → early return, no snackbar, no crash
+        // Settings screen still visible (no navigation or error)
+        expect(find.text('Settings'), findsOneWidget);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Delete account: second confirm — reauthenticate throws (lines 181-184)
@@ -663,41 +702,44 @@ void main() {
     // -----------------------------------------------------------------------
 
     testWidgets(
-        'delete account second confirm with reauth throwing shows error snackbar',
-        (tester) async {
-      final mockAuth = _MockAuthService(reauthThrows: true);
-      await tester.pumpWidget(
-        createTestableWidget(
-          const SettingsScreen(),
-          overrides: [
-            ..._buildOverrides(),
-            authServiceProvider.overrideWithValue(mockAuth),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+      'delete account second confirm with reauth throwing shows error snackbar',
+      (tester) async {
+        final mockAuth = _MockAuthService(reauthThrows: true);
+        await tester.pumpWidget(
+          createTestableWidget(
+            const SettingsScreen(),
+            overrides: [
+              ..._buildOverrides(),
+              authServiceProvider.overrideWithValue(mockAuth),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Scroll to Advanced section
-      await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1200));
-      await tester.pumpAndSettle();
+        // Scroll to Advanced section
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -1200),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap Delete Account
-      await tester.tap(find.text('Delete Account'));
-      await tester.pumpAndSettle();
+        // Tap Delete Account
+        await tester.tap(find.text('Delete Account'));
+        await tester.pumpAndSettle();
 
-      // First confirm: tap "Continue"
-      await tester.tap(find.text('Continue'));
-      await tester.pumpAndSettle();
+        // First confirm: tap "Continue"
+        await tester.tap(find.text('Continue'));
+        await tester.pumpAndSettle();
 
-      // Second confirm: tap "Delete Everything"
-      expect(find.text('Delete Everything'), findsOneWidget);
-      await tester.tap(find.text('Delete Everything'));
-      await tester.pumpAndSettle();
+        // Second confirm: tap "Delete Everything"
+        expect(find.text('Delete Everything'), findsOneWidget);
+        await tester.tap(find.text('Delete Everything'));
+        await tester.pumpAndSettle();
 
-      // reauthenticate() throws → catch → snackbar "An error occurred"
-      expect(find.text('An error occurred'), findsOneWidget);
-    });
+        // reauthenticate() throws → catch → snackbar "An error occurred"
+        expect(find.text('An error occurred'), findsOneWidget);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Switch to Caregiver View — covers lines 197-198 (context.go call)
@@ -705,60 +747,61 @@ void main() {
     // -----------------------------------------------------------------------
 
     testWidgets(
-        'tapping switch to caregiver view button executes navigation callback',
-        (tester) async {
-      String? navigatedTo;
+      'tapping switch to caregiver view button executes navigation callback',
+      (tester) async {
+        String? navigatedTo;
 
-      final router = GoRouter(
-        initialLocation: '/',
-        routes: [
-          GoRoute(
-            path: '/',
-            builder: (context, state) => ProviderScope(
-              overrides: [
-                ..._buildOverrides(),
-              ],
-              child: const SettingsScreen(),
+        final router = GoRouter(
+          initialLocation: '/',
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, state) => ProviderScope(
+                overrides: [..._buildOverrides()],
+                child: const SettingsScreen(),
+              ),
             ),
-          ),
-          GoRoute(
-            path: '/caregiver/patients',
-            builder: (context, state) {
-              navigatedTo = '/caregiver/patients';
-              return const Scaffold(body: Text('Caregiver Patients'));
-            },
-          ),
-        ],
-      );
-
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: router,
-          locale: const Locale('en'),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+            GoRoute(
+              path: '/caregiver/patients',
+              builder: (context, state) {
+                navigatedTo = '/caregiver/patients';
+                return const Scaffold(body: Text('Caregiver Patients'));
+              },
+            ),
           ],
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
 
-      // Scroll to bottom to reveal the button
-      await tester.drag(
-          find.byType(SingleChildScrollView), const Offset(0, -1500));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          MaterialApp.router(
+            routerConfig: router,
+            locale: const Locale('en'),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      final btn = find.text('Switch to Caregiver View');
-      expect(btn, findsOneWidget);
+        // Scroll to bottom to reveal the button
+        await tester.drag(
+          find.byType(SingleChildScrollView),
+          const Offset(0, -1500),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(btn);
-      await tester.pumpAndSettle();
+        final btn = find.text('Switch to Caregiver View');
+        expect(btn, findsOneWidget);
 
-      // Navigation should have occurred to /caregiver/patients
-      expect(navigatedTo, equals('/caregiver/patients'));
-    });
+        await tester.tap(btn);
+        await tester.pumpAndSettle();
+
+        // Navigation should have occurred to /caregiver/patients
+        expect(navigatedTo, equals('/caregiver/patients'));
+      },
+    );
   });
 }

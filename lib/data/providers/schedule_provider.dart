@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
 part 'schedule_provider.g.dart';
 

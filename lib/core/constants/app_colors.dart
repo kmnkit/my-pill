@@ -77,10 +77,9 @@ abstract final class AppColors {
   static const Color glassDarkStrong = Color(0x4D000000); // 30% black
   static const Color glassBorderDark = Color(0x33FFFFFF); // 20% white border
 
-  // Gradient Backgrounds - Light
-  static const Color gradientLightStart = Color(0xFFE0F7F5); // Subtle teal
-  static const Color gradientLightMid = Color(0xFFF0FDFA); // Very light teal
-  static const Color gradientLightEnd = Color(0xFFE6FFFA); // Mint tint
+  // Gradient Backgrounds - Light (monotonic: teal tint → neutral background)
+  static const Color gradientLightStart = Color(0xFFE8F5F3); // Subtle teal tint
+  static const Color gradientLightEnd = Color(0xFFF6F8F8); // Matches backgroundLight
 
   // Gradient Backgrounds - Dark
   static const Color gradientDarkStart = Color(0xFF0D1F1D); // Deep teal

@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/core/theme/glass_decoration.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/theme/glass_decoration.dart';
 
 enum MpButtonVariant { primary, secondary, text, destructive }
 
@@ -43,14 +43,16 @@ class MpButton extends StatelessWidget {
             height: AppSpacing.buttonHeight,
             child: ElevatedButton.icon(
               onPressed: onPressed,
-              icon: iconWidget ??
+              icon:
+                  iconWidget ??
                   (icon != null
                       ? Icon(icon, size: AppSpacing.iconMd)
                       : const SizedBox.shrink()),
               label: Text(
                 label,
-                style: textTheme.labelLarge
-                    ?.copyWith(color: AppColors.textOnPrimary),
+                style: textTheme.labelLarge?.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
@@ -81,14 +83,16 @@ class MpButton extends StatelessWidget {
             height: AppSpacing.buttonHeight,
             child: ElevatedButton.icon(
               onPressed: onPressed,
-              icon: iconWidget ??
+              icon:
+                  iconWidget ??
                   (icon != null
                       ? Icon(icon, size: AppSpacing.iconMd)
                       : const SizedBox.shrink()),
               label: Text(
                 label,
-                style: textTheme.labelLarge
-                    ?.copyWith(color: AppColors.textOnPrimary),
+                style: textTheme.labelLarge?.copyWith(
+                  color: AppColors.textOnPrimary,
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
@@ -111,16 +115,20 @@ class MpButton extends StatelessWidget {
             height: AppSpacing.minTapTarget,
             child: TextButton.icon(
               onPressed: onPressed,
-              icon: iconWidget ??
+              icon:
+                  iconWidget ??
                   (icon != null
                       ? Icon(icon, size: AppSpacing.iconMd)
                       : const SizedBox.shrink()),
               label: Text(
                 label,
-                style:
-                    textTheme.labelLarge?.copyWith(color: context.appColors.textMuted),
+                style: textTheme.labelLarge?.copyWith(
+                  color: context.appColors.textMuted,
+                ),
               ),
-              style: TextButton.styleFrom(foregroundColor: context.appColors.textMuted),
+              style: TextButton.styleFrom(
+                foregroundColor: context.appColors.textMuted,
+              ),
             ),
           ),
         );
@@ -128,7 +136,10 @@ class MpButton extends StatelessWidget {
   }
 
   Widget _buildGlassSecondary(
-      BuildContext context, TextTheme textTheme, bool isDark) {
+    BuildContext context,
+    TextTheme textTheme,
+    bool isDark,
+  ) {
     final blurAmount = GlassDecoration.getBlurAmount(context);
 
     return Semantics(
@@ -158,19 +169,26 @@ class MpButton extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Row(
-                    mainAxisSize:
-                        isFullWidth ? MainAxisSize.max : MainAxisSize.min,
+                    mainAxisSize: isFullWidth
+                        ? MainAxisSize.max
+                        : MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (iconWidget != null || icon != null) ...[
-                        iconWidget ?? Icon(icon, size: AppSpacing.iconMd, color: AppColors.primary),
+                        iconWidget ??
+                            Icon(
+                              icon,
+                              size: AppSpacing.iconMd,
+                              color: AppColors.primary,
+                            ),
                         const SizedBox(width: AppSpacing.sm),
                       ],
                       Flexible(
                         child: Text(
                           label,
-                          style: textTheme.labelLarge
-                              ?.copyWith(color: AppColors.primary),
+                          style: textTheme.labelLarge?.copyWith(
+                            color: AppColors.primary,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -195,7 +213,8 @@ class MpButton extends StatelessWidget {
         height: AppSpacing.buttonHeight,
         child: OutlinedButton.icon(
           onPressed: onPressed,
-          icon: iconWidget ??
+          icon:
+              iconWidget ??
               (icon != null
                   ? Icon(icon, size: AppSpacing.iconMd)
                   : const SizedBox.shrink()),

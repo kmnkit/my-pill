@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/providers/adherence_provider.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
 
 void main() {
   late ProviderContainer container;

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/notification_settings.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/notification_settings.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -91,8 +91,8 @@ const _defaultProfile = UserProfile(
 );
 
 List<dynamic> _overrides(UserProfile profile) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+];
 
 void main() {
   group('NotificationSettings', () {
@@ -174,7 +174,9 @@ void main() {
       expect(containers, isNotEmpty);
     });
 
-    testWidgets('push notifications toggle reflects enabled state', (tester) async {
+    testWidgets('push notifications toggle reflects enabled state', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -188,7 +190,9 @@ void main() {
       expect(gestures, findsAtLeastNWidgets(1));
     });
 
-    testWidgets('push notifications toggle reflects disabled state', (tester) async {
+    testWidgets('push notifications toggle reflects disabled state', (
+      tester,
+    ) async {
       const disabledProfile = UserProfile(
         id: 'user-002',
         language: 'en',
@@ -227,7 +231,9 @@ void main() {
       expect(semantics, isNotNull);
     });
 
-    testWidgets('snooze chip 5 selected when snoozeDuration is 5', (tester) async {
+    testWidgets('snooze chip 5 selected when snoozeDuration is 5', (
+      tester,
+    ) async {
       const profile5 = UserProfile(
         id: 'user-003',
         language: 'en',
@@ -251,7 +257,9 @@ void main() {
       expect(find.textContaining('5'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('snooze chip 30 selected when snoozeDuration is 30', (tester) async {
+    testWidgets('snooze chip 30 selected when snoozeDuration is 30', (
+      tester,
+    ) async {
       const profile30 = UserProfile(
         id: 'user-004',
         language: 'en',
@@ -327,68 +335,76 @@ void main() {
     // Toggle callback tests (covers lines 29-31, 38-40)
     // -----------------------------------------------------------------
 
-    testWidgets('tapping push notifications toggle calls updateProfile with toggled value', (tester) async {
-      final fake = _TrackingFakeUserSettings(_defaultProfile);
-      await tester.pumpWidget(
-        createTestableWidget(
-          const NotificationSettings(),
-          overrides: [userSettingsProvider.overrideWith(() => fake)],
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'tapping push notifications toggle calls updateProfile with toggled value',
+      (tester) async {
+        final fake = _TrackingFakeUserSettings(_defaultProfile);
+        await tester.pumpWidget(
+          createTestableWidget(
+            const NotificationSettings(),
+            overrides: [userSettingsProvider.overrideWith(() => fake)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // _defaultProfile has notificationsEnabled: true.
-      // The MpToggleSwitch for "Push Notifications" is the first GestureDetector.
-      // Find GestureDetectors that are descendants of a Row containing
-      // 'Push Notifications' text.
-      final pushRow = find.ancestor(
-        of: find.text('Push Notifications'),
-        matching: find.byType(Row),
-      );
-      final pushToggle = find.descendant(
-        of: pushRow,
-        matching: find.byType(GestureDetector),
-      );
-      expect(pushToggle, findsOneWidget);
+        // _defaultProfile has notificationsEnabled: true.
+        // The MpToggleSwitch for "Push Notifications" is the first GestureDetector.
+        // Find GestureDetectors that are descendants of a Row containing
+        // 'Push Notifications' text.
+        final pushRow = find.ancestor(
+          of: find.text('Push Notifications'),
+          matching: find.byType(Row),
+        );
+        final pushToggle = find.descendant(
+          of: pushRow,
+          matching: find.byType(GestureDetector),
+        );
+        expect(pushToggle, findsOneWidget);
 
-      await tester.tap(pushToggle);
-      await tester.pumpAndSettle();
+        await tester.tap(pushToggle);
+        await tester.pumpAndSettle();
 
-      expect(fake.updateCalls, hasLength(1));
-      // Was true, toggled to false
-      expect(fake.updateCalls.first.notificationsEnabled, isFalse);
-    });
+        expect(fake.updateCalls, hasLength(1));
+        // Was true, toggled to false
+        expect(fake.updateCalls.first.notificationsEnabled, isFalse);
+      },
+    );
 
-    testWidgets('tapping critical alerts toggle calls updateProfile with toggled value', (tester) async {
-      final fake = _TrackingFakeUserSettings(_defaultProfile);
-      await tester.pumpWidget(
-        createTestableWidget(
-          const NotificationSettings(),
-          overrides: [userSettingsProvider.overrideWith(() => fake)],
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'tapping critical alerts toggle calls updateProfile with toggled value',
+      (tester) async {
+        final fake = _TrackingFakeUserSettings(_defaultProfile);
+        await tester.pumpWidget(
+          createTestableWidget(
+            const NotificationSettings(),
+            overrides: [userSettingsProvider.overrideWith(() => fake)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // _defaultProfile has criticalAlerts: false.
-      final alertsRow = find.ancestor(
-        of: find.text('Critical Alerts'),
-        matching: find.byType(Row),
-      );
-      final alertsToggle = find.descendant(
-        of: alertsRow,
-        matching: find.byType(GestureDetector),
-      );
-      expect(alertsToggle, findsOneWidget);
+        // _defaultProfile has criticalAlerts: false.
+        final alertsRow = find.ancestor(
+          of: find.text('Critical Alerts'),
+          matching: find.byType(Row),
+        );
+        final alertsToggle = find.descendant(
+          of: alertsRow,
+          matching: find.byType(GestureDetector),
+        );
+        expect(alertsToggle, findsOneWidget);
 
-      await tester.tap(alertsToggle);
-      await tester.pumpAndSettle();
+        await tester.tap(alertsToggle);
+        await tester.pumpAndSettle();
 
-      expect(fake.updateCalls, hasLength(1));
-      // Was false, toggled to true
-      expect(fake.updateCalls.first.criticalAlerts, isTrue);
-    });
+        expect(fake.updateCalls, hasLength(1));
+        // Was false, toggled to true
+        expect(fake.updateCalls.first.criticalAlerts, isTrue);
+      },
+    );
 
-    testWidgets('tapping push notifications toggle off then on round-trips', (tester) async {
+    testWidgets('tapping push notifications toggle off then on round-trips', (
+      tester,
+    ) async {
       final fake = _TrackingFakeUserSettings(_defaultProfile);
       await tester.pumpWidget(
         createTestableWidget(
@@ -491,9 +507,6 @@ class ProviderScopeWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      overrides: overrides.cast(),
-      child: child,
-    );
+    return ProviderScope(overrides: overrides.cast(), child: child);
   }
 }

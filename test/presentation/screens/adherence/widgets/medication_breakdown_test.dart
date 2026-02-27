@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/screens/adherence/widgets/medication_breakdown.dart';
+import 'package:kusuridoki/presentation/screens/adherence/widgets/medication_breakdown.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -8,20 +8,18 @@ void main() {
   group('MedicationBreakdown', () {
     testWidgets('shows "By Medication" section title', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MedicationBreakdown(medications: []),
-        ),
+        createTestableWidget(const MedicationBreakdown(medications: [])),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('By Medication'), findsOneWidget);
     });
 
-    testWidgets('shows noMedicationData message when list is empty', (tester) async {
+    testWidgets('shows noMedicationData message when list is empty', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MedicationBreakdown(medications: []),
-        ),
+        createTestableWidget(const MedicationBreakdown(medications: [])),
       );
       await tester.pumpAndSettle();
 
@@ -32,9 +30,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 85.0),
-            ],
+            medications: [(id: 'med-1', name: 'Aspirin', percentage: 85.0)],
           ),
         ),
       );
@@ -43,13 +39,13 @@ void main() {
       expect(find.text('Aspirin'), findsOneWidget);
     });
 
-    testWidgets('shows percentage text for a medication with data', (tester) async {
+    testWidgets('shows percentage text for a medication with data', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 85.0),
-            ],
+            medications: [(id: 'med-1', name: 'Aspirin', percentage: 85.0)],
           ),
         ),
       );
@@ -62,9 +58,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [
-              (id: 'med-1', name: 'Metformin', percentage: null),
-            ],
+            medications: [(id: 'med-1', name: 'Metformin', percentage: null)],
           ),
         ),
       );
@@ -92,7 +86,9 @@ void main() {
       expect(find.text('Lisinopril'), findsOneWidget);
     });
 
-    testWidgets('shows correct percentage values for multiple medications', (tester) async {
+    testWidgets('shows correct percentage values for multiple medications', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
@@ -131,9 +127,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 84.6),
-            ],
+            medications: [(id: 'med-1', name: 'Aspirin', percentage: 84.6)],
           ),
         ),
       );
@@ -143,13 +137,13 @@ void main() {
       expect(find.text('85%'), findsOneWidget);
     });
 
-    testWidgets('does not show noMedicationData when medications provided', (tester) async {
+    testWidgets('does not show noMedicationData when medications provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 80.0),
-            ],
+            medications: [(id: 'med-1', name: 'Aspirin', percentage: 80.0)],
           ),
         ),
       );
@@ -158,7 +152,9 @@ void main() {
       expect(find.text('No medication data available'), findsNothing);
     });
 
-    testWidgets('mixed null and non-null percentages render correctly', (tester) async {
+    testWidgets('mixed null and non-null percentages render correctly', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(

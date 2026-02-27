@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_color_dot.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_color_dot.dart';
 
 class PillColorPicker extends StatelessWidget {
   const PillColorPicker({

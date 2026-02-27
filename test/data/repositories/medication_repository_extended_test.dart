@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/repositories/medication_repository.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/repositories/medication_repository.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 @GenerateMocks([StorageService])
 import 'medication_repository_extended_test.mocks.dart';
@@ -23,21 +23,20 @@ Medication buildMedication({
   int lowStockThreshold = 5,
   String? photoPath,
   bool isCritical = false,
-}) =>
-    Medication(
-      id: id,
-      name: name,
-      dosage: dosage,
-      dosageUnit: dosageUnit,
-      shape: PillShape.round,
-      color: PillColor.white,
-      inventoryTotal: inventoryTotal,
-      inventoryRemaining: inventoryRemaining,
-      lowStockThreshold: lowStockThreshold,
-      photoPath: photoPath,
-      isCritical: isCritical,
-      createdAt: DateTime.utc(2024, 1, 1),
-    );
+}) => Medication(
+  id: id,
+  name: name,
+  dosage: dosage,
+  dosageUnit: dosageUnit,
+  shape: PillShape.round,
+  color: PillColor.white,
+  inventoryTotal: inventoryTotal,
+  inventoryRemaining: inventoryRemaining,
+  lowStockThreshold: lowStockThreshold,
+  photoPath: photoPath,
+  isCritical: isCritical,
+  createdAt: DateTime.utc(2024, 1, 1),
+);
 
 void main() {
   late MockStorageService mockStorage;
@@ -126,8 +125,7 @@ void main() {
     group('getMedication()', () {
       test('returns medication when found', () async {
         final med = buildMedication(id: 'med-001');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
 
         final result = await repo.getMedication('med-001');
 
@@ -136,8 +134,9 @@ void main() {
       });
 
       test('returns null when not found', () async {
-        when(mockStorage.getMedication('missing'))
-            .thenAnswer((_) async => null);
+        when(
+          mockStorage.getMedication('missing'),
+        ).thenAnswer((_) async => null);
 
         final result = await repo.getMedication('missing');
 
@@ -149,8 +148,9 @@ void main() {
       test('saves updated medication with new updatedAt timestamp', () async {
         final existing = buildMedication(id: 'med-001');
         final updated = buildMedication(id: 'med-001', name: 'Updated Name');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => existing);
+        when(
+          mockStorage.getMedication('med-001'),
+        ).thenAnswer((_) async => existing);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         await repo.updateMedication(updated);
@@ -163,10 +163,14 @@ void main() {
       });
 
       test('does not delete photo when photo path unchanged', () async {
-        final existing = buildMedication(id: 'med-001', photoPath: '/photo.jpg');
+        final existing = buildMedication(
+          id: 'med-001',
+          photoPath: '/photo.jpg',
+        );
         final updated = buildMedication(id: 'med-001', photoPath: '/photo.jpg');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => existing);
+        when(
+          mockStorage.getMedication('med-001'),
+        ).thenAnswer((_) async => existing);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         await repo.updateMedication(updated);
@@ -175,12 +179,11 @@ void main() {
       });
 
       test('deletes old photo when photo path changed', () async {
-        final existing =
-            buildMedication(id: 'med-001', photoPath: '/old.jpg');
-        final updated =
-            buildMedication(id: 'med-001', photoPath: '/new.jpg');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => existing);
+        final existing = buildMedication(id: 'med-001', photoPath: '/old.jpg');
+        final updated = buildMedication(id: 'med-001', photoPath: '/new.jpg');
+        when(
+          mockStorage.getMedication('med-001'),
+        ).thenAnswer((_) async => existing);
         when(mockStorage.deletePhotoFile(any)).thenAnswer((_) async {});
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
@@ -191,10 +194,10 @@ void main() {
 
       test('does not delete photo when existing has no photo', () async {
         final existing = buildMedication(id: 'med-001', photoPath: null);
-        final updated =
-            buildMedication(id: 'med-001', photoPath: '/new.jpg');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => existing);
+        final updated = buildMedication(id: 'med-001', photoPath: '/new.jpg');
+        when(
+          mockStorage.getMedication('med-001'),
+        ).thenAnswer((_) async => existing);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         await repo.updateMedication(updated);
@@ -202,40 +205,45 @@ void main() {
         verifyNever(mockStorage.deletePhotoFile(any));
       });
 
-      test('does not delete photo when medication does not exist in storage',
-          () async {
-        final updated = buildMedication(id: 'med-new');
-        when(mockStorage.getMedication('med-new'))
-            .thenAnswer((_) async => null);
-        when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
+      test(
+        'does not delete photo when medication does not exist in storage',
+        () async {
+          final updated = buildMedication(id: 'med-new');
+          when(
+            mockStorage.getMedication('med-new'),
+          ).thenAnswer((_) async => null);
+          when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
-        await repo.updateMedication(updated);
+          await repo.updateMedication(updated);
 
-        verifyNever(mockStorage.deletePhotoFile(any));
-      });
+          verifyNever(mockStorage.deletePhotoFile(any));
+        },
+      );
     });
 
     group('deleteMedication()', () {
       test('deletes medication and related data', () async {
         final med = buildMedication(id: 'med-001');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.deletePhotoFile(any)).thenAnswer((_) async {});
-        when(mockStorage.deleteRemindersForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.deleteAdherenceRecordsForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.getSchedulesForMedication('med-001'))
-            .thenAnswer((_) async => []);
-        when(mockStorage.deleteMedication('med-001'))
-            .thenAnswer((_) async {});
+        when(
+          mockStorage.deleteRemindersForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.deleteAdherenceRecordsForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.getSchedulesForMedication('med-001'),
+        ).thenAnswer((_) async => []);
+        when(mockStorage.deleteMedication('med-001')).thenAnswer((_) async {});
 
         await repo.deleteMedication('med-001');
 
         verify(mockStorage.deleteMedication('med-001')).called(1);
         verify(mockStorage.deleteRemindersForMedication('med-001')).called(1);
-        verify(mockStorage.deleteAdherenceRecordsForMedication('med-001'))
-            .called(1);
+        verify(
+          mockStorage.deleteAdherenceRecordsForMedication('med-001'),
+        ).called(1);
       });
 
       test('deletes each associated schedule', () async {
@@ -250,18 +258,19 @@ void main() {
           medicationId: 'med-001',
           type: ScheduleType.daily,
         );
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.deletePhotoFile(any)).thenAnswer((_) async {});
-        when(mockStorage.deleteRemindersForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.deleteAdherenceRecordsForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.getSchedulesForMedication('med-001'))
-            .thenAnswer((_) async => [schedule1, schedule2]);
+        when(
+          mockStorage.deleteRemindersForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.deleteAdherenceRecordsForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.getSchedulesForMedication('med-001'),
+        ).thenAnswer((_) async => [schedule1, schedule2]);
         when(mockStorage.deleteSchedule(any)).thenAnswer((_) async {});
-        when(mockStorage.deleteMedication('med-001'))
-            .thenAnswer((_) async {});
+        when(mockStorage.deleteMedication('med-001')).thenAnswer((_) async {});
 
         await repo.deleteMedication('med-001');
 
@@ -271,18 +280,20 @@ void main() {
 
       test('deletes photo when medication has photoPath', () async {
         final med = buildMedication(id: 'med-001', photoPath: '/photo.jpg');
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
-        when(mockStorage.deletePhotoFile('/photo.jpg'))
-            .thenAnswer((_) async {});
-        when(mockStorage.deleteRemindersForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.deleteAdherenceRecordsForMedication('med-001'))
-            .thenAnswer((_) async {});
-        when(mockStorage.getSchedulesForMedication('med-001'))
-            .thenAnswer((_) async => []);
-        when(mockStorage.deleteMedication('med-001'))
-            .thenAnswer((_) async {});
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
+        when(
+          mockStorage.deletePhotoFile('/photo.jpg'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.deleteRemindersForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.deleteAdherenceRecordsForMedication('med-001'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.getSchedulesForMedication('med-001'),
+        ).thenAnswer((_) async => []);
+        when(mockStorage.deleteMedication('med-001')).thenAnswer((_) async {});
 
         await repo.deleteMedication('med-001');
 
@@ -290,16 +301,19 @@ void main() {
       });
 
       test('skips photo deletion when medication not found', () async {
-        when(mockStorage.getMedication('missing'))
-            .thenAnswer((_) async => null);
-        when(mockStorage.deleteRemindersForMedication('missing'))
-            .thenAnswer((_) async {});
-        when(mockStorage.deleteAdherenceRecordsForMedication('missing'))
-            .thenAnswer((_) async {});
-        when(mockStorage.getSchedulesForMedication('missing'))
-            .thenAnswer((_) async => []);
-        when(mockStorage.deleteMedication('missing'))
-            .thenAnswer((_) async {});
+        when(
+          mockStorage.getMedication('missing'),
+        ).thenAnswer((_) async => null);
+        when(
+          mockStorage.deleteRemindersForMedication('missing'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.deleteAdherenceRecordsForMedication('missing'),
+        ).thenAnswer((_) async {});
+        when(
+          mockStorage.getSchedulesForMedication('missing'),
+        ).thenAnswer((_) async => []);
+        when(mockStorage.deleteMedication('missing')).thenAnswer((_) async {});
 
         await repo.deleteMedication('missing');
 
@@ -366,9 +380,15 @@ void main() {
       test('returns only medications below threshold', () async {
         final meds = [
           buildMedication(
-              id: 'low', inventoryRemaining: 3, lowStockThreshold: 5),
+            id: 'low',
+            inventoryRemaining: 3,
+            lowStockThreshold: 5,
+          ),
           buildMedication(
-              id: 'ok', inventoryRemaining: 20, lowStockThreshold: 5),
+            id: 'ok',
+            inventoryRemaining: 20,
+            lowStockThreshold: 5,
+          ),
         ];
         when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
 
@@ -378,23 +398,25 @@ void main() {
         expect(result.first.id, 'low');
       });
 
-      test('returns empty list when all medications are well-stocked', () async {
-        final meds = [
-          buildMedication(inventoryRemaining: 30, lowStockThreshold: 5),
-        ];
-        when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
+      test(
+        'returns empty list when all medications are well-stocked',
+        () async {
+          final meds = [
+            buildMedication(inventoryRemaining: 30, lowStockThreshold: 5),
+          ];
+          when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
 
-        final result = await repo.getLowStockMedications();
+          final result = await repo.getLowStockMedications();
 
-        expect(result, isEmpty);
-      });
+          expect(result, isEmpty);
+        },
+      );
     });
 
     group('deductInventory()', () {
       test('decrements inventoryRemaining by 1', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 10);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         final result = await repo.deductInventory('med-001');
@@ -404,8 +426,7 @@ void main() {
 
       test('saves updated medication after deduction', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 10);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         await repo.deductInventory('med-001');
@@ -417,8 +438,9 @@ void main() {
       });
 
       test('throws when medication not found', () async {
-        when(mockStorage.getMedication('missing'))
-            .thenAnswer((_) async => null);
+        when(
+          mockStorage.getMedication('missing'),
+        ).thenAnswer((_) async => null);
 
         expect(
           () => repo.deductInventory('missing'),
@@ -428,8 +450,7 @@ void main() {
 
       test('throws when inventory is already zero', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 0);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
 
         expect(
           () => repo.deductInventory('med-001'),
@@ -440,8 +461,7 @@ void main() {
       test('sets updatedAt on returned medication', () async {
         final before = DateTime.now().subtract(const Duration(seconds: 1));
         final med = buildMedication(id: 'med-001', inventoryRemaining: 5);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         final result = await repo.deductInventory('med-001');
@@ -450,26 +470,31 @@ void main() {
         expect(result.updatedAt!.isAfter(before), isTrue);
       });
 
-      test('deduction to exactly threshold triggers low stock check without error',
-          () async {
-        // inventoryRemaining will be 5 after deduction = threshold → isLowStock
-        final med = buildMedication(
-            id: 'med-001', inventoryRemaining: 6, lowStockThreshold: 5);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
-        when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
+      test(
+        'deduction to exactly threshold triggers low stock check without error',
+        () async {
+          // inventoryRemaining will be 5 after deduction = threshold → isLowStock
+          final med = buildMedication(
+            id: 'med-001',
+            inventoryRemaining: 6,
+            lowStockThreshold: 5,
+          );
+          when(
+            mockStorage.getMedication('med-001'),
+          ).thenAnswer((_) async => med);
+          when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
-        // Should complete without exception even if notification fails
-        final result = await repo.deductInventory('med-001');
-        expect(result.inventoryRemaining, 5);
-      });
+          // Should complete without exception even if notification fails
+          final result = await repo.deductInventory('med-001');
+          expect(result.inventoryRemaining, 5);
+        },
+      );
     });
 
     group('updateInventory()', () {
       test('sets inventoryRemaining to the new value', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 5);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         final result = await repo.updateInventory('med-001', 30);
@@ -479,8 +504,7 @@ void main() {
 
       test('saves updated medication via storage', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 5);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         await repo.updateInventory('med-001', 30);
@@ -492,8 +516,9 @@ void main() {
       });
 
       test('throws when medication not found', () async {
-        when(mockStorage.getMedication('missing'))
-            .thenAnswer((_) async => null);
+        when(
+          mockStorage.getMedication('missing'),
+        ).thenAnswer((_) async => null);
 
         expect(
           () => repo.updateInventory('missing', 30),
@@ -504,8 +529,7 @@ void main() {
       test('sets updatedAt on returned medication', () async {
         final before = DateTime.now().subtract(const Duration(seconds: 1));
         final med = buildMedication(id: 'med-001', inventoryRemaining: 5);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         final result = await repo.updateInventory('med-001', 30);
@@ -516,8 +540,7 @@ void main() {
 
       test('allows setting inventory to zero', () async {
         final med = buildMedication(id: 'med-001', inventoryRemaining: 10);
-        when(mockStorage.getMedication('med-001'))
-            .thenAnswer((_) async => med);
+        when(mockStorage.getMedication('med-001')).thenAnswer((_) async => med);
         when(mockStorage.saveMedication(any)).thenAnswer((_) async {});
 
         final result = await repo.updateInventory('med-001', 0);
@@ -529,21 +552,27 @@ void main() {
     group('isLowStock() — boundary cases', () {
       test('returns true when remaining equals threshold', () {
         final med = buildMedication(
-            inventoryRemaining: 5, lowStockThreshold: 5);
+          inventoryRemaining: 5,
+          lowStockThreshold: 5,
+        );
 
         expect(repo.isLowStock(med), isTrue);
       });
 
       test('returns false when remaining is one above threshold', () {
         final med = buildMedication(
-            inventoryRemaining: 6, lowStockThreshold: 5);
+          inventoryRemaining: 6,
+          lowStockThreshold: 5,
+        );
 
         expect(repo.isLowStock(med), isFalse);
       });
 
       test('returns true when days remaining is exactly 3', () {
         final med = buildMedication(
-            inventoryRemaining: 3, lowStockThreshold: 0);
+          inventoryRemaining: 3,
+          lowStockThreshold: 0,
+        );
 
         // 3 pills / 1 dose/day = 3 days (triggers low stock)
         expect(repo.isLowStock(med, dosesPerDay: 1), isTrue);
@@ -551,7 +580,9 @@ void main() {
 
       test('returns false when days remaining is 4', () {
         final med = buildMedication(
-            inventoryRemaining: 4, lowStockThreshold: 0);
+          inventoryRemaining: 4,
+          lowStockThreshold: 0,
+        );
 
         // 4 pills / 1 dose/day = 4 days (above 3 threshold)
         expect(repo.isLowStock(med, dosesPerDay: 1), isFalse);

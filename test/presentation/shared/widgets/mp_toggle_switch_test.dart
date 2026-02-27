@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -9,9 +9,7 @@ void main() {
   group('MpToggleSwitch', () {
     testWidgets('renders without label', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          MpToggleSwitch(value: false, onChanged: (_) {}),
-        ),
+        createTestableWidget(MpToggleSwitch(value: false, onChanged: (_) {})),
       );
       await tester.pumpAndSettle();
 
@@ -33,14 +31,13 @@ void main() {
       expect(find.text('Notifications'), findsOneWidget);
     });
 
-    testWidgets('onChanged fires with toggled value when tapped', (tester) async {
+    testWidgets('onChanged fires with toggled value when tapped', (
+      tester,
+    ) async {
       bool? newValue;
       await tester.pumpWidget(
         createTestableWidget(
-          MpToggleSwitch(
-            value: false,
-            onChanged: (v) => newValue = v,
-          ),
+          MpToggleSwitch(value: false, onChanged: (v) => newValue = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -55,10 +52,7 @@ void main() {
       bool? newValue;
       await tester.pumpWidget(
         createTestableWidget(
-          MpToggleSwitch(
-            value: true,
-            onChanged: (v) => newValue = v,
-          ),
+          MpToggleSwitch(value: true, onChanged: (v) => newValue = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -69,11 +63,11 @@ void main() {
       expect(newValue, isFalse);
     });
 
-    testWidgets('Semantics has toggled property reflecting value', (tester) async {
+    testWidgets('Semantics has toggled property reflecting value', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          MpToggleSwitch(value: true, onChanged: (_) {}),
-        ),
+        createTestableWidget(MpToggleSwitch(value: true, onChanged: (_) {})),
       );
       await tester.pumpAndSettle();
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
 class MpTextField extends StatelessWidget {
   const MpTextField({
@@ -47,7 +47,9 @@ class MpTextField extends StatelessWidget {
           maxLines: maxLines,
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: context.appColors.textMuted) : null,
+            prefixIcon: prefixIcon != null
+                ? Icon(prefixIcon, color: context.appColors.textMuted)
+                : null,
             suffixIcon: suffixIcon,
           ),
         ),
