@@ -18,6 +18,7 @@ import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverSettingsScreen extends ConsumerStatefulWidget {
@@ -54,6 +55,8 @@ class _CaregiverSettingsScreenState
             AppSpacing.navBarClearance,
           ),
           children: [
+            const LanguageSelector(),
+            const SizedBox(height: AppSpacing.xl),
             MpSectionHeader(title: l10n.notifications),
             ref
                 .watch(userSettingsProvider)
