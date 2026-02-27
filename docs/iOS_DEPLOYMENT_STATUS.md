@@ -122,7 +122,7 @@
 
 #### Step 1: Xcode 열기
 ```bash
-open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/kusuridoki/ios/Runner.xcworkspace
 ```
 
 #### Step 2: Apple Developer Account 연결
@@ -193,7 +193,7 @@ open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
 
 #### Phase 7: Build & Archive (자동화 가능)
 ```bash
-cd /Users/gingermarco/develop/flutter/my_pill
+cd /Users/gingermarco/develop/flutter/kusuridoki
 flutter clean
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
