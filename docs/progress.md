@@ -138,12 +138,12 @@
 
 ## Consumer Panel Tracker
 
-| Gate | Date | Panel Composition | Avg Score | Pass? | Notes |
-|------|------|-------------------|-----------|-------|-------|
-| G1 | 2026-02 | 5~7명 가상 패널 | - | - | docs/CONSUMER_PANEL_REVIEW_2026_02.md 참조 |
-| G2 | - | - | - | - | Not yet conducted |
-| G3 | - | - | - | - | Not yet conducted |
-| G4 | - | - | - | - | Not yet conducted |
+| Gate | Date | Panel Composition | Avg Score (지속) | Avg Score (추천) | Pass? | Notes |
+|------|------|-------------------|-----------------|-----------------|-------|-------|
+| G1 | 2026-02 | 5~7명 가상 패널 | 6.3 | 4.9 | 조건부 | docs/CONSUMER_PANEL_INSIGHTS.md 참조 |
+| G2 | 2026-02-26 | 7명 (68F JP, 27M US, 48F JP nurse, 34M UK dev, 62M JP, 16F JP, 43F JP-CA) | 6.4 | 5.3 | 조건부 | 온보딩 중복 구조(P0) + 게임화 부재(P1) 수정 후 G3 진행 권고 |
+| G3 | - | - | - | - | - | Not yet conducted |
+| G4 | - | - | - | - | - | Not yet conducted |
 
 ---
 

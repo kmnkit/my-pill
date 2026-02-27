@@ -77,12 +77,12 @@ lib/
 │   ├── utils/                   # ErrorHandler, TimezoneUtils, AppleAuthErrorMessages
 │   └── extensions/              # (Dart extension methods)
 ├── data/
-│   ├── enums/                   # PillShape, PillColor, DosageUnit, ScheduleType,
-│   │                            # ReminderStatus, TimezoneMode, AppleAuthError
-│   ├── models/                  # Freezed: Medication, Schedule, Reminder,
+│   ├── enums/                   # PillShape, PillColor, DosageUnit, DosageTiming,
+│   │                            # ScheduleType, ReminderStatus, TimezoneMode, AppleAuthError
+│   ├── models/                  # Freezed: Medication, Schedule, Reminder, DosageTimeSlot,
 │   │                            # AdherenceRecord, Inventory, CaregiverLink,
 │   │                            # SubscriptionStatus, UserProfile
-│   ├── services/                # Stateless singletons (15 services):
+│   ├── services/                # Stateless singletons (14 services):
 │   │   ├── storage_service      #   Hive local storage
 │   │   ├── firestore_service    #   Cloud Firestore sync
 │   │   ├── auth_service         #   Firebase Auth (Apple, Google sign-in)
@@ -91,18 +91,17 @@ lib/
 │   │   ├── adherence_service    #   Adherence tracking/rating
 │   │   ├── report_service       #   PDF report generation
 │   │   ├── ad_service           #   Google AdMob
-│   │   ├── iap_service          #   In-app purchases
-│   │   ├── subscription_service #   Premium subscription tracking
-│   │   ├── interstitial_controller # Interstitial ad management
+│   │   ├── subscription_service #   Premium subscription + IAP management
+│   │   ├── review_service       #   In-app review prompts
 │   │   ├── cloud_functions_service # Firebase Cloud Functions calls
 │   │   ├── deep_link_service    #   app_links handling
 │   │   ├── home_widget_service  #   Native home screen widgets
 │   │   └── timezone_service     #   Timezone conversion
 │   ├── repositories/            # MedicationRepository, ScheduleRepository
-│   └── providers/               # @riverpod code-gen (19 providers):
+│   └── providers/               # @riverpod code-gen (16 files, 37 annotated functions):
 │       ├── auth, medication, schedule, reminder, adherence
 │       ├── caregiver, caregiver_monitoring, invite
-│       ├── ad, iap, interstitial, subscription
+│       ├── ad, subscription
 │       ├── home_widget, deep_link, timezone
 │       ├── report, settings, storage_service
 │       └── (all use AsyncNotifier pattern)
@@ -158,6 +157,7 @@ GoRouter with two `StatefulShellRoute.indexedStack` shells:
 | Auth | firebase_auth (`signInWithProvider` — Apple, Google) |
 | Ads | google_mobile_ads |
 | IAP | in_app_purchase |
+| Review | in_app_review |
 | UI | google_fonts, fl_chart, qr_flutter, mobile_scanner, image_picker |
 | PDF | pdf, printing |
 | Notifications | flutter_local_notifications |
@@ -185,6 +185,8 @@ GoRouter with two `StatefulShellRoute.indexedStack` shells:
 - `generateInviteLink` — 7-day expiring invite code
 - `acceptInvite` — bidirectional link via atomic batch writes
 - `revokeAccess` — patient-initiated caregiver removal
+- `deleteUserAccount` — server-side account + data deletion (GDPR/App Store compliance)
+- `verifyReceipt` — IAP receipt server-side validation
 - `cleanupExpiredInvites` — daily scheduled cleanup
 
 Deploy: `firebase deploy --only functions`
@@ -222,13 +224,38 @@ firebase emulators:start --only functions,firestore
 
 ## Documentation
 
+**Core:**
 - `docs/product_requirements_document.md` — PRD (English)
 - `docs/product_requirements_document_ja.md` — PRD (Japanese)
-- `docs/iOS_APP_STORE_DEPLOYMENT_GUIDE.md` — iOS deployment steps
+- `docs/progress.md` — Development progress tracking
+- `docs/feedback.md` — User feedback log
+
+**Deployment:**
 - `docs/APP_STORE_METADATA.md` — Store listing metadata
 - `docs/APP_STORE_PREPARATION.md` — App Store preparation guide
+- `docs/iOS_APP_STORE_DEPLOYMENT_GUIDE.md` — iOS deployment steps
+- `docs/iOS_DEPLOYMENT_STATUS.md` — iOS deployment status
+- `docs/iOS_DEPLOYMENT_FINAL_STATUS.md` — iOS deployment final status
+
+**Marketing:**
+- `docs/AD_CREATIVE_STRATEGY.md` — Ad creative strategy
+- `docs/ad-campaign-market-research.md` — Ad campaign market research
+- `docs/LINE_ADS_EXECUTION_GUIDE.md` — LINE Ads execution guide
+
+**QA/Security:**
+- `docs/qa-quality-gate-report.md` — QA quality gate report
+- `docs/security-audit-2026-02-23.md` — Security audit results
+- `docs/test-scenarios/` — Test scenario documents
+
+**Design & Review:**
+- `docs/UI_UX_REVIEW.md` — UI/UX review
+- `docs/design_dosage_timing_redesign.md` — Dosage timing redesign spec
 - `docs/CONSUMER_PANEL_INSIGHTS.md` — Consumer panel insights
-- `docs/progress.md` — Development progress tracking
+- `docs/CONSUMER_PANEL_INSIGHTS_G2.md` — Consumer panel insights (G2)
+- `docs/CONSUMER_PANEL_REVIEW_2026_02.md` — Consumer panel review (Feb 2026)
+- `docs/feature-evaluation-ippoka.md` — Feature evaluation (Ippoka)
+- `docs/stakeholder-launch-assessment.md` — Stakeholder launch assessment
+- `docs/plans/` — Implementation plans
 
 ## AGENTS.md Hierarchy
 
