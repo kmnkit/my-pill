@@ -148,5 +148,44 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
+      - name: Create stub GoogleService-Info.plist for CI build
+        run: |
+          cat > ios/Runner/GoogleService-Info.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CLIENT_ID</key>
+            <string>000000000000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.apps.googleusercontent.com</string>
+            <key>REVERSED_CLIENT_ID</key>
+            <string>com.googleusercontent.apps.000000000000-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
+            <key>API_KEY</key>
+            <string>AIzaSyCI-stub-key-for-build-verification-only</string>
+            <key>GCM_SENDER_ID</key>
+            <string>000000000000</string>
+            <key>PLIST_VERSION</key>
+            <string>1</string>
+            <key>BUNDLE_ID</key>
+            <string>com.ginger.mypill</string>
+            <key>PROJECT_ID</key>
+            <string>kusuridoki-ci</string>
+            <key>STORAGE_BUCKET</key>
+            <string>kusuridoki-ci.appspot.com</string>
+            <key>IS_ADS_ENABLED</key>
+            <false/>
+            <key>IS_ANALYTICS_ENABLED</key>
+            <false/>
+            <key>IS_APPINVITE_ENABLED</key>
+            <true/>
+            <key>IS_GCM_ENABLED</key>
+            <true/>
+            <key>IS_SIGNIN_ENABLED</key>
+            <true/>
+            <key>GOOGLE_APP_ID</key>
+            <string>1:000000000000:ios:0000000000000000000000</string>
+          </dict>
+          </plist>
+          EOF
+
       - name: Build iOS (no codesign)
         run: flutter build ios --release --no-codesign
