@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
@@ -18,15 +17,13 @@ import '../../../../helpers/widget_test_helpers.dart';
 // ---------------------------------------------------------------------------
 class _FakeUser implements User {
   _FakeUser({
-    this.uid = 'uid-123',
     this.displayName,
     this.email,
     this.isAnonymous = false,
-    this.photoURL,
   });
 
   @override
-  final String uid;
+  final String uid = 'test-user-001';
   @override
   final String? displayName;
   @override
@@ -34,12 +31,11 @@ class _FakeUser implements User {
   @override
   final bool isAnonymous;
   @override
-  final String? photoURL;
+  final String? photoURL = null;
 
   // --- stubs for the rest of the User interface ---
   @override
   bool get emailVerified => true;
-  @override
   bool get isEmailVerified => true;
   @override
   UserMetadata get metadata => throw UnimplementedError();
@@ -85,7 +81,6 @@ class _FakeUser implements User {
   Future<User> unlink(String providerId) async => this;
   @override
   Future<void> updateDisplayName(String? displayName) async {}
-  @override
   Future<void> updateEmail(String newEmail) async {}
   @override
   Future<void> updatePassword(String newPassword) async {}

@@ -65,15 +65,15 @@ void main() {
 
     test('onNotificationAction can be replaced', () {
       int callCount = 0;
-      NotificationService.onNotificationAction = (_, __) => callCount++;
-      NotificationService.onNotificationAction = (_, __) => callCount += 10;
+      NotificationService.onNotificationAction = (_, _) => callCount++;
+      NotificationService.onNotificationAction = (_, _) => callCount += 10;
 
       NotificationService.onNotificationAction?.call('id', 'action');
       expect(callCount, 10);
     });
 
     test('onNotificationAction can be cleared by setting to null', () {
-      NotificationService.onNotificationAction = (_, __) {};
+      NotificationService.onNotificationAction = (_, _) {};
       expect(NotificationService.onNotificationAction, isNotNull);
 
       NotificationService.onNotificationAction = null;
