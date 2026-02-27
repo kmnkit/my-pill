@@ -1,11 +1,12 @@
-const functions = require('firebase-functions');
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
+const { onSchedule } = require('firebase-functions/v2/scheduler');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
 admin.initializeApp();
 
 const db = admin.firestore();
 
-// Rate limiter: max 5 calls per minute per uid+action
+// Rate limiter: max N calls per minute per uid+action
 async function checkRateLimit(uid, action, maxPerMinute = 5) {
   const now = Date.now();
   const windowStart = now - 60000; // 1 minute window
@@ -16,7 +17,7 @@ async function checkRateLimit(uid, action, maxPerMinute = 5) {
     const data = doc.data();
     const recentCalls = (data.timestamps || []).filter(t => t > windowStart);
     if (recentCalls.length >= maxPerMinute) {
-      throw new functions.https.HttpsError('resource-exhausted', 'Too many requests. Please try again later.');
+      throw new HttpsError('resource-exhausted', 'Too many requests. Please try again later.');
     }
     recentCalls.push(now);
     await rateLimitRef.set({ timestamps: recentCalls, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
@@ -26,12 +27,12 @@ async function checkRateLimit(uid, action, maxPerMinute = 5) {
 }
 
 // Generate invite link
-exports.generateInviteLink = functions.https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+exports.generateInviteLink = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
 
-  await checkRateLimit(context.auth.uid, 'generateInviteLink');
+  await checkRateLimit(request.auth.uid, 'generateInviteLink');
 
-  const patientId = context.auth.uid;
+  const patientId = request.auth.uid;
   const code = generateCode();
 
   await db.collection('invites').doc(code).set({
@@ -45,28 +46,28 @@ exports.generateInviteLink = functions.https.onCall(async (data, context) => {
 });
 
 // Accept invite
-exports.acceptInvite = functions.https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+exports.acceptInvite = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
 
-  await checkRateLimit(context.auth.uid, 'acceptInvite');
+  await checkRateLimit(request.auth.uid, 'acceptInvite');
 
-  const { code } = data;
-  const caregiverId = context.auth.uid;
+  const { code } = request.data;
+  const caregiverId = request.auth.uid;
 
   const inviteRef = db.collection('invites').doc(code);
   const invite = await inviteRef.get();
 
-  if (!invite.exists) throw new functions.https.HttpsError('not-found', 'Invalid invite code');
+  if (!invite.exists) throw new HttpsError('not-found', 'Invalid invite code');
 
   const inviteData = invite.data();
-  if (inviteData.status !== 'pending') throw new functions.https.HttpsError('failed-precondition', 'Invite already used');
-  if (inviteData.expiresAt.toDate() < new Date()) throw new functions.https.HttpsError('failed-precondition', 'Invite expired');
+  if (inviteData.status !== 'pending') throw new HttpsError('failed-precondition', 'Invite already used');
+  if (inviteData.expiresAt.toDate() < new Date()) throw new HttpsError('failed-precondition', 'Invite expired');
 
   const patientId = inviteData.patientId;
 
   // Prevent self-invitation
   if (caregiverId === patientId) {
-    throw new functions.https.HttpsError('invalid-argument', 'Cannot accept your own invite');
+    throw new HttpsError('invalid-argument', 'Cannot accept your own invite');
   }
 
   // Read patient profile to get name for caregiver dashboard
@@ -89,7 +90,7 @@ exports.acceptInvite = functions.https.onCall(async (data, context) => {
     id: linkId,
     patientId,
     caregiverId,
-    caregiverName: context.auth.token.name || 'Caregiver',
+    caregiverName: request.auth.token.name || 'Caregiver',
     status: 'connected',
     linkedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
@@ -102,18 +103,18 @@ exports.acceptInvite = functions.https.onCall(async (data, context) => {
 });
 
 // Revoke access
-exports.revokeAccess = functions.https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+exports.revokeAccess = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
 
-  await checkRateLimit(context.auth.uid, 'revokeAccess', 5);
+  await checkRateLimit(request.auth.uid, 'revokeAccess', 5);
 
-  const { caregiverId, linkId } = data;
-  const patientId = context.auth.uid;
+  const { caregiverId, linkId } = request.data;
+  const patientId = request.auth.uid;
 
   // Verify link belongs to this patient
   const linkDoc = await db.collection('users').doc(patientId).collection('caregiverLinks').doc(linkId).get();
   if (!linkDoc.exists) {
-    throw new functions.https.HttpsError('not-found', 'Caregiver link not found');
+    throw new HttpsError('not-found', 'Caregiver link not found');
   }
 
   const batch = db.batch();
@@ -125,12 +126,12 @@ exports.revokeAccess = functions.https.onCall(async (data, context) => {
 });
 
 // Delete user account — server-side cleanup of all user data + auth
-exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+exports.deleteUserAccount = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
 
-  await checkRateLimit(context.auth.uid, 'deleteUserAccount', 3);
+  await checkRateLimit(request.auth.uid, 'deleteUserAccount', 3);
 
-  const uid = context.auth.uid;
+  const uid = request.auth.uid;
 
   // Delete all subcollections under users/{uid}
   const subcollections = ['medications', 'schedules', 'reminders', 'adherenceRecords', 'caregiverLinks'];
@@ -194,7 +195,7 @@ exports.deleteUserAccount = functions.https.onCall(async (data, context) => {
 });
 
 // Scheduled cleanup of expired invites (runs daily)
-exports.cleanupExpiredInvites = functions.pubsub.schedule('every 24 hours').onRun(async () => {
+exports.cleanupExpiredInvites = onSchedule('every 24 hours', async () => {
   const now = new Date();
   const expired = await db.collection('invites')
     .where('expiresAt', '<', now)
@@ -209,24 +210,24 @@ exports.cleanupExpiredInvites = functions.pubsub.schedule('every 24 hours').onRu
 });
 
 // Verify IAP receipt and store subscription status server-side
-exports.verifyReceipt = functions.https.onCall(async (data, context) => {
-  if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'Must be signed in');
+exports.verifyReceipt = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
 
-  await checkRateLimit(context.auth.uid, 'verifyReceipt', 5);
+  await checkRateLimit(request.auth.uid, 'verifyReceipt', 5);
 
-  const { productId, purchaseToken, source } = data;
+  const { productId, purchaseToken, source } = request.data;
 
   if (!productId || typeof productId !== 'string') {
-    throw new functions.https.HttpsError('invalid-argument', 'productId is required');
+    throw new HttpsError('invalid-argument', 'productId is required');
   }
   if (!purchaseToken || typeof purchaseToken !== 'string') {
-    throw new functions.https.HttpsError('invalid-argument', 'purchaseToken is required');
+    throw new HttpsError('invalid-argument', 'purchaseToken is required');
   }
   if (!source || !['app_store', 'google_play'].includes(source)) {
-    throw new functions.https.HttpsError('invalid-argument', 'source must be app_store or google_play');
+    throw new HttpsError('invalid-argument', 'source must be app_store or google_play');
   }
 
-  const uid = context.auth.uid;
+  const uid = request.auth.uid;
 
   // Store receipt data for server-side verification
   await db.collection('users').doc(uid).collection('subscriptions').add({
@@ -238,8 +239,6 @@ exports.verifyReceipt = functions.https.onCall(async (data, context) => {
   });
 
   // Mark as pending — do NOT grant premium until receipt is verified
-  // Phase B: integrate Apple App Store Server API / Google Play Developer API
-  // to verify receipt, then set isPremium: true upon successful validation
   await db.collection('users').doc(uid).update({
     premiumPending: true,
     premiumProductId: productId,
