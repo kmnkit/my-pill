@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
 import 'package:kusuridoki/data/services/timezone_service.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
   group('TimezoneService', () {
@@ -103,15 +104,17 @@ void main() {
     });
 
     test('convertTime same timezone returns equivalent time', () {
-      final original = DateTime(2024, 1, 1, 9, 30);
+      // Use TZDateTime to avoid dependence on the host machine's local timezone.
+      final tokyo = tz.getLocation('Asia/Tokyo');
+      final original = tz.TZDateTime(tokyo, 2024, 1, 1, 9, 30);
       final converted = service.convertTime(
         original,
         'Asia/Tokyo',
         'Asia/Tokyo',
       );
       // Same timezone → same wall-clock representation.
-      expect(converted.hour, equals(original.hour));
-      expect(converted.minute, equals(original.minute));
+      expect(converted.hour, equals(9));
+      expect(converted.minute, equals(30));
     });
 
     test('convertTime from UTC to Tokyo adds 9 hours', () {
@@ -124,8 +127,9 @@ void main() {
 
     group('adjustMedicationTime — fixedInterval mode', () {
       test('preserves UTC instant, shifts wall-clock by offset', () {
-        // 9 AM in Tokyo home timezone.
-        final homeTime = DateTime(2024, 6, 15, 9, 0);
+        // 9 AM in Tokyo home timezone — use TZDateTime to avoid host-tz dependency.
+        final tokyo = tz.getLocation('Asia/Tokyo');
+        final homeTime = tz.TZDateTime(tokyo, 2024, 6, 15, 9, 0);
         final adjusted = service.adjustMedicationTime(
           homeTime,
           'Asia/Tokyo',
