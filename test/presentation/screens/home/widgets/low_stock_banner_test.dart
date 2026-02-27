@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/enums/dosage_unit.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';

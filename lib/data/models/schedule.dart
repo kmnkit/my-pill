@@ -11,6 +11,7 @@ part 'schedule.g.dart';
 abstract class Schedule with _$Schedule {
   const Schedule._();
 
+  // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory Schedule({
     required String id,

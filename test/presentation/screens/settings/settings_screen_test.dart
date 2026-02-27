@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
@@ -330,9 +328,6 @@ void main() {
     testWidgets('retry button in error state invalidates provider', (
       tester,
     ) async {
-      // Track how many times build() is called
-      var buildCount = 0;
-
       // Build a notifier that fails the first time, succeeds the second
       // We can't easily toggle state in a Fake, so we just verify tap doesn't crash
       await tester.pumpWidget(
