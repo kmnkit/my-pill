@@ -41,3 +41,6 @@
 
 # RevenueCat (in-app purchases)
 -keep class com.revenuecat.purchases.** { *; }
+
+# Google Play Core (referenced by Flutter embedding, not bundled in release builds)
+-dontwarn com.google.android.play.core.**
