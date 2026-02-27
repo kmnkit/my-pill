@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
@@ -213,11 +212,7 @@ Raw<GoRouter> appRouter(Ref ref) {
         name: RouteNames.setSchedule,
         builder: (context, state) {
           final id = state.pathParameters['id'] ?? '';
-          final scheduleType = state.extra as ScheduleType?;
-          return ScheduleScreen(
-            medicationId: id,
-            initialScheduleType: scheduleType,
-          );
+          return ScheduleScreen(medicationId: id);
         },
       ),
 

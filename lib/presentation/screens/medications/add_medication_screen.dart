@@ -10,7 +10,6 @@ import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/enums/dosage_unit.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
-import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
@@ -19,7 +18,6 @@ import 'package:kusuridoki/presentation/screens/medications/widgets/inventory_ed
 import 'package:kusuridoki/presentation/screens/medications/widgets/photo_picker_button.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_color_picker.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_shape_selector.dart';
-import 'package:kusuridoki/presentation/screens/medications/widgets/schedule_type_selector.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
@@ -41,7 +39,6 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   DosageUnit _dosageUnit = DosageUnit.mg;
   PillShape _selectedShape = PillShape.round;
   PillColor _selectedColor = PillColor.white;
-  ScheduleType _selectedScheduleType = ScheduleType.daily;
   int _inventoryCount = 30;
   bool _isCritical = false;
   bool _isIppoka = false;
@@ -202,16 +199,6 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.xxl),
-              MpSectionHeader(title: l10n.scheduleType),
-              ScheduleTypeSelector(
-                selectedType: _selectedScheduleType,
-                onTypeSelected: (type) {
-                  setState(() {
-                    _selectedScheduleType = type;
-                  });
-                },
-              ),
-              const SizedBox(height: AppSpacing.xxl),
               MpSectionHeader(title: l10n.inventory),
               InventoryEditor(
                 count: _inventoryCount,
@@ -311,7 +298,6 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       if (mounted) {
         context.pushReplacement(
           '/medications/${medication.id}/schedule',
-          extra: _selectedScheduleType,
         );
       }
     } catch (e, st) {
