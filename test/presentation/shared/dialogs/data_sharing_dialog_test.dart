@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridokioki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridokioki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
+import 'package:kusuridokiokioki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -79,8 +79,8 @@ const _allOffProfile = UserProfile(
 );
 
 List<dynamic> _overrides({UserProfile profile = _allOnProfile}) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+];
 
 // ---------------------------------------------------------------------------
 // Helper: pump the dialog directly as a widget (no showDialog)
@@ -152,7 +152,10 @@ void main() {
     testWidgets('renders share medication list label', (tester) async {
       await _pumpDialog(tester, overrides: _overrides());
 
-      expect(find.text('Share medication list with caregivers'), findsOneWidget);
+      expect(
+        find.text('Share medication list with caregivers'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('renders allow caregiver notifications label', (tester) async {
@@ -171,7 +174,9 @@ void main() {
       await _pumpDialog(tester, overrides: _overrides());
 
       expect(find.text('Close'), findsOneWidget);
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton)).toList();
+      final buttons = tester
+          .widgetList<MpButton>(find.byType(MpButton))
+          .toList();
       expect(buttons.length, 1);
       expect(buttons.first.variant, MpButtonVariant.secondary);
     });
@@ -186,21 +191,25 @@ void main() {
     // Initial toggle states
     // -----------------------------------------------------------------------
 
-    testWidgets('all toggles are ON when profile has all sharing enabled',
-        (tester) async {
+    testWidgets('all toggles are ON when profile has all sharing enabled', (
+      tester,
+    ) async {
       await _pumpDialog(tester, overrides: _overrides(profile: _allOnProfile));
 
-      final switches =
-          tester.widgetList<SwitchListTile>(find.byType(SwitchListTile)).toList();
+      final switches = tester
+          .widgetList<SwitchListTile>(find.byType(SwitchListTile))
+          .toList();
       expect(switches.every((s) => s.value == true), isTrue);
     });
 
-    testWidgets('all toggles are OFF when profile has all sharing disabled',
-        (tester) async {
+    testWidgets('all toggles are OFF when profile has all sharing disabled', (
+      tester,
+    ) async {
       await _pumpDialog(tester, overrides: _overrides(profile: _allOffProfile));
 
-      final switches =
-          tester.widgetList<SwitchListTile>(find.byType(SwitchListTile)).toList();
+      final switches = tester
+          .widgetList<SwitchListTile>(find.byType(SwitchListTile))
+          .toList();
       expect(switches.every((s) => s.value == false), isTrue);
     });
 
@@ -222,9 +231,10 @@ void main() {
 
       await _pumpDialog(tester, overrides: _overrides(profile: mixedProfile));
 
-      final switches =
-          tester.widgetList<SwitchListTile>(find.byType(SwitchListTile)).toList();
-      expect(switches[0].value, isTrue);  // shareAdherenceData
+      final switches = tester
+          .widgetList<SwitchListTile>(find.byType(SwitchListTile))
+          .toList();
+      expect(switches[0].value, isTrue); // shareAdherenceData
       expect(switches[1].value, isFalse); // shareMedicationList
       expect(switches[2].value, isFalse); // allowCaregiverNotifications
     });
@@ -279,38 +289,37 @@ void main() {
     // Toggle interaction — onChanged callbacks (the uncovered lines)
     // -----------------------------------------------------------------------
 
-    testWidgets('tapping shareAdherenceData toggle calls updateProfile with toggled value',
-        (tester) async {
-      final notifier = _TrackingUserSettings(_allOnProfile);
+    testWidgets(
+      'tapping shareAdherenceData toggle calls updateProfile with toggled value',
+      (tester) async {
+        final notifier = _TrackingUserSettings(_allOnProfile);
 
-      await tester.pumpWidget(
-        createTestableWidget(
-          const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DataSharingDialog(),
+            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // First SwitchListTile is shareAdherenceData (currently true → tap to false)
-      await tester.tap(find.byType(SwitchListTile).first);
-      await tester.pumpAndSettle();
+        // First SwitchListTile is shareAdherenceData (currently true → tap to false)
+        await tester.tap(find.byType(SwitchListTile).first);
+        await tester.pumpAndSettle();
 
-      expect(notifier.updates, isNotEmpty);
-      expect(notifier.updates.last.shareAdherenceData, isFalse);
-    });
+        expect(notifier.updates, isNotEmpty);
+        expect(notifier.updates.last.shareAdherenceData, isFalse);
+      },
+    );
 
-    testWidgets('tapping shareAdherenceData toggle when OFF turns it ON',
-        (tester) async {
+    testWidgets('tapping shareAdherenceData toggle when OFF turns it ON', (
+      tester,
+    ) async {
       final notifier = _TrackingUserSettings(_allOffProfile);
 
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
+          overrides: [userSettingsProvider.overrideWith(() => notifier)],
         ),
       );
       await tester.pumpAndSettle();
@@ -321,38 +330,37 @@ void main() {
       expect(notifier.updates.last.shareAdherenceData, isTrue);
     });
 
-    testWidgets('tapping shareMedicationList toggle calls updateProfile with toggled value',
-        (tester) async {
-      final notifier = _TrackingUserSettings(_allOnProfile);
+    testWidgets(
+      'tapping shareMedicationList toggle calls updateProfile with toggled value',
+      (tester) async {
+        final notifier = _TrackingUserSettings(_allOnProfile);
 
-      await tester.pumpWidget(
-        createTestableWidget(
-          const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DataSharingDialog(),
+            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Second SwitchListTile is shareMedicationList (currently true → false)
-      await tester.tap(find.byType(SwitchListTile).at(1));
-      await tester.pumpAndSettle();
+        // Second SwitchListTile is shareMedicationList (currently true → false)
+        await tester.tap(find.byType(SwitchListTile).at(1));
+        await tester.pumpAndSettle();
 
-      expect(notifier.updates, isNotEmpty);
-      expect(notifier.updates.last.shareMedicationList, isFalse);
-    });
+        expect(notifier.updates, isNotEmpty);
+        expect(notifier.updates.last.shareMedicationList, isFalse);
+      },
+    );
 
-    testWidgets('tapping shareMedicationList toggle when OFF turns it ON',
-        (tester) async {
+    testWidgets('tapping shareMedicationList toggle when OFF turns it ON', (
+      tester,
+    ) async {
       final notifier = _TrackingUserSettings(_allOffProfile);
 
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
+          overrides: [userSettingsProvider.overrideWith(() => notifier)],
         ),
       );
       await tester.pumpAndSettle();
@@ -364,47 +372,46 @@ void main() {
     });
 
     testWidgets(
-        'tapping allowCaregiverNotifications toggle calls updateProfile with toggled value',
-        (tester) async {
-      final notifier = _TrackingUserSettings(_allOnProfile);
+      'tapping allowCaregiverNotifications toggle calls updateProfile with toggled value',
+      (tester) async {
+        final notifier = _TrackingUserSettings(_allOnProfile);
 
-      await tester.pumpWidget(
-        createTestableWidget(
-          const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DataSharingDialog(),
+            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      // Third SwitchListTile is allowCaregiverNotifications (currently true → false)
-      await tester.tap(find.byType(SwitchListTile).at(2));
-      await tester.pumpAndSettle();
+        // Third SwitchListTile is allowCaregiverNotifications (currently true → false)
+        await tester.tap(find.byType(SwitchListTile).at(2));
+        await tester.pumpAndSettle();
 
-      expect(notifier.updates, isNotEmpty);
-      expect(notifier.updates.last.allowCaregiverNotifications, isFalse);
-    });
+        expect(notifier.updates, isNotEmpty);
+        expect(notifier.updates.last.allowCaregiverNotifications, isFalse);
+      },
+    );
 
-    testWidgets('tapping allowCaregiverNotifications toggle when OFF turns it ON',
-        (tester) async {
-      final notifier = _TrackingUserSettings(_allOffProfile);
+    testWidgets(
+      'tapping allowCaregiverNotifications toggle when OFF turns it ON',
+      (tester) async {
+        final notifier = _TrackingUserSettings(_allOffProfile);
 
-      await tester.pumpWidget(
-        createTestableWidget(
-          const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DataSharingDialog(),
+            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(SwitchListTile).at(2));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(SwitchListTile).at(2));
+        await tester.pumpAndSettle();
 
-      expect(notifier.updates.last.allowCaregiverNotifications, isTrue);
-    });
+        expect(notifier.updates.last.allowCaregiverNotifications, isTrue);
+      },
+    );
 
     testWidgets('toggling does not mutate other fields', (tester) async {
       final notifier = _TrackingUserSettings(_allOnProfile);
@@ -412,9 +419,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [
-            userSettingsProvider.overrideWith(() => notifier),
-          ],
+          overrides: [userSettingsProvider.overrideWith(() => notifier)],
         ),
       );
       await tester.pumpAndSettle();
@@ -436,8 +441,9 @@ void main() {
     // Close button — Navigator.pop (the other uncovered line)
     // -----------------------------------------------------------------------
 
-    testWidgets('tapping close button dismisses dialog opened via show()',
-        (tester) async {
+    testWidgets('tapping close button dismisses dialog opened via show()', (
+      tester,
+    ) async {
       await _pumpViaShow(tester, overrides: _overrides());
 
       expect(find.text('Data Sharing Preferences'), findsOneWidget);
@@ -448,8 +454,9 @@ void main() {
       expect(find.text('Data Sharing Preferences'), findsNothing);
     });
 
-    testWidgets('close button dismisses dialog and returns to trigger button',
-        (tester) async {
+    testWidgets('close button dismisses dialog and returns to trigger button', (
+      tester,
+    ) async {
       await _pumpViaShow(tester, overrides: _overrides());
 
       await tester.tap(find.text('Close'));
@@ -471,36 +478,38 @@ void main() {
       expect(find.text('Close'), findsOneWidget);
     });
 
-    testWidgets('show() returns a Future that completes when dialog is dismissed',
-        (tester) async {
-      bool completed = false;
+    testWidgets(
+      'show() returns a Future that completes when dialog is dismissed',
+      (tester) async {
+        bool completed = false;
 
-      await tester.pumpWidget(
-        createTestableWidget(
-          Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () async {
-                await DataSharingDialog.show(context);
-                completed = true;
-              },
-              child: const Text('Open'),
+        await tester.pumpWidget(
+          createTestableWidget(
+            Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () async {
+                  await DataSharingDialog.show(context);
+                  completed = true;
+                },
+                child: const Text('Open'),
+              ),
             ),
+            overrides: _overrides(),
           ),
-          overrides: _overrides(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Open'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
 
-      expect(completed, isFalse);
+        expect(completed, isFalse);
 
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Close'));
+        await tester.pumpAndSettle();
 
-      expect(completed, isTrue);
-    });
+        expect(completed, isTrue);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // Locale support

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialog.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -37,8 +37,8 @@ const _defaultProfile = UserProfile(
 );
 
 List<dynamic> _overrides({UserProfile profile = _defaultProfile}) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+];
 
 void main() {
   group('DataSharingDialog', () {
@@ -90,7 +90,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Share medication list with caregivers'), findsOneWidget);
+      expect(
+        find.text('Share medication list with caregivers'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows allow caregiver notifications toggle', (tester) async {
@@ -158,7 +161,9 @@ void main() {
       expect(find.text('Data Sharing Preferences'), findsNothing);
     });
 
-    testWidgets('toggles are in correct initial state (all true)', (tester) async {
+    testWidgets('toggles are in correct initial state (all true)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
@@ -167,11 +172,15 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final switches = tester.widgetList<SwitchListTile>(find.byType(SwitchListTile)).toList();
+      final switches = tester
+          .widgetList<SwitchListTile>(find.byType(SwitchListTile))
+          .toList();
       expect(switches.every((s) => s.value), isTrue);
     });
 
-    testWidgets('toggles are in correct initial state (all false)', (tester) async {
+    testWidgets('toggles are in correct initial state (all false)', (
+      tester,
+    ) async {
       const allOffProfile = UserProfile(
         id: 'user-002',
         language: 'en',
@@ -195,11 +204,15 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final switches = tester.widgetList<SwitchListTile>(find.byType(SwitchListTile)).toList();
+      final switches = tester
+          .widgetList<SwitchListTile>(find.byType(SwitchListTile))
+          .toList();
       expect(switches.every((s) => !s.value), isTrue);
     });
 
-    testWidgets('DataSharingDialog.show static method opens dialog', (tester) async {
+    testWidgets('DataSharingDialog.show static method opens dialog', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           Builder(

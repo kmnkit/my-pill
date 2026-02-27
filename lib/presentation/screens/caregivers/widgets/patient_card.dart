@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
 
 class PatientCard extends StatelessWidget {
   const PatientCard({
@@ -39,16 +39,13 @@ class PatientCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    Text(name, style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       '${l10n.dailyAdherence}: $adherence',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: context.appColors.textMuted,
-                          ),
+                        color: context.appColors.textMuted,
+                      ),
                     ),
                   ],
                 ),

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 void main() {
   group('ReminderStatus', () {
@@ -62,19 +62,24 @@ void main() {
     group('all values have non-empty labels', () {
       test('every value has a non-empty label', () {
         for (final status in ReminderStatus.values) {
-          expect(status.label, isNotEmpty,
-              reason: '${status.name} should have a non-empty label');
+          expect(
+            status.label,
+            isNotEmpty,
+            reason: '${status.name} should have a non-empty label',
+          );
         }
       });
     });
 
     group('labels are unique', () {
       test('no two ReminderStatus values share the same label', () {
-        final labels =
-            ReminderStatus.values.map((s) => s.label).toList();
+        final labels = ReminderStatus.values.map((s) => s.label).toList();
         final uniqueLabels = labels.toSet();
-        expect(labels.length, uniqueLabels.length,
-            reason: 'All ReminderStatus labels should be unique');
+        expect(
+          labels.length,
+          uniqueLabels.length,
+          reason: 'All ReminderStatus labels should be unique',
+        );
       });
     });
   });

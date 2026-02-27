@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/deep_link_service.dart';
+import 'package:kusuridoki/data/services/deep_link_service.dart';
 
 void main() {
   group('DeepLinkService.inviteCodePattern', () {

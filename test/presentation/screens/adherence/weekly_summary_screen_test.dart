@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/providers/adherence_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/presentation/screens/adherence/weekly_summary_screen.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/presentation/screens/adherence/weekly_summary_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -33,7 +33,9 @@ void main() {
               },
             ),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -43,8 +45,9 @@ void main() {
       expect(find.text('Weekly Summary'), findsOneWidget);
     });
 
-    testWidgets('shows overall score percentage when data is available',
-        (tester) async {
+    testWidgets('shows overall score percentage when data is available', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const WeeklySummaryScreen(),
@@ -52,7 +55,9 @@ void main() {
             overallAdherenceProvider.overrideWith((ref) async => 0.85),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -62,8 +67,9 @@ void main() {
       expect(find.text('85%'), findsOneWidget);
     });
 
-    testWidgets('shows no-data placeholder when overall adherence is null',
-        (tester) async {
+    testWidgets('shows no-data placeholder when overall adherence is null', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const WeeklySummaryScreen(),
@@ -71,7 +77,9 @@ void main() {
             overallAdherenceProvider.overrideWith((ref) async => null),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -89,7 +97,9 @@ void main() {
             overallAdherenceProvider.overrideWith((ref) async => 0.5),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -106,7 +116,9 @@ void main() {
             overallAdherenceProvider.overrideWith((ref) async => 0.0),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -116,18 +128,21 @@ void main() {
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 
-    testWidgets('renders OverallScore with null on overallAdherence error',
-        (tester) async {
+    testWidgets('renders OverallScore with null on overallAdherence error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const WeeklySummaryScreen(),
           overrides: [
-            overallAdherenceProvider
-                .overrideWith((ref) => throw Exception('fail')),
+            overallAdherenceProvider.overrideWith(
+              (ref) => throw Exception('fail'),
+            ),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -137,18 +152,21 @@ void main() {
       expect(find.text('--'), findsOneWidget);
     });
 
-    testWidgets('renders empty AdherenceChart on weeklyAdherence error',
-        (tester) async {
+    testWidgets('renders empty AdherenceChart on weeklyAdherence error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const WeeklySummaryScreen(),
           overrides: [
             overallAdherenceProvider.overrideWith((ref) async => 0.5),
-            weeklyAdherenceProvider
-                .overrideWith((ref) => throw Exception('fail')),
+            weeklyAdherenceProvider.overrideWith(
+              (ref) => throw Exception('fail'),
+            ),
             medicationBreakdownProvider.overrideWith((ref) async => []),
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -158,18 +176,21 @@ void main() {
       expect(find.text('Weekly Summary'), findsOneWidget);
     });
 
-    testWidgets('renders empty MedicationBreakdown on breakdown error',
-        (tester) async {
+    testWidgets('renders empty MedicationBreakdown on breakdown error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const WeeklySummaryScreen(),
           overrides: [
             overallAdherenceProvider.overrideWith((ref) async => 0.5),
             weeklyAdherenceProvider.overrideWith((ref) async => {}),
-            medicationBreakdownProvider
-                .overrideWith((ref) => throw Exception('fail')),
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
+            medicationBreakdownProvider.overrideWith(
+              (ref) => throw Exception('fail'),
+            ),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );

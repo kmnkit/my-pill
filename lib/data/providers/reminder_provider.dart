@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/services/reminder_service.dart';
-import 'package:my_pill/data/services/notification_service.dart';
-import 'package:my_pill/data/services/review_service.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/services/reminder_service.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
+import 'package:kusuridoki/data/services/review_service.dart';
 
 part 'reminder_provider.g.dart';
 
@@ -66,7 +66,10 @@ class TodayReminders extends _$TodayReminders {
       final reminderService = ReminderService(storage);
 
       // Use ReminderService to snooze
-      final updated = await reminderService.snooze(reminderId, duration: duration);
+      final updated = await reminderService.snooze(
+        reminderId,
+        duration: duration,
+      );
 
       // Cancel old notification and reschedule for snooze time
       await NotificationService().cancelReminder(reminderId);
@@ -115,14 +118,28 @@ class TodayReminders extends _$TodayReminders {
       // Get all medications to build info map
       final medications = await ref.read(medicationListProvider.future);
       if (!ref.mounted) return reminders;
-      final medicationInfo = <String, ({String name, String dosage, bool isCritical, String? dosageTimingLabel})>{};
+      final medicationInfo =
+          <
+            String,
+            ({
+              String name,
+              String dosage,
+              bool isCritical,
+              String? dosageTimingLabel,
+            })
+          >{};
 
       for (final med in medications) {
-        // Find dosageTiming from the medication's active schedule
+        // Find dosageTimings from the medication's active schedule
         String? dosageTimingLabel;
-        final medSchedules = activeSchedules.where((s) => s.medicationId == med.id);
-        if (medSchedules.isNotEmpty && medSchedules.first.dosageTiming != null) {
-          dosageTimingLabel = medSchedules.first.dosageTiming!.label;
+        final medSchedules = activeSchedules.where(
+          (s) => s.medicationId == med.id,
+        );
+        if (medSchedules.isNotEmpty &&
+            medSchedules.first.dosageTimings.isNotEmpty) {
+          dosageTimingLabel = medSchedules.first.dosageTimings
+              .map((t) => t.label)
+              .join('・');
         }
 
         medicationInfo[med.id] = (

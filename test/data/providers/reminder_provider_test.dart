@@ -3,19 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 @GenerateMocks([StorageService])
 import 'reminder_provider_test.mocks.dart';
@@ -76,7 +76,7 @@ void _stubNotificationChannels() {
               'projectId': 'test',
             },
             'pluginConstants': <String, dynamic>{},
-          }
+          },
         ];
       }
       if (call.method == 'Firebase#initializeApp') {
@@ -102,24 +102,23 @@ Reminder _makeReminder({
   ReminderStatus status = ReminderStatus.pending,
   DateTime? scheduledTime,
   DateTime? snoozedUntil,
-}) =>
-    Reminder(
-      id: id,
-      medicationId: medicationId,
-      scheduledTime: scheduledTime ?? DateTime.now(),
-      status: status,
-      snoozedUntil: snoozedUntil,
-    );
+}) => Reminder(
+  id: id,
+  medicationId: medicationId,
+  scheduledTime: scheduledTime ?? DateTime.now(),
+  status: status,
+  snoozedUntil: snoozedUntil,
+);
 
 Medication _makeMedication(String id, String name) => Medication(
-      id: id,
-      name: name,
-      dosage: 100,
-      dosageUnit: DosageUnit.mg,
-      shape: PillShape.round,
-      color: PillColor.white,
-      createdAt: DateTime(2024, 1, 1),
-    );
+  id: id,
+  name: name,
+  dosage: 100,
+  dosageUnit: DosageUnit.mg,
+  shape: PillShape.round,
+  color: PillColor.white,
+  createdAt: DateTime(2024, 1, 1),
+);
 
 Schedule _makeSchedule({
   required String id,
@@ -129,16 +128,17 @@ Schedule _makeSchedule({
   bool isActive = true,
   List<int> specificDays = const [],
   int? intervalHours,
-}) =>
-    Schedule(
-      id: id,
-      medicationId: medicationId,
-      type: type,
-      dosageSlots: times.map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t)).toList(),
-      isActive: isActive,
-      specificDays: specificDays,
-      intervalHours: intervalHours,
-    );
+}) => Schedule(
+  id: id,
+  medicationId: medicationId,
+  type: type,
+  dosageSlots: times
+      .map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t))
+      .toList(),
+  isActive: isActive,
+  specificDays: specificDays,
+  intervalHours: intervalHours,
+);
 
 void main() {
   late MockStorageService mockStorage;
@@ -149,9 +149,7 @@ void main() {
 
   ProviderContainer makeContainer() {
     final container = ProviderContainer(
-      overrides: [
-        storageServiceProvider.overrideWithValue(mockStorage),
-      ],
+      overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
     );
     addTearDown(container.dispose);
     return container;
@@ -159,8 +157,7 @@ void main() {
 
   group('TodayReminders provider — build', () {
     test('returns empty list when no reminders for today', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       final result = await container.read(todayRemindersProvider.future);
@@ -173,8 +170,9 @@ void main() {
         _makeReminder(id: 'r1', medicationId: 'med-1'),
         _makeReminder(id: 'r2', medicationId: 'med-2'),
       ];
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => reminders);
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => reminders);
 
       final container = makeContainer();
       final result = await container.read(todayRemindersProvider.future);
@@ -187,30 +185,45 @@ void main() {
     test('returns reminders with correct statuses', () async {
       final reminders = [
         _makeReminder(
-            id: 'r1', medicationId: 'med-1', status: ReminderStatus.pending),
+          id: 'r1',
+          medicationId: 'med-1',
+          status: ReminderStatus.pending,
+        ),
         _makeReminder(
-            id: 'r2', medicationId: 'med-1', status: ReminderStatus.taken),
+          id: 'r2',
+          medicationId: 'med-1',
+          status: ReminderStatus.taken,
+        ),
         _makeReminder(
-            id: 'r3', medicationId: 'med-1', status: ReminderStatus.missed),
+          id: 'r3',
+          medicationId: 'med-1',
+          status: ReminderStatus.missed,
+        ),
       ];
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => reminders);
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => reminders);
 
       final container = makeContainer();
       final result = await container.read(todayRemindersProvider.future);
 
       expect(result.length, equals(3));
-      expect(result.where((r) => r.status == ReminderStatus.pending).length,
-          equals(1));
-      expect(result.where((r) => r.status == ReminderStatus.taken).length,
-          equals(1));
-      expect(result.where((r) => r.status == ReminderStatus.missed).length,
-          equals(1));
+      expect(
+        result.where((r) => r.status == ReminderStatus.pending).length,
+        equals(1),
+      );
+      expect(
+        result.where((r) => r.status == ReminderStatus.taken).length,
+        equals(1),
+      );
+      expect(
+        result.where((r) => r.status == ReminderStatus.missed).length,
+        equals(1),
+      );
     });
 
     test('provider state is AsyncData after build', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -221,8 +234,7 @@ void main() {
 
     test('provider state is AsyncLoading before build completes', () async {
       // Use a completer so we can observe the loading state before resolution
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       // Read synchronously — provider hasn't resolved yet
@@ -231,8 +243,9 @@ void main() {
     });
 
     test('propagates storage error as AsyncError', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => throw Exception('storage failure'));
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => throw Exception('storage failure'));
 
       final container = makeContainer();
 
@@ -249,14 +262,14 @@ void main() {
     });
 
     test('passes a DateTime argument to getRemindersForDate', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
 
-      final captured =
-          verify(mockStorage.getRemindersForDate(captureAny)).captured;
+      final captured = verify(
+        mockStorage.getRemindersForDate(captureAny),
+      ).captured;
       expect(captured.length, equals(1));
       expect(captured.first, isA<DateTime>());
     });
@@ -271,8 +284,9 @@ void main() {
         scheduledTime: scheduled,
         snoozedUntil: snoozed,
       );
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => [reminder]);
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => [reminder]);
 
       final container = makeContainer();
       final result = await container.read(todayRemindersProvider.future);
@@ -292,8 +306,9 @@ void main() {
         medicationId: 'med-1',
         status: ReminderStatus.skipped,
       );
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => [reminder]);
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => [reminder]);
 
       final container = makeContainer();
       final result = await container.read(todayRemindersProvider.future);
@@ -305,8 +320,7 @@ void main() {
 
   group('TodayReminders provider — markAsTaken', () {
     test('calls storage methods and rethrows on storage error', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       // getReminder returns null → ReminderService throws 'Reminder not found'
       when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
 
@@ -320,10 +334,10 @@ void main() {
     });
 
     test('calls getReminder with the exact reminder id', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getReminder('specific-id'))
-          .thenAnswer((_) async => null);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+      when(
+        mockStorage.getReminder('specific-id'),
+      ).thenAnswer((_) async => null);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -339,17 +353,14 @@ void main() {
     });
 
     test('error message contains reminder not found when id missing', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
 
       await expectLater(
-        container
-            .read(todayRemindersProvider.notifier)
-            .markAsTaken('missing'),
+        container.read(todayRemindersProvider.notifier).markAsTaken('missing'),
         throwsA(
           predicate<Exception>(
             (e) => e.toString().contains('Reminder not found'),
@@ -367,10 +378,10 @@ void main() {
     // and is covered in integration tests.
 
     test('rethrows when reminder not found in storage', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getReminder('non-existent'))
-          .thenAnswer((_) async => null);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+      when(
+        mockStorage.getReminder('non-existent'),
+      ).thenAnswer((_) async => null);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -384,8 +395,7 @@ void main() {
     });
 
     test('calls getReminder with the exact reminder id', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       when(mockStorage.getReminder('skip-id')).thenAnswer((_) async => null);
 
       final container = makeContainer();
@@ -401,8 +411,7 @@ void main() {
     });
 
     test('error message contains reminder not found when id missing', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
 
       final container = makeContainer();
@@ -423,64 +432,67 @@ void main() {
 
   group('TodayReminders provider — snooze', () {
     test('rethrows when reminder not found during snooze', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getReminder('non-existent'))
-          .thenAnswer((_) async => null);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+      when(
+        mockStorage.getReminder('non-existent'),
+      ).thenAnswer((_) async => null);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
 
       expect(
-        () => container.read(todayRemindersProvider.notifier).snooze(
-              'non-existent',
-              const Duration(minutes: 15),
-            ),
+        () => container
+            .read(todayRemindersProvider.notifier)
+            .snooze('non-existent', const Duration(minutes: 15)),
         throwsA(isA<Exception>()),
       );
     });
 
-    test('calls getReminder with the exact reminder id when snoozing', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getReminder('snooze-id')).thenAnswer((_) async => null);
+    test(
+      'calls getReminder with the exact reminder id when snoozing',
+      () async {
+        when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+        when(
+          mockStorage.getReminder('snooze-id'),
+        ).thenAnswer((_) async => null);
 
-      final container = makeContainer();
-      await container.read(todayRemindersProvider.future);
+        final container = makeContainer();
+        await container.read(todayRemindersProvider.future);
 
-      container
-          .read(todayRemindersProvider.notifier)
-          .snooze('snooze-id', const Duration(minutes: 10))
-          .ignore();
-
-      await Future<void>.delayed(Duration.zero);
-      verify(mockStorage.getReminder('snooze-id')).called(1);
-    });
-
-    test('error message contains reminder not found when snoozing missing id',
-        () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
-
-      final container = makeContainer();
-      await container.read(todayRemindersProvider.future);
-
-      await expectLater(
         container
             .read(todayRemindersProvider.notifier)
-            .snooze('missing', const Duration(minutes: 5)),
-        throwsA(
-          predicate<Exception>(
-            (e) => e.toString().contains('Reminder not found'),
+            .snooze('snooze-id', const Duration(minutes: 10))
+            .ignore();
+
+        await Future<void>.delayed(Duration.zero);
+        verify(mockStorage.getReminder('snooze-id')).called(1);
+      },
+    );
+
+    test(
+      'error message contains reminder not found when snoozing missing id',
+      () async {
+        when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+        when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
+
+        final container = makeContainer();
+        await container.read(todayRemindersProvider.future);
+
+        await expectLater(
+          container
+              .read(todayRemindersProvider.notifier)
+              .snooze('missing', const Duration(minutes: 5)),
+          throwsA(
+            predicate<Exception>(
+              (e) => e.toString().contains('Reminder not found'),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
     test('rethrows with different durations when reminder missing', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       when(mockStorage.getReminder(any)).thenAnswer((_) async => null);
 
       final container = makeContainer();
@@ -517,12 +529,12 @@ void main() {
 
     test('rethrows when scheduleListProvider throws during build', () async {
       // build() for todayRemindersProvider
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       // scheduleListProvider (used via ref.read inside generateAndScheduleToday)
       // reads getAllSchedules() — make it throw so we bail before NotificationService
-      when(mockStorage.getAllSchedules())
-          .thenThrow(Exception('schedules storage error'));
+      when(
+        mockStorage.getAllSchedules(),
+      ).thenThrow(Exception('schedules storage error'));
 
       final container = makeContainer();
 
@@ -546,10 +558,10 @@ void main() {
     });
 
     test('error from scheduleListProvider propagates an error', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
-      when(mockStorage.getAllSchedules())
-          .thenThrow(Exception('db read failed'));
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
+      when(
+        mockStorage.getAllSchedules(),
+      ).thenThrow(Exception('db read failed'));
 
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
@@ -576,19 +588,17 @@ void main() {
 
   group('TodayReminders provider — refresh', () {
     test('build can be re-read after data changes', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       final result1 = await container.read(todayRemindersProvider.future);
       expect(result1, isEmpty);
 
       // Simulate data change
-      final reminders = [
-        _makeReminder(id: 'r1', medicationId: 'med-1'),
-      ];
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => reminders);
+      final reminders = [_makeReminder(id: 'r1', medicationId: 'med-1')];
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => reminders);
 
       container.invalidate(todayRemindersProvider);
       final result2 = await container.read(todayRemindersProvider.future);
@@ -596,8 +606,7 @@ void main() {
     });
 
     test('build fetches reminders for current date', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -607,8 +616,7 @@ void main() {
     });
 
     test('second invalidate triggers a second storage call', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -620,8 +628,7 @@ void main() {
     });
 
     test('state returns to AsyncData after invalidation and re-read', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -643,8 +650,7 @@ void main() {
     });
 
     test('notifier is TodayReminders type', () async {
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => []);
+      when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
 
       final container = makeContainer();
       await container.read(todayRemindersProvider.future);
@@ -695,12 +701,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-take', medicationId: 'med-1');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-take'))
-          .thenAnswer((_) async => reminder);
-      when(mockStorage.saveReminder(any))
-          .thenAnswer((_) async {});
-      when(mockStorage.saveAdherenceRecord(any))
-          .thenAnswer((_) async {});
+      when(mockStorage.getReminder('r-take')).thenAnswer((_) async => reminder);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+      when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
       final container = makeContainer();
       // Keep provider alive so invalidateSelf() (line 33) runs cleanly.
@@ -713,9 +716,7 @@ void main() {
 
       // Should complete without error — covers lines 30 and 33.
       await expectLater(
-        container
-            .read(todayRemindersProvider.notifier)
-            .markAsTaken('r-take'),
+        container.read(todayRemindersProvider.notifier).markAsTaken('r-take'),
         completes,
       );
     });
@@ -724,8 +725,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-take2', medicationId: 'med-2');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-take2'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-take2'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
       when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
@@ -749,8 +751,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-take3', medicationId: 'med-3');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-take3'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-take3'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
       when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
@@ -777,8 +780,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-skip2', medicationId: 'med-1');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-skip2'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-skip2'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
       when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
@@ -803,8 +807,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-skip3', medicationId: 'med-2');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-skip3'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-skip3'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
       when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
@@ -827,8 +832,9 @@ void main() {
       final reminder = _makeReminder(id: 'r-skip4', medicationId: 'med-3');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-skip4'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-skip4'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
       when(mockStorage.saveAdherenceRecord(any)).thenAnswer((_) async {});
 
@@ -860,11 +866,13 @@ void main() {
       );
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-snooze1'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-snooze1'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
-      when(mockStorage.getMedication('med-no-med'))
-          .thenAnswer((_) async => null);
+      when(
+        mockStorage.getMedication('med-no-med'),
+      ).thenAnswer((_) async => null);
 
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
@@ -877,10 +885,9 @@ void main() {
       // Covers lines 68 (cancelReminder), 71 (getMedication → null),
       // and 86 (ref.invalidateSelf) via the medication == null branch.
       await expectLater(
-        container.read(todayRemindersProvider.notifier).snooze(
-              'r-snooze1',
-              const Duration(minutes: 15),
-            ),
+        container
+            .read(todayRemindersProvider.notifier)
+            .snooze('r-snooze1', const Duration(minutes: 15)),
         completes,
       );
     });
@@ -899,11 +906,13 @@ void main() {
       final medication = _makeMedication('med-exists', 'Aspirin');
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-snooze2'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-snooze2'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
-      when(mockStorage.getMedication('med-exists'))
-          .thenAnswer((_) async => medication);
+      when(
+        mockStorage.getMedication('med-exists'),
+      ).thenAnswer((_) async => medication);
 
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
@@ -916,10 +925,9 @@ void main() {
       // Covers lines 71 (getMedication), 74 (snoozedReminder copyWith),
       // 75 (snoozedUntil ?? fallback), 78–81 (scheduleReminder call), 86.
       await expectLater(
-        container.read(todayRemindersProvider.notifier).snooze(
-              'r-snooze2',
-              const Duration(minutes: 15),
-            ),
+        container
+            .read(todayRemindersProvider.notifier)
+            .snooze('r-snooze2', const Duration(minutes: 15)),
         completes,
       );
     });
@@ -931,11 +939,13 @@ void main() {
       );
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getReminder('r-snooze3'))
-          .thenAnswer((_) async => reminder);
+      when(
+        mockStorage.getReminder('r-snooze3'),
+      ).thenAnswer((_) async => reminder);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
-      when(mockStorage.getMedication('med-snooze'))
-          .thenAnswer((_) async => null);
+      when(
+        mockStorage.getMedication('med-snooze'),
+      ).thenAnswer((_) async => null);
 
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
@@ -945,10 +955,9 @@ void main() {
       );
       await container.read(todayRemindersProvider.future);
 
-      await container.read(todayRemindersProvider.notifier).snooze(
-            'r-snooze3',
-            const Duration(minutes: 10),
-          );
+      await container
+          .read(todayRemindersProvider.notifier)
+          .snooze('r-snooze3', const Duration(minutes: 10));
 
       verify(mockStorage.saveReminder(any)).called(greaterThanOrEqualTo(1));
     });
@@ -990,8 +999,9 @@ void main() {
       );
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getAllSchedules())
-          .thenAnswer((_) async => [inactiveSchedule]);
+      when(
+        mockStorage.getAllSchedules(),
+      ).thenAnswer((_) async => [inactiveSchedule]);
       when(mockStorage.getAllMedications()).thenAnswer((_) async => []);
 
       final container = makeContainer();
@@ -1021,10 +1031,8 @@ void main() {
       );
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
-      when(mockStorage.getAllSchedules())
-          .thenAnswer((_) async => [schedule]);
-      when(mockStorage.getAllMedications())
-          .thenAnswer((_) async => [med]);
+      when(mockStorage.getAllSchedules()).thenAnswer((_) async => [schedule]);
+      when(mockStorage.getAllMedications()).thenAnswer((_) async => [med]);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
 
       final container = makeContainer();
@@ -1062,8 +1070,9 @@ void main() {
 
       when(mockStorage.getRemindersForDate(any)).thenAnswer((_) async => []);
       when(mockStorage.getAllSchedules()).thenAnswer((_) async => [s1, s2]);
-      when(mockStorage.getAllMedications())
-          .thenAnswer((_) async => [med1, med2]);
+      when(
+        mockStorage.getAllMedications(),
+      ).thenAnswer((_) async => [med1, med2]);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
 
       final container = makeContainer();
@@ -1095,8 +1104,9 @@ void main() {
         times: ['23:57'],
       );
 
-      when(mockStorage.getRemindersForDate(any))
-          .thenAnswer((_) async => [existing]);
+      when(
+        mockStorage.getRemindersForDate(any),
+      ).thenAnswer((_) async => [existing]);
       when(mockStorage.getAllSchedules()).thenAnswer((_) async => [schedule]);
       when(mockStorage.getAllMedications()).thenAnswer((_) async => [med]);
       when(mockStorage.saveReminder(any)).thenAnswer((_) async {});

@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 @GenerateMocks([StorageService])
 import 'settings_provider_test.mocks.dart';
@@ -19,9 +19,7 @@ void main() {
 
   ProviderContainer makeContainer() {
     final container = ProviderContainer(
-      overrides: [
-        storageServiceProvider.overrideWithValue(mockStorage),
-      ],
+      overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
     );
     addTearDown(container.dispose);
     return container;
@@ -44,33 +42,35 @@ void main() {
       expect(result.onboardingComplete, isFalse);
     });
 
-    test('returns saved profile when one exists and onboardingComplete is true',
-        () async {
-      const profile = UserProfile(
-        id: 'user-123',
-        name: 'Taro',
-        language: 'ja',
-        highContrast: true,
-        textSize: 'large',
-        notificationsEnabled: false,
-        criticalAlerts: false,
-        snoozeDuration: 30,
-        travelModeEnabled: false,
-        removeAds: true,
-        onboardingComplete: true,
-      );
-      when(mockStorage.getUserProfile()).thenAnswer((_) async => profile);
+    test(
+      'returns saved profile when one exists and onboardingComplete is true',
+      () async {
+        const profile = UserProfile(
+          id: 'user-123',
+          name: 'Taro',
+          language: 'ja',
+          highContrast: true,
+          textSize: 'large',
+          notificationsEnabled: false,
+          criticalAlerts: false,
+          snoozeDuration: 30,
+          travelModeEnabled: false,
+          removeAds: true,
+          onboardingComplete: true,
+        );
+        when(mockStorage.getUserProfile()).thenAnswer((_) async => profile);
 
-      final container = makeContainer();
-      final result = await container.read(userSettingsProvider.future);
+        final container = makeContainer();
+        final result = await container.read(userSettingsProvider.future);
 
-      expect(result.id, equals('user-123'));
-      expect(result.name, equals('Taro'));
-      expect(result.language, equals('ja'));
-      expect(result.highContrast, isTrue);
-      expect(result.removeAds, isTrue);
-      expect(result.onboardingComplete, isTrue);
-    });
+        expect(result.id, equals('user-123'));
+        expect(result.name, equals('Taro'));
+        expect(result.language, equals('ja'));
+        expect(result.highContrast, isTrue);
+        expect(result.removeAds, isTrue);
+        expect(result.onboardingComplete, isTrue);
+      },
+    );
 
     test('migrates profile when onboardingComplete is false', () async {
       const profile = UserProfile(
@@ -92,9 +92,11 @@ void main() {
       final result = await container.read(userSettingsProvider.future);
 
       expect(result.onboardingComplete, isTrue);
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.onboardingComplete)),
-      )).called(1);
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.onboardingComplete)),
+        ),
+      ).called(1);
     });
 
     test('updateProfile saves profile and updates state', () async {
@@ -117,7 +119,9 @@ void main() {
         removeAds: false,
       );
 
-      await container.read(userSettingsProvider.notifier).updateProfile(updated);
+      await container
+          .read(userSettingsProvider.notifier)
+          .updateProfile(updated);
 
       verify(mockStorage.saveUserProfile(updated)).called(1);
       final state = await container.read(userSettingsProvider.future);
@@ -144,9 +148,11 @@ void main() {
       await container.read(userSettingsProvider.future);
       await container.read(userSettingsProvider.notifier).updateLanguage('ja');
 
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.language == 'ja')),
-      )).called(1);
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.language == 'ja')),
+        ),
+      ).called(1);
     });
 
     test('toggleHighContrast flips highContrast value', () async {
@@ -169,9 +175,11 @@ void main() {
       await container.read(userSettingsProvider.future);
       await container.read(userSettingsProvider.notifier).toggleHighContrast();
 
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.highContrast == true)),
-      )).called(1);
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.highContrast == true)),
+        ),
+      ).called(1);
     });
 
     test('updateSnoozeDuration updates snooze duration', () async {
@@ -196,9 +204,11 @@ void main() {
           .read(userSettingsProvider.notifier)
           .updateSnoozeDuration(30);
 
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.snoozeDuration == 30)),
-      )).called(1);
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.snoozeDuration == 30)),
+        ),
+      ).called(1);
     });
 
     test('completeOnboarding sets onboardingComplete to true', () async {
@@ -221,9 +231,11 @@ void main() {
       await container.read(userSettingsProvider.future);
       await container.read(userSettingsProvider.notifier).completeOnboarding();
 
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.onboardingComplete == true)),
-      )).called(greaterThanOrEqualTo(1));
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.onboardingComplete == true)),
+        ),
+      ).called(greaterThanOrEqualTo(1));
     });
 
     test('updateName updates name field', () async {
@@ -246,9 +258,11 @@ void main() {
       await container.read(userSettingsProvider.future);
       await container.read(userSettingsProvider.notifier).updateName('Hanako');
 
-      verify(mockStorage.saveUserProfile(
-        argThat(predicate<UserProfile>((p) => p.name == 'Hanako')),
-      )).called(1);
+      verify(
+        mockStorage.saveUserProfile(
+          argThat(predicate<UserProfile>((p) => p.name == 'Hanako')),
+        ),
+      ).called(1);
     });
   });
 }

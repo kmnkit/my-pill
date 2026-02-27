@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_progress_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_progress_bar.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -8,9 +8,7 @@ void main() {
   group('MpProgressBar', () {
     testWidgets('renders LinearProgressIndicator', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpProgressBar(current: 3, total: 10),
-        ),
+        createTestableWidget(const MpProgressBar(current: 3, total: 10)),
       );
       await tester.pumpAndSettle();
 
@@ -19,9 +17,7 @@ void main() {
 
     testWidgets('renders current/total label by default', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpProgressBar(current: 3, total: 10),
-        ),
+        createTestableWidget(const MpProgressBar(current: 3, total: 10)),
       );
       await tester.pumpAndSettle();
 
@@ -39,11 +35,11 @@ void main() {
       expect(find.text('3 / 10'), findsNothing);
     });
 
-    testWidgets('semantic label includes current, total and percent', (tester) async {
+    testWidgets('semantic label includes current, total and percent', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpProgressBar(current: 5, total: 10),
-        ),
+        createTestableWidget(const MpProgressBar(current: 5, total: 10)),
       );
       await tester.pumpAndSettle();
 
@@ -54,9 +50,7 @@ void main() {
 
     testWidgets('handles zero total gracefully', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpProgressBar(current: 0, total: 0),
-        ),
+        createTestableWidget(const MpProgressBar(current: 0, total: 0)),
       );
       await tester.pumpAndSettle();
 
@@ -65,9 +59,7 @@ void main() {
 
     testWidgets('renders in Japanese locale without error', (tester) async {
       await tester.pumpWidget(
-        createTestableWidgetJa(
-          const MpProgressBar(current: 2, total: 5),
-        ),
+        createTestableWidgetJa(const MpProgressBar(current: 2, total: 5)),
       );
       await tester.pumpAndSettle();
 

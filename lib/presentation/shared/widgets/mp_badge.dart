@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
 
 enum MpBadgeVariant { taken, missed, upcoming, lowStock, connected, snoozed }
 
 class MpBadge extends StatelessWidget {
-  const MpBadge({
-    super.key,
-    required this.label,
-    required this.variant,
-  });
+  const MpBadge({super.key, required this.label, required this.variant});
 
   final String label;
   final MpBadgeVariant variant;
@@ -68,10 +64,9 @@ class MpBadge extends StatelessWidget {
         child: ExcludeSemantics(
           child: Text(
             label,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: _textColor),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: _textColor),
           ),
         ),
       ),

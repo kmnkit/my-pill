@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
 
 void main() {
   group('DosageUnit', () {
@@ -54,9 +54,11 @@ void main() {
     group('label matches name', () {
       test('every DosageUnit label equals its enum name', () {
         for (final unit in DosageUnit.values) {
-          expect(unit.label, unit.name,
-              reason:
-                  '${unit.name} label should equal its enum name');
+          expect(
+            unit.label,
+            unit.name,
+            reason: '${unit.name} label should equal its enum name',
+          );
         }
       });
     });
@@ -64,8 +66,11 @@ void main() {
     group('all values have non-empty labels', () {
       test('every value has a non-empty label', () {
         for (final unit in DosageUnit.values) {
-          expect(unit.label, isNotEmpty,
-              reason: '${unit.name} should have a non-empty label');
+          expect(
+            unit.label,
+            isNotEmpty,
+            reason: '${unit.name} should have a non-empty label',
+          );
         }
       });
     });

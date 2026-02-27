@@ -2,25 +2,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 @GenerateMocks([StorageService])
 import 'schedule_provider_test.mocks.dart';
 
 Schedule _makeSchedule(String id, String medicationId) => Schedule(
-      id: id,
-      medicationId: medicationId,
-      type: ScheduleType.daily,
-      dosageSlots: const [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
-      timezoneMode: TimezoneMode.fixedInterval,
-    );
+  id: id,
+  medicationId: medicationId,
+  type: ScheduleType.daily,
+  dosageSlots: const [
+    DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+  ],
+  timezoneMode: TimezoneMode.fixedInterval,
+);
 
 void main() {
   late MockStorageService mockStorage;
@@ -31,9 +33,7 @@ void main() {
 
   ProviderContainer makeContainer() {
     final container = ProviderContainer(
-      overrides: [
-        storageServiceProvider.overrideWithValue(mockStorage),
-      ],
+      overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
     );
     addTearDown(container.dispose);
     return container;
@@ -72,51 +72,53 @@ void main() {
       final container = makeContainer();
       await container.read(scheduleListProvider.future);
 
-      await container
-          .read(scheduleListProvider.notifier)
-          .addSchedule(schedule);
+      await container.read(scheduleListProvider.notifier).addSchedule(schedule);
 
       verify(mockStorage.saveSchedule(schedule)).called(1);
     });
 
-    test('updateSchedule saves updated schedule and invalidates provider',
-        () async {
-      final schedule = _makeSchedule('sched-1', 'med-1');
-      final updated = schedule.copyWith(dosageSlots: [
-        const DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
-        const DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
-      ]);
+    test(
+      'updateSchedule saves updated schedule and invalidates provider',
+      () async {
+        final schedule = _makeSchedule('sched-1', 'med-1');
+        final updated = schedule.copyWith(
+          dosageSlots: [
+            const DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+            const DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+          ],
+        );
 
-      when(mockStorage.getAllSchedules())
-          .thenAnswer((_) async => [schedule]);
-      when(mockStorage.saveSchedule(any)).thenAnswer((_) async {});
+        when(mockStorage.getAllSchedules()).thenAnswer((_) async => [schedule]);
+        when(mockStorage.saveSchedule(any)).thenAnswer((_) async {});
 
-      final container = makeContainer();
-      await container.read(scheduleListProvider.future);
+        final container = makeContainer();
+        await container.read(scheduleListProvider.future);
 
-      await container
-          .read(scheduleListProvider.notifier)
-          .updateSchedule(updated);
+        await container
+            .read(scheduleListProvider.notifier)
+            .updateSchedule(updated);
 
-      verify(mockStorage.saveSchedule(updated)).called(1);
-    });
+        verify(mockStorage.saveSchedule(updated)).called(1);
+      },
+    );
 
-    test('deleteSchedule deletes schedule by id and invalidates provider',
-        () async {
-      final schedule = _makeSchedule('sched-1', 'med-1');
-      when(mockStorage.getAllSchedules())
-          .thenAnswer((_) async => [schedule]);
-      when(mockStorage.deleteSchedule(any)).thenAnswer((_) async {});
+    test(
+      'deleteSchedule deletes schedule by id and invalidates provider',
+      () async {
+        final schedule = _makeSchedule('sched-1', 'med-1');
+        when(mockStorage.getAllSchedules()).thenAnswer((_) async => [schedule]);
+        when(mockStorage.deleteSchedule(any)).thenAnswer((_) async {});
 
-      final container = makeContainer();
-      await container.read(scheduleListProvider.future);
+        final container = makeContainer();
+        await container.read(scheduleListProvider.future);
 
-      await container
-          .read(scheduleListProvider.notifier)
-          .deleteSchedule('sched-1');
+        await container
+            .read(scheduleListProvider.notifier)
+            .deleteSchedule('sched-1');
 
-      verify(mockStorage.deleteSchedule('sched-1')).called(1);
-    });
+        verify(mockStorage.deleteSchedule('sched-1')).called(1);
+      },
+    );
   });
 
   group('medicationSchedules provider', () {
@@ -125,24 +127,28 @@ void main() {
         _makeSchedule('sched-1', 'med-1'),
         _makeSchedule('sched-2', 'med-1'),
       ];
-      when(mockStorage.getSchedulesForMedication('med-1'))
-          .thenAnswer((_) async => schedules);
+      when(
+        mockStorage.getSchedulesForMedication('med-1'),
+      ).thenAnswer((_) async => schedules);
 
       final container = makeContainer();
-      final result =
-          await container.read(medicationSchedulesProvider('med-1').future);
+      final result = await container.read(
+        medicationSchedulesProvider('med-1').future,
+      );
 
       expect(result.length, equals(2));
       expect(result.every((s) => s.medicationId == 'med-1'), isTrue);
     });
 
     test('returns empty list when no schedules for medication', () async {
-      when(mockStorage.getSchedulesForMedication('med-99'))
-          .thenAnswer((_) async => []);
+      when(
+        mockStorage.getSchedulesForMedication('med-99'),
+      ).thenAnswer((_) async => []);
 
       final container = makeContainer();
-      final result =
-          await container.read(medicationSchedulesProvider('med-99').future);
+      final result = await container.read(
+        medicationSchedulesProvider('med-99').future,
+      );
 
       expect(result, isEmpty);
     });

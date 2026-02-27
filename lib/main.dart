@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_pill/app.dart';
-import 'package:my_pill/data/services/notification_service.dart';
-import 'package:my_pill/data/services/home_widget_service.dart';
+import 'package:kusuridoki/app.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
+import 'package:kusuridoki/data/services/home_widget_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,9 +33,5 @@ Future<void> main() async {
     debugPrint('Failed to initialize home widget: $e');
   }
 
-  runApp(
-    const ProviderScope(
-      child: MyPillApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyPillApp()));
 }

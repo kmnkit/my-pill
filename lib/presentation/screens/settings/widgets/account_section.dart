@@ -2,18 +2,18 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/data/services/auth_service.dart';
-import 'package:my_pill/core/utils/apple_auth_error_messages.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/core/utils/apple_auth_error_messages.dart';
 
 class AccountSection extends ConsumerWidget {
   const AccountSection({super.key});
@@ -69,8 +69,8 @@ class AccountSection extends ConsumerWidget {
                 Text(
                   l10n.signInToAccess,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: context.appColors.textMuted,
-                      ),
+                    color: context.appColors.textMuted,
+                  ),
                 ),
               ],
             ),
@@ -81,12 +81,14 @@ class AccountSection extends ConsumerWidget {
         final userProfile = ref.watch(userSettingsProvider).value;
         final profileName = userProfile?.name;
         // Fallback chain: profile name (if not null/empty/legacy 'User') -> Firebase displayName -> email prefix -> guest
-        final displayName = (profileName != null && profileName.isNotEmpty && profileName != 'User')
+        final displayName =
+            (profileName != null &&
+                profileName.isNotEmpty &&
+                profileName != 'User')
             ? profileName
-            : (user.displayName ?? (user.email?.split('@').first ?? l10n.guestUser));
-        final email = userProfile?.email ??
-                     user.email ??
-                     l10n.noEmail;
+            : (user.displayName ??
+                  (user.email?.split('@').first ?? l10n.guestUser));
+        final email = userProfile?.email ?? user.email ?? l10n.noEmail;
         final initials = _getInitials(displayName);
 
         if (isAnonymous) {
@@ -110,9 +112,8 @@ class AccountSection extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.xs),
                           Text(
                             l10n.signInToSync,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: context.appColors.textMuted,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: context.appColors.textMuted),
                           ),
                         ],
                       ),
@@ -124,7 +125,11 @@ class AccountSection extends ConsumerWidget {
                   label: l10n.linkWithGoogle,
                   onPressed: () => _linkWithGoogle(context, ref),
                   variant: MpButtonVariant.secondary,
-                  iconWidget: Image.asset('assets/icons/google-logo.png', width: 20, height: 20),
+                  iconWidget: Image.asset(
+                    'assets/icons/google-logo.png',
+                    width: 20,
+                    height: 20,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 if (Platform.isIOS)
@@ -160,21 +165,25 @@ class AccountSection extends ConsumerWidget {
                       Text(
                         l10n.emailHidden,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: context.appColors.textMuted,
-                              fontStyle: FontStyle.italic,
-                            ),
+                          color: context.appColors.textMuted,
+                          fontStyle: FontStyle.italic,
+                        ),
                       )
                     else
                       Text(
                         email,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: context.appColors.textMuted,
-                            ),
+                          color: context.appColors.textMuted,
+                        ),
                       ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted),
+              Icon(
+                Icons.chevron_right,
+                size: AppSpacing.iconMd,
+                color: context.appColors.textMuted,
+              ),
             ],
           ),
         );
@@ -190,7 +199,10 @@ class AccountSection extends ConsumerWidget {
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.accountLinked), backgroundColor: AppColors.primary),
+          SnackBar(
+            content: Text(l10n.accountLinked),
+            backgroundColor: AppColors.primary,
+          ),
         );
         ref.invalidate(authStateProvider);
       }
@@ -216,7 +228,10 @@ class AccountSection extends ConsumerWidget {
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.accountLinked), backgroundColor: AppColors.primary),
+          SnackBar(
+            content: Text(l10n.accountLinked),
+            backgroundColor: AppColors.primary,
+          ),
         );
         ref.invalidate(authStateProvider);
       }

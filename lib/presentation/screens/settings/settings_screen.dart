@@ -3,35 +3,35 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_constants.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_constants.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:my_pill/data/providers/adherence_provider.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
 
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/services/cloud_functions_service.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/core/utils/screenshot_seeder.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/account_section.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/backup_sync_dialog.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/data_sharing_dialog.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/display_settings.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/language_selector.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/notification_settings.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/premium_banner.dart';
-import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/router/route_names.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/core/utils/screenshot_seeder.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/account_section.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/backup_sync_dialog.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/display_settings.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/notification_settings.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/premium_banner.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -115,8 +115,8 @@ class SettingsScreen extends ConsumerWidget {
                 trailing: Text(
                   l10n.version('1.0.0'),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: context.appColors.textMuted,
-                      ),
+                    color: context.appColors.textMuted,
+                  ),
                 ),
               ),
               if (kDebugMode) ...[
@@ -132,7 +132,9 @@ class SettingsScreen extends ConsumerWidget {
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Screenshot data seeded!')),
+                        const SnackBar(
+                          content: Text('Screenshot data seeded!'),
+                        ),
                       );
                     }
                   },
@@ -205,7 +207,8 @@ class SettingsScreen extends ConsumerWidget {
 
                   if (secondConfirm == true && context.mounted) {
                     try {
-                      if (FirebaseAuth.instance.currentUser?.isAnonymous == true) {
+                      if (FirebaseAuth.instance.currentUser?.isAnonymous ==
+                          true) {
                         // Anonymous path: no server data, delete auth account directly
                         // 1. Clear local data first (while widget is still mounted)
                         await StorageService().clearAll();
@@ -259,9 +262,9 @@ class SettingsScreen extends ConsumerWidget {
                   },
                   child: Text(
                     l10n.switchToCaregiverView,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: AppColors.primary,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: AppColors.primary),
                   ),
                 ),
               ),
@@ -269,9 +272,8 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
         ),
-        loading: () => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -308,16 +310,25 @@ class SettingsScreen extends ConsumerWidget {
     Color? textColor,
   }) {
     return ListTile(
-      leading: Icon(icon, size: AppSpacing.iconMd, color: textColor ?? context.appColors.textPrimary),
+      leading: Icon(
+        icon,
+        size: AppSpacing.iconMd,
+        color: textColor ?? context.appColors.textPrimary,
+      ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: textColor,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: textColor),
       ),
-      trailing: trailing ??
+      trailing:
+          trailing ??
           (onTap != null
-              ? Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: context.appColors.textMuted)
+              ? Icon(
+                  Icons.chevron_right,
+                  size: AppSpacing.iconMd,
+                  color: context.appColors.textMuted,
+                )
               : null),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,

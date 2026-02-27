@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -8,9 +8,7 @@ void main() {
   group('MpButton', () {
     testWidgets('renders label text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpButton(label: 'Save', onPressed: null),
-        ),
+        createTestableWidget(const MpButton(label: 'Save', onPressed: null)),
       );
       await tester.pumpAndSettle();
 

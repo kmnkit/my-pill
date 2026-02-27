@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class MpProgressBar extends StatelessWidget {
   const MpProgressBar({
@@ -55,7 +55,9 @@ class MpProgressBar extends StatelessWidget {
               child: Text(
                 '$current / $total',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: _isLow ? AppColors.warning : context.appColors.textMuted,
+                  color: _isLow
+                      ? AppColors.warning
+                      : context.appColors.textMuted,
                 ),
               ),
             ),

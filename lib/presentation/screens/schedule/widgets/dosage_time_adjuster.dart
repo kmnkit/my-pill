@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_time_picker.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_time_picker.dart';
 
 class DosageTimeAdjuster extends StatelessWidget {
   const DosageTimeAdjuster({
@@ -57,8 +57,8 @@ class DosageTimeAdjuster extends StatelessWidget {
                   timing.maxHour.toString().padLeft(2, '0'),
                 ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
@@ -76,15 +76,16 @@ class DosageTimeAdjuster extends StatelessWidget {
         // Normal range
         clampedHour =
             (newHour - timing.minHour).abs() <= (newHour - timing.maxHour).abs()
-                ? timing.minHour
-                : timing.maxHour;
+            ? timing.minHour
+            : timing.maxHour;
       } else {
         // Wrap-around (bedtime): minHour=21, maxHour=1
         if (newHour > timing.maxHour && newHour < timing.minHour) {
           final distToMin = timing.minHour - newHour;
           final distToMax = newHour - timing.maxHour;
-          clampedHour =
-              distToMax <= distToMin ? timing.maxHour : timing.minHour;
+          clampedHour = distToMax <= distToMin
+              ? timing.maxHour
+              : timing.minHour;
         }
       }
     }

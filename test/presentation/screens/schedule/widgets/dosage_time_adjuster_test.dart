@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/dosage_time_adjuster.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_time_picker.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/dosage_time_adjuster.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_time_picker.dart';
 
 Widget buildTestWidget({
   required List<DosageTimeSlot> slots,
@@ -16,10 +16,7 @@ Widget buildTestWidget({
     locale: const Locale('en'),
     home: Scaffold(
       body: SingleChildScrollView(
-        child: DosageTimeAdjuster(
-          slots: slots,
-          onSlotsChanged: onSlotsChanged,
-        ),
+        child: DosageTimeAdjuster(slots: slots, onSlotsChanged: onSlotsChanged),
       ),
     ),
   );
@@ -28,10 +25,9 @@ Widget buildTestWidget({
 void main() {
   group('DosageTimeAdjuster', () {
     testWidgets('renders nothing when slots is empty', (tester) async {
-      await tester.pumpWidget(buildTestWidget(
-        slots: [],
-        onSlotsChanged: (_) {},
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(slots: [], onSlotsChanged: (_) {}),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(MpTimePicker), findsNothing);
@@ -43,24 +39,20 @@ void main() {
         DosageTimeSlot.withDefault(DosageTiming.evening),
       ];
 
-      await tester.pumpWidget(buildTestWidget(
-        slots: slots,
-        onSlotsChanged: (_) {},
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(slots: slots, onSlotsChanged: (_) {}),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(MpTimePicker), findsNWidgets(2));
     });
 
     testWidgets('shows timing label for each slot', (tester) async {
-      final slots = [
-        DosageTimeSlot.withDefault(DosageTiming.morning),
-      ];
+      final slots = [DosageTimeSlot.withDefault(DosageTiming.morning)];
 
-      await tester.pumpWidget(buildTestWidget(
-        slots: slots,
-        onSlotsChanged: (_) {},
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(slots: slots, onSlotsChanged: (_) {}),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Morning'), findsOneWidget);
@@ -68,14 +60,14 @@ void main() {
 
     testWidgets('onSlotsChanged fires when hour changes', (tester) async {
       List<DosageTimeSlot>? result;
-      final slots = [
-        DosageTimeSlot.withDefault(DosageTiming.morning),
-      ];
+      final slots = [DosageTimeSlot.withDefault(DosageTiming.morning)];
 
-      await tester.pumpWidget(buildTestWidget(
-        slots: slots,
-        onSlotsChanged: (updated) => result = updated,
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(
+          slots: slots,
+          onSlotsChanged: (updated) => result = updated,
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Tap hour up arrow
@@ -89,14 +81,11 @@ void main() {
     });
 
     testWidgets('displays range hint text', (tester) async {
-      final slots = [
-        DosageTimeSlot.withDefault(DosageTiming.morning),
-      ];
+      final slots = [DosageTimeSlot.withDefault(DosageTiming.morning)];
 
-      await tester.pumpWidget(buildTestWidget(
-        slots: slots,
-        onSlotsChanged: (_) {},
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(slots: slots, onSlotsChanged: (_) {}),
+      );
       await tester.pumpAndSettle();
 
       // Should show range hint with min/max hours
@@ -111,10 +100,9 @@ void main() {
         DosageTimeSlot.withDefault(DosageTiming.morning),
       ];
 
-      await tester.pumpWidget(buildTestWidget(
-        slots: slots,
-        onSlotsChanged: (_) {},
-      ));
+      await tester.pumpWidget(
+        buildTestWidget(slots: slots, onSlotsChanged: (_) {}),
+      );
       await tester.pumpAndSettle();
 
       // Morning should appear before Evening due to sorting

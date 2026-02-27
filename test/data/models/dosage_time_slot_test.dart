@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
 
 void main() {
   group('DosageTimeSlot', () {
@@ -17,10 +17,7 @@ void main() {
       });
 
       test('creates with noon timing', () {
-        const slot = DosageTimeSlot(
-          timing: DosageTiming.noon,
-          time: '12:30',
-        );
+        const slot = DosageTimeSlot(timing: DosageTiming.noon, time: '12:30');
 
         expect(slot.timing, DosageTiming.noon);
         expect(slot.time, '12:30');
@@ -122,10 +119,7 @@ void main() {
       });
 
       test('returns correct TimeOfDay for noon', () {
-        const slot = DosageTimeSlot(
-          timing: DosageTiming.noon,
-          time: '12:00',
-        );
+        const slot = DosageTimeSlot(timing: DosageTiming.noon, time: '12:00');
 
         expect(slot.timeOfDay, const TimeOfDay(hour: 12, minute: 0));
       });
@@ -178,10 +172,7 @@ void main() {
 
       test('fromJson handles all DosageTiming enum values', () {
         for (final timing in DosageTiming.values) {
-          final json = {
-            'timing': timing.name,
-            'time': '10:00',
-          };
+          final json = {'timing': timing.name, 'time': '10:00'};
           final slot = DosageTimeSlot.fromJson(json);
           expect(slot.timing, timing);
         }
@@ -224,41 +215,23 @@ void main() {
 
     group('equality', () {
       test('two instances with same fields are equal', () {
-        const a = DosageTimeSlot(
-          timing: DosageTiming.morning,
-          time: '08:00',
-        );
-        const b = DosageTimeSlot(
-          timing: DosageTiming.morning,
-          time: '08:00',
-        );
+        const a = DosageTimeSlot(timing: DosageTiming.morning, time: '08:00');
+        const b = DosageTimeSlot(timing: DosageTiming.morning, time: '08:00');
 
         expect(a, equals(b));
         expect(a.hashCode, equals(b.hashCode));
       });
 
       test('instances with different timing are not equal', () {
-        const a = DosageTimeSlot(
-          timing: DosageTiming.morning,
-          time: '08:00',
-        );
-        const b = DosageTimeSlot(
-          timing: DosageTiming.noon,
-          time: '08:00',
-        );
+        const a = DosageTimeSlot(timing: DosageTiming.morning, time: '08:00');
+        const b = DosageTimeSlot(timing: DosageTiming.noon, time: '08:00');
 
         expect(a, isNot(equals(b)));
       });
 
       test('instances with different time are not equal', () {
-        const a = DosageTimeSlot(
-          timing: DosageTiming.morning,
-          time: '08:00',
-        );
-        const b = DosageTimeSlot(
-          timing: DosageTiming.morning,
-          time: '09:00',
-        );
+        const a = DosageTimeSlot(timing: DosageTiming.morning, time: '08:00');
+        const b = DosageTimeSlot(timing: DosageTiming.morning, time: '09:00');
 
         expect(a, isNot(equals(b)));
       });

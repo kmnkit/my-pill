@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
 
 class MpMedicationCard extends StatelessWidget {
   const MpMedicationCard({
@@ -47,16 +47,31 @@ class MpMedicationCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
-                    Text(dosage, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
+                    Text(
+                      dosage,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: context.appColors.textMuted,
+                      ),
+                    ),
                     if (time != null) ...[
                       const SizedBox(width: AppSpacing.sm),
-                      Text(time!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
+                      Text(
+                        time!,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: context.appColors.textMuted,
+                        ),
+                      ),
                     ],
                   ],
                 ),
                 if (stockText != null) ...[
                   const SizedBox(height: AppSpacing.xs),
-                  Text(stockText!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
+                  Text(
+                    stockText!,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: context.appColors.textMuted,
+                    ),
+                  ),
                 ],
               ],
             ),

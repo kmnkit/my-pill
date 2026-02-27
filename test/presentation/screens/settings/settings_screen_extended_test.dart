@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -163,7 +163,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Scroll to bottom so all sections get rendered
-      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1000));
+      await tester.drag(
+        find.byType(SingleChildScrollView),
+        const Offset(0, -1000),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Advanced'), findsOneWidget);

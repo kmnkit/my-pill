@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -8,9 +8,7 @@ void main() {
   group('MpTextField', () {
     testWidgets('renders hint text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpTextField(hint: 'Enter name'),
-        ),
+        createTestableWidget(const MpTextField(hint: 'Enter name')),
       );
       await tester.pumpAndSettle();
 
@@ -32,10 +30,7 @@ void main() {
       String? changed;
       await tester.pumpWidget(
         createTestableWidget(
-          MpTextField(
-            hint: 'Type here',
-            onChanged: (v) => changed = v,
-          ),
+          MpTextField(hint: 'Type here', onChanged: (v) => changed = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -72,9 +67,7 @@ void main() {
 
     testWidgets('no prefixIcon when not provided', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpTextField(hint: 'No icon'),
-        ),
+        createTestableWidget(const MpTextField(hint: 'No icon')),
       );
       await tester.pumpAndSettle();
 

@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/screens/home/widgets/greeting_header.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/greeting_header.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -33,7 +33,8 @@ class FakeErrorUserSettings extends UserSettings {
 
 class FakeErrorTodayReminders extends TodayReminders {
   @override
-  Future<List<Reminder>> build() async => throw Exception('Reminders load failed');
+  Future<List<Reminder>> build() async =>
+      throw Exception('Reminders load failed');
 }
 
 void main() {
@@ -110,7 +111,9 @@ void main() {
       expect(find.textContaining('Alice'), findsOneWidget);
     });
 
-    testWidgets('renders greeting without name when name is null', (tester) async {
+    testWidgets('renders greeting without name when name is null', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const GreetingHeader(),
@@ -123,7 +126,9 @@ void main() {
       expect(find.textContaining('Alice'), findsNothing);
     });
 
-    testWidgets('renders greeting without name when name is "User"', (tester) async {
+    testWidgets('renders greeting without name when name is "User"', (
+      tester,
+    ) async {
       const userProfile = UserProfile(
         id: 'u',
         name: 'User',
@@ -206,10 +211,10 @@ void main() {
         createTestableWidget(
           const GreetingHeader(),
           overrides: [
-            userSettingsProvider
-                .overrideWith(() => FakeErrorUserSettings()),
-            todayRemindersProvider
-                .overrideWith(() => FakeTodayReminders(testReminders)),
+            userSettingsProvider.overrideWith(() => FakeErrorUserSettings()),
+            todayRemindersProvider.overrideWith(
+              () => FakeTodayReminders(testReminders),
+            ),
           ],
         ),
       );
@@ -217,22 +222,27 @@ void main() {
 
       // Error state should still render a greeting (without name)
       final greetingFinder = find.textContaining(
-        RegExp(r'(Good Morning|Good Afternoon|Good Evening)',
-            caseSensitive: false),
+        RegExp(
+          r'(Good Morning|Good Afternoon|Good Evening)',
+          caseSensitive: false,
+        ),
       );
       expect(greetingFinder, findsOneWidget);
     });
 
-    testWidgets('renders SizedBox.shrink when reminders has error',
-        (tester) async {
+    testWidgets('renders SizedBox.shrink when reminders has error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const GreetingHeader(),
           overrides: [
-            userSettingsProvider
-                .overrideWith(() => FakeUserSettings(testProfile)),
-            todayRemindersProvider
-                .overrideWith(() => FakeErrorTodayReminders()),
+            userSettingsProvider.overrideWith(
+              () => FakeUserSettings(testProfile),
+            ),
+            todayRemindersProvider.overrideWith(
+              () => FakeErrorTodayReminders(),
+            ),
           ],
         ),
       );

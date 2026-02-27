@@ -1,30 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
 
 void main() {
   group('UserProfile', () {
     UserProfile buildFull() => const UserProfile(
-          id: 'user-001',
-          name: 'Alice Tanaka',
-          email: 'alice@example.com',
-          language: 'ja',
-          highContrast: true,
-          textSize: 'large',
-          notificationsEnabled: false,
-          criticalAlerts: true,
-          snoozeDuration: 30,
-          travelModeEnabled: true,
-          homeTimezone: 'Asia/Tokyo',
-          removeAds: true,
-          usesPrivateEmail: true,
-          onboardingComplete: true,
-          userRole: 'caregiver',
-          shareAdherenceData: false,
-          shareMedicationList: false,
-          allowCaregiverNotifications: false,
-          missedDoseAlerts: false,
-          lowStockAlerts: false,
-        );
+      id: 'user-001',
+      name: 'Alice Tanaka',
+      email: 'alice@example.com',
+      language: 'ja',
+      highContrast: true,
+      textSize: 'large',
+      notificationsEnabled: false,
+      criticalAlerts: true,
+      snoozeDuration: 30,
+      travelModeEnabled: true,
+      homeTimezone: 'Asia/Tokyo',
+      removeAds: true,
+      usesPrivateEmail: true,
+      onboardingComplete: true,
+      userRole: 'caregiver',
+      shareAdherenceData: false,
+      shareMedicationList: false,
+      allowCaregiverNotifications: false,
+      missedDoseAlerts: false,
+      lowStockAlerts: false,
+    );
 
     UserProfile buildMinimal() => const UserProfile(id: 'user-002');
 
@@ -51,8 +51,10 @@ void main() {
         expect(restored.userRole, original.userRole);
         expect(restored.shareAdherenceData, original.shareAdherenceData);
         expect(restored.shareMedicationList, original.shareMedicationList);
-        expect(restored.allowCaregiverNotifications,
-            original.allowCaregiverNotifications);
+        expect(
+          restored.allowCaregiverNotifications,
+          original.allowCaregiverNotifications,
+        );
         expect(restored.missedDoseAlerts, original.missedDoseAlerts);
         expect(restored.lowStockAlerts, original.lowStockAlerts);
       });
@@ -129,8 +131,10 @@ void main() {
         expect(copied.userRole, original.userRole);
         expect(copied.shareAdherenceData, original.shareAdherenceData);
         expect(copied.shareMedicationList, original.shareMedicationList);
-        expect(copied.allowCaregiverNotifications,
-            original.allowCaregiverNotifications);
+        expect(
+          copied.allowCaregiverNotifications,
+          original.allowCaregiverNotifications,
+        );
         expect(copied.missedDoseAlerts, original.missedDoseAlerts);
         expect(copied.lowStockAlerts, original.lowStockAlerts);
       });

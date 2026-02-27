@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -58,7 +58,9 @@ List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
   ];
 }
 
-List<dynamic> _buildPremiumOverrides({SubscriptionStatus status = _premiumStatus}) {
+List<dynamic> _buildPremiumOverrides({
+  SubscriptionStatus status = _premiumStatus,
+}) {
   return [
     userSettingsProvider.overrideWith(() => _FakeUserSettings(_testProfile)),
     authStateProvider.overrideWith((ref) => Stream.value(null)),
@@ -122,8 +124,9 @@ void main() {
       expect(find.text('Settings'), findsOneWidget);
     });
 
-    testWidgets('shows error state and retry button when provider fails',
-        (tester) async {
+    testWidgets('shows error state and retry button when provider fails', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -156,8 +159,7 @@ void main() {
       expect(find.text('Advanced'), findsOneWidget);
     });
 
-    testWidgets('shows log out tile in advanced section',
-        (tester) async {
+    testWidgets('shows log out tile in advanced section', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -175,7 +177,9 @@ void main() {
       expect(find.text('Log Out'), findsOneWidget);
     });
 
-    testWidgets('shows delete account tile in advanced section', (tester) async {
+    testWidgets('shows delete account tile in advanced section', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -292,8 +296,9 @@ void main() {
       expect(find.text('Manage Subscription'), findsOneWidget);
     });
 
-    testWidgets('shows premium expiry date when subscription has expiry',
-        (tester) async {
+    testWidgets('shows premium expiry date when subscription has expiry', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -306,8 +311,9 @@ void main() {
       expect(find.textContaining('2030'), findsOneWidget);
     });
 
-    testWidgets('shows current plan text when premium has no expiry date',
-        (tester) async {
+    testWidgets('shows current plan text when premium has no expiry date', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -321,8 +327,9 @@ void main() {
       expect(find.text('Current Plan'), findsOneWidget);
     });
 
-    testWidgets('retry button in error state invalidates provider',
-        (tester) async {
+    testWidgets('retry button in error state invalidates provider', (
+      tester,
+    ) async {
       // Track how many times build() is called
       var buildCount = 0;
 
@@ -351,8 +358,9 @@ void main() {
       expect(find.text('Error loading settings'), findsOneWidget);
     });
 
-    testWidgets('tapping log out tile shows confirmation dialog',
-        (tester) async {
+    testWidgets('tapping log out tile shows confirmation dialog', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -373,8 +381,9 @@ void main() {
       expect(find.byType(Dialog), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('tapping delete account tile shows first confirmation dialog',
-        (tester) async {
+    testWidgets('tapping delete account tile shows first confirmation dialog', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -474,8 +483,9 @@ void main() {
       expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('shows loading spinner before async settings resolve',
-        (tester) async {
+    testWidgets('shows loading spinner before async settings resolve', (
+      tester,
+    ) async {
       // Use a notifier that completes slowly by using a Completer
       // We just pump once (not pumpAndSettle) to catch the loading state
       await tester.pumpWidget(

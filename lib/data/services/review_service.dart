@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 class ReviewService {
   ReviewService(this._storage);

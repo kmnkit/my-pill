@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/presentation/screens/medications/medications_list_screen.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/presentation/screens/medications/medications_list_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -21,31 +21,31 @@ class _FakeEmptyMedicationList extends MedicationList {
 class _FakePopulatedMedicationList extends MedicationList {
   @override
   Future<List<Medication>> build() async => [
-        Medication(
-          id: 'med1',
-          name: 'Aspirin',
-          dosage: 100,
-          dosageUnit: DosageUnit.mg,
-          shape: PillShape.round,
-          color: PillColor.white,
-          inventoryTotal: 30,
-          inventoryRemaining: 20,
-          lowStockThreshold: 5,
-          createdAt: DateTime(2024),
-        ),
-        Medication(
-          id: 'med2',
-          name: 'Vitamin C',
-          dosage: 500,
-          dosageUnit: DosageUnit.mg,
-          shape: PillShape.capsule,
-          color: PillColor.orange,
-          inventoryTotal: 60,
-          inventoryRemaining: 3,
-          lowStockThreshold: 5,
-          createdAt: DateTime(2024),
-        ),
-      ];
+    Medication(
+      id: 'med1',
+      name: 'Aspirin',
+      dosage: 100,
+      dosageUnit: DosageUnit.mg,
+      shape: PillShape.round,
+      color: PillColor.white,
+      inventoryTotal: 30,
+      inventoryRemaining: 20,
+      lowStockThreshold: 5,
+      createdAt: DateTime(2024),
+    ),
+    Medication(
+      id: 'med2',
+      name: 'Vitamin C',
+      dosage: 500,
+      dosageUnit: DosageUnit.mg,
+      shape: PillShape.capsule,
+      color: PillColor.orange,
+      inventoryTotal: 60,
+      inventoryRemaining: 3,
+      lowStockThreshold: 5,
+      createdAt: DateTime(2024),
+    ),
+  ];
 }
 
 // Fake AsyncNotifier returning error
@@ -62,7 +62,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -72,12 +74,16 @@ void main() {
       expect(find.text('My Medications'), findsOneWidget);
     });
 
-    testWidgets('shows empty state when medication list is empty', (tester) async {
+    testWidgets('shows empty state when medication list is empty', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -91,8 +97,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -102,14 +109,16 @@ void main() {
       expect(find.text('Vitamin C'), findsOneWidget);
     });
 
-    testWidgets('shows low stock badge when inventory is below threshold',
-        (tester) async {
+    testWidgets('shows low stock badge when inventory is below threshold', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -124,8 +133,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeErrorMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeErrorMedicationList(),
+            ),
           ],
         ),
       );
@@ -140,8 +150,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -155,8 +166,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -180,8 +192,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -194,33 +207,37 @@ void main() {
       expect(find.text('Vitamin C'), findsNothing);
     });
 
-    testWidgets('shows no medications found empty state when search yields no results',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const MedicationsListScreen(),
-          overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'shows no medications found empty state when search yields no results',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const MedicationsListScreen(),
+            overrides: [
+              medicationListProvider.overrideWith(
+                () => _FakePopulatedMedicationList(),
+              ),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(TextField), 'XYZ_NONEXISTENT');
-      await tester.pump();
+        await tester.enterText(find.byType(TextField), 'XYZ_NONEXISTENT');
+        await tester.pump();
 
-      // l10n key: noMedicationsFound -> "No medications found"
-      expect(find.text('No medications found'), findsOneWidget);
-    });
+        // l10n key: noMedicationsFound -> "No medications found"
+        expect(find.text('No medications found'), findsOneWidget);
+      },
+    );
 
     testWidgets('shows retry button in error state', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeErrorMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeErrorMedicationList(),
+            ),
           ],
         ),
       );
@@ -230,13 +247,16 @@ void main() {
       expect(find.text('Retry'), findsOneWidget);
     });
 
-    testWidgets('shows loading indicator while data is loading', (tester) async {
+    testWidgets('shows loading indicator while data is loading', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeSlowMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeSlowMedicationList(),
+            ),
           ],
         ),
       );
@@ -251,8 +271,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakePopulatedMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakePopulatedMedicationList(),
+            ),
           ],
         ),
       );
@@ -262,14 +283,16 @@ void main() {
       expect(find.text('OK'), findsOneWidget);
     });
 
-    testWidgets('medication name truncates with ellipsis for long names',
-        (tester) async {
+    testWidgets('medication name truncates with ellipsis for long names', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeLongNameMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeLongNameMedicationList(),
+            ),
           ],
         ),
       );
@@ -286,14 +309,16 @@ void main() {
       expect(nameText.overflow, TextOverflow.ellipsis);
     });
 
-    testWidgets('tapping retry button in error state does not crash',
-        (tester) async {
+    testWidgets('tapping retry button in error state does not crash', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeErrorMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeErrorMedicationList(),
+            ),
           ],
         ),
       );
@@ -312,8 +337,9 @@ void main() {
         createTestableWidget(
           const MedicationsListScreen(),
           overrides: [
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
           ],
         ),
       );
@@ -337,17 +363,18 @@ class _FakeSlowMedicationList extends MedicationList {
 class _FakeLongNameMedicationList extends MedicationList {
   @override
   Future<List<Medication>> build() async => [
-        Medication(
-          id: 'med-long',
-          name: 'Acetylsalicylic Acid Extra Strength Formula 500mg Extended Release',
-          dosage: 500,
-          dosageUnit: DosageUnit.mg,
-          shape: PillShape.round,
-          color: PillColor.white,
-          inventoryTotal: 30,
-          inventoryRemaining: 20,
-          lowStockThreshold: 5,
-          createdAt: DateTime(2024),
-        ),
-      ];
+    Medication(
+      id: 'med-long',
+      name:
+          'Acetylsalicylic Acid Extra Strength Formula 500mg Extended Release',
+      dosage: 500,
+      dosageUnit: DosageUnit.mg,
+      shape: PillShape.round,
+      color: PillColor.white,
+      inventoryTotal: 30,
+      inventoryRemaining: 20,
+      lowStockThreshold: 5,
+      createdAt: DateTime(2024),
+    ),
+  ];
 }

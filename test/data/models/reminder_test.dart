@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/models/reminder.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
 
 void main() {
   group('Reminder', () {
@@ -9,19 +9,19 @@ void main() {
     final snoozedUntil = DateTime.utc(2024, 1, 15, 8, 15);
 
     Reminder buildFull() => Reminder(
-          id: 'rem-001',
-          medicationId: 'med-001',
-          scheduledTime: scheduledTime,
-          status: ReminderStatus.taken,
-          actionTime: actionTime,
-          snoozedUntil: snoozedUntil,
-        );
+      id: 'rem-001',
+      medicationId: 'med-001',
+      scheduledTime: scheduledTime,
+      status: ReminderStatus.taken,
+      actionTime: actionTime,
+      snoozedUntil: snoozedUntil,
+    );
 
     Reminder buildMinimal() => Reminder(
-          id: 'rem-002',
-          medicationId: 'med-002',
-          scheduledTime: scheduledTime,
-        );
+      id: 'rem-002',
+      medicationId: 'med-002',
+      scheduledTime: scheduledTime,
+    );
 
     group('fromJson/toJson', () {
       test('roundtrip preserves all fields', () {

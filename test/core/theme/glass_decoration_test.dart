@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/glass_decoration.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/glass_decoration.dart';
 
 void main() {
   group('GlassDecoration', () {
@@ -80,11 +80,14 @@ void main() {
     });
 
     group('cardStrong()', () {
-      test('returns BoxDecoration with glassWhiteStrong color in light mode', () {
-        final decoration = GlassDecoration.cardStrong(isDark: false);
+      test(
+        'returns BoxDecoration with glassWhiteStrong color in light mode',
+        () {
+          final decoration = GlassDecoration.cardStrong(isDark: false);
 
-        expect(decoration.color, AppColors.glassWhiteStrong);
-      });
+          expect(decoration.color, AppColors.glassWhiteStrong);
+        },
+      );
 
       test('returns BoxDecoration with glassDarkStrong color in dark mode', () {
         final decoration = GlassDecoration.cardStrong(isDark: true);
@@ -221,34 +224,39 @@ void main() {
     });
 
     group('context-based methods', () {
-      testWidgets('shouldReduceMotion returns false when animations are enabled',
-          (tester) async {
-        await tester.pumpWidget(
-          const MediaQuery(
-            data: MediaQueryData(disableAnimations: false),
-            child: SizedBox.shrink(),
-          ),
-        );
+      testWidgets(
+        'shouldReduceMotion returns false when animations are enabled',
+        (tester) async {
+          await tester.pumpWidget(
+            const MediaQuery(
+              data: MediaQueryData(disableAnimations: false),
+              child: SizedBox.shrink(),
+            ),
+          );
 
-        final context = tester.element(find.byType(SizedBox));
-        expect(GlassDecoration.shouldReduceMotion(context), isFalse);
-      });
+          final context = tester.element(find.byType(SizedBox));
+          expect(GlassDecoration.shouldReduceMotion(context), isFalse);
+        },
+      );
 
-      testWidgets('shouldReduceMotion returns true when animations are disabled',
-          (tester) async {
-        await tester.pumpWidget(
-          const MediaQuery(
-            data: MediaQueryData(disableAnimations: true),
-            child: SizedBox.shrink(),
-          ),
-        );
+      testWidgets(
+        'shouldReduceMotion returns true when animations are disabled',
+        (tester) async {
+          await tester.pumpWidget(
+            const MediaQuery(
+              data: MediaQueryData(disableAnimations: true),
+              child: SizedBox.shrink(),
+            ),
+          );
 
-        final context = tester.element(find.byType(SizedBox));
-        expect(GlassDecoration.shouldReduceMotion(context), isTrue);
-      });
+          final context = tester.element(find.byType(SizedBox));
+          expect(GlassDecoration.shouldReduceMotion(context), isTrue);
+        },
+      );
 
-      testWidgets('getBlurAmount returns blurAmount when motion is enabled',
-          (tester) async {
+      testWidgets('getBlurAmount returns blurAmount when motion is enabled', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MediaQuery(
             data: MediaQueryData(disableAnimations: false),
@@ -263,8 +271,9 @@ void main() {
         );
       });
 
-      testWidgets('getBlurAmount returns blurAmountStrong when strong=true',
-          (tester) async {
+      testWidgets('getBlurAmount returns blurAmountStrong when strong=true', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MediaQuery(
             data: MediaQueryData(disableAnimations: false),
@@ -279,8 +288,9 @@ void main() {
         );
       });
 
-      testWidgets('getBlurAmount returns 0.0 when motion is reduced',
-          (tester) async {
+      testWidgets('getBlurAmount returns 0.0 when motion is reduced', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MediaQuery(
             data: MediaQueryData(disableAnimations: true),
@@ -307,20 +317,21 @@ void main() {
       });
 
       testWidgets(
-          'getBlurFilter with reduced motion returns zero-sigma filter',
-          (tester) async {
-        await tester.pumpWidget(
-          const MediaQuery(
-            data: MediaQueryData(disableAnimations: true),
-            child: SizedBox.shrink(),
-          ),
-        );
+        'getBlurFilter with reduced motion returns zero-sigma filter',
+        (tester) async {
+          await tester.pumpWidget(
+            const MediaQuery(
+              data: MediaQueryData(disableAnimations: true),
+              child: SizedBox.shrink(),
+            ),
+          );
 
-        final context = tester.element(find.byType(SizedBox));
-        final filter = GlassDecoration.getBlurFilter(context);
-        // Zero-sigma filter toString should contain 0
-        expect(filter.toString(), contains('0'));
-      });
+          final context = tester.element(find.byType(SizedBox));
+          final filter = GlassDecoration.getBlurFilter(context);
+          // Zero-sigma filter toString should contain 0
+          expect(filter.toString(), contains('0'));
+        },
+      );
     });
   });
 }

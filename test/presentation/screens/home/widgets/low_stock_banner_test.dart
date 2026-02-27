@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/presentation/screens/home/widgets/low_stock_banner.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/low_stock_banner.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -60,10 +60,21 @@ void main() {
       expect(find.byType(MpAlertBanner), findsNothing);
     });
 
-    testWidgets('hidden when all medications have sufficient stock', (tester) async {
+    testWidgets('hidden when all medications have sufficient stock', (
+      tester,
+    ) async {
       final meds = [
-        _makeMedication(id: 'med-1', inventoryRemaining: 20, lowStockThreshold: 5),
-        _makeMedication(id: 'med-2', name: 'Vitamin C', inventoryRemaining: 15, lowStockThreshold: 5),
+        _makeMedication(
+          id: 'med-1',
+          inventoryRemaining: 20,
+          lowStockThreshold: 5,
+        ),
+        _makeMedication(
+          id: 'med-2',
+          name: 'Vitamin C',
+          inventoryRemaining: 15,
+          lowStockThreshold: 5,
+        ),
       ];
 
       await tester.pumpWidget(
@@ -79,7 +90,9 @@ void main() {
       expect(find.byType(MpAlertBanner), findsNothing);
     });
 
-    testWidgets('shows banner when a medication is at low stock threshold', (tester) async {
+    testWidgets('shows banner when a medication is at low stock threshold', (
+      tester,
+    ) async {
       final meds = [
         _makeMedication(
           id: 'med-1',
@@ -102,7 +115,9 @@ void main() {
       expect(find.byType(MpAlertBanner), findsOneWidget);
     });
 
-    testWidgets('shows banner when a medication is below low stock threshold', (tester) async {
+    testWidgets('shows banner when a medication is below low stock threshold', (
+      tester,
+    ) async {
       final meds = [
         _makeMedication(
           id: 'med-1',
@@ -126,7 +141,9 @@ void main() {
       expect(find.textContaining('Metformin'), findsOneWidget);
     });
 
-    testWidgets('shows banner with medication name and remaining count', (tester) async {
+    testWidgets('shows banner with medication name and remaining count', (
+      tester,
+    ) async {
       final meds = [
         _makeMedication(
           id: 'med-1',
@@ -150,7 +167,9 @@ void main() {
       expect(find.textContaining('3'), findsOneWidget);
     });
 
-    testWidgets('shows first low stock medication when multiple exist', (tester) async {
+    testWidgets('shows first low stock medication when multiple exist', (
+      tester,
+    ) async {
       final meds = [
         _makeMedication(
           id: 'med-1',
@@ -201,7 +220,9 @@ void main() {
       expect(find.byType(MpAlertBanner), findsNothing);
     });
 
-    testWidgets('hidden when medication has stock just above threshold', (tester) async {
+    testWidgets('hidden when medication has stock just above threshold', (
+      tester,
+    ) async {
       final meds = [
         _makeMedication(
           id: 'med-1',

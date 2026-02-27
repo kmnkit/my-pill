@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
 
 void main() {
   group('DosageTiming', () {
@@ -217,36 +217,51 @@ void main() {
     group('all values have valid metadata', () {
       test('every value has defaultHour in 0-23 range', () {
         for (final timing in DosageTiming.values) {
-          expect(timing.defaultHour, inInclusiveRange(0, 23),
-              reason: '${timing.name} defaultHour should be 0-23');
+          expect(
+            timing.defaultHour,
+            inInclusiveRange(0, 23),
+            reason: '${timing.name} defaultHour should be 0-23',
+          );
         }
       });
 
       test('every value has defaultMinute in 0-59 range', () {
         for (final timing in DosageTiming.values) {
-          expect(timing.defaultMinute, inInclusiveRange(0, 59),
-              reason: '${timing.name} defaultMinute should be 0-59');
+          expect(
+            timing.defaultMinute,
+            inInclusiveRange(0, 59),
+            reason: '${timing.name} defaultMinute should be 0-59',
+          );
         }
       });
 
       test('every value has minHour in 0-23 range', () {
         for (final timing in DosageTiming.values) {
-          expect(timing.minHour, inInclusiveRange(0, 23),
-              reason: '${timing.name} minHour should be 0-23');
+          expect(
+            timing.minHour,
+            inInclusiveRange(0, 23),
+            reason: '${timing.name} minHour should be 0-23',
+          );
         }
       });
 
       test('every value has maxHour in 0-23 range', () {
         for (final timing in DosageTiming.values) {
-          expect(timing.maxHour, inInclusiveRange(0, 23),
-              reason: '${timing.name} maxHour should be 0-23');
+          expect(
+            timing.maxHour,
+            inInclusiveRange(0, 23),
+            reason: '${timing.name} maxHour should be 0-23',
+          );
         }
       });
 
       test('every value has a non-empty label', () {
         for (final timing in DosageTiming.values) {
-          expect(timing.label, isNotEmpty,
-              reason: '${timing.name} should have a non-empty label');
+          expect(
+            timing.label,
+            isNotEmpty,
+            reason: '${timing.name} should have a non-empty label',
+          );
         }
       });
 

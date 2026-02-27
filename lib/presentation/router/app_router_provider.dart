@@ -1,30 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/router/route_names.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_bottom_nav_bar.dart';
-import 'package:my_pill/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:my_pill/presentation/screens/onboarding/login_screen.dart';
-import 'package:my_pill/presentation/screens/home/home_screen.dart';
-import 'package:my_pill/presentation/screens/medications/medications_list_screen.dart';
-import 'package:my_pill/presentation/screens/medications/add_medication_screen.dart';
-import 'package:my_pill/presentation/screens/medications/medication_detail_screen.dart';
-import 'package:my_pill/presentation/screens/schedule/schedule_screen.dart';
-import 'package:my_pill/presentation/screens/adherence/weekly_summary_screen.dart';
-import 'package:my_pill/presentation/screens/medications/edit_medication_screen.dart';
-import 'package:my_pill/presentation/screens/travel/travel_mode_screen.dart';
-import 'package:my_pill/presentation/screens/settings/settings_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/family_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/caregiver_notifications_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/caregiver_alerts_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/caregiver_settings_screen.dart';
-import 'package:my_pill/presentation/screens/caregivers/invite_handler_screen.dart';
-import 'package:my_pill/presentation/screens/premium/premium_upsell_screen.dart';
-import 'package:my_pill/presentation/screens/splash/splash_screen.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_bottom_nav_bar.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/login_screen.dart';
+import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/medications_list_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/add_medication_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/medication_detail_screen.dart';
+import 'package:kusuridoki/presentation/screens/schedule/schedule_screen.dart';
+import 'package:kusuridoki/presentation/screens/adherence/weekly_summary_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/edit_medication_screen.dart';
+import 'package:kusuridoki/presentation/screens/travel/travel_mode_screen.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_notifications_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_alerts_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_settings_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/invite_handler_screen.dart';
+import 'package:kusuridoki/presentation/screens/premium/premium_upsell_screen.dart';
+import 'package:kusuridoki/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 part 'app_router_provider.g.dart';
@@ -85,6 +86,14 @@ Raw<GoRouter> appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: refreshNotifier,
+    onException: (_, state, router) {
+      // Handle unknown routes gracefully:
+      // - Firebase Auth OAuth callback URLs (Google/Apple sign-in redirects)
+      // - Root path "/" which has no defined route
+      // - Any other unexpected deep links
+      // The redirect logic will then handle auth state appropriately.
+      router.go('/home');
+    },
     redirect: (context, state) {
       final isSplashRoute = state.matchedLocation == '/splash';
       final isOnboardingRoute = state.matchedLocation == '/onboarding';
@@ -204,7 +213,11 @@ Raw<GoRouter> appRouter(Ref ref) {
         name: RouteNames.setSchedule,
         builder: (context, state) {
           final id = state.pathParameters['id'] ?? '';
-          return ScheduleScreen(medicationId: id);
+          final scheduleType = state.extra as ScheduleType?;
+          return ScheduleScreen(
+            medicationId: id,
+            initialScheduleType: scheduleType,
+          );
         },
       ),
 

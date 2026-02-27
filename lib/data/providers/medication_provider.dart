@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/repositories/medication_repository.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/repositories/medication_repository.dart';
 
 part 'medication_provider.g.dart';
 

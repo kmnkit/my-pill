@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/glass_decoration.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/glass_decoration.dart';
 
 class MpCard extends StatelessWidget {
   const MpCard({
@@ -48,7 +48,8 @@ class MpCard extends StatelessWidget {
         color: color ?? (isDark ? AppColors.glassDark : AppColors.glassWhite),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         border: Border.all(
-          color: borderColor ??
+          color:
+              borderColor ??
               (isDark ? AppColors.glassBorderDark : AppColors.glassBorderLight),
           width: 1,
         ),

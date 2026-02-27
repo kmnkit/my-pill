@@ -55,7 +55,7 @@ final class SubscriptionServiceProvider
 }
 
 String _$subscriptionServiceHash() =>
-    r'018f16ba59659f8ea8964fc86413eeab507ad9c9';
+    r'5aa344e0004e8953d2aadc0af850a78c666d4900';
 
 @ProviderFor(isPremium)
 final isPremiumProvider = IsPremiumProvider._();
@@ -95,7 +95,7 @@ final class IsPremiumProvider extends $FunctionalProvider<bool, bool, bool>
   }
 }
 
-String _$isPremiumHash() => r'4a3e0c43d6e180ba598a446c38d9cb74e8b6cf67';
+String _$isPremiumHash() => r'280037c1194a1e342e877654dbff90ca37052f01';
 
 @ProviderFor(maxCaregivers)
 final maxCaregiversProvider = MaxCaregiversProvider._();
@@ -135,7 +135,7 @@ final class MaxCaregiversProvider extends $FunctionalProvider<int, int, int>
   }
 }
 
-String _$maxCaregiversHash() => r'de2f67faad782722937f0ff1fe7c846aa23034fd';
+String _$maxCaregiversHash() => r'582eb67fbb8c36638f4e1a8858c8cfabf71c0689';
 
 @ProviderFor(subscriptionStatus)
 final subscriptionStatusProvider = SubscriptionStatusProvider._();

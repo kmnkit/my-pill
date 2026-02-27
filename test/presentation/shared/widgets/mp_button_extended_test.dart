@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -11,7 +11,9 @@ void main() {
     // isFullWidth
     // -----------------------------------------------------------------------
 
-    testWidgets('primary variant fills width when isFullWidth is true', (tester) async {
+    testWidgets('primary variant fills width when isFullWidth is true', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MpButton(label: 'Full', onPressed: null, isFullWidth: true),
@@ -30,25 +32,27 @@ void main() {
       expect(sizedBox.width, equals(double.infinity));
     });
 
-    testWidgets('primary variant does not fill width when isFullWidth is false',
-        (tester) async {
-      await tester.pumpWidget(
-        createTestableWidget(
-          const MpButton(label: 'Small', onPressed: null, isFullWidth: false),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'primary variant does not fill width when isFullWidth is false',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const MpButton(label: 'Small', onPressed: null, isFullWidth: false),
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      final sizedBox = tester.widget<SizedBox>(
-        find
-            .ancestor(
-              of: find.byType(ElevatedButton),
-              matching: find.byType(SizedBox),
-            )
-            .first,
-      );
-      expect(sizedBox.width, isNull);
-    });
+        final sizedBox = tester.widget<SizedBox>(
+          find
+              .ancestor(
+                of: find.byType(ElevatedButton),
+                matching: find.byType(SizedBox),
+              )
+              .first,
+        );
+        expect(sizedBox.width, isNull);
+      },
+    );
 
     // -----------------------------------------------------------------------
     // icon / iconWidget
@@ -57,11 +61,7 @@ void main() {
     testWidgets('primary variant renders with icon', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpButton(
-            label: 'With Icon',
-            onPressed: null,
-            icon: Icons.add,
-          ),
+          const MpButton(label: 'With Icon', onPressed: null, icon: Icons.add),
         ),
       );
       await tester.pumpAndSettle();
@@ -136,7 +136,9 @@ void main() {
     // Semantics
     // -----------------------------------------------------------------------
 
-    testWidgets('primary variant has button semantics with correct label', (tester) async {
+    testWidgets('primary variant has button semantics with correct label', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MpButton(label: 'Save Changes', onPressed: null),
@@ -201,7 +203,9 @@ void main() {
       expect(find.text('Secondary Action'), findsOneWidget);
     });
 
-    testWidgets('disabled primary button has enabled=false semantics', (tester) async {
+    testWidgets('disabled primary button has enabled=false semantics', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MpButton(label: 'Disabled', onPressed: null),
@@ -276,7 +280,9 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('disabled destructive button does not fire callback', (tester) async {
+    testWidgets('disabled destructive button does not fire callback', (
+      tester,
+    ) async {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
@@ -322,10 +328,7 @@ void main() {
         MaterialApp(
           theme: ThemeData.dark(),
           home: Scaffold(
-            body: MpButton(
-              label: 'Dark Primary',
-              onPressed: () {},
-            ),
+            body: MpButton(label: 'Dark Primary', onPressed: () {}),
           ),
         ),
       );

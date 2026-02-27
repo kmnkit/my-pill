@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
 
 class OnboardingNameStep extends StatefulWidget {
   final VoidCallback onNext;
@@ -61,83 +61,96 @@ class _OnboardingNameStepState extends State<OnboardingNameStep> {
     final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.xxl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Back button
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              onPressed: widget.onBack,
-              icon: const Icon(Icons.arrow_back),
-              label: Text(l10n.onboardingBack),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xxl),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Back button
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: widget.onBack,
+                icon: const Icon(Icons.arrow_back),
+                label: Text(l10n.onboardingBack),
+              ),
             ),
-          ),
 
-          const Spacer(),
+            // Scrollable center content
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: AppSpacing.xxxl),
 
-          // Center content
-          Column(
-            children: [
-              // Icon
-              Icon(
-                Icons.person_outline,
-                size: 80,
-                color: AppColors.primary,
+                    // Icon
+                    Icon(
+                      Icons.person_outline,
+                      size: 80,
+                      color: AppColors.primary,
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // Title
+                    Text(
+                      l10n.onboardingNameTitle,
+                      style: textTheme.headlineLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // Subtitle
+                    Text(
+                      l10n.onboardingNameSubtitle,
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: context.appColors.textMuted,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppSpacing.xxxl),
+
+                    // Name input field
+                    MpTextField(
+                      controller: _nameController,
+                      hint: l10n.onboardingNameHint,
+                      prefixIcon: Icons.person,
+                      keyboardType: TextInputType.name,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.xl),
+            ),
 
-              // Title
-              Text(
-                l10n.onboardingNameTitle,
-                style: textTheme.headlineLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.md),
-
-              // Subtitle
-              Text(
-                l10n.onboardingNameSubtitle,
+            // Skip button
+            TextButton(
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                widget.onSkip();
+              },
+              child: Text(
+                l10n.onboardingNameSkip,
                 style: textTheme.bodyLarge?.copyWith(
                   color: context.appColors.textMuted,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.xxxl),
-
-              // Name input field
-              MpTextField(
-                controller: _nameController,
-                hint: l10n.onboardingNameHint,
-                prefixIcon: Icons.person,
-                keyboardType: TextInputType.name,
-              ),
-            ],
-          ),
-
-          const Spacer(),
-
-          // Skip button
-          TextButton(
-            onPressed: widget.onSkip,
-            child: Text(
-              l10n.onboardingNameSkip,
-              style: textTheme.bodyLarge?.copyWith(
-                color: context.appColors.textMuted,
               ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.md),
 
-          // Next button
-          MpButton(
-            label: l10n.onboardingNext,
-            onPressed: _hasName ? widget.onNext : null,
-            variant: MpButtonVariant.primary,
-          ),
-        ],
+            // Next button
+            MpButton(
+              label: l10n.onboardingNext,
+              onPressed: _hasName
+                  ? () {
+                      FocusScope.of(context).unfocus();
+                      widget.onNext();
+                    }
+                  : null,
+              variant: MpButtonVariant.primary,
+            ),
+          ],
+        ),
       ),
     );
   }

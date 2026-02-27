@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/services/firestore_service.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/services/firestore_service.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class BackupSyncDialog extends ConsumerStatefulWidget {
   const BackupSyncDialog({super.key});
@@ -107,8 +107,8 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
             Text(
               l10n.syncWithCloud,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: context.appColors.textMuted,
-                  ),
+                color: context.appColors.textMuted,
+              ),
             ),
             const SizedBox(height: AppSpacing.xl),
             Row(
@@ -121,8 +121,8 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
                 Text(
                   _lastSyncText ?? l10n.never,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: context.appColors.textMuted,
-                      ),
+                    color: context.appColors.textMuted,
+                  ),
                 ),
               ],
             ),

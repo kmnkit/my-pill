@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_typography.dart';
+import 'package:kusuridoki/core/constants/app_typography.dart';
 
 // Helper: build a minimal widget that exercises AppTypography inside the
 // widget tree so that google_fonts' async font loading is drained by
@@ -90,24 +90,26 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('all text styles have correct base font sizes (scaleFactor=1.0)',
-        (tester) async {
-      final theme = AppTypography.scaledTextTheme();
-      expect(theme.headlineLarge!.fontSize, closeTo(28, 0.01));
-      expect(theme.headlineMedium!.fontSize, closeTo(24, 0.01));
-      expect(theme.headlineSmall!.fontSize, closeTo(20, 0.01));
-      expect(theme.titleLarge!.fontSize, closeTo(18, 0.01));
-      expect(theme.titleMedium!.fontSize, closeTo(16, 0.01));
-      expect(theme.titleSmall!.fontSize, closeTo(14, 0.01));
-      expect(theme.bodyLarge!.fontSize, closeTo(16, 0.01));
-      expect(theme.bodyMedium!.fontSize, closeTo(14, 0.01));
-      expect(theme.bodySmall!.fontSize, closeTo(12, 0.01));
-      expect(theme.labelLarge!.fontSize, closeTo(16, 0.01));
-      expect(theme.labelMedium!.fontSize, closeTo(14, 0.01));
-      expect(theme.labelSmall!.fontSize, closeTo(12, 0.01));
-      await tester.pumpWidget(_buildWithTheme(theme));
-      await tester.pumpAndSettle();
-    });
+    testWidgets(
+      'all text styles have correct base font sizes (scaleFactor=1.0)',
+      (tester) async {
+        final theme = AppTypography.scaledTextTheme();
+        expect(theme.headlineLarge!.fontSize, closeTo(28, 0.01));
+        expect(theme.headlineMedium!.fontSize, closeTo(24, 0.01));
+        expect(theme.headlineSmall!.fontSize, closeTo(20, 0.01));
+        expect(theme.titleLarge!.fontSize, closeTo(18, 0.01));
+        expect(theme.titleMedium!.fontSize, closeTo(16, 0.01));
+        expect(theme.titleSmall!.fontSize, closeTo(14, 0.01));
+        expect(theme.bodyLarge!.fontSize, closeTo(16, 0.01));
+        expect(theme.bodyMedium!.fontSize, closeTo(14, 0.01));
+        expect(theme.bodySmall!.fontSize, closeTo(12, 0.01));
+        expect(theme.labelLarge!.fontSize, closeTo(16, 0.01));
+        expect(theme.labelMedium!.fontSize, closeTo(14, 0.01));
+        expect(theme.labelSmall!.fontSize, closeTo(12, 0.01));
+        await tester.pumpWidget(_buildWithTheme(theme));
+        await tester.pumpAndSettle();
+      },
+    );
 
     testWidgets('scaleFactor scales font sizes proportionally', (tester) async {
       final normal = AppTypography.scaledTextTheme();
@@ -191,10 +193,14 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('bold=true with scaleFactor applies both transformations',
-        (tester) async {
+    testWidgets('bold=true with scaleFactor applies both transformations', (
+      tester,
+    ) async {
       final theme = AppTypography.scaledTextTheme(scaleFactor: 1.2, bold: true);
-      final normal = AppTypography.scaledTextTheme(scaleFactor: 1.0, bold: false);
+      final normal = AppTypography.scaledTextTheme(
+        scaleFactor: 1.0,
+        bold: false,
+      );
 
       // Font size scaled
       final normalSize = normal.bodyMedium!.fontSize!;
@@ -208,8 +214,9 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('w900 is boundary: styles at w700 bump to w800, not w900',
-        (tester) async {
+    testWidgets('w900 is boundary: styles at w700 bump to w800, not w900', (
+      tester,
+    ) async {
       // headlineLarge has base w700 — bold bumps it to w800 (not capped at w900)
       final theme = AppTypography.scaledTextTheme(bold: true);
       expect(theme.headlineLarge!.fontWeight, FontWeight.w800);

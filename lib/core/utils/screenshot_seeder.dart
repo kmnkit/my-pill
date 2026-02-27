@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 /// Debug-only screenshot data seeder.
 /// Creates realistic medication, schedule, reminder, and adherence data
@@ -53,9 +53,11 @@ class ScreenshotSeeder {
       await _storage.saveAdherenceRecord(r);
     }
 
-    debugPrint('[ScreenshotSeeder] Seeded ${meds.length} medications, '
-        '${schedules.length} schedules, ${reminders.length} reminders, '
-        '${records.length} adherence records');
+    debugPrint(
+      '[ScreenshotSeeder] Seeded ${meds.length} medications, '
+      '${schedules.length} schedules, ${reminders.length} reminders, '
+      '${records.length} adherence records',
+    );
   }
 
   // ── Medications ────────────────────────────────────────
@@ -114,7 +116,9 @@ class ScreenshotSeeder {
         id: 'seed-sch-ippoka',
         medicationId: meds[0].id,
         type: ScheduleType.daily,
-        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Amlodipine: daily 09:00, 21:00
@@ -200,11 +204,7 @@ class ScreenshotSeeder {
     for (final entry in patterns.entries) {
       final dayOffset = entry.key;
       final statuses = entry.value;
-      final date = DateTime(
-        now.year,
-        now.month,
-        now.day - dayOffset,
-      );
+      final date = DateTime(now.year, now.month, now.day - dayOffset);
 
       for (var i = 0; i < statuses.length && i < meds.length; i++) {
         final scheduledHour = i == 0 ? 8 : (i == 1 ? 9 : 12);

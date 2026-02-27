@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/services/ad_service.dart';
-import 'package:my_pill/presentation/screens/home/widgets/greeting_header.dart';
-import 'package:my_pill/presentation/screens/home/widgets/low_stock_banner.dart';
-import 'package:my_pill/presentation/screens/home/widgets/medication_timeline.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/greeting_header.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/low_stock_banner.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/medication_timeline.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

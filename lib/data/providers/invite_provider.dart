@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 
 part 'invite_provider.g.dart';
 

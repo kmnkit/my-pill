@@ -1,11 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 
 void main() {
   group('ErrorHandler', () {
     group('getErrorCode', () {
       test('returns network for SocketException', () {
-        final code = ErrorHandler.getErrorCode(Exception('SocketException: Failed'));
+        final code = ErrorHandler.getErrorCode(
+          Exception('SocketException: Failed'),
+        );
         expect(code, ErrorCode.network);
       });
 

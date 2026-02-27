@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/theme/app_theme.dart';
-import 'package:my_pill/presentation/router/app_router_provider.dart';
-import 'package:my_pill/data/services/notification_service.dart';
-import 'package:my_pill/data/services/reminder_service.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/theme/app_theme.dart';
+import 'package:kusuridoki/presentation/router/app_router_provider.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
+import 'package:kusuridoki/data/services/reminder_service.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 class MyPillApp extends ConsumerStatefulWidget {
   const MyPillApp({super.key});
@@ -16,7 +16,8 @@ class MyPillApp extends ConsumerStatefulWidget {
   ConsumerState<MyPillApp> createState() => _MyPillAppState();
 }
 
-class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserver {
+class _MyPillAppState extends ConsumerState<MyPillApp>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -49,7 +50,9 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
   Future<void> _generateAndScheduleReminders() async {
     try {
       // Use the provider method to generate and schedule
-      await ref.read(todayRemindersProvider.notifier).generateAndScheduleToday();
+      await ref
+          .read(todayRemindersProvider.notifier)
+          .generateAndScheduleToday();
     } catch (e) {
       debugPrint('Failed to generate reminders on app start: $e');
     }
@@ -64,7 +67,9 @@ class _MyPillAppState extends ConsumerState<MyPillApp> with WidgetsBindingObserv
       await reminderService.checkAndMarkMissed();
 
       // Regenerate and reschedule today's reminders
-      await ref.read(todayRemindersProvider.notifier).generateAndScheduleToday();
+      await ref
+          .read(todayRemindersProvider.notifier)
+          .generateAndScheduleToday();
     } catch (e) {
       debugPrint('Failed to check missed reminders on resume: $e');
     }

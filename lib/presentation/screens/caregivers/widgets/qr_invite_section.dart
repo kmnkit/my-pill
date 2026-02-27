@@ -3,20 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/invite_provider.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/presentation/shared/widgets/premium_gate.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
-import 'package:my_pill/presentation/router/route_names.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
 
 class QrInviteSection extends ConsumerStatefulWidget {
   const QrInviteSection({super.key});
@@ -65,7 +65,8 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'generateInviteLink');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         setState(() {
@@ -74,7 +75,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.failedToGenerateInvite(e.toString())),
+            content: Text(l10n.failedToGenerateInvite),
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 3),
           ),
@@ -118,9 +119,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
           children: [
             Text(l10n.upgradeToPremium),
             const SizedBox(height: AppSpacing.md),
-            PremiumInlineUpsell(
-              message: l10n.unlimitedCaregivers,
-            ),
+            PremiumInlineUpsell(message: l10n.unlimitedCaregivers),
           ],
         ),
         actions: [
@@ -135,9 +134,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             },
             icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
             label: Text(l10n.tryPremium),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.warning,
-            ),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.warning),
           ),
         ],
       ),
@@ -164,18 +161,14 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
   Widget _buildGenerateButton(AppLocalizations l10n) {
     return Column(
       children: [
-        Icon(
-          Icons.qr_code_2,
-          size: 80,
-          color: context.appColors.textMuted,
-        ),
+        Icon(Icons.qr_code_2, size: 80, color: context.appColors.textMuted),
         const SizedBox(height: AppSpacing.lg),
         Text(
           l10n.generateInviteLinkDesc,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: context.appColors.textMuted,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
         ),
         const SizedBox(height: AppSpacing.xl),
         ElevatedButton.icon(
@@ -187,7 +180,9 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.add_link),
-          label: Text(_isGenerating ? l10n.generating : l10n.generateInviteLink),
+          label: Text(
+            _isGenerating ? l10n.generating : l10n.generateInviteLink,
+          ),
         ),
         const SizedBox(height: AppSpacing.lg),
         const Divider(),
@@ -214,9 +209,9 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
         Text(
           'Code: $_generatedCode',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: context.appColors.textMuted,
-                fontFamily: 'monospace',
-              ),
+            color: context.appColors.textMuted,
+            fontFamily: 'monospace',
+          ),
         ),
         const SizedBox(height: AppSpacing.xl),
         Row(
@@ -292,18 +287,13 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
   Future<void> _shareViaApp(String inviteUrl) async {
     final l10n = AppLocalizations.of(context)!;
     await SharePlus.instance.share(
-      ShareParams(
-        text: inviteUrl,
-        subject: l10n.joinMeOnMyPill,
-      ),
+      ShareParams(text: inviteUrl, subject: l10n.joinMeOnMyPill),
     );
   }
 
   Future<void> _scanQrCode(BuildContext context) async {
     final code = await Navigator.of(context).push<String>(
-      MaterialPageRoute(
-        builder: (context) => const QrScannerScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const QrScannerScreen()),
     );
 
     if (code != null && context.mounted) {
@@ -318,6 +308,9 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
       try {
         final cfService = ref.read(cloudFunctionsServiceProvider);
         await cfService.acceptInvite(code);
+
+        // Refresh caregiver links after successful accept
+        ref.invalidate(caregiverLinksProvider);
 
         if (context.mounted) {
           final l10n = AppLocalizations.of(context)!;
@@ -374,8 +367,8 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: context.appColors.textMuted,
-                ),
+              color: context.appColors.textMuted,
+            ),
           ),
         ],
       ),

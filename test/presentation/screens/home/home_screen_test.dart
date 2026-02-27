@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/screens/home/home_screen.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -37,20 +37,19 @@ class _FakeEmptyReminders extends TodayReminders {
 class _FakePendingReminders extends TodayReminders {
   @override
   Future<List<Reminder>> build() async => [
-        Reminder(
-          id: 'r1',
-          medicationId: 'med1',
-          scheduledTime: DateTime.now(),
-          status: ReminderStatus.pending,
-        ),
-      ];
+    Reminder(
+      id: 'r1',
+      medicationId: 'med1',
+      scheduledTime: DateTime.now(),
+      status: ReminderStatus.pending,
+    ),
+  ];
 }
 
 // Fake AsyncNotifier for UserSettings that throws
 class _FakeErrorUserSettings extends UserSettings {
   @override
-  Future<UserProfile> build() async =>
-      throw Exception('Settings load failed');
+  Future<UserProfile> build() async => throw Exception('Settings load failed');
 }
 
 // Fake AsyncNotifier for TodayReminders that throws
@@ -92,10 +91,7 @@ void main() {
   group('HomeScreen', () {
     testWidgets('renders without crashing', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const HomeScreen(),
-          overrides: _baseOverrides(),
-        ),
+        createTestableWidget(const HomeScreen(), overrides: _baseOverrides()),
       );
       await tester.pumpAndSettle();
 
@@ -115,44 +111,48 @@ void main() {
       expect(find.byIcon(Icons.calendar_today), findsOneWidget);
     });
 
-    testWidgets('shows greeting text when user settings loaded', (tester) async {
+    testWidgets('shows greeting text when user settings loaded', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const HomeScreen(),
-          overrides: _baseOverrides(),
-        ),
+        createTestableWidget(const HomeScreen(), overrides: _baseOverrides()),
       );
       await tester.pumpAndSettle();
 
       // GreetingHeader renders a greeting word from l10n
       // Check that some greeting exists (Good Morning/Afternoon/Evening)
       final greetingFinder = find.textContaining(
-        RegExp(r'(Good Morning|Good Afternoon|Good Evening)', caseSensitive: false),
+        RegExp(
+          r'(Good Morning|Good Afternoon|Good Evening)',
+          caseSensitive: false,
+        ),
       );
       expect(greetingFinder, findsOneWidget);
     });
 
     testWidgets('shows scrollable content area', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const HomeScreen(),
-          overrides: _baseOverrides(),
-        ),
+        createTestableWidget(const HomeScreen(), overrides: _baseOverrides()),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(SingleChildScrollView), findsOneWidget);
     });
 
-    testWidgets('shows loading indicator while providers are loading',
-        (tester) async {
+    testWidgets('shows loading indicator while providers are loading', (
+      tester,
+    ) async {
       // Override with a notifier that never resolves immediately
       await tester.pumpWidget(
         createTestableWidget(
           const HomeScreen(),
           overrides: [
-            userSettingsProvider.overrideWith(() => _FakeUserSettings(_defaultProfile)),
-            medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+            userSettingsProvider.overrideWith(
+              () => _FakeUserSettings(_defaultProfile),
+            ),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
             todayRemindersProvider.overrideWith(() => _FakeEmptyReminders()),
           ],
         ),
@@ -164,18 +164,16 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
     });
 
-    testWidgets('renders when userSettings provider has error',
-        (tester) async {
+    testWidgets('renders when userSettings provider has error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const HomeScreen(),
           overrides: [
-            userSettingsProvider
-                .overrideWith(() => _FakeErrorUserSettings()),
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
-            todayRemindersProvider
-                .overrideWith(() => _FakeEmptyReminders()),
+            userSettingsProvider.overrideWith(() => _FakeErrorUserSettings()),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
+            todayRemindersProvider.overrideWith(() => _FakeEmptyReminders()),
           ],
         ),
       );
@@ -185,18 +183,20 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
     });
 
-    testWidgets('renders when todayReminders provider has error',
-        (tester) async {
+    testWidgets('renders when todayReminders provider has error', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const HomeScreen(),
           overrides: [
-            userSettingsProvider
-                .overrideWith(() => _FakeUserSettings(_defaultProfile)),
-            medicationListProvider
-                .overrideWith(() => _FakeEmptyMedicationList()),
-            todayRemindersProvider
-                .overrideWith(() => _FakeErrorReminders()),
+            userSettingsProvider.overrideWith(
+              () => _FakeUserSettings(_defaultProfile),
+            ),
+            medicationListProvider.overrideWith(
+              () => _FakeEmptyMedicationList(),
+            ),
+            todayRemindersProvider.overrideWith(() => _FakeErrorReminders()),
           ],
         ),
       );
@@ -206,8 +206,7 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
     });
 
-    testWidgets('renders with pending reminders in timeline',
-        (tester) async {
+    testWidgets('renders with pending reminders in timeline', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const HomeScreen(),

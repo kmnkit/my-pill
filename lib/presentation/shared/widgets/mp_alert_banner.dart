@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
 class MpAlertBanner extends StatelessWidget {
   const MpAlertBanner({
@@ -38,9 +38,19 @@ class MpAlertBanner extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: color)),
+                  Text(
+                    title,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleSmall?.copyWith(color: color),
+                  ),
                   if (description != null)
-                    Text(description!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted)),
+                    Text(
+                      description!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: context.appColors.textMuted,
+                      ),
+                    ),
                 ],
               ),
             ),

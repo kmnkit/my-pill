@@ -1,9 +1,9 @@
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 extension PillShapeL10n on PillShape {
   String localizedName(AppLocalizations l10n) {
@@ -82,18 +82,14 @@ extension ScheduleTypeL10n on ScheduleType {
 extension DosageTimingL10n on DosageTiming {
   String localizedName(AppLocalizations l10n) {
     switch (this) {
-      case DosageTiming.beforeMeal:
-        return l10n.dosageTimingBeforeMeal;
-      case DosageTiming.afterMeal:
-        return l10n.dosageTimingAfterMeal;
-      case DosageTiming.betweenMeals:
-        return l10n.dosageTimingBetweenMeals;
-      case DosageTiming.atBedtime:
-        return l10n.dosageTimingAtBedtime;
-      case DosageTiming.onWaking:
-        return l10n.dosageTimingOnWaking;
-      case DosageTiming.asNeeded:
-        return l10n.dosageTimingAsNeeded;
+      case DosageTiming.morning:
+        return l10n.dosageTimingMorning;
+      case DosageTiming.noon:
+        return l10n.dosageTimingNoon;
+      case DosageTiming.evening:
+        return l10n.dosageTimingEvening;
+      case DosageTiming.bedtime:
+        return l10n.dosageTimingBedtime;
     }
   }
 }

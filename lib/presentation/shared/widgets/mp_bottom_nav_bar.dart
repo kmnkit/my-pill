@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/glass_decoration.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/glass_decoration.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 enum MpNavMode { patient, caregiver }
 
@@ -33,50 +33,50 @@ class MpBottomNavBar extends StatelessWidget {
   final MpNavMode mode;
 
   List<_NavItem> _patientItems(AppLocalizations l10n) => [
-        _NavItem(
-          icon: Icons.home_outlined,
-          activeIcon: Icons.home,
-          label: l10n.home,
-        ),
-        _NavItem(
-          icon: Icons.calendar_today_outlined,
-          activeIcon: Icons.calendar_today,
-          label: l10n.adherence,
-        ),
-        _NavItem(
-          icon: Icons.medication_outlined,
-          activeIcon: Icons.medication,
-          label: l10n.medications,
-        ),
-        _NavItem(
-          icon: Icons.settings_outlined,
-          activeIcon: Icons.settings,
-          label: l10n.settings,
-        ),
-      ];
+    _NavItem(
+      icon: Icons.home_outlined,
+      activeIcon: Icons.home,
+      label: l10n.home,
+    ),
+    _NavItem(
+      icon: Icons.calendar_today_outlined,
+      activeIcon: Icons.calendar_today,
+      label: l10n.adherence,
+    ),
+    _NavItem(
+      icon: Icons.medication_outlined,
+      activeIcon: Icons.medication,
+      label: l10n.medications,
+    ),
+    _NavItem(
+      icon: Icons.settings_outlined,
+      activeIcon: Icons.settings,
+      label: l10n.settings,
+    ),
+  ];
 
   List<_NavItem> _caregiverItems(AppLocalizations l10n) => [
-        _NavItem(
-          icon: Icons.people_outlined,
-          activeIcon: Icons.people,
-          label: l10n.patients,
-        ),
-        _NavItem(
-          icon: Icons.notifications_outlined,
-          activeIcon: Icons.notifications,
-          label: l10n.notifications,
-        ),
-        _NavItem(
-          icon: Icons.warning_amber_outlined,
-          activeIcon: Icons.warning_amber,
-          label: l10n.alerts,
-        ),
-        _NavItem(
-          icon: Icons.settings_outlined,
-          activeIcon: Icons.settings,
-          label: l10n.settings,
-        ),
-      ];
+    _NavItem(
+      icon: Icons.people_outlined,
+      activeIcon: Icons.people,
+      label: l10n.patients,
+    ),
+    _NavItem(
+      icon: Icons.notifications_outlined,
+      activeIcon: Icons.notifications,
+      label: l10n.notifications,
+    ),
+    _NavItem(
+      icon: Icons.warning_amber_outlined,
+      activeIcon: Icons.warning_amber,
+      label: l10n.alerts,
+    ),
+    _NavItem(
+      icon: Icons.settings_outlined,
+      activeIcon: Icons.settings,
+      label: l10n.settings,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +127,9 @@ class MpBottomNavBar extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13,
                         color: color,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -149,8 +150,9 @@ class MpBottomNavBar extends StatelessWidget {
     bool isDark,
   ) {
     final blurAmount = GlassDecoration.getBlurAmount(context, strong: true);
-    final items =
-        mode == MpNavMode.patient ? _patientItems(l10n) : _caregiverItems(l10n);
+    final items = mode == MpNavMode.patient
+        ? _patientItems(l10n)
+        : _caregiverItems(l10n);
 
     return Container(
       margin: const EdgeInsets.fromLTRB(
@@ -170,8 +172,9 @@ class MpBottomNavBar extends StatelessWidget {
                   : AppColors.glassWhiteStrong,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color:
-                    isDark ? AppColors.glassBorderDark : AppColors.glassBorder,
+                color: isDark
+                    ? AppColors.glassBorderDark
+                    : AppColors.glassBorder,
                 width: 1,
               ),
               boxShadow: [
@@ -184,8 +187,9 @@ class MpBottomNavBar extends StatelessWidget {
             ),
             child: _buildNavItems(
               items: items,
-              selectedColor:
-                  isDark ? AppColors.primaryBright : AppColors.primary,
+              selectedColor: isDark
+                  ? AppColors.primaryBright
+                  : AppColors.primary,
               unselectedColor: isDark
                   ? AppColors.navUnselectedDark
                   : AppColors.navUnselectedLight,
@@ -201,17 +205,18 @@ class MpBottomNavBar extends StatelessWidget {
     AppLocalizations l10n,
     bool isDark,
   ) {
-    final items =
-        mode == MpNavMode.patient ? _patientItems(l10n) : _caregiverItems(l10n);
+    final items = mode == MpNavMode.patient
+        ? _patientItems(l10n)
+        : _caregiverItems(l10n);
 
     return Container(
       color: isDark ? AppColors.surfaceDark : Colors.white,
       child: _buildNavItems(
         items: items,
-        selectedColor:
-            isDark ? AppColors.hcPrimaryDark : AppColors.hcPrimary,
-        unselectedColor:
-            isDark ? AppColors.hcTextMutedDark : AppColors.hcTextMuted,
+        selectedColor: isDark ? AppColors.hcPrimaryDark : AppColors.hcPrimary,
+        unselectedColor: isDark
+            ? AppColors.hcTextMutedDark
+            : AppColors.hcTextMuted,
       ),
     );
   }

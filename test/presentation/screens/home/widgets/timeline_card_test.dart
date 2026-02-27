@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -39,10 +39,9 @@ void main() {
     }
 
     testWidgets('renders medication name and dosage', (tester) async {
-      await tester.pumpWidget(buildCard(
-        medicationName: 'Aspirin',
-        dosage: '100mg',
-      ));
+      await tester.pumpWidget(
+        buildCard(medicationName: 'Aspirin', dosage: '100mg'),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Aspirin'), findsOneWidget);
@@ -57,69 +56,83 @@ void main() {
     });
 
     testWidgets('renders badge label', (tester) async {
-      await tester.pumpWidget(buildCard(
-        badgeLabel: 'Taken',
-        badgeVariant: MpBadgeVariant.taken,
-      ));
+      await tester.pumpWidget(
+        buildCard(badgeLabel: 'Taken', badgeVariant: MpBadgeVariant.taken),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Taken'), findsOneWidget);
     });
 
-    testWidgets('shows check_circle_outline button when status is pending and onMarkTaken provided',
-        (tester) async {
-      bool tapped = false;
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.pending,
-        onMarkTaken: () => tapped = true,
-      ));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'shows check_circle_outline button when status is pending and onMarkTaken provided',
+      (tester) async {
+        bool tapped = false;
+        await tester.pumpWidget(
+          buildCard(
+            reminderStatus: ReminderStatus.pending,
+            onMarkTaken: () => tapped = true,
+          ),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+        expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
 
-      await tester.tap(find.byIcon(Icons.check_circle_outline));
-      expect(tapped, isTrue);
-    });
+        await tester.tap(find.byIcon(Icons.check_circle_outline));
+        expect(tapped, isTrue);
+      },
+    );
 
-    testWidgets('does not show mark-taken button when onMarkTaken is null', (tester) async {
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.pending,
-        onMarkTaken: null,
-      ));
+    testWidgets('does not show mark-taken button when onMarkTaken is null', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildCard(reminderStatus: ReminderStatus.pending, onMarkTaken: null),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.check_circle_outline), findsNothing);
     });
 
     testWidgets('shows check_circle icon when status is taken', (tester) async {
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.taken,
-        badgeVariant: MpBadgeVariant.taken,
-        badgeLabel: 'Taken',
-      ));
+      await tester.pumpWidget(
+        buildCard(
+          reminderStatus: ReminderStatus.taken,
+          badgeVariant: MpBadgeVariant.taken,
+          badgeLabel: 'Taken',
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
     });
 
-    testWidgets('does not show action icon when status is skipped', (tester) async {
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.skipped,
-        badgeVariant: MpBadgeVariant.missed,
-        badgeLabel: 'Skipped',
-      ));
+    testWidgets('does not show action icon when status is skipped', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildCard(
+          reminderStatus: ReminderStatus.skipped,
+          badgeVariant: MpBadgeVariant.missed,
+          badgeLabel: 'Skipped',
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.check_circle_outline), findsNothing);
       expect(find.byIcon(Icons.check_circle), findsNothing);
     });
 
-    testWidgets('does not show action icon when status is missed', (tester) async {
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.missed,
-        badgeVariant: MpBadgeVariant.missed,
-        badgeLabel: 'Missed',
-      ));
+    testWidgets('does not show action icon when status is missed', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildCard(
+          reminderStatus: ReminderStatus.missed,
+          badgeVariant: MpBadgeVariant.missed,
+          badgeLabel: 'Missed',
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.check_circle_outline), findsNothing);
@@ -142,11 +155,13 @@ void main() {
     });
 
     testWidgets('renders snoozed status without action icons', (tester) async {
-      await tester.pumpWidget(buildCard(
-        reminderStatus: ReminderStatus.snoozed,
-        badgeVariant: MpBadgeVariant.upcoming,
-        badgeLabel: 'Snoozed',
-      ));
+      await tester.pumpWidget(
+        buildCard(
+          reminderStatus: ReminderStatus.snoozed,
+          badgeVariant: MpBadgeVariant.upcoming,
+          badgeLabel: 'Snoozed',
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Snoozed'), findsOneWidget);
@@ -155,9 +170,12 @@ void main() {
     });
 
     testWidgets('truncates long medication name', (tester) async {
-      await tester.pumpWidget(buildCard(
-        medicationName: 'A Very Long Medication Name That Should Be Truncated',
-      ));
+      await tester.pumpWidget(
+        buildCard(
+          medicationName:
+              'A Very Long Medication Name That Should Be Truncated',
+        ),
+      );
       await tester.pumpAndSettle();
 
       final textWidget = tester.widget<Text>(

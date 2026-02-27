@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Pumps a minimal widget tree that provides [AppLocalizations] and captures
 /// the resolved instance via [onL10n].
@@ -79,8 +79,9 @@ void main() {
       expect(PillShape.packet.localizedName(l10n), 'Packet');
     });
 
-    testWidgets('all PillShape values return non-empty localised names',
-        (tester) async {
+    testWidgets('all PillShape values return non-empty localised names', (
+      tester,
+    ) async {
       late AppLocalizations l10n;
       await _pumpWithL10n(tester, onL10n: (v) => l10n = v);
       for (final shape in PillShape.values) {
@@ -125,8 +126,9 @@ void main() {
       expect(DosageUnit.packs.localizedName(l10n), 'pack(s)');
     });
 
-    testWidgets('all DosageUnit values return non-empty localised names',
-        (tester) async {
+    testWidgets('all DosageUnit values return non-empty localised names', (
+      tester,
+    ) async {
       late AppLocalizations l10n;
       await _pumpWithL10n(tester, onL10n: (v) => l10n = v);
       for (final unit in DosageUnit.values) {
@@ -188,8 +190,9 @@ void main() {
       expect(PillColor.purple.localizedName(l10n), 'Purple');
     });
 
-    testWidgets('all PillColor values return non-empty localised names',
-        (tester) async {
+    testWidgets('all PillColor values return non-empty localised names', (
+      tester,
+    ) async {
       late AppLocalizations l10n;
       await _pumpWithL10n(tester, onL10n: (v) => l10n = v);
       for (final color in PillColor.values) {
@@ -221,8 +224,9 @@ void main() {
       expect(ScheduleType.interval.localizedName(l10n), 'Interval');
     });
 
-    testWidgets('all ScheduleType values return non-empty localised names',
-        (tester) async {
+    testWidgets('all ScheduleType values return non-empty localised names', (
+      tester,
+    ) async {
       late AppLocalizations l10n;
       await _pumpWithL10n(tester, onL10n: (v) => l10n = v);
       for (final type in ScheduleType.values) {

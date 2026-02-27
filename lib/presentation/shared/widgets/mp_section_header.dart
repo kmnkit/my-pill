@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
 
 class MpSectionHeader extends StatelessWidget {
   const MpSectionHeader({
@@ -25,7 +25,12 @@ class MpSectionHeader extends StatelessWidget {
           if (actionLabel != null)
             TextButton(
               onPressed: onAction,
-              child: Text(actionLabel!, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary)),
+              child: Text(
+                actionLabel!,
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
+              ),
             ),
         ],
       ),

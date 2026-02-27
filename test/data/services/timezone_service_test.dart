@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/services/timezone_service.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/services/timezone_service.dart';
 
 void main() {
   group('TimezoneService', () {
@@ -27,8 +27,10 @@ void main() {
     });
 
     test('getTimeDifference same timezone returns 0', () {
-      final diff =
-          service.getTimeDifference('America/New_York', 'America/New_York');
+      final diff = service.getTimeDifference(
+        'America/New_York',
+        'America/New_York',
+      );
       expect(diff, equals(0));
     });
 
@@ -43,10 +45,14 @@ void main() {
     });
 
     test('getTimeDifference is anti-symmetric (flipped sign)', () {
-      final tokyoToNY =
-          service.getTimeDifference('Asia/Tokyo', 'America/New_York');
-      final nyToTokyo =
-          service.getTimeDifference('America/New_York', 'Asia/Tokyo');
+      final tokyoToNY = service.getTimeDifference(
+        'Asia/Tokyo',
+        'America/New_York',
+      );
+      final nyToTokyo = service.getTimeDifference(
+        'America/New_York',
+        'Asia/Tokyo',
+      );
       expect(tokyoToNY, equals(-nyToTokyo));
     });
 
@@ -85,8 +91,11 @@ void main() {
 
     test('convertTime preserves the same UTC instant', () {
       final original = DateTime.utc(2024, 6, 15, 12, 0, 0); // noon UTC
-      final converted =
-          service.convertTime(original, 'America/New_York', 'Asia/Tokyo');
+      final converted = service.convertTime(
+        original,
+        'America/New_York',
+        'Asia/Tokyo',
+      );
       // Converting between timezones preserves the UTC instant —
       // difference should be 0 since the underlying moment is the same.
       final diffHours = converted.toUtc().difference(original.toUtc()).inHours;
@@ -95,8 +104,11 @@ void main() {
 
     test('convertTime same timezone returns equivalent time', () {
       final original = DateTime(2024, 1, 1, 9, 30);
-      final converted =
-          service.convertTime(original, 'Asia/Tokyo', 'Asia/Tokyo');
+      final converted = service.convertTime(
+        original,
+        'Asia/Tokyo',
+        'Asia/Tokyo',
+      );
       // Same timezone → same wall-clock representation.
       expect(converted.hour, equals(original.hour));
       expect(converted.minute, equals(original.minute));
@@ -202,16 +214,19 @@ void main() {
       expect(results.first.localLabel, isNotEmpty);
     });
 
-    test('getAffectedTimes localTime mode: localTime hour matches original', () {
-      final homeTime = DateTime(2024, 6, 15, 14, 30);
-      final results = service.getAffectedTimes(
-        [homeTime],
-        'Asia/Tokyo',
-        'America/New_York',
-        TimezoneMode.localTime,
-      );
-      expect(results.first.localTime.hour, equals(14));
-      expect(results.first.localTime.minute, equals(30));
-    });
+    test(
+      'getAffectedTimes localTime mode: localTime hour matches original',
+      () {
+        final homeTime = DateTime(2024, 6, 15, 14, 30);
+        final results = service.getAffectedTimes(
+          [homeTime],
+          'Asia/Tokyo',
+          'America/New_York',
+          TimezoneMode.localTime,
+        );
+        expect(results.first.localTime.hour, equals(14));
+        expect(results.first.localTime.minute, equals(30));
+      },
+    );
   });
 }

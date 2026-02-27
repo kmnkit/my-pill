@@ -9,7 +9,7 @@
 //   • NotificationService can be instantiated without crashing
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/notification_service.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
 
 void main() {
   group('NotificationService — singleton', () {
@@ -25,20 +25,16 @@ void main() {
   group('NotificationService — initializeTimezone', () {
     test('initializeTimezone completes without throwing', () async {
       // Timezone data is pure Dart — no platform channel needed.
-      await expectLater(
-        NotificationService.initializeTimezone(),
-        completes,
-      );
+      await expectLater(NotificationService.initializeTimezone(), completes);
     });
 
-    test('initializeTimezone is idempotent (safe to call multiple times)',
-        () async {
-      await NotificationService.initializeTimezone();
-      await expectLater(
-        NotificationService.initializeTimezone(),
-        completes,
-      );
-    });
+    test(
+      'initializeTimezone is idempotent (safe to call multiple times)',
+      () async {
+        await NotificationService.initializeTimezone();
+        await expectLater(NotificationService.initializeTimezone(), completes);
+      },
+    );
   });
 
   group('NotificationService — onNotificationAction callback', () {

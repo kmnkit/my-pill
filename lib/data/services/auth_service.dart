@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:my_pill/data/enums/apple_auth_error.dart';
-import 'package:my_pill/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/enums/apple_auth_error.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 
 /// Custom exception for Apple Sign-In errors with structured error information.
 class AppleSignInException implements Exception {

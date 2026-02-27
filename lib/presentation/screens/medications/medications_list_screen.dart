@@ -2,26 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/services/ad_service.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_text_field.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class MedicationsListScreen extends ConsumerStatefulWidget {
   const MedicationsListScreen({super.key});
 
   @override
-  ConsumerState<MedicationsListScreen> createState() => _MedicationsListScreenState();
+  ConsumerState<MedicationsListScreen> createState() =>
+      _MedicationsListScreenState();
 }
 
 class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
@@ -75,9 +76,12 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
           final filteredMedications = _searchQuery.isEmpty
               ? medications
               : medications
-                  .where((med) =>
-                      med.name.toLowerCase().contains(_searchQuery.toLowerCase()))
-                  .toList();
+                    .where(
+                      (med) => med.name.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      ),
+                    )
+                    .toList();
 
           return Column(
             children: [
@@ -114,9 +118,11 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                         padding: EdgeInsets.only(
                           left: AppSpacing.lg,
                           right: AppSpacing.lg,
-                          bottom: AppSpacing.navBarClearance +
+                          bottom:
+                              AppSpacing.navBarClearance +
                               (_bannerAd != null
-                                  ? _bannerAd!.size.height.toDouble() + AppSpacing.lg
+                                  ? _bannerAd!.size.height.toDouble() +
+                                        AppSpacing.lg
                                   : 0),
                         ),
                         itemCount: filteredMedications.length,
@@ -126,14 +132,18 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                               med.inventoryRemaining <= med.lowStockThreshold;
 
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                            padding: const EdgeInsets.only(
+                              bottom: AppSpacing.md,
+                            ),
                             child: MpCard(
                               onTap: () =>
                                   context.push('/medications/${med.id}'),
                               child: Row(
                                 children: [
                                   MpPillIcon(
-                                      shape: med.shape, color: med.color),
+                                    shape: med.shape,
+                                    color: med.color,
+                                  ),
                                   const SizedBox(width: AppSpacing.md),
                                   Expanded(
                                     child: Column(
@@ -145,15 +155,17 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                             Flexible(
                                               child: Text(
                                                 med.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
+                                                style: Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                             if (med.isCritical) ...[
-                                              const SizedBox(width: AppSpacing.xs),
+                                              const SizedBox(
+                                                width: AppSpacing.xs,
+                                              ),
                                               Icon(
                                                 Icons.priority_high,
                                                 size: 16,
@@ -169,8 +181,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                               .textTheme
                                               .bodySmall
                                               ?.copyWith(
-                                                color: context
-                                                    .appColors.textMuted,
+                                                color:
+                                                    context.appColors.textMuted,
                                               ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
@@ -184,14 +196,15 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                     children: [
                                       Text(
                                         '${med.inventoryRemaining}/${med.inventoryTotal}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall,
                                       ),
                                       const SizedBox(height: AppSpacing.xs),
                                       MpBadge(
-                                        label:
-                                            isLowStock ? l10n.lowStock : 'OK',
+                                        label: isLowStock
+                                            ? l10n.lowStock
+                                            : 'OK',
                                         variant: isLowStock
                                             ? MpBadgeVariant.lowStock
                                             : MpBadgeVariant.connected,
@@ -225,9 +238,8 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
             ],
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/services/auth_service.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
 
 @GenerateMocks([AuthService])
 import 'auth_provider_test.mocks.dart';
@@ -20,9 +20,7 @@ void main() {
     test('can be overridden with a mock', () {
       final mockService = MockAuthService();
       final container = ProviderContainer(
-        overrides: [
-          authServiceProvider.overrideWithValue(mockService),
-        ],
+        overrides: [authServiceProvider.overrideWithValue(mockService)],
       );
       addTearDown(container.dispose);
 
@@ -45,9 +43,7 @@ void main() {
       when(mockService.authStateChanges).thenAnswer((_) => controller.stream);
 
       final container = ProviderContainer(
-        overrides: [
-          authServiceProvider.overrideWithValue(mockService),
-        ],
+        overrides: [authServiceProvider.overrideWithValue(mockService)],
       );
       addTearDown(container.dispose);
 
@@ -64,9 +60,7 @@ void main() {
       when(mockService.authStateChanges).thenAnswer((_) => controller.stream);
 
       final container = ProviderContainer(
-        overrides: [
-          authServiceProvider.overrideWithValue(mockService),
-        ],
+        overrides: [authServiceProvider.overrideWithValue(mockService)],
       );
       addTearDown(container.dispose);
 
@@ -89,9 +83,7 @@ void main() {
       when(mockService.authStateChanges).thenAnswer((_) => controller.stream);
 
       final container = ProviderContainer(
-        overrides: [
-          authServiceProvider.overrideWithValue(mockService),
-        ],
+        overrides: [authServiceProvider.overrideWithValue(mockService)],
       );
       addTearDown(container.dispose);
 

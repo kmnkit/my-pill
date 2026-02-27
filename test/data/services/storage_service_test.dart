@@ -19,9 +19,9 @@
 // on a device or emulator where Hive can be initialised properly.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 // ---------------------------------------------------------------------------
 // Pure-Dart replica of the getAdherenceRecords filter so we can test the
@@ -40,25 +40,24 @@ List<AdherenceRecord> filterAdherenceRecords(
   }
   if (startDate != null) {
     result = result
-        .where((r) =>
-            r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate))
+        .where(
+          (r) =>
+              r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate),
+        )
         .toList();
   }
   if (endDate != null) {
     result = result
-        .where((r) =>
-            r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate))
+        .where(
+          (r) => r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate),
+        )
         .toList();
   }
 
   return result;
 }
 
-AdherenceRecord _record(
-  String id,
-  String medicationId,
-  DateTime date,
-) =>
+AdherenceRecord _record(String id, String medicationId, DateTime date) =>
     AdherenceRecord(
       id: id,
       medicationId: medicationId,
@@ -133,15 +132,13 @@ void main() {
     });
 
     test('filter by medicationId returns only matching records', () {
-      final result =
-          filterAdherenceRecords(records, medicationId: 'med-A');
+      final result = filterAdherenceRecords(records, medicationId: 'med-A');
       expect(result.length, equals(3));
       expect(result.every((r) => r.medicationId == 'med-A'), isTrue);
     });
 
     test('filter by medicationId with no match returns empty list', () {
-      final result =
-          filterAdherenceRecords(records, medicationId: 'med-C');
+      final result = filterAdherenceRecords(records, medicationId: 'med-C');
       expect(result, isEmpty);
     });
 
@@ -154,8 +151,7 @@ void main() {
     });
 
     test('filter by startDate includes record on exact start date', () {
-      final result =
-          filterAdherenceRecords(records, startDate: base);
+      final result = filterAdherenceRecords(records, startDate: base);
       expect(result.length, equals(5)); // base is exact match
     });
 
@@ -211,17 +207,19 @@ void main() {
     // absent. If the project ever switches to an injectable Hive interface or
     // adds a fake Hive backend for tests, this group should be removed and
     // replaced with real CRUD tests.
-    test('CRUD methods require Hive platform initialisation (integration only)',
-        () {
-      // StorageService._openBox() calls Hive.openBox() which throws
-      // MissingPluginException in a unit-test environment.
-      // All public CRUD methods (saveMedication, getMedication, saveReminder,
-      // getRemindersForDate, saveAdherenceRecord, etc.) delegate to _openBox,
-      // so they all share this limitation.
-      //
-      // Coverage for these paths lives in:
-      //   integration_test/storage_service_integration_test.dart  (to be added)
-      expect(true, isTrue, reason: 'Documented limitation — see file header');
-    });
+    test(
+      'CRUD methods require Hive platform initialisation (integration only)',
+      () {
+        // StorageService._openBox() calls Hive.openBox() which throws
+        // MissingPluginException in a unit-test environment.
+        // All public CRUD methods (saveMedication, getMedication, saveReminder,
+        // getRemindersForDate, saveAdherenceRecord, etc.) delegate to _openBox,
+        // so they all share this limitation.
+        //
+        // Coverage for these paths lives in:
+        //   integration_test/storage_service_integration_test.dart  (to be added)
+        expect(true, isTrue, reason: 'Documented limitation — see file header');
+      },
+    );
   });
 }

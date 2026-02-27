@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/data/services/subscription_service.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/subscription_service.dart';
 
 void main() {
   group('subscriptionServiceProvider', () {
@@ -13,9 +13,7 @@ void main() {
     test('can be overridden with a value', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
-        overrides: [
-          subscriptionServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
@@ -30,23 +28,20 @@ void main() {
       expect(isPremiumProvider.name, 'isPremiumProvider');
     });
 
-    test('returns false when subscription service reports non-premium', () {
+    test('returns true when kPremiumEnabled is false (feature flag)', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
-        overrides: [
-          subscriptionServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
-      expect(container.read(isPremiumProvider), isFalse);
+      // kPremiumEnabled = false → always true (all features unlocked)
+      expect(container.read(isPremiumProvider), isTrue);
     });
 
     test('can be overridden directly with true', () {
       final container = ProviderContainer(
-        overrides: [
-          isPremiumProvider.overrideWithValue(true),
-        ],
+        overrides: [isPremiumProvider.overrideWithValue(true)],
       );
       addTearDown(container.dispose);
 
@@ -55,9 +50,7 @@ void main() {
 
     test('can be overridden directly with false', () {
       final container = ProviderContainer(
-        overrides: [
-          isPremiumProvider.overrideWithValue(false),
-        ],
+        overrides: [isPremiumProvider.overrideWithValue(false)],
       );
       addTearDown(container.dispose);
 
@@ -70,23 +63,20 @@ void main() {
       expect(maxCaregiversProvider.name, 'maxCaregiversProvider');
     });
 
-    test('returns 1 for non-premium user', () {
+    test('returns 999 when kPremiumEnabled is false (feature flag)', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
-        overrides: [
-          subscriptionServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
-      expect(container.read(maxCaregiversProvider), 1);
+      // kPremiumEnabled = false → unlimited caregivers
+      expect(container.read(maxCaregiversProvider), 999);
     });
 
     test('can be overridden directly with premium value', () {
       final container = ProviderContainer(
-        overrides: [
-          maxCaregiversProvider.overrideWithValue(999),
-        ],
+        overrides: [maxCaregiversProvider.overrideWithValue(999)],
       );
       addTearDown(container.dispose);
 
@@ -102,9 +92,7 @@ void main() {
     test('returns default status for new service', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
-        overrides: [
-          subscriptionServiceProvider.overrideWithValue(service),
-        ],
+        overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
@@ -146,9 +134,7 @@ void main() {
       );
 
       final container = ProviderContainer(
-        overrides: [
-          subscriptionStatusProvider.overrideWithValue(yearlyStatus),
-        ],
+        overrides: [subscriptionStatusProvider.overrideWithValue(yearlyStatus)],
       );
       addTearDown(container.dispose);
 

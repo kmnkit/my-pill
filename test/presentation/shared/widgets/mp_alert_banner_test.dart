@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -9,9 +9,7 @@ void main() {
   group('MpAlertBanner', () {
     testWidgets('renders title text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpAlertBanner(title: 'Low inventory'),
-        ),
+        createTestableWidget(const MpAlertBanner(title: 'Low inventory')),
       );
       await tester.pumpAndSettle();
 
@@ -34,9 +32,7 @@ void main() {
 
     testWidgets('description absent when not provided', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpAlertBanner(title: 'Alert only'),
-        ),
+        createTestableWidget(const MpAlertBanner(title: 'Alert only')),
       );
       await tester.pumpAndSettle();
 
@@ -47,9 +43,7 @@ void main() {
 
     testWidgets('renders default warning icon', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(
-          const MpAlertBanner(title: 'Warning'),
-        ),
+        createTestableWidget(const MpAlertBanner(title: 'Warning')),
       );
       await tester.pumpAndSettle();
 
@@ -71,10 +65,7 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpAlertBanner(
-            title: 'Tap me',
-            onTap: () => tapped = true,
-          ),
+          MpAlertBanner(title: 'Tap me', onTap: () => tapped = true),
         ),
       );
       await tester.pumpAndSettle();

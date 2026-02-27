@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/repositories/schedule_repository.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/repositories/schedule_repository.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 import 'schedule_repository_test.mocks.dart';
 
@@ -31,17 +31,18 @@ void main() {
     List<int> specificDays = const [],
     int? intervalHours,
     bool isActive = true,
-  }) =>
-      Schedule(
-        id: id,
-        medicationId: medicationId,
-        type: type,
-        dosageSlots: times.map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t)).toList(),
-        specificDays: specificDays,
-        intervalHours: intervalHours,
-        timezoneMode: TimezoneMode.fixedInterval,
-        isActive: isActive,
-      );
+  }) => Schedule(
+    id: id,
+    medicationId: medicationId,
+    type: type,
+    dosageSlots: times
+        .map((t) => DosageTimeSlot(timing: DosageTiming.morning, time: t))
+        .toList(),
+    specificDays: specificDays,
+    intervalHours: intervalHours,
+    timezoneMode: TimezoneMode.fixedInterval,
+    isActive: isActive,
+  );
 
   // ─── createSchedule ──────────────────────────────────────────────────────────
 
@@ -89,23 +90,28 @@ void main() {
   // ─── getSchedulesForMedication ───────────────────────────────────────────────
 
   group('getSchedulesForMedication', () {
-    test('returns schedules from storage for the given medication id', () async {
-      final schedules = [
-        makeSchedule(id: 's1', medicationId: 'med-1'),
-        makeSchedule(id: 's2', medicationId: 'med-1'),
-      ];
-      when(mockStorage.getSchedulesForMedication('med-1'))
-          .thenAnswer((_) async => schedules);
+    test(
+      'returns schedules from storage for the given medication id',
+      () async {
+        final schedules = [
+          makeSchedule(id: 's1', medicationId: 'med-1'),
+          makeSchedule(id: 's2', medicationId: 'med-1'),
+        ];
+        when(
+          mockStorage.getSchedulesForMedication('med-1'),
+        ).thenAnswer((_) async => schedules);
 
-      final result = await repo.getSchedulesForMedication('med-1');
+        final result = await repo.getSchedulesForMedication('med-1');
 
-      expect(result, hasLength(2));
-      expect(result.every((s) => s.medicationId == 'med-1'), isTrue);
-    });
+        expect(result, hasLength(2));
+        expect(result.every((s) => s.medicationId == 'med-1'), isTrue);
+      },
+    );
 
     test('returns empty list when no schedules exist for medication', () async {
-      when(mockStorage.getSchedulesForMedication('med-99'))
-          .thenAnswer((_) async => []);
+      when(
+        mockStorage.getSchedulesForMedication('med-99'),
+      ).thenAnswer((_) async => []);
 
       final result = await repo.getSchedulesForMedication('med-99');
 
@@ -176,8 +182,11 @@ void main() {
       for (var day = 1; day <= 7; day++) {
         // 2024-01-01 is Monday (weekday=1), so day 1..7 covers Mon–Sun
         final date = DateTime(2024, 1, day);
-        expect(repo.isActiveOnDate(schedule, date), isTrue,
-            reason: 'weekday ${date.weekday} should be active');
+        expect(
+          repo.isActiveOnDate(schedule, date),
+          isTrue,
+          reason: 'weekday ${date.weekday} should be active',
+        );
       }
     });
 
@@ -198,8 +207,10 @@ void main() {
     });
 
     test('interval schedule is always active when isActive is true', () {
-      final schedule =
-          makeSchedule(type: ScheduleType.interval, intervalHours: 6);
+      final schedule = makeSchedule(
+        type: ScheduleType.interval,
+        intervalHours: 6,
+      );
       expect(repo.isActiveOnDate(schedule, DateTime(2024, 6, 15)), isTrue);
     });
   });
@@ -218,8 +229,10 @@ void main() {
 
       expect(slots, hasLength(3));
       expect(slots.map((s) => s.hour).toList(), containsAll([8, 14, 20]));
-      expect(slots.every((s) => s.year == 2024 && s.month == 3 && s.day == 15),
-          isTrue);
+      expect(
+        slots.every((s) => s.year == 2024 && s.month == 3 && s.day == 15),
+        isTrue,
+      );
     });
 
     test('returns empty list for inactive schedule', () {
@@ -229,8 +242,10 @@ void main() {
         times: ['08:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, isEmpty);
     });
@@ -241,8 +256,10 @@ void main() {
         times: ['08:00', 'bad-time', '20:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, hasLength(2));
       expect(slots.map((s) => s.hour).toList(), containsAll([8, 20]));
@@ -251,8 +268,10 @@ void main() {
     test('returns empty list when times list is empty', () {
       final schedule = makeSchedule(type: ScheduleType.daily, times: []);
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, isEmpty);
     });
@@ -285,8 +304,10 @@ void main() {
         times: ['08:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 1, 1));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 1, 1),
+      );
 
       expect(slots, isEmpty);
     });
@@ -303,8 +324,10 @@ void main() {
         times: ['00:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, hasLength(3));
       expect(slots[0].hour, 0);
@@ -320,8 +343,10 @@ void main() {
         times: ['06:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, hasLength(3));
       expect(slots[0].hour, 6);
@@ -336,8 +361,10 @@ void main() {
         times: ['08:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, isEmpty);
     });
@@ -349,8 +376,10 @@ void main() {
         times: ['08:00'],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, isEmpty);
     });
@@ -363,8 +392,10 @@ void main() {
         times: [],
       );
 
-      final slots =
-          repo.generateTimeSlotsForDate(schedule, DateTime(2024, 3, 15));
+      final slots = repo.generateTimeSlotsForDate(
+        schedule,
+        DateTime(2024, 3, 15),
+      );
 
       expect(slots, hasLength(2));
       expect(slots[0].hour, 0);
@@ -383,7 +414,9 @@ void main() {
 
       expect(
         slots.every(
-            (s) => s.year == date.year && s.month == date.month && s.day == date.day),
+          (s) =>
+              s.year == date.year && s.month == date.month && s.day == date.day,
+        ),
         isTrue,
       );
     });

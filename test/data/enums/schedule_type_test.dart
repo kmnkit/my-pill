@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
 
 void main() {
   group('ScheduleType', () {
@@ -38,8 +38,11 @@ void main() {
     group('all values have non-empty labels', () {
       test('every value has a non-empty label', () {
         for (final type in ScheduleType.values) {
-          expect(type.label, isNotEmpty,
-              reason: '${type.name} should have a non-empty label');
+          expect(
+            type.label,
+            isNotEmpty,
+            reason: '${type.name} should have a non-empty label',
+          );
         }
       });
     });
@@ -48,8 +51,11 @@ void main() {
       test('no two ScheduleType values share the same label', () {
         final labels = ScheduleType.values.map((t) => t.label).toList();
         final uniqueLabels = labels.toSet();
-        expect(labels.length, uniqueLabels.length,
-            reason: 'All ScheduleType labels should be unique');
+        expect(
+          labels.length,
+          uniqueLabels.length,
+          reason: 'All ScheduleType labels should be unique',
+        );
       });
     });
   });

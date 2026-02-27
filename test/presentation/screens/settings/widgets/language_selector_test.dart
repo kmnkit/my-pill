@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/settings/widgets/language_selector.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -45,8 +45,8 @@ const _japaneseProfile = UserProfile(
 );
 
 List<dynamic> _overrides(UserProfile profile) => [
-      userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
-    ];
+  userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+];
 
 void main() {
   group('LanguageSelector', () {
@@ -86,7 +86,9 @@ void main() {
       expect(find.text('\u65E5\u672C\u8A9E'), findsOneWidget);
     });
 
-    testWidgets('English button is selected when language is en', (tester) async {
+    testWidgets('English button is selected when language is en', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),
@@ -101,7 +103,9 @@ void main() {
       expect(semantics.hasFlag(SemanticsFlag.isSelected), isTrue);
     });
 
-    testWidgets('Japanese button is selected when language is ja', (tester) async {
+    testWidgets('Japanese button is selected when language is ja', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),
@@ -116,7 +120,9 @@ void main() {
       expect(semantics.hasFlag(SemanticsFlag.isSelected), isTrue);
     });
 
-    testWidgets('English button is NOT selected when language is ja', (tester) async {
+    testWidgets('English button is NOT selected when language is ja', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),
@@ -131,7 +137,9 @@ void main() {
       expect(semantics.hasFlag(SemanticsFlag.isSelected), isFalse);
     });
 
-    testWidgets('tapping the already-selected language does not crash', (tester) async {
+    testWidgets('tapping the already-selected language does not crash', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),
@@ -147,7 +155,9 @@ void main() {
       expect(find.text('Language'), findsOneWidget);
     });
 
-    testWidgets('tapping the unselected language button does not crash', (tester) async {
+    testWidgets('tapping the unselected language button does not crash', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),
@@ -205,7 +215,9 @@ void main() {
       expect(find.text('English'), findsOneWidget);
     });
 
-    testWidgets('shows SizedBox.shrink while loading (no error)', (tester) async {
+    testWidgets('shows SizedBox.shrink while loading (no error)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const LanguageSelector(),

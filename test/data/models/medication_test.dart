@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/models/medication.dart';
 
 void main() {
   group('Medication', () {
@@ -10,30 +10,30 @@ void main() {
     final updatedAt = DateTime.utc(2024, 1, 20);
 
     Medication buildFull() => Medication(
-          id: 'med-001',
-          name: 'Aspirin',
-          dosage: 100.0,
-          dosageUnit: DosageUnit.mg,
-          shape: PillShape.round,
-          color: PillColor.white,
-          photoPath: '/path/to/photo.png',
-          scheduleId: 'sched-001',
-          inventoryTotal: 60,
-          inventoryRemaining: 45,
-          lowStockThreshold: 10,
-          isCritical: true,
-          isIppoka: false,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+      id: 'med-001',
+      name: 'Aspirin',
+      dosage: 100.0,
+      dosageUnit: DosageUnit.mg,
+      shape: PillShape.round,
+      color: PillColor.white,
+      photoPath: '/path/to/photo.png',
+      scheduleId: 'sched-001',
+      inventoryTotal: 60,
+      inventoryRemaining: 45,
+      lowStockThreshold: 10,
+      isCritical: true,
+      isIppoka: false,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
 
     Medication buildMinimal() => Medication(
-          id: 'med-002',
-          name: 'Vitamin C',
-          dosage: 500.0,
-          dosageUnit: DosageUnit.mg,
-          createdAt: createdAt,
-        );
+      id: 'med-002',
+      name: 'Vitamin C',
+      dosage: 500.0,
+      dosageUnit: DosageUnit.mg,
+      createdAt: createdAt,
+    );
 
     group('fromJson/toJson', () {
       test('roundtrip preserves all fields', () {

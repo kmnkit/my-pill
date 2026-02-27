@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
 
 void main() {
   group('PillColor', () {
@@ -113,8 +113,11 @@ void main() {
     group('all values have non-empty labels', () {
       test('every value has a non-empty label', () {
         for (final color in PillColor.values) {
-          expect(color.label, isNotEmpty,
-              reason: '${color.name} should have a non-empty label');
+          expect(
+            color.label,
+            isNotEmpty,
+            reason: '${color.name} should have a non-empty label',
+          );
         }
       });
     });
@@ -122,19 +125,24 @@ void main() {
     group('all values have valid Color objects', () {
       test('every value has a Color with full opacity', () {
         for (final pillColor in PillColor.values) {
-          expect(pillColor.color.alpha, 0xFF,
-              reason: '${pillColor.name} should have full alpha (0xFF)');
+          expect(
+            pillColor.color.alpha,
+            0xFF,
+            reason: '${pillColor.name} should have full alpha (0xFF)',
+          );
         }
       });
     });
 
     group('colors are unique', () {
       test('no two PillColor values share the same color value', () {
-        final colorValues =
-            PillColor.values.map((c) => c.color.value).toList();
+        final colorValues = PillColor.values.map((c) => c.color.value).toList();
         final uniqueColorValues = colorValues.toSet();
-        expect(colorValues.length, uniqueColorValues.length,
-            reason: 'All PillColor color values should be unique');
+        expect(
+          colorValues.length,
+          uniqueColorValues.length,
+          reason: 'All PillColor color values should be unique',
+        );
       });
     });
   });

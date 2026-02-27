@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Wraps a widget with [ProviderScope], [MaterialApp], and localization
 /// delegates for widget testing.
@@ -40,5 +40,9 @@ Widget createTestableWidgetJa(
   Widget child, {
   List<dynamic> overrides = const [],
 }) {
-  return createTestableWidget(child, overrides: overrides, locale: const Locale('ja'));
+  return createTestableWidget(
+    child,
+    overrides: overrides,
+    locale: const Locale('ja'),
+  );
 }

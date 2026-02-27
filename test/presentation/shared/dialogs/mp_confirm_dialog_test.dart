@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridokiokioki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridokioki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -39,13 +39,12 @@ void main() {
       expect(find.text('This is the message body.'), findsOneWidget);
     });
 
-    testWidgets('renders default confirm label when none provided', (tester) async {
+    testWidgets('renders default confirm label when none provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'Title',
-            message: 'Message',
-          ),
+          const MpConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -54,13 +53,12 @@ void main() {
       expect(find.text('Confirm'), findsOneWidget);
     });
 
-    testWidgets('renders default cancel label when none provided', (tester) async {
+    testWidgets('renders default cancel label when none provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'Title',
-            message: 'Message',
-          ),
+          const MpConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -99,26 +97,26 @@ void main() {
       expect(find.text('Go Back'), findsOneWidget);
     });
 
-    testWidgets('confirm button uses primary variant by default', (tester) async {
+    testWidgets('confirm button uses primary variant by default', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'Title',
-            message: 'Message',
-          ),
+          const MpConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
 
       // Find the MpButton with primary variant (ElevatedButton inside)
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton)).toList();
-      expect(
-        buttons.any((b) => b.variant == MpButtonVariant.primary),
-        isTrue,
-      );
+      final buttons = tester
+          .widgetList<MpButton>(find.byType(MpButton))
+          .toList();
+      expect(buttons.any((b) => b.variant == MpButtonVariant.primary), isTrue);
     });
 
-    testWidgets('confirm button uses destructive variant when isDestructive', (tester) async {
+    testWidgets('confirm button uses destructive variant when isDestructive', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MpConfirmDialog(
@@ -131,7 +129,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton)).toList();
+      final buttons = tester
+          .widgetList<MpButton>(find.byType(MpButton))
+          .toList();
       expect(
         buttons.any((b) => b.variant == MpButtonVariant.destructive),
         isTrue,
@@ -141,28 +141,23 @@ void main() {
     testWidgets('cancel button uses text variant', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'Title',
-            message: 'Message',
-          ),
+          const MpConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton)).toList();
-      expect(
-        buttons.any((b) => b.variant == MpButtonVariant.text),
-        isTrue,
-      );
+      final buttons = tester
+          .widgetList<MpButton>(find.byType(MpButton))
+          .toList();
+      expect(buttons.any((b) => b.variant == MpButtonVariant.text), isTrue);
     });
 
-    testWidgets('dialog has rounded shape (Dialog widget present)', (tester) async {
+    testWidgets('dialog has rounded shape (Dialog widget present)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'Title',
-            message: 'Message',
-          ),
+          const MpConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -174,7 +169,9 @@ void main() {
     // MpConfirmDialog.show() interaction tests
     // -----------------------------------------------------------------------
 
-    testWidgets('show() displays dialog with title and message', (tester) async {
+    testWidgets('show() displays dialog with title and message', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           Builder(
@@ -198,7 +195,9 @@ void main() {
       expect(find.text('Are you sure you want to do this?'), findsOneWidget);
     });
 
-    testWidgets('tapping confirm button returns true via Navigator.pop', (tester) async {
+    testWidgets('tapping confirm button returns true via Navigator.pop', (
+      tester,
+    ) async {
       bool? result;
 
       await tester.pumpWidget(
@@ -229,7 +228,9 @@ void main() {
       expect(result, isTrue);
     });
 
-    testWidgets('tapping cancel button returns false via Navigator.pop', (tester) async {
+    testWidgets('tapping cancel button returns false via Navigator.pop', (
+      tester,
+    ) async {
       bool? result;
 
       await tester.pumpWidget(
@@ -260,7 +261,9 @@ void main() {
       expect(result, isFalse);
     });
 
-    testWidgets('show() with isDestructive shows destructive button', (tester) async {
+    testWidgets('show() with isDestructive shows destructive button', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           Builder(
@@ -282,7 +285,9 @@ void main() {
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton)).toList();
+      final buttons = tester
+          .widgetList<MpButton>(find.byType(MpButton))
+          .toList();
       expect(
         buttons.any((b) => b.variant == MpButtonVariant.destructive),
         isTrue,
@@ -349,10 +354,7 @@ void main() {
     testWidgets('renders without error in Japanese locale', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
-            title: 'タイトル',
-            message: 'メッセージ',
-          ),
+          const MpConfirmDialog(title: 'タイトル', message: 'メッセージ'),
           locale: const Locale('ja'),
         ),
       );

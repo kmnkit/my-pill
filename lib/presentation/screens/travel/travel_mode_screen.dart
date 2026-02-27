@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/theme/app_colors_extension.dart';
-import 'package:my_pill/data/providers/timezone_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/travel/widgets/affected_med_list.dart';
-import 'package:my_pill/presentation/screens/travel/widgets/location_display.dart';
-import 'package:my_pill/presentation/screens/travel/widgets/timezone_mode_selector.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_toggle_switch.dart';
-import 'package:my_pill/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/travel/widgets/affected_med_list.dart';
+import 'package:kusuridoki/presentation/screens/travel/widgets/location_display.dart';
+import 'package:kusuridoki/presentation/screens/travel/widgets/timezone_mode_selector.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class TravelModeScreen extends ConsumerWidget {
   const TravelModeScreen({super.key});
@@ -55,14 +55,18 @@ class TravelModeScreen extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info, size: AppSpacing.iconMd, color: AppColors.info),
+                    Icon(
+                      Icons.info,
+                      size: AppSpacing.iconMd,
+                      color: AppColors.info,
+                    ),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
                         l10n.consultDoctor,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: context.appColors.textMuted,
-                            ),
+                          color: context.appColors.textMuted,
+                        ),
                       ),
                     ),
                   ],

@@ -1,17 +1,17 @@
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/dosage_timing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/dosage_time_slot.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 /// Seeds realistic sample data into StorageService for App Store screenshots.
 ///
@@ -153,7 +153,9 @@ class ScreenshotDataSeeder {
         id: 'sch-amlodipine',
         medicationId: _medAmlodipine,
         type: ScheduleType.daily,
-        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Metformin: daily morning + evening
@@ -172,7 +174,9 @@ class ScreenshotDataSeeder {
         id: 'sch-vitamin-d',
         medicationId: _medVitaminD,
         type: ScheduleType.daily,
-        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '08:00')],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Omeprazole: daily before breakfast
@@ -180,7 +184,9 @@ class ScreenshotDataSeeder {
         id: 'sch-omeprazole',
         medicationId: _medOmeprazole,
         type: ScheduleType.daily,
-        dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '07:30')],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.morning, time: '07:30'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
       // Iron: daily afternoon
@@ -196,7 +202,9 @@ class ScreenshotDataSeeder {
         id: 'sch-allergy',
         medicationId: _medAllergy,
         type: ScheduleType.daily,
-        dosageSlots: [DosageTimeSlot(timing: DosageTiming.evening, time: '21:00')],
+        dosageSlots: [
+          DosageTimeSlot(timing: DosageTiming.evening, time: '21:00'),
+        ],
         timezoneMode: TimezoneMode.fixedInterval,
       ),
     ];

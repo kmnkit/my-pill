@@ -1,35 +1,35 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
 
 void main() {
   group('CaregiverLink', () {
     final linkedAt = DateTime.utc(2024, 1, 15);
 
     CaregiverLink buildFull() => CaregiverLink(
-          id: 'link-001',
-          patientId: 'patient-001',
-          caregiverId: 'caregiver-001',
-          caregiverName: 'Jane Doe',
-          status: 'connected',
-          linkedAt: linkedAt,
-        );
+      id: 'link-001',
+      patientId: 'patient-001',
+      caregiverId: 'caregiver-001',
+      caregiverName: 'Jane Doe',
+      status: 'connected',
+      linkedAt: linkedAt,
+    );
 
     CaregiverLink buildWithPendingStatus() => CaregiverLink(
-          id: 'link-002',
-          patientId: 'patient-002',
-          caregiverId: 'caregiver-002',
-          caregiverName: 'John Smith',
-          status: 'pending',
-          linkedAt: linkedAt,
-        );
+      id: 'link-002',
+      patientId: 'patient-002',
+      caregiverId: 'caregiver-002',
+      caregiverName: 'John Smith',
+      status: 'pending',
+      linkedAt: linkedAt,
+    );
 
     CaregiverLink buildMinimal() => CaregiverLink(
-          id: 'link-003',
-          patientId: 'patient-003',
-          caregiverId: 'caregiver-003',
-          caregiverName: 'Bob Lee',
-          linkedAt: linkedAt,
-        );
+      id: 'link-003',
+      patientId: 'patient-003',
+      caregiverId: 'caregiver-003',
+      caregiverName: 'Bob Lee',
+      linkedAt: linkedAt,
+    );
 
     group('fromJson/toJson', () {
       test('roundtrip preserves all fields', () {
@@ -79,18 +79,20 @@ void main() {
     });
 
     group('copyWith', () {
-      test('copies with modified caregiverName leaves other fields unchanged',
-          () {
-        final original = buildFull();
-        final copied = original.copyWith(caregiverName: 'Alice Wong');
+      test(
+        'copies with modified caregiverName leaves other fields unchanged',
+        () {
+          final original = buildFull();
+          final copied = original.copyWith(caregiverName: 'Alice Wong');
 
-        expect(copied.caregiverName, 'Alice Wong');
-        expect(copied.id, original.id);
-        expect(copied.patientId, original.patientId);
-        expect(copied.caregiverId, original.caregiverId);
-        expect(copied.status, original.status);
-        expect(copied.linkedAt, original.linkedAt);
-      });
+          expect(copied.caregiverName, 'Alice Wong');
+          expect(copied.id, original.id);
+          expect(copied.patientId, original.patientId);
+          expect(copied.caregiverId, original.caregiverId);
+          expect(copied.status, original.status);
+          expect(copied.linkedAt, original.linkedAt);
+        },
+      );
 
       test('copies with modified status', () {
         final original = buildFull();

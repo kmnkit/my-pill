@@ -1,20 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/models/inventory.dart';
+import 'package:kusuridoki/data/models/inventory.dart';
 
 void main() {
   group('Inventory', () {
     Inventory buildFull() => const Inventory(
-          medicationId: 'med-001',
-          total: 60,
-          remaining: 45,
-          lowStockThreshold: 10,
-        );
+      medicationId: 'med-001',
+      total: 60,
+      remaining: 45,
+      lowStockThreshold: 10,
+    );
 
-    Inventory buildMinimal() => const Inventory(
-          medicationId: 'med-002',
-          total: 30,
-          remaining: 30,
-        );
+    Inventory buildMinimal() =>
+        const Inventory(medicationId: 'med-002', total: 30, remaining: 30);
 
     group('fromJson/toJson', () {
       test('roundtrip preserves all fields', () {
