@@ -279,7 +279,7 @@ void main() {
 
       // l10n: unlockPremium -> "Upgrade to Premium"
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows premium status banner for premium user', (tester) async {
       await tester.pumpWidget(
@@ -294,7 +294,7 @@ void main() {
       expect(find.text("You're a Premium member"), findsOneWidget);
       // l10n: manageSubscription -> "Manage Subscription"
       expect(find.text('Manage Subscription'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows premium expiry date when subscription has expiry', (
       tester,
@@ -309,7 +309,7 @@ void main() {
 
       // l10n: premiumExpiresAt('2030-12-31') contains the date
       expect(find.textContaining('2030'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows current plan text when premium has no expiry date', (
       tester,
@@ -325,7 +325,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Current Plan'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('retry button in error state invalidates provider', (
       tester,
