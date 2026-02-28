@@ -232,5 +232,74 @@ void main() {
         expect(results.first.localTime.minute, equals(30));
       },
     );
+
+    // ── Additional coverage: edge cases ─────────────────────────────────────
+
+    test('getTimeDifference London vs Tokyo accounts for DST variability', () {
+      // London is UTC+0 (GMT) or UTC+1 (BST), Tokyo is UTC+9.
+      final diff = service.getTimeDifference('Europe/London', 'Asia/Tokyo');
+      expect(diff, anyOf(equals(8), equals(9))); // DST-aware
+    });
+
+    test('convertTime midnight boundary crosses to next day', () {
+      // 23:59 in Tokyo → convert to a timezone ahead → should be next day
+      final tokyo = tz.getLocation('Asia/Tokyo');
+      final original = tz.TZDateTime(tokyo, 2024, 6, 15, 23, 59);
+      // Converting from Tokyo (UTC+9) to Fiji (UTC+12) adds 3 hours
+      final converted = service.convertTime(
+        original,
+        'Asia/Tokyo',
+        'Pacific/Fiji',
+      );
+      expect(converted.day, equals(16));
+      expect(converted.hour, equals(2));
+      expect(converted.minute, equals(59));
+    });
+
+    test(
+      'adjustMedicationTime fixedInterval same timezone preserves original',
+      () {
+        final tokyo = tz.getLocation('Asia/Tokyo');
+        final homeTime = tz.TZDateTime(tokyo, 2024, 6, 15, 9, 30);
+        final adjusted = service.adjustMedicationTime(
+          homeTime,
+          'Asia/Tokyo',
+          'Asia/Tokyo',
+          TimezoneMode.fixedInterval,
+        );
+        expect(adjusted.hour, equals(9));
+        expect(adjusted.minute, equals(30));
+      },
+    );
+
+    test(
+      'adjustMedicationTime localTime same timezone preserves original',
+      () {
+        final homeTime = DateTime(2024, 6, 15, 14, 45);
+        final adjusted = service.adjustMedicationTime(
+          homeTime,
+          'Asia/Tokyo',
+          'Asia/Tokyo',
+          TimezoneMode.localTime,
+        );
+        expect(adjusted.hour, equals(14));
+        expect(adjusted.minute, equals(45));
+      },
+    );
+
+    test('getAffectedTimes fixedInterval mode shifts time by offset', () {
+      final tokyo = tz.getLocation('Asia/Tokyo');
+      final homeTime = tz.TZDateTime(tokyo, 2024, 6, 15, 9, 0);
+      final results = service.getAffectedTimes(
+        [homeTime],
+        'Asia/Tokyo',
+        'America/New_York',
+        TimezoneMode.fixedInterval,
+      );
+      // fixedInterval: same UTC instant → wall clock shifts by offset.
+      // 9 AM JST = 20:00 EDT or 21:00 EST
+      expect(results.first.localTime.hour, anyOf(equals(20), equals(21)));
+      expect(results.first.homeTime.hour, equals(9));
+    });
   });
 }
