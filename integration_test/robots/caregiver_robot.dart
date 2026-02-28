@@ -58,6 +58,10 @@ class CaregiverRobot {
   Finder get missedDoseAlert => find.text('Missed Dose');
   Finder get lowStockAlert => find.text('Low Stock');
 
+  // QR Scanner Screen elements
+  Finder get qrScannerInstruction =>
+      find.text('Position the QR code within the frame');
+
   // Settings tab elements
   Finder get switchToPatientViewOption => find.text('Switch to Patient View');
   Finder get signOutOption => find.text('Sign Out');
@@ -138,6 +142,21 @@ class CaregiverRobot {
   Future<void> tapScanQrCode() async {
     await tester.tap(scanQrCodeButton);
     await tester.pumpAndSettle();
+  }
+
+  /// Tap the Scan QR Code button and wait for the MaterialPageRoute transition.
+  ///
+  /// Uses fixed-duration pumps instead of pumpAndSettle to avoid timing out
+  /// on MobileScanner's native camera initialisation.
+  Future<void> tapScanQrCodeButton() async {
+    await tester.tap(scanQrCodeButton);
+    await tester.pump(); // begin transition frame
+    await tester.pump(const Duration(milliseconds: 400)); // complete animation
+  }
+
+  /// Verify QrScannerScreen is shown by asserting its unique instruction text.
+  Future<void> verifyQrScannerScreenShown() async {
+    expect(qrScannerInstruction, findsOneWidget);
   }
 
   /// Tap Switch to Patient View

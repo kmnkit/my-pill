@@ -16,12 +16,15 @@ import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/presentation/router/app_router_provider.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_alerts_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_notifications_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_settings_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/invite_handler_screen.dart';
+import 'package:kusuridoki/presentation/screens/onboarding/login_screen.dart';
+import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 
 import 'mock_services.dart';
@@ -358,6 +361,148 @@ GoRouter _buildCaregiverTestRouter(String initialRoute) {
       GoRoute(
         path: '/home',
         builder: (_, _) => const Scaffold(body: SizedBox()),
+      ),
+    ],
+  );
+}
+
+/// Build a test app for LoginScreen tests that starts directly at /login
+/// without the splash screen or auth-based redirects.
+Widget buildLoginTestApp(TestAppConfig config) {
+  final storageService = MockStorageService(
+    userProfile: config.userProfile,
+  );
+  final authService = MockAuthService();
+
+  return ProviderScope(
+    overrides: [
+      storageServiceProvider.overrideWithValue(storageService),
+      authServiceProvider.overrideWithValue(authService),
+      appRouterProvider.overrideWith((_) => _buildLoginTestRouter()),
+    ],
+    child: const MyPillApp(),
+  );
+}
+
+/// Build a login test app with access to the MockAuthService for assertions.
+///
+/// Use this variant when tests need to control sign-in behaviour
+/// (e.g. failure injection, loading-state interception).
+(Widget, MockAuthService) buildLoginTestAppWithContainer(TestAppConfig config) {
+  final storageService = MockStorageService(
+    userProfile: config.userProfile,
+  );
+  final authService = MockAuthService();
+
+  final container = ProviderContainer(
+    overrides: [
+      storageServiceProvider.overrideWithValue(storageService),
+      authServiceProvider.overrideWithValue(authService),
+      appRouterProvider.overrideWith((_) => _buildLoginTestRouter()),
+    ],
+  );
+
+  final widget = UncontrolledProviderScope(
+    container: container,
+    child: const MyPillApp(),
+  );
+
+  return (widget, authService);
+}
+
+/// Build an isolated [GoRouter] for LoginScreen E2E tests.
+///
+/// Starts at `/login` with no auth redirect. Covers the login screen
+/// plus stub destinations for post-auth navigation.
+GoRouter _buildLoginTestRouter() {
+  return GoRouter(
+    initialLocation: '/login',
+    redirect: (_, _) => null,
+    routes: [
+      GoRoute(
+        path: '/login',
+        builder: (_, _) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/home',
+        builder: (_, _) => const Scaffold(
+          body: Center(child: Text('Home')),
+        ),
+      ),
+      GoRoute(
+        path: '/caregiver/patients',
+        builder: (_, _) => const Scaffold(
+          body: Center(child: Text('Caregiver')),
+        ),
+      ),
+    ],
+  );
+}
+
+/// Build a test app for patient-side screens that bypasses router auth checks.
+///
+/// Similar to [buildCaregiverTestApp] but for patient routes like Settings.
+/// Creates an isolated test router starting at [initialRoute].
+Widget buildPatientTestApp(
+  TestAppConfig config, {
+  String initialRoute = '/settings',
+}) {
+  final storageService = MockStorageService(
+    medications: config.medications,
+    schedules: config.schedules,
+    reminders: config.reminders,
+    adherenceRecords: config.adherenceRecords,
+    caregiverLinks: config.caregiverLinks,
+    userProfile: config.userProfile,
+  );
+
+  final authService = MockAuthService();
+
+  return ProviderScope(
+    overrides: [
+      storageServiceProvider.overrideWithValue(storageService),
+      authServiceProvider.overrideWithValue(authService),
+      appRouterProvider.overrideWith(
+        (_) => _buildPatientTestRouter(initialRoute),
+      ),
+    ],
+    child: const MyPillApp(),
+  );
+}
+
+/// Build an isolated [GoRouter] for patient-side E2E tests.
+///
+/// Starts at [initialRoute] with no auth redirect. Covers the settings
+/// screen and its sub-routes.
+GoRouter _buildPatientTestRouter(String initialRoute) {
+  return GoRouter(
+    initialLocation: initialRoute,
+    redirect: (_, _) => null,
+    routes: [
+      GoRoute(
+        path: '/settings',
+        name: RouteNames.settings,
+        builder: (_, _) => const SettingsScreen(),
+        routes: [
+          GoRoute(
+            path: 'family',
+            name: RouteNames.familyCaregivers,
+            builder: (_, _) => const FamilyScreen(),
+          ),
+          GoRoute(
+            path: 'travel',
+            name: RouteNames.travelMode,
+            builder: (_, _) => const Scaffold(
+              body: Center(child: Text('Travel Mode')),
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/home',
+        builder: (_, _) => const Scaffold(
+          body: Center(child: Text('Home')),
+        ),
       ),
     ],
   );
