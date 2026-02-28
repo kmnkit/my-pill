@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
@@ -85,6 +86,7 @@ Raw<GoRouter> appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: refreshNotifier,
+    observers: [SentryNavigatorObserver()],
     onException: (_, state, router) {
       // Handle unknown routes gracefully:
       // - Firebase Auth OAuth callback URLs (Google/Apple sign-in redirects)
