@@ -79,6 +79,10 @@ functions/node_modules/
 # Android local properties
 android/local.properties
 
+# Android signing
+android/upload-keystore.jks
+android/key.properties
+
 # Working files
 findings.md
 task_plan.md
