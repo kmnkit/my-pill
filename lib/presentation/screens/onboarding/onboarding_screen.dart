@@ -37,25 +37,41 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _goToStep(int step) {
-    _pageController.animateToPage(
-      step,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    if ((step - _currentStep).abs() > 1) {
+      _pageController.jumpToPage(step);
+    } else {
+      _pageController.animateToPage(
+        step,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
     setState(() {
       _currentStep = step;
     });
   }
 
+  int get _visualTotalSteps => _selectedRole == 'caregiver' ? 5 : _totalSteps;
+
+  int get _visualCurrentStep {
+    if (_selectedRole != 'caregiver') return _currentStep;
+    // Caregiver skips step 2 (MedStyle): pages 0→0, 1→1, 3→2, 4→3, 5→4
+    return _currentStep > 2 ? _currentStep - 1 : _currentStep;
+  }
+
   void _nextStep() {
     if (_currentStep < _totalSteps - 1) {
-      _goToStep(_currentStep + 1);
+      // Skip MedStyle step (2) for caregiver
+      final next = (_currentStep == 1 && _selectedRole == 'caregiver') ? 3 : _currentStep + 1;
+      _goToStep(next);
     }
   }
 
   void _previousStep() {
     if (_currentStep > 0) {
-      _goToStep(_currentStep - 1);
+      // Skip MedStyle step (2) for caregiver when going back
+      final prev = (_currentStep == 3 && _selectedRole == 'caregiver') ? 1 : _currentStep - 1;
+      _goToStep(prev);
     }
   }
 
@@ -86,8 +102,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: OnboardingProgressIndicator(
-                currentStep: _currentStep,
-                totalSteps: _totalSteps,
+                currentStep: _visualCurrentStep,
+                totalSteps: _visualTotalSteps,
               ),
             ),
 
@@ -133,7 +149,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     },
                     onNext: _nextStep,
                     onBack: _previousStep,
-                    onSkip: _nextStep,
+                    onSkip: _selectedRole == 'caregiver' ? null : _nextStep,
+                    isRequired: _selectedRole == 'caregiver',
                   ),
 
                   // Step 4: Timezone

@@ -72,6 +72,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingNameSkip => 'Skip for now';
 
   @override
+  String get onboardingNameRequired =>
+      'Your name will be shown to the patients you support';
+
+  @override
+  String get onboardingNameMinLength => 'Please enter at least 2 characters';
+
+  @override
   String get onboardingRoleTitle => 'How will you use Kusuridoki?';
 
   @override

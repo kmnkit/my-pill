@@ -251,28 +251,14 @@ abstract final class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: config.brightness == Brightness.dark
-            ? AppColors.glassDark
-            : AppColors.glassWhite,
+        fillColor: config.surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide:
-              config.inputBorder ??
-              BorderSide(
-                color: config.brightness == Brightness.dark
-                    ? AppColors.glassBorderDark
-                    : AppColors.glassBorder,
-              ),
+          borderSide: config.inputBorder ?? BorderSide(color: config.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide:
-              config.inputBorder ??
-              BorderSide(
-                color: config.brightness == Brightness.dark
-                    ? AppColors.glassBorderDark
-                    : AppColors.glassBorder,
-              ),
+          borderSide: config.inputBorder ?? BorderSide(color: config.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),

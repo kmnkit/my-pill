@@ -218,6 +218,18 @@ abstract class AppLocalizations {
   /// **'Skip for now'**
   String get onboardingNameSkip;
 
+  /// No description provided for @onboardingNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name will be shown to the patients you support'**
+  String get onboardingNameRequired;
+
+  /// No description provided for @onboardingNameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter at least 2 characters'**
+  String get onboardingNameMinLength;
+
   /// No description provided for @onboardingRoleTitle.
   ///
   /// In en, this message translates to:

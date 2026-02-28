@@ -23,6 +23,8 @@
   "onboardingNameSubtitle": "We'll use this to personalize your experience",
   "onboardingNameHint": "Enter your name",
   "onboardingNameSkip": "Skip for now",
+  "onboardingNameRequired": "Your name will be shown to the patients you support",
+  "onboardingNameMinLength": "Please enter at least 2 characters",
 
   "onboardingRoleTitle": "How will you use Kusuridoki?",
   "onboardingRoleSubtitle": "Choose the option that best describes you",
