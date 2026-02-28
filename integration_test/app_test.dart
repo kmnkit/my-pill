@@ -21,6 +21,7 @@ library;
 import 'package:integration_test/integration_test.dart';
 
 // Import all test flows
+import 'flows/login_screen_test.dart' as login_screen;
 import 'flows/onboarding_test.dart' as onboarding;
 import 'flows/medication_crud_test.dart' as medication_crud;
 import 'flows/reminder_actions_test.dart' as reminder_actions;
@@ -28,12 +29,15 @@ import 'flows/caregiver_dashboard_test.dart' as caregiver_dashboard;
 import 'flows/caregiver_settings_test.dart' as caregiver_settings;
 import 'flows/family_screen_test.dart' as family_screen;
 import 'flows/invite_handler_test.dart' as invite_handler;
+import 'flows/adherence_screen_test.dart' as adherence_screen;
+import 'flows/settings_screen_test.dart' as settings_screen;
 
 void main() {
   // Initialize integration test binding
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Run all test suites
+  login_screen.main();
   onboarding.main();
   medication_crud.main();
   reminder_actions.main();
@@ -41,4 +45,6 @@ void main() {
   caregiver_settings.main();
   family_screen.main();
   invite_handler.main();
+  adherence_screen.main();
+  settings_screen.main();
 }

@@ -7,6 +7,7 @@ import '../utils/test_app.dart';
 import '../utils/test_helpers.dart';
 import '../robots/medication_robot.dart';
 import '../robots/home_robot.dart';
+import '../robots/schedule_robot.dart';
 
 void main() {
   ensureTestInitialized();
@@ -265,6 +266,94 @@ void main() {
 
       // Assert: Should be back on medications list
       await medRobot.verifyOnMedicationsList();
+    });
+  });
+
+  group('Schedule Creation Flow', () {
+    testWidgets('SC-01: Add medication navigates to schedule screen',
+        (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.patient());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final homeRobot = HomeRobot(tester);
+      final medRobot = MedicationRobot(tester);
+      final scheduleRobot = ScheduleRobot(tester);
+
+      // Navigate to medications and add one
+      await homeRobot.goToMedications();
+      await medRobot.tapAddMedication();
+      await medRobot.verifyOnAddMedication();
+      await medRobot.enterMedicationName('Test Med');
+      await medRobot.enterDosage('50');
+      await medRobot.scrollToWidget(medRobot.saveMedicationButton);
+      await medRobot.tapSaveMedication();
+
+      // After save, app auto-redirects to ScheduleScreen via pushReplacement
+      await scheduleRobot.verifyOnScheduleScreen();
+    });
+
+    testWidgets('SC-02: Daily frequency with timing selection and save',
+        (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.patient());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final homeRobot = HomeRobot(tester);
+      final medRobot = MedicationRobot(tester);
+      final scheduleRobot = ScheduleRobot(tester);
+
+      // Add medication to get to schedule screen
+      await homeRobot.goToMedications();
+      await medRobot.tapAddMedication();
+      await medRobot.enterMedicationName('Schedule Test Med');
+      await medRobot.enterDosage('100');
+      await medRobot.scrollToWidget(medRobot.saveMedicationButton);
+      await medRobot.tapSaveMedication();
+
+      // Now on ScheduleScreen
+      await scheduleRobot.verifyOnScheduleScreen();
+      await scheduleRobot.verifyFrequencySelectorVisible();
+
+      // Select Morning timing
+      await scheduleRobot.selectTiming('Morning');
+      await scheduleRobot.verifyTimeAdjusterVisible();
+
+      // Save schedule
+      await scheduleRobot.tapSave();
+
+      // After save (context.pop()), should be back on medications list
+      await medRobot.verifyOnMedicationsList();
+    });
+
+    testWidgets('SC-03: Schedule save validation — no timing selected',
+        (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.patient());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final homeRobot = HomeRobot(tester);
+      final medRobot = MedicationRobot(tester);
+      final scheduleRobot = ScheduleRobot(tester);
+
+      // Add medication to get to schedule screen
+      await homeRobot.goToMedications();
+      await medRobot.tapAddMedication();
+      await medRobot.enterMedicationName('Validation Test');
+      await medRobot.enterDosage('25');
+      await medRobot.scrollToWidget(medRobot.saveMedicationButton);
+      await medRobot.tapSaveMedication();
+
+      // On ScheduleScreen, try to save without selecting timing
+      await scheduleRobot.verifyOnScheduleScreen();
+      await scheduleRobot.tapSave();
+
+      // Should show validation error and stay on screen
+      await scheduleRobot.verifyTimingRequiredError();
+      await scheduleRobot.verifyOnScheduleScreen();
     });
   });
 }
