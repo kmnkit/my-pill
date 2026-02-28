@@ -1,7 +1,7 @@
 name: kusuridoki
 description: "Kusuridoki - Your reliable medication companion"
 publish_to: 'none'
-version: 1.0.0+4
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.8

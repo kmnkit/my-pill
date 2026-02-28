@@ -23,6 +23,8 @@
   "onboardingNameSubtitle": "あなたに合わせた体験を提供するために使用します",
   "onboardingNameHint": "名前を入力",
   "onboardingNameSkip": "今はスキップ",
+  "onboardingNameRequired": "サポートする方にあなたの名前が表示されます",
+  "onboardingNameMinLength": "2文字以上入力してください",
 
   "onboardingRoleTitle": "くすりどきをどのように使いますか？",
   "onboardingRoleSubtitle": "あなたに最も当てはまるものを選んでください",

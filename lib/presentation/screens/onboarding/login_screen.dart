@@ -22,7 +22,6 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
-  String _selectedRole = 'patient';
 
   Future<void> _completeAndNavigate() async {
     final authService = ref.read(authServiceProvider);
@@ -36,9 +35,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             displayName: firebaseUser.displayName,
           );
     }
-    await ref.read(userSettingsProvider.notifier).updateUserRole(_selectedRole);
+    final role =
+        ref.read(userSettingsProvider).asData?.value.userRole ?? 'patient';
     if (mounted) {
-      if (_selectedRole == 'caregiver') {
+      if (role == 'caregiver') {
         context.go('/caregiver/patients');
       } else {
         context.go('/home');
@@ -196,43 +196,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               const SizedBox(height: AppSpacing.xl),
 
-              // Role selection
-              Text(
-                l10n?.onboardingRoleTitle ?? 'How will you use Kusuridoki?',
-                style: textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: [
-                  Expanded(
-                    child: _RoleCard(
-                      label: l10n?.onboardingRolePatient ?? 'Patient',
-                      description:
-                          l10n?.onboardingRolePatientDesc ??
-                          "I'm managing my own medications",
-                      icon: Icons.person,
-                      isSelected: _selectedRole == 'patient',
-                      onTap: () => setState(() => _selectedRole = 'patient'),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: _RoleCard(
-                      label: l10n?.onboardingRoleCaregiver ?? 'Caregiver',
-                      description:
-                          l10n?.onboardingRoleCaregiverDesc ??
-                          "I'm helping someone else",
-                      icon: Icons.favorite,
-                      isSelected: _selectedRole == 'caregiver',
-                      onTap: () => setState(() => _selectedRole = 'caregiver'),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: AppSpacing.xl),
-
               // Sign-in buttons
               if (_isLoading)
                 const Center(child: CircularProgressIndicator())
@@ -301,78 +264,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RoleCard extends StatelessWidget {
-  const _RoleCard({
-    required this.label,
-    required this.description,
-    required this.icon,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final String description;
-  final IconData icon;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.1)
-              : colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 32,
-              color: isSelected
-                  ? AppColors.primary
-                  : context.appColors.textMuted,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              label,
-              style: textTheme.titleSmall?.copyWith(
-                color: isSelected ? AppColors.primary : null,
-                fontWeight: isSelected ? FontWeight.w600 : null,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              description,
-              style: textTheme.bodySmall?.copyWith(
-                color: context.appColors.textMuted,
-                fontSize: 11,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
         ),
       ),
     );
