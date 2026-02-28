@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/app.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/schedule.dart';
@@ -10,8 +11,18 @@ import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/models/adherence_record.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/models/caregiver_link.dart';
-import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/presentation/router/app_router_provider.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_alerts_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_notifications_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/caregiver_settings_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/invite_handler_screen.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_bottom_nav_bar.dart';
 
 import 'mock_services.dart';
 import 'test_data.dart';
@@ -227,4 +238,153 @@ Widget buildTestApp(TestAppConfig config) {
   );
 
   return (widget, container);
+}
+
+/// Build a test app for caregiver E2E tests that bypasses router auth checks.
+///
+/// The production [appRouterProvider] router uses [FirebaseAuth.instance.currentUser]
+/// directly in its redirect logic, which cannot be overridden in tests.
+/// This helper creates an isolated test router for the caregiver shell.
+///
+/// [initialRoute]: Starting route (default: '/caregiver/patients')
+/// [mockCfService]: Optional [MockCloudFunctionsService] for invite/revoke flows
+/// [mockFsService]: Optional [MockFirestoreService] for patient monitoring data
+/// [patientsOverride]: If provided, overrides [caregiverPatientsProvider] with
+///   this list — used for "dashboard with patients" tests. If null, the provider
+///   returns an empty stream (auth is null → no user).
+Widget buildCaregiverTestApp(
+  TestAppConfig config, {
+  String initialRoute = '/caregiver/patients',
+  MockCloudFunctionsService? mockCfService,
+  MockFirestoreService? mockFsService,
+  List<({String patientId, String patientName, DateTime? linkedAt})>?
+      patientsOverride,
+}) {
+  final storageService = MockStorageService(
+    medications: config.medications,
+    schedules: config.schedules,
+    reminders: config.reminders,
+    adherenceRecords: config.adherenceRecords,
+    caregiverLinks: config.caregiverLinks,
+    userProfile: config.userProfile,
+  );
+
+  final authService = MockAuthService();
+  final cfService = mockCfService ?? MockCloudFunctionsService();
+  final fsService = mockFsService ?? MockFirestoreService();
+
+  final overrides = [
+    storageServiceProvider.overrideWithValue(storageService),
+    authServiceProvider.overrideWithValue(authService),
+    cloudFunctionsServiceProvider.overrideWithValue(cfService),
+    firestoreServiceProvider.overrideWithValue(fsService),
+    // Override router to bypass FirebaseAuth.instance.currentUser redirect
+    appRouterProvider.overrideWith(
+      (_) => _buildCaregiverTestRouter(initialRoute),
+    ),
+    if (patientsOverride != null)
+      caregiverPatientsProvider.overrideWith(
+        (_) => Stream.value(patientsOverride),
+      ),
+  ];
+
+  return ProviderScope(
+    overrides: overrides,
+    child: const MyPillApp(),
+  );
+}
+
+/// Build an isolated [GoRouter] for caregiver E2E tests.
+///
+/// Starts at [initialRoute] with no auth redirect. Covers all caregiver
+/// shell tabs plus standalone routes used in family screen and invite tests.
+GoRouter _buildCaregiverTestRouter(String initialRoute) {
+  return GoRouter(
+    initialLocation: initialRoute,
+    redirect: (_, _) => null,
+    routes: [
+      // Caregiver shell (4 tabs)
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            _TestCaregiverShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/caregiver/patients',
+                builder: (_, _) => const CaregiverDashboardScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/caregiver/notifications',
+                builder: (_, _) => const CaregiverNotificationsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/caregiver/alerts',
+                builder: (_, _) => const CaregiverAlertsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/caregiver/settings',
+                builder: (_, _) => const CaregiverSettingsScreen(),
+              ),
+            ],
+          ),
+        ],
+      ),
+      // Standalone route: patient-side family screen
+      GoRoute(
+        path: '/settings/family',
+        builder: (_, _) => const FamilyScreen(),
+      ),
+      // Standalone route: invite handler
+      GoRoute(
+        path: '/invite/:code',
+        builder: (context, state) => InviteHandlerScreen(
+          inviteCode: state.pathParameters['code'] ?? '',
+        ),
+      ),
+      // Destination for "switch to patient view" navigation
+      GoRoute(
+        path: '/home',
+        builder: (_, _) => const Scaffold(body: SizedBox()),
+      ),
+    ],
+  );
+}
+
+/// Minimal caregiver shell scaffold with bottom navigation for testing.
+class _TestCaregiverShell extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const _TestCaregiverShell({required this.navigationShell});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.transparent,
+      body: navigationShell,
+      bottomNavigationBar: MpBottomNavBar(
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) {
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
+        mode: MpNavMode.caregiver,
+      ),
+    );
+  }
 }

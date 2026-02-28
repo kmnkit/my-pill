@@ -12,6 +12,8 @@ import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/models/caregiver_link.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/services/firestore_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
 
 /// Mock implementation of AuthService for testing
@@ -535,6 +537,98 @@ class ScheduledNotification {
     required this.scheduledTime,
     required this.isCritical,
   });
+}
+
+/// Mock implementation of CloudFunctionsService for testing
+class MockCloudFunctionsService implements CloudFunctionsService {
+  bool _shouldFailNextOperation = false;
+  String? _failureMessage;
+
+  /// Configure the mock to fail the next operation
+  void setNextOperationToFail([String? message]) {
+    _shouldFailNextOperation = true;
+    _failureMessage = message ?? 'Mock operation failed';
+  }
+
+  void _checkFailure() {
+    if (_shouldFailNextOperation) {
+      _shouldFailNextOperation = false;
+      throw Exception(_failureMessage ?? 'Mock operation failed');
+    }
+  }
+
+  @override
+  Future<({String url, String code})> generateInviteLink() async {
+    _checkFailure();
+    return (
+      url: 'https://app.kusuridoki.com/invite/test-code-123',
+      code: 'test-code-123',
+    );
+  }
+
+  @override
+  Future<String> acceptInvite(String code) async {
+    _checkFailure();
+    return 'patient-1';
+  }
+
+  @override
+  Future<void> revokeAccess({
+    required String caregiverId,
+    required String linkId,
+  }) async {
+    _checkFailure();
+  }
+
+  @override
+  Future<void> verifyReceipt({
+    required String productId,
+    required String purchaseToken,
+    required String source,
+  }) async {
+    _checkFailure();
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    _checkFailure();
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+/// Mock implementation of FirestoreService for caregiver monitoring tests
+class MockFirestoreService implements FirestoreService {
+  final List<Map<String, dynamic>> _patients;
+  final List<Medication> _patientMedications;
+  final List<Reminder> _patientReminders;
+
+  MockFirestoreService({
+    List<Map<String, dynamic>>? patients,
+    List<Medication>? patientMedications,
+    List<Reminder>? patientReminders,
+  })  : _patients = patients ?? [],
+        _patientMedications = patientMedications ?? [],
+        _patientReminders = patientReminders ?? [];
+
+  @override
+  Stream<List<Map<String, dynamic>>> watchLinkedPatients() {
+    return Stream.value(_patients);
+  }
+
+  @override
+  Stream<List<Medication>> watchPatientMedications(String patientId) {
+    return Stream.value(_patientMedications);
+  }
+
+  @override
+  Stream<List<Reminder>> watchPatientReminders(String patientId) {
+    return Stream.value(_patientReminders);
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 /// Mock implementation of SubscriptionService for testing
