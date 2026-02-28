@@ -34,9 +34,11 @@ android/.cxx/
 android/gradle/
 android/gradlew
 android/gradlew.bat
-android/settings.gradle
-android/build.gradle
-android/app/build.gradle
+android/settings.gradle.kts
+android/build.gradle.kts
+android/app/build.gradle.kts
+android/local.properties
+android/gradle.properties
 
 # === Firebase / Hosting ===
 .firebase/
@@ -111,6 +113,14 @@ Thumbs.db
 
 # === Integration tests (heavy, rarely relevant for code changes) ===
 integration_test/
+
+# === Screenshots & ad creatives (binary assets) ===
+screenshots/
+ads/
+
+# === Working files ===
+findings.md
+task_plan.md
 
 # === GitHub workflows ===
 .github/
