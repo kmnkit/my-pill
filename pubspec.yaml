@@ -55,7 +55,7 @@ dependencies:
   # Security
   flutter_secure_storage: ^9.2.4
   # Error Monitoring
-  sentry_flutter: ^8.0.0
+  sentry_flutter: ^9.0.0
   # PDF Generation
   pdf: ^3.11.3
   printing: ^5.14.2
