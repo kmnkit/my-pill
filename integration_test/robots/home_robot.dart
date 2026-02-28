@@ -27,10 +27,14 @@ class HomeRobot {
   Finder get missedBadge => find.text('Missed');
   Finder get snoozedBadge => find.text('Snoozed');
 
-  // Action buttons (typically in a bottom sheet or card actions)
-  Finder get takeButton => find.text('Take');
+  // Reminder action dialog
+  Finder get reminderDialog => find.byType(Dialog);
+  Finder get checkIconButton => find.byIcon(Icons.check_circle_outline);
+
+  // Action buttons in the reminder dialog
+  Finder get takeButton => find.text('Take Now');
   Finder get skipButton => find.text('Skip');
-  Finder get snoozeButton => find.text('Snooze');
+  Finder get snoozeButton => find.textContaining('Snooze');
 
   // Low stock banner
   Finder get lowStockBanner => find.textContaining('Low Stock');
@@ -131,15 +135,35 @@ class HomeRobot {
     expect(lowStockBanner, findsNothing);
   }
 
+  /// Verify the reminder action dialog is shown
+  Future<void> verifyReminderDialogShown() async {
+    await tester.pump();
+    expect(reminderDialog, findsOneWidget);
+  }
+
+  /// Verify the reminder action dialog is dismissed
+  Future<void> verifyReminderDialogDismissed() async {
+    await tester.pumpAndSettle();
+    expect(reminderDialog, findsNothing);
+  }
+
   // ===== ACTIONS =====
 
-  /// Tap on a reminder card
+  /// Tap on a reminder card (navigates to medication detail)
   Future<void> tapReminder(String medicationName) async {
     await tester.tap(reminderCard(medicationName).first);
     await tester.pumpAndSettle();
   }
 
-  /// Mark reminder as taken
+  /// Tap the inline check icon button to open the reminder action dialog.
+  /// [medicationName] is used to identify which reminder to act on when
+  /// multiple are present; with a single pending reminder, the first icon is used.
+  Future<void> tapReminderCheckButton(String medicationName) async {
+    await tester.tap(checkIconButton.first);
+    await tester.pumpAndSettle();
+  }
+
+  /// Mark reminder as taken via the action dialog ('Take Now' button)
   Future<void> markAsTaken() async {
     await tester.tap(takeButton);
     await tester.pumpAndSettle();
