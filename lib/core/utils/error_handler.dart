@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 enum ErrorCode {
   network,
@@ -9,7 +10,7 @@ enum ErrorCode {
 }
 
 abstract final class ErrorHandler {
-  // Log error details in debug mode only
+  /// Log error details in debug mode only.
   static void debugLog(Object error, StackTrace? stackTrace, String context) {
     if (kDebugMode) {
       debugPrint('[ERROR] $context: $error');
@@ -19,11 +20,36 @@ abstract final class ErrorHandler {
     }
   }
 
-  // Classify error into an ErrorCode for l10n-friendly handling
+  /// Report error to Sentry in release mode, or log in debug mode.
+  ///
+  /// Errors classified as [ErrorCode.permissionDenied] are not reported
+  /// (user-initiated action, not a bug).
+  static void captureException(
+    Object error,
+    StackTrace? stackTrace,
+    String context,
+  ) {
+    debugLog(error, stackTrace, context);
+
+    if (kDebugMode) return;
+
+    if (getErrorCode(error) == ErrorCode.permissionDenied) return;
+
+    Sentry.captureException(
+      error,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('context', context);
+      },
+    );
+  }
+
+  /// Classify error into an [ErrorCode] for l10n-friendly handling.
   static ErrorCode getErrorCode(Object error) {
     final message = error.toString();
 
-    if (message.contains('SocketException') || message.contains('NetworkException')) {
+    if (message.contains('SocketException') ||
+        message.contains('NetworkException')) {
       return ErrorCode.network;
     }
     if (message.contains('TimeoutException')) {
