@@ -1,4 +1,4 @@
-package com.gingers.mypill
+package com.hobbylabo.kusuridoki
 
 import io.flutter.embedding.android.FlutterActivity
 
