@@ -1,6 +1,7 @@
 /// Robot/Page Object for patient-side Family & Caregivers screen
 library;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Robot pattern class for interacting with FamilyScreen (/settings/family)
@@ -28,6 +29,8 @@ class FamilyRobot {
   Finder get revokeAccessOption => find.text('Revoke Access');
   Finder get revokeButton => find.text('Revoke');
   Finder get cancelButton => find.text('Cancel');
+  Finder get revokeConfirmContent =>
+      find.textContaining('Are you sure you want to revoke access for');
 
   /// Find a caregiver tile by caregiver name
   Finder caregiverTile(String caregiverName) => find.text(caregiverName);
@@ -75,6 +78,33 @@ class FamilyRobot {
   /// Tap Generate Invite Link button
   Future<void> tapGenerateInviteLink() async {
     await tester.tap(generateInviteLinkButton);
+    await tester.pumpAndSettle();
+  }
+
+  /// Verify the revoke confirmation dialog is shown
+  Future<void> verifyRevokeDialogShown() async {
+    await tester.pumpAndSettle();
+    expect(revokeConfirmContent, findsOneWidget);
+  }
+
+  /// Tap the ⋮ popup menu for [caregiverName] and select 'Revoke Access'.
+  ///
+  /// Finds the more_vert icon within the same ancestor Row as the caregiver
+  /// name text, so it works correctly when multiple caregivers are listed.
+  Future<void> tapRevoke(String caregiverName) async {
+    final parentRow = find
+        .ancestor(
+          of: caregiverTile(caregiverName),
+          matching: find.byType(Row),
+        )
+        .first;
+    final moreVertIcon = find.descendant(
+      of: parentRow,
+      matching: find.byIcon(Icons.more_vert),
+    );
+    await tester.tap(moreVertIcon.first);
+    await tester.pumpAndSettle();
+    await tester.tap(revokeAccessOption);
     await tester.pumpAndSettle();
   }
 

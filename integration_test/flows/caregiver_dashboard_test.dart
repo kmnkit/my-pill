@@ -174,6 +174,62 @@ void main() {
     });
   });
 
+  group('Caregiver Dashboard — QR Scan Navigation', () {
+    testWidgets('CQ-01: Scan QR Code button tap navigates to QrScannerScreen',
+        (tester) async {
+      // Arrange
+      final app = buildCaregiverTestApp(TestAppConfig.caregiver());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = CaregiverRobot(tester);
+
+      // Act
+      await robot.tapScanQrCodeButton();
+
+      // Assert: QrScannerScreen is shown (unique instruction overlay text)
+      await robot.verifyQrScannerScreenShown();
+    });
+
+    testWidgets(
+        'CQ-02: QrScannerScreen shows guide overlay and AppBar title',
+        (tester) async {
+      // Arrange
+      final app = buildCaregiverTestApp(TestAppConfig.caregiver());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = CaregiverRobot(tester);
+
+      // Act
+      await robot.tapScanQrCodeButton();
+
+      // Assert: instruction overlay and AppBar title are both visible
+      await robot.verifyQrScannerScreenShown();
+      // AppBar title matches scanQrCode l10n key (findsWidgets: button is gone,
+      // only the AppBar title remains after navigation)
+      expect(find.text('Scan QR Code'), findsOneWidget);
+    });
+
+    testWidgets(
+        'CQ-03: No valid QR code scanned — screen remains, no crash',
+        (tester) async {
+      // Arrange
+      final app = buildCaregiverTestApp(TestAppConfig.caregiver());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = CaregiverRobot(tester);
+
+      // Act: open scanner and wait without scanning any QR code
+      await robot.tapScanQrCodeButton();
+      await tester.pump(const Duration(seconds: 1));
+
+      // Assert: screen is still visible — no unhandled exception, no pop
+      await robot.verifyQrScannerScreenShown();
+    });
+  });
+
   group('Caregiver Alerts Tab', () {
     testWidgets('Shows alert type cards', (tester) async {
       // Arrange

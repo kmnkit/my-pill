@@ -43,6 +43,9 @@ class OnboardingRobot {
   // Progress indicator
   Finder get progressIndicator => find.byType(LinearProgressIndicator);
 
+  // Name step — isRequired=true
+  Finder get nameMinLengthError => find.textContaining('at least 2');
+
   // ===== ASSERTIONS =====
 
   /// Verify we're on the welcome step with retry logic for async loading
@@ -98,6 +101,41 @@ class OnboardingRobot {
     expect(find.textContaining('Patient'), findsWidgets);
   }
 
+  /// Verify the Next button is disabled (onPressed == null)
+  Future<void> verifyNextButtonDisabled() async {
+    await tester.pump();
+    final buttonFinder = find.ancestor(
+      of: nextButton,
+      matching: find.byType(ElevatedButton),
+    );
+    expect(buttonFinder, findsOneWidget);
+    final button = tester.widget<ElevatedButton>(buttonFinder);
+    expect(button.onPressed, isNull, reason: 'Next button should be disabled');
+  }
+
+  /// Verify the Next button is enabled (onPressed != null)
+  Future<void> verifyNextButtonEnabled() async {
+    await tester.pump();
+    final buttonFinder = find.ancestor(
+      of: nextButton,
+      matching: find.byType(ElevatedButton),
+    );
+    expect(buttonFinder, findsOneWidget);
+    final button = tester.widget<ElevatedButton>(buttonFinder);
+    expect(button.onPressed, isNotNull, reason: 'Next button should be enabled');
+  }
+
+  /// Verify the min-length error message is visible
+  Future<void> verifyNameMinLengthErrorShown() async {
+    await tester.pump();
+    expect(nameMinLengthError, findsOneWidget);
+  }
+
+  /// Verify the skip button is NOT present (isRequired=true hides it)
+  Future<void> verifySkipButtonAbsent() async {
+    expect(skipButton, findsNothing);
+  }
+
   // ===== ACTIONS =====
 
   /// Tap the next button
@@ -127,6 +165,12 @@ class OnboardingRobot {
   /// Enter a name in the name field
   Future<void> enterName(String name) async {
     await tester.enterText(nameTextField, name);
+    await tester.pumpAndSettle();
+  }
+
+  /// Clear the name text field
+  Future<void> clearName() async {
+    await tester.enterText(nameTextField, '');
     await tester.pumpAndSettle();
   }
 

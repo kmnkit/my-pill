@@ -24,16 +24,50 @@ class MockAuthService implements AuthService {
   bool _shouldFailNextOperation = false;
   String? _failureMessage;
 
+  // Per-method failure flags
+  bool _shouldFailNextGoogleSignIn = false;
+  String? _googleFailureMessage;
+  bool _shouldFailNextAnonymousSignIn = false;
+  String? _anonymousFailureMessage;
+
+  // Completer for holding sign-in in-flight (used in loading-state tests)
+  Completer<void>? _pendingSignInCompleter;
+
   @override
   Stream<User?> get authStateChanges => _authStateController.stream;
 
   @override
   User? get currentUser => _currentUser;
 
-  /// Configure the mock to fail the next operation
+  /// Configure the mock to fail the next operation (any method)
   void setNextOperationToFail([String? message]) {
     _shouldFailNextOperation = true;
     _failureMessage = message ?? 'Mock operation failed';
+  }
+
+  /// Configure the mock to fail the next Google sign-in
+  void setNextGoogleSignInToFail([String? message]) {
+    _shouldFailNextGoogleSignIn = true;
+    _googleFailureMessage = message ?? 'Google sign-in failed';
+  }
+
+  /// Configure the mock to fail the next anonymous sign-in
+  void setNextAnonymousSignInToFail([String? message]) {
+    _shouldFailNextAnonymousSignIn = true;
+    _anonymousFailureMessage = message ?? 'Anonymous sign-in failed';
+  }
+
+  /// Hold the next sign-in in-flight until [releaseSignIn] is called.
+  /// Returns the completer so callers can await it if needed.
+  Completer<void> holdNextSignIn() {
+    _pendingSignInCompleter = Completer<void>();
+    return _pendingSignInCompleter!;
+  }
+
+  /// Release a held sign-in operation.
+  void releaseSignIn() {
+    _pendingSignInCompleter?.complete();
+    _pendingSignInCompleter = null;
   }
 
   /// Set the current user state
@@ -55,7 +89,16 @@ class MockAuthService implements AuthService {
   @override
   Future<UserCredential> signInAnonymously() async {
     _checkFailure();
-    // Return a mock credential - we just update internal state
+    if (_shouldFailNextAnonymousSignIn) {
+      _shouldFailNextAnonymousSignIn = false;
+      throw FirebaseAuthException(
+        code: 'mock-error',
+        message: _anonymousFailureMessage ?? 'Anonymous sign-in failed',
+      );
+    }
+    if (_pendingSignInCompleter != null) {
+      await _pendingSignInCompleter!.future;
+    }
     _currentUser = _MockUser(
       uid: 'anonymous-${DateTime.now().millisecondsSinceEpoch}',
     );
@@ -66,6 +109,16 @@ class MockAuthService implements AuthService {
   @override
   Future<UserCredential?> signInWithGoogle() async {
     _checkFailure();
+    if (_shouldFailNextGoogleSignIn) {
+      _shouldFailNextGoogleSignIn = false;
+      throw FirebaseAuthException(
+        code: 'mock-error',
+        message: _googleFailureMessage ?? 'Google sign-in failed',
+      );
+    }
+    if (_pendingSignInCompleter != null) {
+      await _pendingSignInCompleter!.future;
+    }
     _currentUser = _MockUser(
       uid: 'google-user-1',
       email: 'test@gmail.com',
