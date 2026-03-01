@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/timezone_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 /// Common timezones curated list - major cities and regions
 const _commonTimezones = [
@@ -135,7 +136,7 @@ class _OnboardingTimezoneStepState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Back button
+          // Back button — fixed at top
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton.icon(
@@ -145,81 +146,81 @@ class _OnboardingTimezoneStepState
             ),
           ),
 
-          const Spacer(),
+          // Center content — scrollable to survive keyboard transition
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: AppSpacing.xxxl),
 
-          // Center content
-          Column(
-            children: [
-              // Icon
-              Icon(
-                Icons.access_time,
-                size: 80,
-                color: AppColors.primary,
-              ),
-              const SizedBox(height: AppSpacing.xl),
+                  // Icon
+                  Icon(Icons.access_time, size: 80, color: AppColors.primary),
+                  const SizedBox(height: AppSpacing.xl),
 
-              // Title
-              Text(
-                l10n.onboardingTimezoneTitle,
-                style: textTheme.headlineLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.md),
-
-              // Subtitle
-              Text(
-                l10n.onboardingTimezoneSubtitle,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.xxxl),
-
-              // Detected timezone display
-              MpCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(
-                        l10n.onboardingTimezoneDetected,
-                        style: textTheme.labelLarge?.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        _selectedTimezone,
-                        style: textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        _formatTimezone(_selectedTimezone),
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
+                  // Title
+                  Text(
+                    l10n.onboardingTimezoneTitle,
+                    style: textTheme.headlineLarge,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
 
-              // Change timezone button
-              TextButton.icon(
-                onPressed: _showTimezonePicker,
-                icon: const Icon(Icons.edit),
-                label: Text(l10n.onboardingTimezoneChange),
+                  // Subtitle
+                  Text(
+                    l10n.onboardingTimezoneSubtitle,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: context.appColors.textMuted,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSpacing.xxxl),
+
+                  // Detected timezone display
+                  MpCard(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.onboardingTimezoneDetected,
+                            style: textTheme.labelLarge?.copyWith(
+                              color: context.appColors.textMuted,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            _selectedTimezone,
+                            style: textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          Text(
+                            _formatTimezone(_selectedTimezone),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Change timezone button
+                  TextButton.icon(
+                    onPressed: _showTimezonePicker,
+                    icon: const Icon(Icons.edit),
+                    label: Text(l10n.onboardingTimezoneChange),
+                  ),
+
+                  const SizedBox(height: AppSpacing.xxxl),
+                ],
               ),
-            ],
+            ),
           ),
 
-          const Spacer(),
-
-          // Next button
+          // Next button — fixed at bottom
           MpButton(
             label: l10n.onboardingNext,
             onPressed: widget.onNext,
@@ -346,7 +347,7 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
                     child: Text(
                       l10n.onboardingTimezoneNoResults,
                       style: textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                     ),
                   )
@@ -364,14 +365,15 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
                         title: Text(
                           displayName,
                           style: textTheme.titleMedium?.copyWith(
-                            fontWeight:
-                                isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                         subtitle: Text(
                           '$region • $formattedTz',
                           style: textTheme.bodySmall?.copyWith(
-                            color: AppColors.textMuted,
+                            color: context.appColors.textMuted,
                           ),
                         ),
                         trailing: isSelected

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Premium feature gate widget
 ///
@@ -38,10 +39,11 @@ class PremiumGate extends ConsumerWidget {
       return child;
     }
 
-    return lockedWidget ?? PremiumLockedCard(
-      featureName: featureName,
-      onTap: onLockedTap ?? () => _showUpgradeDialog(context),
-    );
+    return lockedWidget ??
+        PremiumLockedCard(
+          featureName: featureName,
+          onTap: onLockedTap ?? () => _showUpgradeDialog(context),
+        );
   }
 
   void _showUpgradeDialog(BuildContext context) {
@@ -70,9 +72,9 @@ class PremiumGate extends ConsumerWidget {
               const SizedBox(height: AppSpacing.md),
               Text(
                 featureName,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -91,9 +93,7 @@ class PremiumGate extends ConsumerWidget {
             },
             icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
             label: Text(l10n.unlockPremium),
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.warning,
-            ),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.warning),
           ),
         ],
       ),
@@ -108,11 +108,7 @@ class PremiumLockedCard extends StatelessWidget {
   final String featureName;
   final VoidCallback? onTap;
 
-  const PremiumLockedCard({
-    super.key,
-    required this.featureName,
-    this.onTap,
-  });
+  const PremiumLockedCard({super.key, required this.featureName, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +168,7 @@ class PremiumLockedCard extends StatelessWidget {
                 Text(
                   l10n.premiumFeature,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textMuted,
+                    color: context.appColors.textMuted,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -207,11 +203,7 @@ class PremiumInlineUpsell extends StatelessWidget {
   final String message;
   final VoidCallback? onTap;
 
-  const PremiumInlineUpsell({
-    super.key,
-    required this.message,
-    this.onTap,
-  });
+  const PremiumInlineUpsell({super.key, required this.message, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -223,9 +215,7 @@ class PremiumInlineUpsell extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.warning.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(
-          color: AppColors.warning.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -235,12 +225,7 @@ class PremiumInlineUpsell extends StatelessWidget {
             size: AppSpacing.iconMd,
           ),
           const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ),
+          Expanded(child: Text(message, style: theme.textTheme.bodyMedium)),
           const SizedBox(width: AppSpacing.sm),
           TextButton(
             onPressed: onTap ?? () => context.push('/premium'),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 
 /// A scaffold with gradient background for glassmorphism UI.
 ///
@@ -49,7 +49,7 @@ class GradientScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
       body: isHighContrast
-          ? body
+          ? (appBar != null ? SafeArea(bottom: false, child: body) : body)
           : Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -63,12 +63,13 @@ class GradientScaffold extends StatelessWidget {
                         ]
                       : const [
                           AppColors.gradientLightStart,
-                          AppColors.gradientLightMid,
                           AppColors.gradientLightEnd,
                         ],
                 ),
               ),
-              child: body,
+              child: appBar != null
+                  ? SafeArea(bottom: false, child: body)
+                  : body,
             ),
       bottomNavigationBar: bottomNavigationBar,
     );

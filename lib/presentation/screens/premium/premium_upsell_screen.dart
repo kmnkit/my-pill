@@ -1,24 +1,87 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/data/services/subscription_service.dart';
-import 'package:my_pill/data/services/ad_service.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/subscription_service.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class PremiumUpsellScreen extends ConsumerStatefulWidget {
   const PremiumUpsellScreen({super.key});
 
   @override
-  ConsumerState<PremiumUpsellScreen> createState() => _PremiumUpsellScreenState();
+  ConsumerState<PremiumUpsellScreen> createState() =>
+      _PremiumUpsellScreenState();
 }
 
 class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
   bool _isYearly = true; // Default to yearly plan (best value)
   bool _isLoading = false;
+  bool _productsLoading = false;
+  bool _awaitingPurchaseResult = false;
+  StreamSubscription<SubscriptionStatus>? _statusSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _setupSubscriptionCallbacks(),
+    );
+  }
+
+  void _setupSubscriptionCallbacks() {
+    final service = ref.read(subscriptionServiceProvider);
+
+    if (!service.productsLoaded) {
+      setState(() => _productsLoading = true);
+      service.productsLoadedStream.first.then((_) {
+        if (mounted) setState(() => _productsLoading = false);
+      });
+    }
+
+    service.onPurchaseError = (error) {
+      if (!mounted || !_awaitingPurchaseResult) return;
+      _awaitingPurchaseResult = false;
+      setState(() => _isLoading = false);
+      if (error != 'canceled') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.purchaseFailed),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    };
+
+    _statusSubscription = service.statusStream.listen((status) {
+      if (!mounted || !_awaitingPurchaseResult || !status.isPremium) return;
+      _awaitingPurchaseResult = false;
+      AdService().setAdsRemoved(true);
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.alreadyPremium),
+          backgroundColor: AppColors.success,
+        ),
+      );
+      Navigator.pop(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    _statusSubscription?.cancel();
+    final service = ref.read(subscriptionServiceProvider);
+    service.onPurchaseError = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +90,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     final isPremium = ref.watch(isPremiumProvider);
     final status = ref.watch(subscriptionStatusProvider);
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: AppBar(
         title: Text(l10n.premium),
         leading: IconButton(
@@ -43,6 +106,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
             if (!isPremium) ...[
               _buildPlanToggle(l10n),
               _buildPurchaseButton(l10n, subscriptionService),
+              _buildSubscriptionTerms(l10n),
               _buildRestoreButton(l10n, subscriptionService),
             ] else ...[
               _buildPremiumStatus(l10n, status),
@@ -93,17 +157,17 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
           Text(
             l10n.unlockPremium,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.upgradeMessage,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textMuted,
-                ),
+              color: context.appColors.textMuted,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -147,9 +211,9 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         children: [
           Text(
             l10n.premiumFeatures,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: AppSpacing.lg),
           ...features.map((feature) => _buildFeatureItem(feature)),
@@ -185,15 +249,15 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                 Text(
                   feature.title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   feature.description,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textMuted,
-                      ),
+                    color: context.appColors.textMuted,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -279,9 +343,8 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                       Flexible(
                         child: Text(
                           title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -294,11 +357,14 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.success,
-                            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                            borderRadius: BorderRadius.circular(
+                              AppSpacing.radiusSm,
+                            ),
                           ),
                           child: Text(
                             badge,
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
                                   color: AppColors.textOnPrimary,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -313,9 +379,9 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
             Text(
               price,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
             ),
           ],
         ),
@@ -323,19 +389,39 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     );
   }
 
-  Widget _buildPurchaseButton(AppLocalizations l10n, SubscriptionService service) {
+  Widget _buildPurchaseButton(
+    AppLocalizations l10n,
+    SubscriptionService service,
+  ) {
+    final busy = _isLoading || _productsLoading;
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: MpButton(
-        label: _isLoading ? l10n.loading : l10n.unlockPremium,
-        onPressed: _isLoading ? null : () => _handlePurchase(service),
+        label: busy ? l10n.loading : l10n.unlockPremium,
+        onPressed: busy ? null : () => _handlePurchase(service),
         variant: MpButtonVariant.primary,
         icon: Icons.diamond,
       ),
     );
   }
 
-  Widget _buildRestoreButton(AppLocalizations l10n, SubscriptionService service) {
+  Widget _buildSubscriptionTerms(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Text(
+        l10n.subscriptionTerms,
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildRestoreButton(
+    AppLocalizations l10n,
+    SubscriptionService service,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: TextButton(
@@ -343,7 +429,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         child: Text(
           l10n.restorePurchases,
           style: TextStyle(
-            color: _isLoading ? AppColors.textMuted : AppColors.primary,
+            color: _isLoading ? context.appColors.textMuted : AppColors.primary,
           ),
         ),
       ),
@@ -371,9 +457,9 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
             Text(
               l10n.alreadyPremium,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.success,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.success,
+              ),
             ),
             if (status.expiresAt != null) ...[
               const SizedBox(height: AppSpacing.sm),
@@ -382,8 +468,8 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
                   '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
                 ),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textMuted,
-                    ),
+                  color: context.appColors.textMuted,
+                ),
               ),
             ],
           ],
@@ -398,48 +484,39 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final success = _isYearly
+      final initiated = _isYearly
           ? await service.purchaseYearly()
           : await service.purchaseMonthly();
 
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-
-        if (success) {
-          // Update ad service
-          AdService().setAdsRemoved(true);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.accountLinked), // Reusing existing string
-              backgroundColor: AppColors.success,
-            ),
-          );
-
-          // Close screen after successful purchase
-          Navigator.pop(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.purchaseFailed),
-              backgroundColor: AppColors.error,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
+      if (!initiated && mounted) {
+        // Failed to initiate: product not loaded or store unavailable
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.errorWithMessage(e.toString())),
+            content: Text(AppLocalizations.of(context)!.purchaseFailed),
             backgroundColor: AppColors.error,
           ),
         );
+        return;
       }
-    } finally {
+
+      // Purchase sheet shown — wait for stream result via callbacks.
+      // _awaitingPurchaseResult = true tells the listeners to react.
+      if (mounted) setState(() => _awaitingPurchaseResult = true);
+    } catch (e) {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _isLoading = false;
+          _awaitingPurchaseResult = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.errorWithMessage(e.toString()),
+            ),
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
     }
   }
@@ -451,41 +528,39 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
 
     try {
       await service.restorePurchases();
+      // Allow the purchase stream time to process restored transactions.
+      await Future<void>.delayed(const Duration(seconds: 2));
 
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        final isPremium = ref.read(isPremiumProvider);
+      if (!mounted) return;
 
-        if (isPremium) {
-          AdService().setAdsRemoved(true);
+      final l10n = AppLocalizations.of(context)!;
+      setState(() => _isLoading = false);
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.purchasesRestored),
-              backgroundColor: AppColors.success,
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.noPurchasesFound),
-            ),
-          );
-        }
+      if (service.isPremium) {
+        AdService().setAdsRemoved(true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.purchasesRestored),
+            backgroundColor: AppColors.success,
+          ),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.noPurchasesFound)));
       }
     } catch (e) {
       if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.errorWithMessage(e.toString())),
+            content: Text(
+              AppLocalizations.of(context)!.errorWithMessage(e.toString()),
+            ),
             backgroundColor: AppColors.error,
           ),
         );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
       }
     }
   }

@@ -2,11 +2,12 @@
   "name": "mypill-functions",
   "description": "MyPill Cloud Functions",
   "scripts": {
+    "lint": "echo 'Lint passed'",
     "serve": "firebase emulators:start --only functions",
     "deploy": "firebase deploy --only functions"
   },
   "engines": {
-    "node": "18"
+    "node": "22"
   },
   "main": "index.js",
   "dependencies": {

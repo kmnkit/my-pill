@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
-import 'package:my_pill/core/utils/photo_encryption.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/utils/photo_encryption.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class PhotoPickerButton extends ConsumerStatefulWidget {
   const PhotoPickerButton({
@@ -112,8 +113,10 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
             if (widget.currentPhotoPath != null)
               ListTile(
                 leading: const Icon(Icons.delete, color: AppColors.error),
-                title: Text(l10n.removePhoto,
-                    style: const TextStyle(color: AppColors.error)),
+                title: Text(
+                  l10n.removePhoto,
+                  style: const TextStyle(color: AppColors.error),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   ref
@@ -145,8 +148,7 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
         ),
         child: widget.currentPhotoPath != null
             ? ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(AppSpacing.radiusMd - 2),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd - 2),
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
@@ -176,18 +178,17 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.camera_alt_outlined,
-                      color: AppColors.textMuted,
+                      color: context.appColors.textMuted,
                       size: AppSpacing.iconXl,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       AppLocalizations.of(context)!.takePhoto,
-                      style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textMuted,
-                              ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: context.appColors.textMuted,
+                      ),
                     ),
                   ],
                 ),
@@ -205,13 +206,14 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
             return Image.memory(snapshot.data!, fit: BoxFit.cover);
           }
           if (snapshot.hasError) {
-            return const Center(
-              child: Icon(Icons.broken_image, color: AppColors.textMuted),
+            return Center(
+              child: Icon(
+                Icons.broken_image,
+                color: context.appColors.textMuted,
+              ),
             );
           }
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
+          return const Center(child: CircularProgressIndicator.adaptive());
         },
       );
     }

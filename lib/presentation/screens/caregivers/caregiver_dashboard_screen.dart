@@ -1,20 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/caregiver_monitoring_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/patient_data_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_error_view.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
-class CaregiverDashboardScreen extends ConsumerWidget {
+class CaregiverDashboardScreen extends ConsumerStatefulWidget {
   const CaregiverDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CaregiverDashboardScreen> createState() =>
+      _CaregiverDashboardScreenState();
+}
+
+class _CaregiverDashboardScreenState
+    extends ConsumerState<CaregiverDashboardScreen> {
+  Future<void> _scanQrCode() async {
+    final code = await Navigator.of(context).push<String>(
+      MaterialPageRoute(builder: (context) => const QrScannerScreen()),
+    );
+
+    if (code != null && mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.processingInvite),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+
+      try {
+        final cfService = ref.read(cloudFunctionsServiceProvider);
+        await cfService.acceptInvite(code);
+
+        ref.invalidate(caregiverPatientsProvider);
+
+        if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.inviteAccepted),
+              backgroundColor: AppColors.success,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+      } catch (e, st) {
+        ErrorHandler.debugLog(e, st, 'acceptInviteQr');
+        if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.failedToAcceptInvite),
+              backgroundColor: AppColors.error,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final patientsAsync = ref.watch(caregiverPatientsProvider);
 
-    return Scaffold(
+    return GradientScaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -28,9 +87,11 @@ class CaregiverDashboardScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: patientsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(
-                    child: Text('Error: $error'),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
+                  error: (error, stack) => MpErrorView(
+                    error: error,
+                    onRetry: () => ref.invalidate(caregiverPatientsProvider),
                   ),
                   data: (patients) {
                     if (patients.isEmpty) {
@@ -38,6 +99,8 @@ class CaregiverDashboardScreen extends ConsumerWidget {
                         icon: Icons.people_outline,
                         title: l10n.noPatientsLinked,
                         description: l10n.noPatientsLinkedDesc,
+                        actionLabel: l10n.scanQrCode,
+                        onAction: _scanQrCode,
                       );
                     }
 
@@ -50,7 +113,9 @@ class CaregiverDashboardScreen extends ConsumerWidget {
                         final patient = patients[index];
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: index < patients.length - 1 ? AppSpacing.lg : 0,
+                            bottom: index < patients.length - 1
+                                ? AppSpacing.lg
+                                : 0,
                           ),
                           child: PatientDataCard(
                             patientId: patient.patientId,

@@ -4,64 +4,98 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service — Kusuridoki (くすりどき)</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F0FDFA',
+              100: '#CCFBF1',
+              200: '#99F6E4',
+              400: '#2DD4BF',
+              500: '#0D9488',
+              600: '#0EA699',
+              700: '#0F766E',
+              800: '#065F56',
+              900: '#134E4A',
+            },
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
   <style>
-    :root { --bg: #f8f9fa; --card: #fff; --text: #1a1a2e; --muted: #555; --accent: #4a90d9; --border: #e0e0e0; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-    .container { max-width: 720px; margin: 0 auto; padding: 40px 24px; }
-    .card { background: var(--card); border-radius: 12px; padding: 40px 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    h1 { font-size: 1.8rem; margin-bottom: 8px; }
-    h2 { font-size: 1.2rem; margin-top: 28px; margin-bottom: 8px; color: var(--accent); }
-    p, li { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; }
-    ul { padding-left: 20px; }
-    .lang-switch { text-align: right; margin-bottom: 16px; }
-    .lang-switch a { text-decoration: none; color: var(--accent); font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--accent); border-radius: 6px; }
-    .lang-switch a:hover { background: var(--accent); color: #fff; }
-    .updated { font-size: 0.85rem; color: #999; margin-bottom: 24px; }
-    .contact { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
-    footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #999; }
     .section { display: block; }
     .hidden { display: none; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="card">
-      <div class="lang-switch">
-        <a href="#" onclick="switchLang('en'); return false;" id="btn-en">English</a>
-        <a href="#" onclick="switchLang('ja'); return false;" id="btn-ja">日本語</a>
-      </div>
+<body class="bg-brand-50 text-gray-900 font-sans leading-relaxed">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-brand-500 via-brand-600 to-brand-800 text-white py-8">
+    <div class="max-w-3xl mx-auto px-6">
+      <a href="/" class="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mb-4 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        <span id="home-en">Home</span><span id="home-ja" class="hidden">ホームへ戻る</span>
+      </a>
+      <h1 class="text-2xl md:text-3xl font-bold" id="header-en">Terms of Service</h1>
+      <h1 class="text-2xl md:text-3xl font-bold hidden" id="header-ja">利用規約</h1>
+    </div>
+  </header>
+
+  <!-- Language Switch -->
+  <div class="max-w-3xl mx-auto px-6 pt-6 flex justify-end">
+    <div class="inline-flex rounded-full border border-brand-500 overflow-hidden">
+      <button onclick="switchLang('en')" id="btn-en" class="px-4 py-1.5 text-sm font-medium transition-colors bg-brand-500 text-white">English</button>
+      <button onclick="switchLang('ja')" id="btn-ja" class="px-4 py-1.5 text-sm font-medium transition-colors text-brand-500">日本語</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="max-w-3xl mx-auto px-6 py-8 pb-16">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-8 md:p-10">
 
       <!-- English -->
       <div id="en" class="section">
-        <h1>Terms of Service</h1>
-        <p class="updated">Last updated: February 23, 2026</p>
+        <p class="text-sm text-gray-400 mb-6">Last updated: February 23, 2026</p>
 
-        <p>Welcome to Kusuridoki ("the app"). By using this app, you agree to these terms.</p>
+        <p class="text-gray-600 mb-6">Welcome to Kusuridoki ("the app"). By using this app, you agree to these terms.</p>
 
-        <h2>1. Service Description</h2>
-        <p>Kusuridoki is a medication reminder and adherence tracking application. The app helps users manage medication schedules and allows caregivers to monitor adherence.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">1. Service Description</h2>
+        <p class="text-gray-600 mb-4">Kusuridoki is a medication reminder and adherence tracking application. The app helps users manage medication schedules and allows caregivers to monitor adherence.</p>
 
-        <h2>2. Medical Disclaimer</h2>
-        <p><strong>This app is not a medical device and does not provide medical advice.</strong> Kusuridoki is a tool to help you remember your medications. It does not replace professional medical advice, diagnosis, or treatment. Always consult your doctor or pharmacist regarding your medications.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">2. Medical Disclaimer</h2>
+        <p class="text-gray-600 mb-4"><strong>This app is not a medical device and does not provide medical advice.</strong> Kusuridoki is a tool to help you remember your medications. It does not replace professional medical advice, diagnosis, or treatment. Always consult your doctor or pharmacist regarding your medications.</p>
 
-        <h2>3. User Responsibilities</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">3. User Responsibilities</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>You are responsible for the accuracy of medication information you enter</li>
           <li>You must not rely solely on this app for critical medication timing</li>
           <li>You are responsible for maintaining the security of your account</li>
           <li>You must not use the app for any unlawful purpose</li>
         </ul>
 
-        <h2>4. Account and Data</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">4. Account and Data</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>You may create an account using Apple Sign-In, Google Sign-In, or anonymous authentication</li>
           <li>You may delete your account at any time from Settings, which permanently removes all associated data</li>
           <li>We reserve the right to suspend accounts that violate these terms</li>
         </ul>
 
-        <h2>5. Subscriptions and Purchases</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. Subscriptions and Purchases</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>The app offers a free tier with advertisements</li>
           <li>Premium subscriptions are available to remove ads and access additional features</li>
           <li>Subscriptions are managed through Apple App Store or Google Play Store</li>
@@ -69,62 +103,61 @@
           <li>Refunds are handled by the respective app store</li>
         </ul>
 
-        <h2>6. Caregiver Features</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. Caregiver Features</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Patients explicitly consent to sharing medication status when creating a caregiver link</li>
           <li>Patients can revoke caregiver access at any time</li>
           <li>Caregivers must not misuse shared health information</li>
         </ul>
 
-        <h2>7. Intellectual Property</h2>
-        <p>All content, design, and code of Kusuridoki are owned by the developer. You may not copy, modify, or distribute the app.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. Intellectual Property</h2>
+        <p class="text-gray-600 mb-4">All content, design, and code of Kusuridoki are owned by the developer. You may not copy, modify, or distribute the app.</p>
 
-        <h2>8. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, Kusuridoki and its developer shall not be liable for any damages arising from the use or inability to use the app, including but not limited to missed medication doses or health consequences.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">8. Limitation of Liability</h2>
+        <p class="text-gray-600 mb-4">To the maximum extent permitted by law, Kusuridoki and its developer shall not be liable for any damages arising from the use or inability to use the app, including but not limited to missed medication doses or health consequences.</p>
 
-        <h2>9. Changes to Terms</h2>
-        <p>We may update these terms from time to time. Continued use of the app after changes constitutes acceptance of the new terms.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">9. Changes to Terms</h2>
+        <p class="text-gray-600 mb-4">We may update these terms from time to time. Continued use of the app after changes constitutes acceptance of the new terms.</p>
 
-        <h2>10. Governing Law</h2>
-        <p>These terms are governed by the laws of Japan. Any disputes shall be subject to the exclusive jurisdiction of the courts of Japan.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">10. Governing Law</h2>
+        <p class="text-gray-600 mb-4">These terms are governed by the laws of Japan. Any disputes shall be subject to the exclusive jurisdiction of the courts of Japan.</p>
 
-        <div class="contact">
-          <h2>11. Contact</h2>
-          <p>For questions about these terms, contact us at:</p>
-          <p><strong>Email:</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h2 class="text-lg font-bold text-brand-500 mb-3">11. Contact</h2>
+          <p class="text-gray-600 mb-2">For questions about these terms, contact us at:</p>
+          <p class="text-gray-600"><strong>Email:</strong> <a href="mailto:support@kusuridoki.app" class="text-brand-500 hover:text-brand-700 transition-colors">support@kusuridoki.app</a></p>
         </div>
       </div>
 
       <!-- Japanese -->
       <div id="ja" class="section hidden">
-        <h1>利用規約</h1>
-        <p class="updated">最終更新日: 2026年2月23日</p>
+        <p class="text-sm text-gray-400 mb-6">最終更新日: 2026年2月23日</p>
 
-        <p>くすりどき（以下「当アプリ」）をご利用いただきありがとうございます。当アプリを利用することにより、本規約に同意したものとみなされます。</p>
+        <p class="text-gray-600 mb-6">くすりどき（以下「当アプリ」）をご利用いただきありがとうございます。当アプリを利用することにより、本規約に同意したものとみなされます。</p>
 
-        <h2>1. サービス内容</h2>
-        <p>くすりどきは、お薬のリマインダーおよび服薬管理アプリケーションです。ユーザーのお薬スケジュール管理を支援し、見守り者による服薬状況の確認を可能にします。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">1. サービス内容</h2>
+        <p class="text-gray-600 mb-4">くすりどきは、お薬のリマインダーおよび服薬管理アプリケーションです。ユーザーのお薬スケジュール管理を支援し、見守り者による服薬状況の確認を可能にします。</p>
 
-        <h2>2. 医療に関する免責事項</h2>
-        <p><strong>当アプリは医療機器ではなく、医療上のアドバイスを提供するものではありません。</strong>くすりどきはお薬の服用を思い出すためのツールです。専門的な医療アドバイス、診断、治療に代わるものではありません。お薬に関しては必ず医師または薬剤師にご相談ください。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">2. 医療に関する免責事項</h2>
+        <p class="text-gray-600 mb-4"><strong>当アプリは医療機器ではなく、医療上のアドバイスを提供するものではありません。</strong>くすりどきはお薬の服用を思い出すためのツールです。専門的な医療アドバイス、診断、治療に代わるものではありません。お薬に関しては必ず医師または薬剤師にご相談ください。</p>
 
-        <h2>3. ユーザーの責任</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">3. ユーザーの責任</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>ご入力いただくお薬情報の正確性はお客様の責任となります</li>
           <li>重要なお薬の服用タイミングを当アプリのみに依存しないでください</li>
           <li>アカウントのセキュリティ維持はお客様の責任となります</li>
           <li>違法な目的でアプリを使用しないでください</li>
         </ul>
 
-        <h2>4. アカウントとデータ</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">4. アカウントとデータ</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Appleサインイン、Googleサインイン、または匿名認証でアカウントを作成できます</li>
           <li>設定からいつでもアカウントを削除でき、関連するすべてのデータが完全に削除されます</li>
           <li>本規約に違反するアカウントを停止する権利を留保します</li>
         </ul>
 
-        <h2>5. サブスクリプションと購入</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. サブスクリプションと購入</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>当アプリは広告付きの無料プランを提供しています</li>
           <li>広告の非表示や追加機能へのアクセスにはプレミアムサブスクリプションをご利用いただけます</li>
           <li>サブスクリプションはApple App StoreまたはGoogle Play Storeを通じて管理されます</li>
@@ -132,43 +165,87 @@
           <li>返金は各アプリストアの規定に従います</li>
         </ul>
 
-        <h2>6. 見守り機能</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. 見守り機能</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>患者は見守りリンクを作成する際、服薬状況の共有に明示的に同意します</li>
           <li>患者はいつでも見守りアクセスを取り消すことができます</li>
           <li>見守り者は共有された健康情報を不正に使用してはなりません</li>
         </ul>
 
-        <h2>7. 知的財産権</h2>
-        <p>くすりどきのすべてのコンテンツ、デザイン、コードは開発者に帰属します。アプリの複製、改変、配布は禁止されています。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. 知的財産権</h2>
+        <p class="text-gray-600 mb-4">くすりどきのすべてのコンテンツ、デザイン、コードは開発者に帰属します。アプリの複製、改変、配布は禁止されています。</p>
 
-        <h2>8. 責任の制限</h2>
-        <p>法律で許容される最大限の範囲において、くすりどきおよびその開発者は、お薬の服用忘れや健康上の影響を含む、アプリの使用または使用不能から生じるいかなる損害についても責任を負いません。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">8. 責任の制限</h2>
+        <p class="text-gray-600 mb-4">法律で許容される最大限の範囲において、くすりどきおよびその開発者は、お薬の服用忘れや健康上の影響を含む、アプリの使用または使用不能から生じるいかなる損害についても責任を負いません。</p>
 
-        <h2>9. 規約の変更</h2>
-        <p>本規約は随時更新される場合があります。変更後のアプリの継続利用は、新しい規約への同意とみなされます。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">9. 規約の変更</h2>
+        <p class="text-gray-600 mb-4">本規約は随時更新される場合があります。変更後のアプリの継続利用は、新しい規約への同意とみなされます。</p>
 
-        <h2>10. 準拠法</h2>
-        <p>本規約は日本法に準拠します。紛争が生じた場合は、日本の裁判所を専属的合意管轄裁判所とします。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">10. 準拠法</h2>
+        <p class="text-gray-600 mb-4">本規約は日本法に準拠します。紛争が生じた場合は、日本の裁判所を専属的合意管轄裁判所とします。</p>
 
-        <div class="contact">
-          <h2>11. お問い合わせ</h2>
-          <p>本利用規約に関するご質問は、以下までご連絡ください：</p>
-          <p><strong>メール：</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h2 class="text-lg font-bold text-brand-500 mb-3">11. お問い合わせ</h2>
+          <p class="text-gray-600 mb-2">本利用規約に関するご質問は、以下までご連絡ください：</p>
+          <p class="text-gray-600"><strong>メール：</strong> <a href="mailto:support@kusuridoki.app" class="text-brand-500 hover:text-brand-700 transition-colors">support@kusuridoki.app</a></p>
         </div>
       </div>
+
     </div>
-  </div>
-  <footer>&copy; 2026 Kusuridoki (くすりどき). All rights reserved.</footer>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="/privacy-policy#ja" class="hover:text-white transition-colors">プライバシーポリシー</a>
+        <a href="/terms#ja" class="hover:text-white transition-colors">利用規約</a>
+        <a href="/support#ja" class="hover:text-white transition-colors">サポート</a>
+        <a href="mailto:support@kusuridoki.app" class="hover:text-white transition-colors">お問い合わせ</a>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="/support" class="hover:text-white transition-colors">Support</a>
+        <a href="mailto:support@kusuridoki.app" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center">
+        <p class="text-xs text-gray-500 mb-4 max-w-lg mx-auto leading-relaxed">
+          ※ This app is not a medical device and does not replace professional medical advice.
+        </p>
+        <p class="text-xs text-gray-500">&copy; 2026 HobbyLabo. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
   <script>
     function switchLang(lang) {
       document.getElementById('en').classList.toggle('hidden', lang !== 'en');
       document.getElementById('ja').classList.toggle('hidden', lang !== 'ja');
-      document.getElementById('btn-en').style.opacity = lang === 'en' ? '1' : '0.5';
-      document.getElementById('btn-ja').style.opacity = lang === 'ja' ? '1' : '0.5';
+      // Header
+      document.getElementById('header-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('header-ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('home-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('home-ja').classList.toggle('hidden', lang !== 'ja');
+      // Pill buttons
+      const btnEn = document.getElementById('btn-en');
+      const btnJa = document.getElementById('btn-ja');
+      if (lang === 'en') {
+        btnEn.classList.add('bg-brand-500', 'text-white');
+        btnEn.classList.remove('text-brand-500');
+        btnJa.classList.remove('bg-brand-500', 'text-white');
+        btnJa.classList.add('text-brand-500');
+      } else {
+        btnJa.classList.add('bg-brand-500', 'text-white');
+        btnJa.classList.remove('text-brand-500');
+        btnEn.classList.remove('bg-brand-500', 'text-white');
+        btnEn.classList.add('text-brand-500');
+      }
     }
-    const isJa = navigator.language.startsWith('ja');
-    switchLang(isJa ? 'ja' : 'en');
+    // Default: hash or browser language
+    const hash = window.location.hash.replace('#', '');
+    const defaultLang = (hash === 'ja' || hash === 'en') ? hash : (navigator.language.startsWith('ja') ? 'ja' : 'en');
+    switchLang(defaultLang);
   </script>
 </body>
 </html>

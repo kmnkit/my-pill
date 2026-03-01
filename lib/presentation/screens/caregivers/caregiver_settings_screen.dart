@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/data/providers/adherence_provider.dart';
-import 'package:my_pill/data/providers/auth_provider.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 
-import 'package:my_pill/data/services/cloud_functions_service.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverSettingsScreen extends ConsumerStatefulWidget {
   const CaregiverSettingsScreen({super.key});
 
   @override
-  ConsumerState<CaregiverSettingsScreen> createState() => _CaregiverSettingsScreenState();
+  ConsumerState<CaregiverSettingsScreen> createState() =>
+      _CaregiverSettingsScreenState();
 }
 
-class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScreen> {
-
+class _CaregiverSettingsScreenState
+    extends ConsumerState<CaregiverSettingsScreen> {
   void _invalidateAllProviders() {
     ref.invalidate(medicationListProvider);
     ref.invalidate(scheduleListProvider);
@@ -40,7 +44,7 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(title: l10n.settingsTitle),
       body: SafeArea(
         child: ListView(
@@ -51,33 +55,45 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
             AppSpacing.navBarClearance,
           ),
           children: [
+            const LanguageSelector(),
+            const SizedBox(height: AppSpacing.xl),
             MpSectionHeader(title: l10n.notifications),
-            ref.watch(userSettingsProvider).when(
-              loading: () => const SizedBox.shrink(),
-              error: (e, st) => const SizedBox.shrink(),
-              data: (settings) => Column(
-                children: [
-                  SwitchListTile(
-                    title: Text(l10n.missedDoseAlerts),
-                    subtitle: Text(l10n.missedDoseAlertsSubtitle),
-                    value: settings.missedDoseAlerts,
-                    onChanged: (value) {
-                      final updated = settings.copyWith(missedDoseAlerts: value);
-                      ref.read(userSettingsProvider.notifier).updateProfile(updated);
-                    },
+            ref
+                .watch(userSettingsProvider)
+                .when(
+                  loading: () => const SizedBox.shrink(),
+                  error: (e, st) => const SizedBox.shrink(),
+                  data: (settings) => Column(
+                    children: [
+                      SwitchListTile(
+                        title: Text(l10n.missedDoseAlerts),
+                        subtitle: Text(l10n.missedDoseAlertsSubtitle),
+                        value: settings.missedDoseAlerts,
+                        onChanged: (value) {
+                          final updated = settings.copyWith(
+                            missedDoseAlerts: value,
+                          );
+                          ref
+                              .read(userSettingsProvider.notifier)
+                              .updateProfile(updated);
+                        },
+                      ),
+                      SwitchListTile(
+                        title: Text(l10n.lowStockAlerts),
+                        subtitle: Text(l10n.lowStockAlertsSubtitle),
+                        value: settings.lowStockAlerts,
+                        onChanged: (value) {
+                          final updated = settings.copyWith(
+                            lowStockAlerts: value,
+                          );
+                          ref
+                              .read(userSettingsProvider.notifier)
+                              .updateProfile(updated);
+                        },
+                      ),
+                    ],
                   ),
-                  SwitchListTile(
-                    title: Text(l10n.lowStockAlerts),
-                    subtitle: Text(l10n.lowStockAlertsSubtitle),
-                    value: settings.lowStockAlerts,
-                    onChanged: (value) {
-                      final updated = settings.copyWith(lowStockAlerts: value);
-                      ref.read(userSettingsProvider.notifier).updateProfile(updated);
-                    },
-                  ),
-                ],
-              ),
-            ),
+                ),
             const SizedBox(height: AppSpacing.xl),
             MpSectionHeader(title: l10n.account),
             ListTile(
@@ -125,14 +141,22 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
             const SizedBox(height: AppSpacing.xl),
             MpSectionHeader(title: l10n.advanced),
             ListTile(
-              leading: Icon(Icons.logout, size: AppSpacing.iconMd, color: AppColors.error),
+              leading: Icon(
+                Icons.logout,
+                size: AppSpacing.iconMd,
+                color: AppColors.error,
+              ),
               title: Text(
                 l10n.deactivateAccount,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.error,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
               ),
-              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: AppSpacing.iconMd,
+                color: context.appColors.textMuted,
+              ),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 final confirmed = await MpConfirmDialog.show(
@@ -178,14 +202,22 @@ class _CaregiverSettingsScreenState extends ConsumerState<CaregiverSettingsScree
             ),
             const SizedBox(height: AppSpacing.sm),
             ListTile(
-              leading: Icon(Icons.delete_forever, size: AppSpacing.iconMd, color: AppColors.error),
+              leading: Icon(
+                Icons.delete_forever,
+                size: AppSpacing.iconMd,
+                color: AppColors.error,
+              ),
               title: Text(
                 l10n.deleteAccount,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.error,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
               ),
-              trailing: Icon(Icons.chevron_right, size: AppSpacing.iconMd, color: AppColors.textMuted),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: AppSpacing.iconMd,
+                color: context.appColors.textMuted,
+              ),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 // First confirmation

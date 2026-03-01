@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
 part 'schedule_provider.g.dart';
 
@@ -15,18 +15,21 @@ class ScheduleList extends _$ScheduleList {
   Future<void> addSchedule(Schedule schedule) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveSchedule(schedule);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 
   Future<void> updateSchedule(Schedule schedule) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveSchedule(schedule);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 
   Future<void> deleteSchedule(String id) async {
     final storage = ref.read(storageServiceProvider);
     await storage.deleteSchedule(id);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 }

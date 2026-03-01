@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class AdherenceBadge extends StatelessWidget {
-  const AdherenceBadge({
-    super.key,
-    required this.percentage,
-  });
+  const AdherenceBadge({super.key, required this.percentage});
 
   final int percentage;
 
@@ -34,7 +32,7 @@ class AdherenceBadge extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.adherenceRate,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textMuted,
+              color: context.appColors.textMuted,
             ),
           ),
         ],

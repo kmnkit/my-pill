@@ -1,0 +1,6 @@
+/* iOS Permission Strings - Japanese */
+
+"NSCameraUsageDescription" = "お薬を簡単に識別するために、カメラで写真を撮影します。";
+"NSNotificationUsageDescription" = "お薬の服用時間にリマインダーを受け取ります。";
+"NSPhotoLibraryAddUsageDescription" = "お薬の写真をフォトライブラリに保存します。";
+"NSPhotoLibraryUsageDescription" = "お薬の写真を選ぶためにフォトライブラリにアクセスします。";

@@ -64,7 +64,7 @@ docs/iOS_DEPLOYMENT_STATUS.md
 **이제 Xcode에서 프로젝트를 열 수 있습니다:**
 
 ```bash
-open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/kusuridoki/ios/Runner.xcworkspace
 ```
 
 **필요한 설정:**
@@ -172,7 +172,7 @@ flutter build ios --release --no-codesign
 **즉시:**
 ```bash
 # Xcode 열기
-open /Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace
+open /Users/gingermarco/develop/flutter/kusuridoki/ios/Runner.xcworkspace
 ```
 
 **Xcode에서:**

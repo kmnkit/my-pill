@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class PillShapeSelector extends StatelessWidget {
   const PillShapeSelector({
@@ -29,38 +30,50 @@ class PillShapeSelector extends StatelessWidget {
       childAspectRatio: 1.2,
       children: PillShape.values.map((shape) {
         final isSelected = shape == selectedShape;
-        return GestureDetector(
-          onTap: () => onShapeSelected(shape),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? AppColors.primaryLight
-                  : (isDark ? AppColors.cardDark : AppColors.cardLight),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.borderLight,
-                width: isSelected ? 1.5 : 1,
+        return Semantics(
+          button: true,
+          selected: isSelected,
+          label: shape.localizedName(l10n),
+          child: InkWell(
+            onTap: () => onShapeSelected(shape),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.primaryLight
+                    : (isDark ? AppColors.cardDark : AppColors.cardLight),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : AppColors.borderLight,
+                  width: isSelected ? 1.5 : 1,
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  shape.icon,
-                  color: isSelected ? AppColors.primary : AppColors.textMuted,
-                  size: AppSpacing.iconLg,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  shape.localizedName(l10n),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: isSelected ? AppColors.primary : AppColors.textMuted,
+              child: ExcludeSemantics(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      shape.icon,
+                      color: isSelected
+                          ? AppColors.primary
+                          : context.appColors.textMuted,
+                      size: AppSpacing.iconLg,
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      shape.localizedName(l10n),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: isSelected
+                            ? AppColors.primary
+                            : context.appColors.textMuted,
                       ),
-                  textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );
