@@ -106,7 +106,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // MpEmptyState is rendered for no reminders
+      // KdEmptyState is rendered for no reminders
       expect(find.byIcon(Icons.calendar_today), findsOneWidget);
     });
 

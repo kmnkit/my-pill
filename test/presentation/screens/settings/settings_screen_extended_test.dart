@@ -181,7 +181,7 @@ void main() {
       );
       // pump once: async notifier still loading
       await tester.pump();
-      // CircularProgressIndicator or content – either is acceptable before settle
+      // Shimmer placeholder or content – either is acceptable before settle
       // After full settle, content must be visible
       await tester.pumpAndSettle();
       expect(find.text('Settings'), findsOneWidget);

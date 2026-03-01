@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 
-class MpSectionHeader extends StatelessWidget {
-  const MpSectionHeader({
+class KdSectionHeader extends StatelessWidget {
+  const KdSectionHeader({
     super.key,
     required this.title,
     this.actionLabel,

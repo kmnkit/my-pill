@@ -9,12 +9,13 @@ import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/services/ad_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_text_field.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class MedicationsListScreen extends ConsumerStatefulWidget {
@@ -61,7 +62,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
     final medicationsAsync = ref.watch(medicationListProvider);
 
     return GradientScaffold(
-      appBar: MpAppBar(
+      appBar: KdAppBar(
         title: l10n.myMedications,
         actions: [
           IconButton(
@@ -89,7 +90,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
               if (medications.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: MpTextField(
+                  child: KdTextField(
                     controller: _searchController,
                     hint: l10n.searchMedicationsHint,
                     prefixIcon: Icons.search,
@@ -102,7 +103,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                 ),
               Expanded(
                 child: filteredMedications.isEmpty
-                    ? MpEmptyState(
+                    ? KdEmptyState(
                         icon: Icons.medication,
                         title: _searchQuery.isEmpty
                             ? l10n.noMedications
@@ -135,12 +136,12 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                             padding: const EdgeInsets.only(
                               bottom: AppSpacing.md,
                             ),
-                            child: MpCard(
+                            child: KdCard(
                               onTap: () =>
                                   context.push('/medications/${med.id}'),
                               child: Row(
                                 children: [
-                                  MpPillIcon(
+                                  KdPillIcon(
                                     shape: med.shape,
                                     color: med.color,
                                   ),
@@ -201,7 +202,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
                                         ).textTheme.bodySmall,
                                       ),
                                       const SizedBox(height: AppSpacing.xs),
-                                      MpBadge(
+                                      KdBadge(
                                         label: isLowStock
                                             ? l10n.lowStock
                                             : 'OK',
@@ -238,8 +239,10 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
             ],
           );
         },
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const Padding(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: KdListShimmer(),
+        ),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

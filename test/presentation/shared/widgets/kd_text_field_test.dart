@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_text_field.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpTextField', () {
+  group('KdTextField', () {
     testWidgets('renders hint text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpTextField(hint: 'Enter name')),
+        createTestableWidget(const KdTextField(hint: 'Enter name')),
       );
       await tester.pumpAndSettle();
 
@@ -18,7 +18,7 @@ void main() {
     testWidgets('renders label text when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpTextField(label: 'Name', hint: 'Enter name'),
+          const KdTextField(label: 'Name', hint: 'Enter name'),
         ),
       );
       await tester.pumpAndSettle();
@@ -30,7 +30,7 @@ void main() {
       String? changed;
       await tester.pumpWidget(
         createTestableWidget(
-          MpTextField(hint: 'Type here', onChanged: (v) => changed = v),
+          KdTextField(hint: 'Type here', onChanged: (v) => changed = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -44,7 +44,7 @@ void main() {
     testWidgets('prefixIcon shows when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpTextField(hint: 'Search', prefixIcon: Icons.search),
+          const KdTextField(hint: 'Search', prefixIcon: Icons.search),
         ),
       );
       await tester.pumpAndSettle();
@@ -56,7 +56,7 @@ void main() {
       final controller = TextEditingController(text: 'initial');
       await tester.pumpWidget(
         createTestableWidget(
-          MpTextField(controller: controller, hint: 'placeholder'),
+          KdTextField(controller: controller, hint: 'placeholder'),
         ),
       );
       await tester.pumpAndSettle();
@@ -67,7 +67,7 @@ void main() {
 
     testWidgets('no prefixIcon when not provided', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpTextField(hint: 'No icon')),
+        createTestableWidget(const KdTextField(hint: 'No icon')),
       );
       await tester.pumpAndSettle();
 

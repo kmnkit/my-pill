@@ -3,8 +3,8 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
-class MpAlertBanner extends StatelessWidget {
-  const MpAlertBanner({
+class KdAlertBanner extends StatelessWidget {
+  const KdAlertBanner({
     super.key,
     required this.title,
     this.description,

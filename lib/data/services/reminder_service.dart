@@ -30,11 +30,14 @@ class ReminderService {
       for (final timeString in schedule.times) {
         final scheduledTime = _parseTimeForDate(timeString, date);
 
-        // Check if reminder already exists for this medicationId + scheduledTime
+        // Check if reminder already exists for this medicationId + hour + minute
+        // Using hour/minute comparison instead of isAtSameMomentAs to avoid
+        // DateTime serialization precision issues
         final alreadyExists = existing.any(
           (r) =>
               r.medicationId == schedule.medicationId &&
-              r.scheduledTime.isAtSameMomentAs(scheduledTime),
+              r.scheduledTime.hour == scheduledTime.hour &&
+              r.scheduledTime.minute == scheduledTime.minute,
         );
 
         if (!alreadyExists) {

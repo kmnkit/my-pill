@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 
-class MpToggleSwitch extends StatelessWidget {
-  const MpToggleSwitch({
+class KdToggleSwitch extends StatelessWidget {
+  const KdToggleSwitch({
     super.key,
     required this.value,
     required this.onChanged,

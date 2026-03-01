@@ -32,5 +32,5 @@ Future<void> main() async {
   await ScreenshotDataSeeder(storage).seed();
   debugPrint('[Screenshot Mode] Sample data seeded successfully');
 
-  runApp(const ProviderScope(child: MyPillApp()));
+  runApp(const ProviderScope(child: KusuridokiApp()));
 }

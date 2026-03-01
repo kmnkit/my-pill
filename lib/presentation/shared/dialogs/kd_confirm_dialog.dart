@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
-class MpConfirmDialog extends StatelessWidget {
-  const MpConfirmDialog({
+class KdConfirmDialog extends StatelessWidget {
+  const KdConfirmDialog({
     super.key,
     required this.title,
     required this.message,
@@ -30,7 +30,7 @@ class MpConfirmDialog extends StatelessWidget {
   }) {
     return showDialog<bool>(
       context: context,
-      builder: (_) => MpConfirmDialog(
+      builder: (_) => KdConfirmDialog(
         title: title,
         message: message,
         confirmLabel: confirmLabel,
@@ -66,7 +66,7 @@ class MpConfirmDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.xxl),
-            MpButton(
+            KdButton(
               label: resolvedConfirmLabel,
               onPressed: () => Navigator.of(context).pop(true),
               variant: isDestructive
@@ -74,7 +74,7 @@ class MpConfirmDialog extends StatelessWidget {
                   : MpButtonVariant.primary,
             ),
             const SizedBox(height: AppSpacing.sm),
-            MpButton(
+            KdButton(
               label: resolvedCancelLabel,
               variant: MpButtonVariant.text,
               onPressed: () => Navigator.of(context).pop(false),

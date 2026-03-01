@@ -4,8 +4,9 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 
 class DisplaySettings extends ConsumerWidget {
   const DisplaySettings({super.key});
@@ -37,8 +38,8 @@ class DisplaySettings extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MpSectionHeader(title: l10n.display),
-            MpToggleSwitch(
+            KdSectionHeader(title: l10n.display),
+            KdToggleSwitch(
               value: highContrast,
               onChanged: (value) {
                 ref.read(userSettingsProvider.notifier).toggleHighContrast();
@@ -99,7 +100,7 @@ class DisplaySettings extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const KdListShimmer(itemCount: 2, itemHeight: 48),
       error: (error, stack) {
         final l10n = AppLocalizations.of(context)!;
         return Center(child: Text(l10n.errorWithMessage(error.toString())));

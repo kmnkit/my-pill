@@ -6,7 +6,7 @@ import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/schedule.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/backup_sync_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 import '../../../../mock_firebase.dart';
@@ -308,7 +308,7 @@ void main() {
       expect(sw().value, isTrue);
     });
 
-    testWidgets('dialog contains exactly two MpButton widgets', (tester) async {
+    testWidgets('dialog contains exactly two KdButton widgets', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -317,10 +317,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpButton), findsNWidgets(2));
+      expect(find.byType(KdButton), findsNWidgets(2));
     });
 
-    testWidgets('Close MpButton has secondary variant', (tester) async {
+    testWidgets('Close KdButton has secondary variant', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const BackupSyncDialog(),
@@ -329,7 +329,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+      final buttons = tester.widgetList<KdButton>(find.byType(KdButton));
       final closeBtn = buttons.firstWhere(
         (b) => b.label == 'Close',
         orElse: () => throw TestFailure('No Close button found'),
@@ -337,7 +337,7 @@ void main() {
       expect(closeBtn.variant, equals(MpButtonVariant.secondary));
     });
 
-    testWidgets('Sync Now MpButton is enabled (onPressed non-null) initially', (
+    testWidgets('Sync Now KdButton is enabled (onPressed non-null) initially', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -348,7 +348,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+      final buttons = tester.widgetList<KdButton>(find.byType(KdButton));
       final syncBtn = buttons.firstWhere(
         (b) => b.label == 'Sync Now',
         orElse: () => throw TestFailure('No Sync Now button found'),
@@ -370,7 +370,7 @@ void main() {
       // All core structural widgets still present
       expect(find.byType(Dialog), findsOneWidget);
       expect(find.byType(SwitchListTile), findsOneWidget);
-      expect(find.byType(MpButton), findsNWidgets(2));
+      expect(find.byType(KdButton), findsNWidgets(2));
     });
 
     testWidgets(
@@ -476,7 +476,7 @@ void main() {
         expect(find.text('Sync Now'), findsOneWidget);
         expect(find.text('Syncing...'), findsNothing);
 
-        final buttons = tester.widgetList<MpButton>(find.byType(MpButton));
+        final buttons = tester.widgetList<KdButton>(find.byType(KdButton));
         final syncBtn = buttons.firstWhere(
           (b) => b.label == 'Sync Now',
           orElse: () => throw TestFailure('No Sync Now button found'),

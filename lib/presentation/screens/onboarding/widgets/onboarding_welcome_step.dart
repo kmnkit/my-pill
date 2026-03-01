@@ -5,7 +5,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 class OnboardingWelcomeStep extends ConsumerWidget {
   final VoidCallback onNext;
@@ -78,7 +78,7 @@ class OnboardingWelcomeStep extends ConsumerWidget {
           const Spacer(),
 
           // Next button
-          MpButton(
+          KdButton(
             label: l10n.onboardingNext,
             onPressed: onNext,
             variant: MpButtonVariant.primary,

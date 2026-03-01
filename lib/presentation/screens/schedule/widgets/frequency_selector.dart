@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 class FrequencySelector extends StatelessWidget {
   const FrequencySelector({
@@ -20,7 +20,7 @@ class FrequencySelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MpRadioOption<ScheduleType>(
+        KdRadioOption<ScheduleType>(
           value: ScheduleType.daily,
           groupValue: selectedType,
           onChanged: onChanged,
@@ -29,7 +29,7 @@ class FrequencySelector extends StatelessWidget {
           icon: Icons.calendar_today,
         ),
         const SizedBox(height: AppSpacing.md),
-        MpRadioOption<ScheduleType>(
+        KdRadioOption<ScheduleType>(
           value: ScheduleType.specificDays,
           groupValue: selectedType,
           onChanged: onChanged,
@@ -38,7 +38,7 @@ class FrequencySelector extends StatelessWidget {
           icon: Icons.event_repeat,
         ),
         const SizedBox(height: AppSpacing.md),
-        MpRadioOption<ScheduleType>(
+        KdRadioOption<ScheduleType>(
           value: ScheduleType.interval,
           groupValue: selectedType,
           onChanged: onChanged,

@@ -8,9 +8,9 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class InviteHandlerScreen extends ConsumerStatefulWidget {
   const InviteHandlerScreen({super.key, required this.inviteCode});
@@ -77,13 +77,13 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: MpAppBar(title: l10n.invitation, showBack: true),
+      appBar: KdAppBar(title: l10n.invitation, showBack: true),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Center(
             child: SingleChildScrollView(
-              child: MpCard(
+              child: KdCard(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -123,14 +123,14 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     if (_isProcessing)
                       const CircularProgressIndicator()
                     else ...[
-                      MpButton(
+                      KdButton(
                         label: l10n.acceptInvitation,
                         onPressed: _acceptInvitation,
                         icon: Icons.check,
                         variant: MpButtonVariant.primary,
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      MpButton(
+                      KdButton(
                         label: l10n.decline,
                         onPressed: _decline,
                         icon: Icons.close,

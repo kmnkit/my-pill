@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -42,7 +42,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v4
         if: github.event_name == 'push'
         with:
           files: coverage/lcov.info
@@ -55,7 +55,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -93,7 +93,7 @@ jobs:
                 "client_info": {
                   "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
                   "android_client_info": {
-                    "package_name": "com.hobbylabo.kusuridoki"
+                    "package_name": "com.ginger.mypill"
                   }
                 },
                 "oauth_client": [],
@@ -130,7 +130,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -166,7 +166,7 @@ jobs:
             <key>PLIST_VERSION</key>
             <string>1</string>
             <key>BUNDLE_ID</key>
-            <string>com.hobbylabo.kusuridoki</string>
+            <string>com.ginger.mypill</string>
             <key>PROJECT_ID</key>
             <string>kusuridoki-ci</string>
             <key>STORAGE_BUCKET</key>

@@ -3,7 +3,7 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/models/dosage_time_slot.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_time_picker.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_time_picker.dart';
 
 class DosageTimeAdjuster extends StatelessWidget {
   const DosageTimeAdjuster({
@@ -39,7 +39,7 @@ class DosageTimeAdjuster extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: AppSpacing.sm),
-              MpTimePicker(
+              KdTimePicker(
                 hour: tod.hour,
                 minute: tod.minute,
                 onHourChanged: (newHour) {

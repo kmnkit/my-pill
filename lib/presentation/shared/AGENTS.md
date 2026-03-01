@@ -1,10 +1,10 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
+<!-- Generated: 2026-02-02 | Updated: 2026-03-01 -->
 
 # shared — Reusable UI Components
 
 ## Purpose
-Cross-feature reusable widgets and dialogs with the `Mp` naming prefix. These components enforce consistent design across all screens.
+Cross-feature reusable widgets and dialogs with the `Kd` naming prefix. These components enforce consistent design across all screens.
 
 ## Subdirectories
 
@@ -16,10 +16,10 @@ Cross-feature reusable widgets and dialogs with the `Mp` naming prefix. These co
 ## For AI Agents
 
 ### Working In This Directory
-- All shared components are prefixed with `Mp` (MyPill)
+- All shared components are prefixed with `Kd` (Kusuridoki)
 - Use these components in screens — never duplicate UI patterns
 - Components use `AppColors`, `AppSpacing`, `AppTypography` from `core/constants/`
-- Adding a new shared widget? Prefix with `Mp` and place in `widgets/`
+- Adding a new shared widget? Prefix with `Kd` and place in `widgets/`
 
 ### Common Patterns
 - Stateless widgets for pure display

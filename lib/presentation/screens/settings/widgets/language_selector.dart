@@ -4,7 +4,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 
 class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
@@ -24,7 +24,7 @@ class LanguageSelector extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MpSectionHeader(title: l10n.language),
+            KdSectionHeader(title: l10n.language),
             Row(
               children: [
                 Expanded(

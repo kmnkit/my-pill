@@ -8,9 +8,10 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/core/utils/apple_auth_error_messages.dart';
@@ -24,21 +25,10 @@ class AccountSection extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return authStateAsync.when(
-      loading: () => MpCard(
-        child: Row(
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: Text(
-                l10n.loading,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ],
-        ),
+      loading: () => const KdCard(
+        child: KdShimmerBox(height: 56),
       ),
-      error: (error, stack) => MpCard(
+      error: (error, stack) => KdCard(
         child: Row(
           children: [
             const Icon(Icons.error_outline, color: AppColors.error),
@@ -55,11 +45,11 @@ class AccountSection extends ConsumerWidget {
       data: (user) {
         if (user == null) {
           // No user signed in (should not happen in settings)
-          return MpCard(
+          return KdCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const MpAvatar(initials: '?', size: 56.0),
+                const KdAvatar(initials: '?', size: 56.0),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   l10n.notSignedIn,
@@ -93,20 +83,20 @@ class AccountSection extends ConsumerWidget {
 
         if (isAnonymous) {
           // Anonymous user - show prompt to sign in
-          return MpCard(
+          return KdCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
-                    const MpAvatar(initials: 'G', size: 56.0),
+                    KdAvatar(initials: initials, size: 56.0),
                     const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n.guestUser,
+                            displayName,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: AppSpacing.xs),
@@ -121,7 +111,7 @@ class AccountSection extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.md),
-                MpButton(
+                KdButton(
                   label: l10n.linkWithGoogle,
                   onPressed: () => _linkWithGoogle(context, ref),
                   variant: MpButtonVariant.secondary,
@@ -133,7 +123,7 @@ class AccountSection extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 if (Platform.isIOS)
-                  MpButton(
+                  KdButton(
                     label: l10n.linkWithApple,
                     onPressed: () => _linkWithApple(context, ref),
                     variant: MpButtonVariant.secondary,
@@ -147,10 +137,10 @@ class AccountSection extends ConsumerWidget {
         // Authenticated user
         final isPrivateEmail = AuthService.isPrivateRelayEmail(user.email);
 
-        return MpCard(
+        return KdCard(
           child: Row(
             children: [
-              MpAvatar(initials: initials, size: 56.0),
+              KdAvatar(initials: initials, size: 56.0),
               const SizedBox(width: AppSpacing.lg),
               Expanded(
                 child: Column(

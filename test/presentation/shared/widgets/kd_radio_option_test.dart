@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpRadioOption', () {
+  group('KdRadioOption', () {
     testWidgets('renders label text', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpRadioOption<int>(
+          KdRadioOption<int>(
             value: 1,
             groupValue: 2,
             onChanged: (_) {},
@@ -25,7 +25,7 @@ void main() {
     testWidgets('renders description when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpRadioOption<int>(
+          KdRadioOption<int>(
             value: 1,
             groupValue: 2,
             onChanged: (_) {},
@@ -42,7 +42,7 @@ void main() {
     testWidgets('renders icon when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpRadioOption<int>(
+          KdRadioOption<int>(
             value: 1,
             groupValue: 2,
             onChanged: (_) {},
@@ -60,7 +60,7 @@ void main() {
       int? selected;
       await tester.pumpWidget(
         createTestableWidget(
-          MpRadioOption<int>(
+          KdRadioOption<int>(
             value: 42,
             groupValue: 0,
             onChanged: (v) => selected = v,
@@ -81,7 +81,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpRadioOption<String>(
+          KdRadioOption<String>(
             value: 'a',
             groupValue: 'a',
             onChanged: (_) {},

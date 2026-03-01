@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpSectionHeader', () {
+  group('KdSectionHeader', () {
     testWidgets('renders title text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpSectionHeader(title: 'My Medications')),
+        createTestableWidget(const KdSectionHeader(title: 'My Medications')),
       );
       await tester.pumpAndSettle();
 
@@ -19,7 +19,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpSectionHeader(title: 'Section')),
+        createTestableWidget(const KdSectionHeader(title: 'Section')),
       );
       await tester.pumpAndSettle();
 
@@ -31,7 +31,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpSectionHeader(
+          KdSectionHeader(
             title: 'Section',
             actionLabel: 'See all',
             onAction: () {},
@@ -48,7 +48,7 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpSectionHeader(
+          KdSectionHeader(
             title: 'Section',
             actionLabel: 'See all',
             onAction: () => tapped = true,

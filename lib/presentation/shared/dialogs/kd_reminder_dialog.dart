@@ -3,12 +3,12 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 enum ReminderAction { take, snooze, skip }
 
-class MpReminderDialog extends StatelessWidget {
-  const MpReminderDialog({
+class KdReminderDialog extends StatelessWidget {
+  const KdReminderDialog({
     super.key,
     required this.time,
     required this.medicationName,
@@ -31,7 +31,7 @@ class MpReminderDialog extends StatelessWidget {
     return showDialog<ReminderAction>(
       context: context,
       barrierColor: Colors.black54,
-      builder: (_) => MpReminderDialog(
+      builder: (_) => KdReminderDialog(
         time: time,
         medicationName: medicationName,
         dosage: dosage,
@@ -91,18 +91,18 @@ class MpReminderDialog extends StatelessWidget {
               ),
             ],
             const SizedBox(height: AppSpacing.xxl),
-            MpButton(
+            KdButton(
               label: l10n.takeNow,
               onPressed: () => Navigator.of(context).pop(ReminderAction.take),
             ),
             const SizedBox(height: AppSpacing.sm),
-            MpButton(
+            KdButton(
               label: l10n.snoozeMinutes(15),
               variant: MpButtonVariant.secondary,
               onPressed: () => Navigator.of(context).pop(ReminderAction.snooze),
             ),
             const SizedBox(height: AppSpacing.sm),
-            MpButton(
+            KdButton(
               label: l10n.skip,
               variant: MpButtonVariant.text,
               onPressed: () => Navigator.of(context).pop(ReminderAction.skip),

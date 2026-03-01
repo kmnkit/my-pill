@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpEmptyState', () {
+  group('KdEmptyState', () {
     testWidgets('renders icon and title', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpEmptyState(icon: Icons.inbox, title: 'Nothing here'),
+          const KdEmptyState(icon: Icons.inbox, title: 'Nothing here'),
         ),
       );
       await tester.pumpAndSettle();
@@ -21,7 +21,7 @@ void main() {
     testWidgets('renders optional description when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpEmptyState(
+          const KdEmptyState(
             icon: Icons.inbox,
             title: 'No items',
             description: 'Add something to get started',
@@ -36,7 +36,7 @@ void main() {
     testWidgets('description is absent when not provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpEmptyState(icon: Icons.inbox, title: 'Empty'),
+          const KdEmptyState(icon: Icons.inbox, title: 'Empty'),
         ),
       );
       await tester.pumpAndSettle();
@@ -52,7 +52,7 @@ void main() {
         var tapped = false;
         await tester.pumpWidget(
           createTestableWidget(
-            MpEmptyState(
+            KdEmptyState(
               icon: Icons.add,
               title: 'Empty',
               actionLabel: 'Add item',
@@ -74,12 +74,42 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpEmptyState(icon: Icons.inbox, title: 'Empty'),
+          const KdEmptyState(icon: Icons.inbox, title: 'Empty'),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(ElevatedButton), findsNothing);
+    });
+
+    testWidgets('uses default icon size of 64 when not specified', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const KdEmptyState(icon: Icons.inbox, title: 'Empty'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icon = tester.widget<Icon>(find.byIcon(Icons.inbox));
+      expect(icon.size, 64);
+    });
+
+    testWidgets('uses custom icon size when specified', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const KdEmptyState(
+            icon: Icons.people_outline,
+            title: 'No caregivers',
+            iconSize: 48,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icon = tester.widget<Icon>(find.byIcon(Icons.people_outline));
+      expect(icon.size, 48);
     });
   });
 }

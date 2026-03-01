@@ -18,10 +18,10 @@ import 'package:kusuridoki/presentation/screens/medications/widgets/inventory_ed
 import 'package:kusuridoki/presentation/screens/medications/widgets/photo_picker_button.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_color_picker.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_shape_selector.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_text_field.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class AddMedicationScreen extends ConsumerStatefulWidget {
@@ -74,7 +74,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: GradientScaffold(
-        appBar: MpAppBar(title: l10n.addMedication, showBack: true),
+        appBar: KdAppBar(title: l10n.addMedication, showBack: true),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
@@ -110,7 +110,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: AppSpacing.lg),
-              MpTextField(
+              KdTextField(
                 controller: _nameController,
                 label: l10n.medicationName,
                 hint: _isIppoka ? l10n.ippokaNameHint : l10n.dosageHint,
@@ -121,7 +121,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: MpTextField(
+                    child: KdTextField(
                       controller: _dosageController,
                       label: l10n.dosage,
                       hint: '100',
@@ -171,7 +171,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
               ),
               if (!_isIppoka) ...[
                 const SizedBox(height: AppSpacing.md),
-                MpSectionHeader(title: l10n.pillShape),
+                KdSectionHeader(title: l10n.pillShape),
                 PillShapeSelector(
                   selectedShape: _selectedShape,
                   onShapeSelected: (shape) {
@@ -181,7 +181,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                   },
                 ),
                 const SizedBox(height: AppSpacing.md),
-                MpSectionHeader(title: l10n.pillColor),
+                KdSectionHeader(title: l10n.pillColor),
                 PillColorPicker(
                   selectedColor: _selectedColor,
                   onColorSelected: (color) {
@@ -199,7 +199,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.xxl),
-              MpSectionHeader(title: l10n.inventory),
+              KdSectionHeader(title: l10n.inventory),
               InventoryEditor(
                 count: _inventoryCount,
                 onCountChanged: (newCount) {
@@ -209,7 +209,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.xxl),
-              MpSectionHeader(title: l10n.criticalMedication),
+              KdSectionHeader(title: l10n.criticalMedication),
               const SizedBox(height: AppSpacing.sm),
               SwitchListTile(
                 title: Text(
@@ -232,7 +232,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
                 contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: AppSpacing.xxl),
-              MpButton(
+              KdButton(
                 label: _isSaving ? l10n.saving : l10n.saveMedication,
                 onPressed: _isSaving ? null : _saveMedication,
               ),

@@ -4,7 +4,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/services/notification_service.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 class OnboardingNotificationStep extends StatefulWidget {
   final VoidCallback onFinish;
@@ -194,7 +194,7 @@ class _OnboardingNotificationStepState
                         height: 48,
                         child: Center(child: CircularProgressIndicator()),
                       )
-                    : MpButton(
+                    : KdButton(
                         label: l10n.onboardingNotificationEnable,
                         onPressed: _requestPermission,
                         variant: MpButtonVariant.primary,
@@ -218,7 +218,7 @@ class _OnboardingNotificationStepState
           const SizedBox(height: AppSpacing.md),
 
           // Finish button
-          MpButton(
+          KdButton(
             label: l10n.onboardingFinish,
             onPressed: widget.onFinish,
             variant: MpButtonVariant.primary,

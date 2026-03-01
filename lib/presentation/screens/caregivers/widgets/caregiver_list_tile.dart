@@ -3,9 +3,9 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/models/caregiver_link.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class CaregiverListTile extends StatelessWidget {
   const CaregiverListTile({super.key, required this.link, this.onRevoke});
@@ -35,10 +35,10 @@ class CaregiverListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return MpCard(
+    return KdCard(
       child: Row(
         children: [
-          MpAvatar(initials: _getInitials(link.caregiverName), size: 48.0),
+          KdAvatar(initials: _getInitials(link.caregiverName), size: 48.0),
           const SizedBox(width: AppSpacing.lg),
           Expanded(
             child: Text(
@@ -46,7 +46,7 @@ class CaregiverListTile extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
-          MpBadge(
+          KdBadge(
             label: link.status[0].toUpperCase() + link.status.substring(1),
             variant: _getStatusVariant(link.status),
           ),

@@ -2,25 +2,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpToggleSwitch', () {
+  group('KdToggleSwitch', () {
     testWidgets('renders without label', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(MpToggleSwitch(value: false, onChanged: (_) {})),
+        createTestableWidget(KdToggleSwitch(value: false, onChanged: (_) {})),
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpToggleSwitch), findsOneWidget);
+      expect(find.byType(KdToggleSwitch), findsOneWidget);
     });
 
     testWidgets('renders label text when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpToggleSwitch(
+          KdToggleSwitch(
             value: false,
             onChanged: (_) {},
             label: 'Notifications',
@@ -38,7 +38,7 @@ void main() {
       bool? newValue;
       await tester.pumpWidget(
         createTestableWidget(
-          MpToggleSwitch(value: false, onChanged: (v) => newValue = v),
+          KdToggleSwitch(value: false, onChanged: (v) => newValue = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -53,7 +53,7 @@ void main() {
       bool? newValue;
       await tester.pumpWidget(
         createTestableWidget(
-          MpToggleSwitch(value: true, onChanged: (v) => newValue = v),
+          KdToggleSwitch(value: true, onChanged: (v) => newValue = v),
         ),
       );
       await tester.pumpAndSettle();
@@ -68,11 +68,11 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestableWidget(MpToggleSwitch(value: true, onChanged: (_) {})),
+        createTestableWidget(KdToggleSwitch(value: true, onChanged: (_) {})),
       );
       await tester.pumpAndSettle();
 
-      final semantics = tester.getSemantics(find.byType(MpToggleSwitch));
+      final semantics = tester.getSemantics(find.byType(KdToggleSwitch));
       expect(semantics.hasFlag(SemanticsFlag.isToggled), isTrue);
     });
   });

@@ -916,6 +916,75 @@ void main() {
     });
   });
 
+  // ─── generateRemindersForDate — deduplication ──────────────────────────────
+
+  group('generateRemindersForDate — deduplication', () {
+    test('detects duplicate by medicationId + hour + minute', () async {
+      final date = DateTime(2024, 3, 15);
+      final schedule = makeSchedule(
+        type: ScheduleType.daily,
+        times: ['08:00'],
+      );
+
+      // Existing reminder with slightly different seconds (simulating
+      // DateTime serialization precision difference)
+      final existingReminder = makeReminder(
+        id: 'rem-existing',
+        medicationId: 'med-1',
+        scheduledTime: DateTime(2024, 3, 15, 8, 0, 1),
+      );
+
+      when(
+        mockStorage.getRemindersForDate(date),
+      ).thenAnswer((_) async => [existingReminder]);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      final result =
+          await service.generateRemindersForDate([schedule], date);
+
+      // Should NOT create a new reminder — same med + same hour:minute
+      expect(result.length, 1);
+      expect(result.first.id, 'rem-existing');
+      verifyNever(mockStorage.saveReminder(any));
+    });
+
+    test('allows same time for different medications', () async {
+      final date = DateTime(2024, 3, 15);
+      final schedule1 = makeSchedule(
+        id: 'sched-1',
+        medicationId: 'med-1',
+        type: ScheduleType.daily,
+        times: ['08:00'],
+      );
+      final schedule2 = makeSchedule(
+        id: 'sched-2',
+        medicationId: 'med-2',
+        type: ScheduleType.daily,
+        times: ['08:00'],
+      );
+
+      final existingReminder = makeReminder(
+        id: 'rem-existing',
+        medicationId: 'med-1',
+        scheduledTime: DateTime(2024, 3, 15, 8, 0),
+      );
+
+      when(
+        mockStorage.getRemindersForDate(date),
+      ).thenAnswer((_) async => [existingReminder]);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      final result = await service.generateRemindersForDate(
+        [schedule1, schedule2],
+        date,
+      );
+
+      // med-1 already exists, med-2 should be created
+      expect(result.length, 2);
+      verify(mockStorage.saveReminder(any)).called(1);
+    });
+  });
+
   // ─── _shouldGenerateForDate — interval edge cases ─────────────────────────
 
   group('_shouldGenerateForDate — interval advanced', () {

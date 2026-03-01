@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 
-class MpLoadingView extends StatelessWidget {
-  const MpLoadingView({super.key, this.message});
+class KdLoadingView extends StatelessWidget {
+  const KdLoadingView({super.key, this.message});
 
   final String? message;
 

@@ -383,6 +383,8 @@
   "appVersion": "App Version",
   "deactivateAccountTitle": "Log Out",
   "deactivateAccountMessage": "You will be signed out. Your data will be preserved and you can sign back in later.",
+  "logOutMessageAnonymous": "You are not signed in. Logging out will permanently delete all medications, schedules, and reminders on this device. This cannot be undone.",
+  "logOutMessageAuthenticated": "Your local data will be removed from this device. You can restore it by signing in again.",
   "deactivate": "Log Out",
   "deleteAccountTitle": "Delete Account",
   "deleteAccountMessage": "This will permanently delete your account and all data. This cannot be undone.",
@@ -425,6 +427,7 @@
   "pleaseEnterDosage": "Please enter a dosage",
   "pleaseEnterValidDosage": "Please enter a valid number for dosage",
   "errorSavingMedication": "Failed to save medication. Please try again.",
+  "errorSavingSchedule": "Failed to save schedule. Please try again.",
   "errorUpdatingMedication": "Failed to update medication. Please try again.",
   "errorLoadingMedication": "Error loading medication",
   "errorLoadingMedications": "Error loading medications",
@@ -482,6 +485,10 @@
   "decline": "Decline",
   "successfullyLinked": "Successfully linked as caregiver!",
   "failedToAcceptInvite": "Failed to accept invite. Please try again.",
+  "inviteNotFound": "Invite code not found. Please check the link.",
+  "inviteExpired": "This invite has expired. Please ask for a new one.",
+  "inviteAlreadyUsed": "This invite has already been used.",
+  "inviteSelfError": "You cannot accept your own invite.",
   "inviteLinkGenerated": "Invite link generated successfully!",
   "failedToGenerateInvite": "Failed to generate invite. Please try again.",
   "cannotAddMoreCaregivers": "Cannot add more caregivers",
@@ -581,7 +588,7 @@
   "errorLoadingPatients": "Failed to load patients. Please try again.",
 
   "onboardingMedStyleTitle": "How do you receive your medication?",
-  "onboardingMedStyleSubtitle": "We'll optimize the app for you",
+  "onboardingMedStyleSubtitle": "Your choice sets the default when adding medications",
   "onboardingIndividualPills": "Individual pills or tablets",
   "onboardingIndividualPillsDesc": "Separate medications from the pharmacy",
   "onboardingDosePack": "Dose packs (一包化)",
@@ -613,5 +620,19 @@
       "min": {"type": "String"},
       "max": {"type": "String"}
     }
-  }
+  },
+
+  "changeTimezone": "Change Timezone",
+  "searchTimezone": "Search timezones...",
+  "selectDestinationTimezone": "Select Destination Timezone",
+
+  "clearAllDataTitle": "Clear All Data",
+  "clearAllDataMessage": "Delete all medications, schedules, reminders, and adherence records?",
+  "clearAllDataConfirm": "Clear",
+
+  "addPatient": "Add Patient",
+  "enterCodeManually": "Enter code manually",
+  "enterInviteCode": "Enter Invite Code",
+  "inviteCodeHint": "8-character code",
+  "invalidInviteCode": "Please enter a valid 8-character code"
 }

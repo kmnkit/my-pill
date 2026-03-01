@@ -578,7 +578,7 @@ We're committed to helping you never miss a dose. Send feedback to support@kusur
 - 薬の写真保存
 - コンプライアンスレポートと洞察
 
-支援フィードバック：support@mypill.app
+支援フィードバック：support@kusuridoki.app
 ```
 
 ### Step 10.3: Select Build for Submission

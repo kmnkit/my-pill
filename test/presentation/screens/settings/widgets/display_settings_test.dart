@@ -327,7 +327,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Find InkWell or the MpToggleSwitch and tap it
+      // Find InkWell or the KdToggleSwitch and tap it
       await tester.tap(find.text('High Contrast'));
       await tester.pumpAndSettle();
 

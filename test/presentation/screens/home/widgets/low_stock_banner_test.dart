@@ -5,7 +5,7 @@ import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/low_stock_banner.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_alert_banner.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -56,7 +56,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsNothing);
+      expect(find.byType(KdAlertBanner), findsNothing);
     });
 
     testWidgets('hidden when all medications have sufficient stock', (
@@ -86,7 +86,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsNothing);
+      expect(find.byType(KdAlertBanner), findsNothing);
     });
 
     testWidgets('shows banner when a medication is at low stock threshold', (
@@ -111,7 +111,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsOneWidget);
+      expect(find.byType(KdAlertBanner), findsOneWidget);
     });
 
     testWidgets('shows banner when a medication is below low stock threshold', (
@@ -136,7 +136,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsOneWidget);
+      expect(find.byType(KdAlertBanner), findsOneWidget);
       expect(find.textContaining('Metformin'), findsOneWidget);
     });
 
@@ -201,7 +201,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Only one banner shown (for the first low stock medication)
-      expect(find.byType(MpAlertBanner), findsOneWidget);
+      expect(find.byType(KdAlertBanner), findsOneWidget);
       expect(find.textContaining('FirstLowStock'), findsOneWidget);
     });
 
@@ -216,7 +216,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsNothing);
+      expect(find.byType(KdAlertBanner), findsNothing);
     });
 
     testWidgets('hidden when medication has stock just above threshold', (
@@ -241,7 +241,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpAlertBanner), findsNothing);
+      expect(find.byType(KdAlertBanner), findsNothing);
     });
   });
 }

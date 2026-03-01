@@ -8,8 +8,8 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/travel/widgets/affected_med_list.dart';
 import 'package:kusuridoki/presentation/screens/travel/widgets/location_display.dart';
 import 'package:kusuridoki/presentation/screens/travel/widgets/timezone_mode_selector.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class TravelModeScreen extends ConsumerWidget {
@@ -21,7 +21,7 @@ class TravelModeScreen extends ConsumerWidget {
     final timezoneState = ref.watch(timezoneSettingsProvider);
 
     return GradientScaffold(
-      appBar: MpAppBar(title: l10n.travelMode, showBack: true),
+      appBar: KdAppBar(title: l10n.travelMode, showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -29,7 +29,7 @@ class TravelModeScreen extends ConsumerWidget {
           children: [
             const LocationDisplay(),
             const SizedBox(height: AppSpacing.xl),
-            MpToggleSwitch(
+            KdToggleSwitch(
               value: timezoneState.enabled,
               onChanged: (_) {
                 ref.read(timezoneSettingsProvider.notifier).toggleEnabled();

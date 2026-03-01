@@ -372,7 +372,7 @@ void main() {
       await tester.tap(find.text('Log Out'));
       await tester.pumpAndSettle();
 
-      // MpConfirmDialog uses AlertDialog — check for dialog content
+      // KdConfirmDialog uses AlertDialog — check for dialog content
       expect(find.byType(Dialog), findsAtLeastNWidgets(1));
     });
 

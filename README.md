@@ -1,6 +1,6 @@
-# MyPill - Medication Management App
+# Kusuridoki - Medication Management App
 
-A comprehensive Flutter application for managing medications, tracking adherence, and coordinating care with caregivers. MyPill combines local-first storage with cloud sync to provide reliable medication reminders and health insights across iOS and Android platforms.
+A comprehensive Flutter application for managing medications, tracking adherence, and coordinating care with caregivers. Kusuridoki combines local-first storage with cloud sync to provide reliable medication reminders and health insights across iOS and Android platforms.
 
 ## Features
 
@@ -114,8 +114,8 @@ A comprehensive Flutter application for managing medications, tracking adherence
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/my-pill.git
-cd my-pill
+git clone https://github.com/yourusername/kusuridoki.git
+cd kusuridoki
 ```
 
 2. Install dependencies:

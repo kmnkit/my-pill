@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpCard', () {
+  group('KdCard', () {
     testWidgets('renders child widget', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpCard(
+          const KdCard(
             useGlass: false,
             child: Text('Card content'),
           ),
@@ -24,7 +24,7 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpCard(
+          KdCard(
             useGlass: false,
             onTap: () => tapped = true,
             child: const Text('Tap me'),
@@ -42,7 +42,7 @@ void main() {
     testWidgets('renders without onTap (non-interactive)', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpCard(
+          const KdCard(
             useGlass: false,
             child: Text('Static card'),
           ),
@@ -58,7 +58,7 @@ void main() {
     testWidgets('accepts custom padding', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpCard(
+          const KdCard(
             useGlass: false,
             padding: EdgeInsets.all(8),
             child: Text('Padded'),
@@ -73,7 +73,7 @@ void main() {
     testWidgets('renders correctly with glass disabled', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpCard(
+          const KdCard(
             useGlass: false,
             child: Icon(Icons.star),
           ),

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
 import 'package:kusuridoki/presentation/screens/travel/widgets/timezone_mode_selector.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -59,7 +59,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.byType(MpRadioOption<TimezoneMode>),
+        find.byType(KdRadioOption<TimezoneMode>),
         findsNWidgets(2),
       );
     });

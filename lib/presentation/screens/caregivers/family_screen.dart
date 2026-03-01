@@ -9,9 +9,10 @@ import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/caregiver_list_tile.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/privacy_notice.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_invite_section.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/presentation/shared/widgets/premium_badge.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
@@ -26,16 +27,21 @@ class FamilyScreen extends ConsumerWidget {
     final maxCaregivers = ref.watch(maxCaregiversProvider);
 
     return Scaffold(
-      appBar: MpAppBar(title: l10n.familyCaregivers, showBack: true),
+      appBar: KdAppBar(title: l10n.familyCaregivers, showBack: true),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.navBarClearance,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Linked caregivers section with count
             Row(
               children: [
-                Expanded(child: MpSectionHeader(title: l10n.linkedCaregivers)),
+                Expanded(child: KdSectionHeader(title: l10n.linkedCaregivers)),
                 if (kPremiumEnabled)
                   caregiverLinksAsync.maybeWhen(
                     data: (links) => Container(
@@ -74,14 +80,10 @@ class FamilyScreen extends ConsumerWidget {
             caregiverLinksAsync.when(
               data: (links) {
                 if (links.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.lg,
-                    ),
-                    child: MpEmptyState(
-                      icon: Icons.people_outline,
-                      title: l10n.noCaregiversLinked,
-                    ),
+                  return KdEmptyState(
+                    icon: Icons.people_outline,
+                    title: l10n.noCaregiversLinked,
+                    iconSize: 48,
                   );
                 }
                 return Column(
@@ -153,11 +155,9 @@ class FamilyScreen extends ConsumerWidget {
                   }).toList(),
                 );
               },
-              loading: () => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.lg),
-                  child: CircularProgressIndicator.adaptive(),
-                ),
+              loading: () => const Padding(
+                padding: EdgeInsets.all(AppSpacing.lg),
+                child: KdListShimmer(itemCount: 2),
               ),
               error: (error, stack) => Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),

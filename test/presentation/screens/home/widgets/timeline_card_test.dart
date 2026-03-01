@@ -4,7 +4,7 @@ import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 

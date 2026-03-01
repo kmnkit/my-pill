@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -175,7 +175,7 @@ void main() {
 
       expect(find.text('Close'), findsOneWidget);
       final buttons = tester
-          .widgetList<MpButton>(find.byType(MpButton))
+          .widgetList<KdButton>(find.byType(KdButton))
           .toList();
       expect(buttons.length, 1);
       expect(buttons.first.variant, MpButtonVariant.secondary);

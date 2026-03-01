@@ -348,7 +348,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // _defaultProfile has notificationsEnabled: true.
-        // The MpToggleSwitch for "Push Notifications" is the first GestureDetector.
+        // The KdToggleSwitch for "Push Notifications" is the first GestureDetector.
         // Find GestureDetectors that are descendants of a Row containing
         // 'Push Notifications' text.
         final pushRow = find.ancestor(

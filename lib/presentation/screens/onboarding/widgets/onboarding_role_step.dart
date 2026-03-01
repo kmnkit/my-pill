@@ -3,8 +3,8 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 enum UserRole { patient, caregiver }
 
@@ -92,7 +92,7 @@ class _OnboardingRoleStepState extends State<OnboardingRoleStep> {
               const SizedBox(height: AppSpacing.xxxl),
 
               // Role options
-              MpRadioOption<UserRole>(
+              KdRadioOption<UserRole>(
                 value: UserRole.patient,
                 groupValue: _selectedRole,
                 onChanged: _onRoleSelected,
@@ -101,7 +101,7 @@ class _OnboardingRoleStepState extends State<OnboardingRoleStep> {
                 description: l10n.onboardingRolePatientDesc,
               ),
               const SizedBox(height: AppSpacing.md),
-              MpRadioOption<UserRole>(
+              KdRadioOption<UserRole>(
                 value: UserRole.caregiver,
                 groupValue: _selectedRole,
                 onChanged: _onRoleSelected,
@@ -115,7 +115,7 @@ class _OnboardingRoleStepState extends State<OnboardingRoleStep> {
           const Spacer(),
 
           // Next button
-          MpButton(
+          KdButton(
             label: l10n.onboardingNext,
             onPressed: widget.onNext,
             variant: MpButtonVariant.primary,

@@ -19,7 +19,7 @@ Feature-specific widgets for the caregiver system including caregiver list manag
 
 ### Working In This Directory
 - Privacy notice must be acknowledged before generating invites
-- QR code encodes the invite URL (`https://mypill.app/invite/{code}`)
+- QR code encodes the invite URL (`https://kusuridoki.app/invite/{code}`)
 - Patient card shows real-time status via Firestore stream
 - Caregiver list tile includes swipe-to-revoke or revoke button
 
@@ -28,7 +28,7 @@ Feature-specific widgets for the caregiver system including caregiver list manag
 ### Internal
 - `data/providers/caregiver_provider.dart` — Link management
 - `data/models/caregiver_link.dart` — Link data
-- `presentation/shared/widgets/` — MpCard, MpButton
+- `presentation/shared/widgets/` — KdCard, KdButton
 - `core/constants/` — Design tokens
 
 ### External

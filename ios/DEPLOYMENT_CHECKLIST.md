@@ -75,8 +75,8 @@ static const String _prodInterstitialAdUnitIdIOS = 'ca-app-pub-YOUR_APP_ID/INTER
 1. Go to [App Store Connect](https://appstoreconnect.apple.com)
 2. Create new app:
    - Platform: iOS
-   - Name: MyPill - Medication Reminder
-   - Bundle ID: `com.marcoginger.mypill`
+   - Name: Kusuridoki - Medication Reminder
+   - Bundle ID: `com.ginger.mypill`
    - SKU: `mypill-ios-2024`
 
 3. Add In-App Purchases:

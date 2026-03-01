@@ -8,8 +8,9 @@ import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_error_view.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_error_view.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverDashboardScreen extends ConsumerStatefulWidget {
@@ -87,15 +88,17 @@ class _CaregiverDashboardScreenState
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: patientsAsync.when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator.adaptive()),
-                  error: (error, stack) => MpErrorView(
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(AppSpacing.lg),
+                    child: KdListShimmer(itemCount: 3),
+                  ),
+                  error: (error, stack) => KdErrorView(
                     error: error,
                     onRetry: () => ref.invalidate(caregiverPatientsProvider),
                   ),
                   data: (patients) {
                     if (patients.isEmpty) {
-                      return MpEmptyState(
+                      return KdEmptyState(
                         icon: Icons.people_outline,
                         title: l10n.noPatientsLinked,
                         description: l10n.noPatientsLinkedDesc,

@@ -5,8 +5,8 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/glass_decoration.dart';
 
-class MpCard extends StatelessWidget {
-  const MpCard({
+class KdCard extends StatelessWidget {
+  const KdCard({
     super.key,
     required this.child,
     this.padding,

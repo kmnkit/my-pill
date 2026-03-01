@@ -11,6 +11,7 @@ import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/utils/photo_encryption.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 
 class PhotoPickerButton extends ConsumerStatefulWidget {
   const PhotoPickerButton({
@@ -213,7 +214,11 @@ class _PhotoPickerButtonState extends ConsumerState<PhotoPickerButton> {
               ),
             );
           }
-          return const Center(child: CircularProgressIndicator.adaptive());
+          return const KdShimmerBox(
+            width: double.infinity,
+            height: 200,
+            borderRadius: AppSpacing.radiusMd,
+          );
         },
       );
     }

@@ -4,7 +4,7 @@
 # test — Test Suite
 
 ## Purpose
-Unit and widget tests for the MyPill application. Tests cover data layer logic including repository calculations, service rating systems, and timezone conversions.
+Unit and widget tests for the Kusuridoki application. Tests cover data layer logic including repository calculations, service rating systems, and timezone conversions.
 
 ## Key Files
 

@@ -7,10 +7,11 @@ import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_reminder_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_reminder_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class MedicationTimeline extends ConsumerWidget {
@@ -53,7 +54,7 @@ class MedicationTimeline extends ConsumerWidget {
     return remindersAsync.when(
       data: (reminders) {
         if (reminders.isEmpty) {
-          return MpEmptyState(
+          return KdEmptyState(
             icon: Icons.calendar_today,
             title: l10n.noRemindersForToday,
           );
@@ -85,6 +86,19 @@ class MedicationTimeline extends ConsumerWidget {
                           if (schedules.isEmpty) return null;
                           final timings = schedules.first.dosageTimings;
                           if (timings.isEmpty) return null;
+
+                          // Match reminder's scheduledTime to the specific timing
+                          final hour = reminder.scheduledTime.hour;
+                          final minute = reminder.scheduledTime.minute;
+                          final matched = timings
+                              .where((t) => t.isTimeInRange(hour, minute))
+                              .map((t) => t.localizedName(l10n))
+                              .toList();
+
+                          // If matched, show only the relevant timing; otherwise fallback to all
+                          if (matched.isNotEmpty) {
+                            return matched.join('・');
+                          }
                           return timings
                               .map((t) => t.localizedName(l10n))
                               .join('・');
@@ -107,7 +121,7 @@ class MedicationTimeline extends ConsumerWidget {
                         onMarkTaken: reminder.status == ReminderStatus.pending
                             ? () async {
                                 if (!context.mounted) return;
-                                final action = await MpReminderDialog.show(
+                                final action = await KdReminderDialog.show(
                                   context,
                                   time: DateFormat('h:mm a')
                                       .format(reminder.scheduledTime),
@@ -137,12 +151,7 @@ class MedicationTimeline extends ConsumerWidget {
                         isCritical: medication.isCritical,
                       );
                     },
-                    loading: () => const SizedBox(
-                      height: 80,
-                      child: Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      ),
-                    ),
+                    loading: () => const KdShimmerBox(height: 80),
                     error: (error, stack) => const SizedBox.shrink(),
                   );
                 },
@@ -151,11 +160,9 @@ class MedicationTimeline extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(
-        child: Padding(
-          padding: EdgeInsets.all(AppSpacing.xl),
-          child: CircularProgressIndicator.adaptive(),
-        ),
+      loading: () => const Padding(
+        padding: EdgeInsets.all(AppSpacing.xl),
+        child: KdListShimmer(itemCount: 3, itemHeight: 80),
       ),
       error: (error, stack) => Center(
         child: Padding(

@@ -6,8 +6,8 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 /// Common timezones curated list - major cities and regions
 const _commonTimezones = [
@@ -176,7 +176,7 @@ class _OnboardingTimezoneStepState
                   const SizedBox(height: AppSpacing.xxxl),
 
                   // Detected timezone display
-                  MpCard(
+                  KdCard(
                     child: Padding(
                       padding: const EdgeInsets.all(AppSpacing.lg),
                       child: Column(
@@ -221,7 +221,7 @@ class _OnboardingTimezoneStepState
           ),
 
           // Next button — fixed at bottom
-          MpButton(
+          KdButton(
             label: l10n.onboardingNext,
             onPressed: widget.onNext,
             variant: MpButtonVariant.primary,

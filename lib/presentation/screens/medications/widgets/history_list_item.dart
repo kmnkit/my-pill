@@ -3,7 +3,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 
 class HistoryListItem extends StatelessWidget {
   const HistoryListItem({
@@ -45,7 +45,7 @@ class HistoryListItem extends StatelessWidget {
               ],
             ),
           ),
-          MpBadge(
+          KdBadge(
             label: wasTaken
                 ? AppLocalizations.of(context)!.taken
                 : AppLocalizations.of(context)!.missed,

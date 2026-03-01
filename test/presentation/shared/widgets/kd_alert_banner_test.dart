@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_alert_banner.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpAlertBanner', () {
+  group('KdAlertBanner', () {
     testWidgets('renders title text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpAlertBanner(title: 'Low inventory')),
+        createTestableWidget(const KdAlertBanner(title: 'Low inventory')),
       );
       await tester.pumpAndSettle();
 
@@ -19,7 +19,7 @@ void main() {
     testWidgets('renders description when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpAlertBanner(
+          const KdAlertBanner(
             title: 'Warning',
             description: 'You are running low',
           ),
@@ -32,18 +32,18 @@ void main() {
 
     testWidgets('description absent when not provided', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpAlertBanner(title: 'Alert only')),
+        createTestableWidget(const KdAlertBanner(title: 'Alert only')),
       );
       await tester.pumpAndSettle();
 
       // Only title, no description text
       expect(find.text('Alert only'), findsOneWidget);
-      expect(find.byType(MpAlertBanner), findsOneWidget);
+      expect(find.byType(KdAlertBanner), findsOneWidget);
     });
 
     testWidgets('renders default warning icon', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpAlertBanner(title: 'Warning')),
+        createTestableWidget(const KdAlertBanner(title: 'Warning')),
       );
       await tester.pumpAndSettle();
 
@@ -53,7 +53,7 @@ void main() {
     testWidgets('renders custom icon when provided', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpAlertBanner(title: 'Info', icon: Icons.info_outline),
+          const KdAlertBanner(title: 'Info', icon: Icons.info_outline),
         ),
       );
       await tester.pumpAndSettle();
@@ -65,7 +65,7 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpAlertBanner(title: 'Tap me', onTap: () => tapped = true),
+          KdAlertBanner(title: 'Tap me', onTap: () => tapped = true),
         ),
       );
       await tester.pumpAndSettle();
@@ -79,7 +79,7 @@ void main() {
     testWidgets('renders with error color variant', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpAlertBanner(
+          const KdAlertBanner(
             title: 'Critical',
             color: AppColors.error,
             icon: Icons.error_outline,

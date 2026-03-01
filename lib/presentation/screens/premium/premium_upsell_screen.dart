@@ -9,7 +9,7 @@ import 'package:kusuridoki/data/services/ad_service.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
@@ -396,7 +396,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     final busy = _isLoading || _productsLoading;
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.lg),
-      child: MpButton(
+      child: KdButton(
         label: busy ? l10n.loading : l10n.unlockPremium,
         onPressed: busy ? null : () => _handlePurchase(service),
         variant: MpButtonVariant.primary,

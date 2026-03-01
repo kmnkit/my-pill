@@ -56,5 +56,5 @@ Future<void> _initializeApp() async {
     ErrorHandler.captureException(e, stackTrace, 'HomeWidgetService.init');
   }
 
-  runApp(const ProviderScope(child: MyPillApp()));
+  runApp(const ProviderScope(child: KusuridokiApp()));
 }

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
-class MpEmptyState extends StatelessWidget {
-  const MpEmptyState({
+class KdEmptyState extends StatelessWidget {
+  const KdEmptyState({
     super.key,
     required this.icon,
     required this.title,
     this.description,
     this.actionLabel,
     this.onAction,
+    this.iconSize = 64,
   });
 
   final IconData icon;
@@ -17,6 +18,7 @@ class MpEmptyState extends StatelessWidget {
   final String? description;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class MpEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 64, color: context.appColors.textMuted),
+            Icon(icon, size: iconSize, color: context.appColors.textMuted),
             const SizedBox(height: AppSpacing.lg),
             Text(
               title,

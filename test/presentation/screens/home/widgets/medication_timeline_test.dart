@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
@@ -12,7 +13,7 @@ import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/medication_timeline.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -91,7 +92,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpEmptyState), findsOneWidget);
+      expect(find.byType(KdEmptyState), findsOneWidget);
     });
 
     testWidgets('shows empty state with calendar icon', (tester) async {
@@ -287,7 +288,7 @@ void main() {
       // Pump once without settling to catch loading state
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
 
     testWidgets('shows error message when reminders fail to load', (

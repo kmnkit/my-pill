@@ -7,7 +7,7 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/services/firestore_service.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class BackupSyncDialog extends ConsumerStatefulWidget {
@@ -127,7 +127,7 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
-            MpButton(
+            KdButton(
               label: _isSyncing ? l10n.syncing : l10n.syncNow,
               onPressed: _isSyncing ? null : _syncNow,
               icon: _isSyncing ? null : Icons.cloud_upload,
@@ -145,7 +145,7 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
               contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: AppSpacing.xl),
-            MpButton(
+            KdButton(
               label: l10n.close,
               variant: MpButtonVariant.secondary,
               onPressed: () => Navigator.of(context).pop(),

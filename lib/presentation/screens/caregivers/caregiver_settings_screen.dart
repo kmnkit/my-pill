@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,9 +15,9 @@ import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
@@ -45,7 +46,7 @@ class _CaregiverSettingsScreenState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return GradientScaffold(
-      appBar: MpAppBar(title: l10n.settingsTitle),
+      appBar: KdAppBar(title: l10n.settingsTitle),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
@@ -57,7 +58,7 @@ class _CaregiverSettingsScreenState
           children: [
             const LanguageSelector(),
             const SizedBox(height: AppSpacing.xl),
-            MpSectionHeader(title: l10n.notifications),
+            KdSectionHeader(title: l10n.notifications),
             ref
                 .watch(userSettingsProvider)
                 .when(
@@ -95,7 +96,7 @@ class _CaregiverSettingsScreenState
                   ),
                 ),
             const SizedBox(height: AppSpacing.xl),
-            MpSectionHeader(title: l10n.account),
+            KdSectionHeader(title: l10n.account),
             ListTile(
               leading: const Icon(Icons.swap_horiz),
               title: Text(l10n.switchToPatientView),
@@ -111,11 +112,20 @@ class _CaregiverSettingsScreenState
                 style: TextStyle(color: AppColors.error),
               ),
               onTap: () async {
+                bool isAnonymous;
+                try {
+                  isAnonymous =
+                      FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
+                } catch (_) {
+                  isAnonymous = false;
+                }
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(l10n.signOut),
-                    content: Text(l10n.areYouSureSignOut),
+                    content: Text(isAnonymous
+                        ? l10n.logOutMessageAnonymous
+                        : l10n.logOutMessageAuthenticated),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
@@ -139,7 +149,7 @@ class _CaregiverSettingsScreenState
               },
             ),
             const SizedBox(height: AppSpacing.xl),
-            MpSectionHeader(title: l10n.advanced),
+            KdSectionHeader(title: l10n.advanced),
             ListTile(
               leading: Icon(
                 Icons.logout,
@@ -159,10 +169,19 @@ class _CaregiverSettingsScreenState
               ),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
-                final confirmed = await MpConfirmDialog.show(
+                bool isAnon;
+                try {
+                  isAnon =
+                      FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
+                } catch (_) {
+                  isAnon = false;
+                }
+                final confirmed = await KdConfirmDialog.show(
                   context,
                   title: l10n.deactivateAccountTitle,
-                  message: l10n.deactivateAccountMessage,
+                  message: isAnon
+                      ? l10n.logOutMessageAnonymous
+                      : l10n.logOutMessageAuthenticated,
                   confirmLabel: l10n.deactivate,
                   isDestructive: true,
                 );
@@ -221,7 +240,7 @@ class _CaregiverSettingsScreenState
               contentPadding: EdgeInsets.zero,
               onTap: () async {
                 // First confirmation
-                final firstConfirm = await MpConfirmDialog.show(
+                final firstConfirm = await KdConfirmDialog.show(
                   context,
                   title: l10n.deleteAccountTitle,
                   message: l10n.deleteAccountMessage,
@@ -232,7 +251,7 @@ class _CaregiverSettingsScreenState
                 if (firstConfirm != true || !context.mounted) return;
 
                 // Second confirmation
-                final secondConfirm = await MpConfirmDialog.show(
+                final secondConfirm = await KdConfirmDialog.show(
                   context,
                   title: l10n.deleteAccountConfirmTitle,
                   message: l10n.deleteAccountConfirmMessage,

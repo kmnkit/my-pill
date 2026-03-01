@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 
-class MpTimePicker extends StatelessWidget {
-  const MpTimePicker({
+class KdTimePicker extends StatelessWidget {
+  const KdTimePicker({
     super.key,
     required this.hour,
     required this.minute,

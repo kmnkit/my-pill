@@ -12,8 +12,8 @@ import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
 import 'package:kusuridoki/presentation/router/route_names.dart';
@@ -148,8 +148,8 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MpSectionHeader(title: l10n.inviteCaregiver),
-        MpCard(
+        KdSectionHeader(title: l10n.inviteCaregiver),
+        KdCard(
           child: _generatedUrl == null
               ? _buildGenerateButton(l10n)
               : _buildInviteContent(l10n),
@@ -247,24 +247,22 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
           ],
         ),
         const SizedBox(height: AppSpacing.lg),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () => _scanQrCode(context),
-                icon: const Icon(Icons.qr_code_scanner),
-                label: Text(l10n.scanQrCode),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: _generateInvite,
-                icon: const Icon(Icons.refresh),
-                label: Text(l10n.newLink),
-              ),
-            ),
-          ],
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: _generateInvite,
+            icon: const Icon(Icons.refresh),
+            label: Text(l10n.newLink),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => _scanQrCode(context),
+            icon: const Icon(Icons.qr_code_scanner),
+            label: Text(l10n.scanQrCode),
+          ),
         ),
       ],
     );

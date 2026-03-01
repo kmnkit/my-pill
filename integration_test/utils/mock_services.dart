@@ -356,6 +356,12 @@ class MockStorageService implements StorageService {
     _reminders.removeWhere((_, r) => r.medicationId == medicationId);
   }
 
+  @override
+  Future<void> deleteRemindersBeforeDate(DateTime date) async {
+    final cutoff = DateTime(date.year, date.month, date.day);
+    _reminders.removeWhere((_, r) => r.scheduledTime.isBefore(cutoff));
+  }
+
   // --- Adherence Records ---
   @override
   Future<void> saveAdherenceRecord(AdherenceRecord record) async {

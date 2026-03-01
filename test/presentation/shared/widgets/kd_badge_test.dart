@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpBadge', () {
+  group('KdBadge', () {
     testWidgets('renders label text', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Taken', variant: MpBadgeVariant.taken),
+          const KdBadge(label: 'Taken', variant: MpBadgeVariant.taken),
         ),
       );
       await tester.pumpAndSettle();
@@ -19,18 +19,18 @@ void main() {
     testWidgets('taken variant renders without error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Taken', variant: MpBadgeVariant.taken),
+          const KdBadge(label: 'Taken', variant: MpBadgeVariant.taken),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpBadge), findsOneWidget);
+      expect(find.byType(KdBadge), findsOneWidget);
     });
 
     testWidgets('missed variant renders without error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Missed', variant: MpBadgeVariant.missed),
+          const KdBadge(label: 'Missed', variant: MpBadgeVariant.missed),
         ),
       );
       await tester.pumpAndSettle();
@@ -41,7 +41,7 @@ void main() {
     testWidgets('lowStock variant renders without error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Low Stock', variant: MpBadgeVariant.lowStock),
+          const KdBadge(label: 'Low Stock', variant: MpBadgeVariant.lowStock),
         ),
       );
       await tester.pumpAndSettle();
@@ -52,7 +52,7 @@ void main() {
     testWidgets('connected variant renders without error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Connected', variant: MpBadgeVariant.connected),
+          const KdBadge(label: 'Connected', variant: MpBadgeVariant.connected),
         ),
       );
       await tester.pumpAndSettle();
@@ -63,7 +63,7 @@ void main() {
     testWidgets('snoozed variant renders without error', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpBadge(label: 'Snoozed', variant: MpBadgeVariant.snoozed),
+          const KdBadge(label: 'Snoozed', variant: MpBadgeVariant.snoozed),
         ),
       );
       await tester.pumpAndSettle();

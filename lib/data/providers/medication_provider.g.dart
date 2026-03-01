@@ -33,7 +33,7 @@ final class MedicationListProvider
   MedicationList create() => MedicationList();
 }
 
-String _$medicationListHash() => r'3f385c4420d5e21c48bd44eda4be5d8aab0ecd7b';
+String _$medicationListHash() => r'cd08175f13b3fd048ec7528b486d3d4339619690';
 
 abstract class _$MedicationList extends $AsyncNotifier<List<Medication>> {
   FutureOr<List<Medication>> build();

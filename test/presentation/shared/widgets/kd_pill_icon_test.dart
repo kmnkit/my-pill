@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpPillIcon', () {
+  group('KdPillIcon', () {
     testWidgets('renders with round shape', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpPillIcon(shape: PillShape.round, color: PillColor.white),
+          const KdPillIcon(shape: PillShape.round, color: PillColor.white),
         ),
       );
       await tester.pumpAndSettle();
@@ -21,7 +22,7 @@ void main() {
     testWidgets('renders oval shape with Transform.scale', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpPillIcon(shape: PillShape.oval, color: PillColor.blue),
+          const KdPillIcon(shape: PillShape.oval, color: PillColor.blue),
         ),
       );
       await tester.pumpAndSettle();
@@ -33,13 +34,13 @@ void main() {
     testWidgets('renders packet shape', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpPillIcon(shape: PillShape.packet, color: PillColor.orange),
+          const KdPillIcon(shape: PillShape.packet, color: PillColor.orange),
         ),
       );
       await tester.pumpAndSettle();
 
       // Packet renders without error and contains an Icon
-      expect(find.byType(MpPillIcon), findsOneWidget);
+      expect(find.byType(KdPillIcon), findsOneWidget);
       expect(find.byType(Icon), findsOneWidget);
     });
 
@@ -47,11 +48,11 @@ void main() {
       for (final shape in PillShape.values) {
         await tester.pumpWidget(
           createTestableWidget(
-            MpPillIcon(shape: shape, color: PillColor.white),
+            KdPillIcon(shape: shape, color: PillColor.white),
           ),
         );
         await tester.pumpAndSettle();
-        expect(find.byType(MpPillIcon), findsOneWidget);
+        expect(find.byType(KdPillIcon), findsOneWidget);
       }
     });
 
@@ -59,18 +60,18 @@ void main() {
       for (final color in PillColor.values) {
         await tester.pumpWidget(
           createTestableWidget(
-            MpPillIcon(shape: PillShape.round, color: color),
+            KdPillIcon(shape: PillShape.round, color: color),
           ),
         );
         await tester.pumpAndSettle();
-        expect(find.byType(MpPillIcon), findsOneWidget);
+        expect(find.byType(KdPillIcon), findsOneWidget);
       }
     });
 
     testWidgets('uses custom size', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpPillIcon(
+          const KdPillIcon(
             shape: PillShape.round,
             color: PillColor.blue,
             size: 48.0,
@@ -86,12 +87,48 @@ void main() {
     testWidgets('has Semantics widget', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpPillIcon(shape: PillShape.capsule, color: PillColor.red),
+          const KdPillIcon(shape: PillShape.capsule, color: PillColor.red),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.byType(Semantics), findsWidgets);
+    });
+
+    testWidgets('uses textMuted color for white pill', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const KdPillIcon(shape: PillShape.packet, color: PillColor.white),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icon = tester.widget<Icon>(find.byType(Icon));
+      expect(icon.color, AppColors.textMuted);
+    });
+
+    testWidgets('uses textMuted color for yellow pill', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const KdPillIcon(shape: PillShape.round, color: PillColor.yellow),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icon = tester.widget<Icon>(find.byType(Icon));
+      expect(icon.color, AppColors.textMuted);
+    });
+
+    testWidgets('uses original color for dark pill', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const KdPillIcon(shape: PillShape.round, color: PillColor.blue),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final icon = tester.widget<Icon>(find.byType(Icon));
+      expect(icon.color, PillColor.blue.color);
     });
   });
 }

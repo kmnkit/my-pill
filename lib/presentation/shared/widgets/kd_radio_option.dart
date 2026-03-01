@@ -3,8 +3,8 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
-class MpRadioOption<T> extends StatelessWidget {
-  const MpRadioOption({
+class KdRadioOption<T> extends StatelessWidget {
+  const KdRadioOption({
     super.key,
     required this.value,
     required this.groupValue,

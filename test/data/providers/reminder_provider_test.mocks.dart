@@ -178,6 +178,15 @@ class MockStorageService extends _i1.Mock implements _i2.StorageService {
           as _i4.Future<void>);
 
   @override
+  _i4.Future<void> deleteRemindersBeforeDate(DateTime? date) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteRemindersBeforeDate, [date]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
   _i4.Future<void> deleteRemindersForMedication(String? medicationId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteRemindersForMedication, [medicationId]),

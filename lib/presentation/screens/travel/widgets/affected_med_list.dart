@@ -10,8 +10,9 @@ import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 
 class AffectedMedList extends ConsumerWidget {
   const AffectedMedList({super.key});
@@ -27,7 +28,7 @@ class AffectedMedList extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return medicationsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const KdListShimmer(itemCount: 3, itemHeight: 64),
       error: (error, stack) => Center(
         child: Text(
           l10n.errorLoadingMedications,
@@ -38,7 +39,7 @@ class AffectedMedList extends ConsumerWidget {
       ),
       data: (medications) {
         return schedulesAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const KdListShimmer(itemCount: 3, itemHeight: 64),
           error: (error, stack) => Center(
             child: Text(
               l10n.errorLoadingSchedule,
@@ -148,13 +149,13 @@ class AffectedMedList extends ConsumerWidget {
               children: medsWithSchedules.map((item) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                  child: MpCard(
+                  child: KdCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            MpPillIcon(
+                            KdPillIcon(
                               shape: item.medication.shape,
                               color: item.medication.color,
                               size: AppSpacing.iconMd,

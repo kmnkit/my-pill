@@ -13,17 +13,21 @@
 	<string>production</string>
 
 	<!-- App Groups (for widgets and extensions) -->
-	<!-- NOTE: Register this App Group in Apple Developer Portal before running Match -->
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.hobbylabo.kusuridoki</string>
 	</array>
 
 	<!-- In-App Purchase -->
-	<!-- NOTE: Register this Merchant ID in Apple Developer Portal before running Match -->
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
 		<string>merchant.com.hobbylabo.kusuridoki</string>
+	</array>
+
+	<!-- Universal Links -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:kusuridoki.app</string>
 	</array>
 </dict>
 </plist>

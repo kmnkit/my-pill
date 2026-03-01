@@ -288,7 +288,7 @@ void main() {
       // Initially: no TimezoneModeSelector (disabled)
       expect(find.byType(TimezoneModeSelector), findsNothing);
 
-      // Tap the toggle (GestureDetector inside MpToggleSwitch)
+      // Tap the toggle (GestureDetector inside KdToggleSwitch)
       // The toggle is in a Row with label "Enable Travel Mode"
       // Find the toggle area — tap on the switch itself
       final toggleFinder = find.byType(AnimatedContainer).first;

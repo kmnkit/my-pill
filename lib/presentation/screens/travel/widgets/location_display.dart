@@ -5,7 +5,8 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/screens/travel/widgets/timezone_picker.dart';
 
 class LocationDisplay extends ConsumerWidget {
   const LocationDisplay({super.key});
@@ -51,7 +52,7 @@ class LocationDisplay extends ConsumerWidget {
     final homeTz = getTimezoneDisplay(timezoneState.homeTimezone);
     final timeDiff = getTimeDifference();
 
-    return MpCard(
+    return KdCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,6 +69,22 @@ class LocationDisplay extends ConsumerWidget {
                   '${l10n.currentLocation}: $currentCity ($currentTz)',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: AppSpacing.iconSm,
+                  color: AppColors.primary,
+                ),
+                tooltip: l10n.changeTimezone,
+                onPressed: () async {
+                  final selected = await showTimezonePicker(context);
+                  if (selected != null) {
+                    ref
+                        .read(timezoneSettingsProvider.notifier)
+                        .setCurrentTimezone(selected);
+                  }
+                },
               ),
             ],
           ),

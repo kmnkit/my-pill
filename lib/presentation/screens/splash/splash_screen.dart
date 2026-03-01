@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 
@@ -80,10 +81,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child: Image.asset(
-            'assets/icons/app_icon.png',
-            width: 150,
-            height: 150,
+          child: Text(
+            'くすりどき',
+            style: GoogleFonts.lexend(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textOnPrimary,
+            ).copyWith(fontFamilyFallback: const ['NotoSansJP']),
           ),
         ),
       ),

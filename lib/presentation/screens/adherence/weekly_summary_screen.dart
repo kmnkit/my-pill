@@ -6,7 +6,8 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/adherence/widgets/adherence_chart.dart';
 import 'package:kusuridoki/presentation/screens/adherence/widgets/medication_breakdown.dart';
 import 'package:kusuridoki/presentation/screens/adherence/widgets/overall_score.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class WeeklySummaryScreen extends ConsumerStatefulWidget {
@@ -25,59 +26,60 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return GradientScaffold(
-      appBar: MpAppBar(title: l10n.weeklySummary, showBack: true),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.navBarClearance,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            overallAdherenceAsync.when(
-              data: (adherence) => OverallScore(
-                percentage: adherence != null
-                    ? (adherence * 100).round()
-                    : null,
-              ),
-              loading: () => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.xl),
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              ),
-              error: (error, _) => const OverallScore(percentage: null),
+      appBar: KdAppBar(title: l10n.weeklySummary, showBack: true),
+      body: Builder(
+        builder: (context) {
+          final bottomPadding = MediaQuery.of(context).padding.bottom;
+          return SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.navBarClearance + bottomPadding,
             ),
-            const SizedBox(height: AppSpacing.lg),
-            weeklyAdherenceAsync.when(
-              data: (weeklyData) => AdherenceChart(weeklyData: weeklyData),
-              loading: () => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.xl),
-                  child: CircularProgressIndicator.adaptive(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                overallAdherenceAsync.when(
+                  data: (adherence) => OverallScore(
+                    percentage: adherence != null
+                        ? (adherence * 100).round()
+                        : null,
+                  ),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(AppSpacing.xl),
+                    child: KdShimmerBox(height: 120),
+                  ),
+                  error: (error, _) => const OverallScore(percentage: null),
                 ),
-              ),
-              error: (error, _) => AdherenceChart(weeklyData: const {}),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            ref
-                .watch(medicationBreakdownProvider)
-                .when(
-                  data: (medications) =>
-                      MedicationBreakdown(medications: medications),
-                  loading: () => const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.lg),
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
+                const SizedBox(height: AppSpacing.lg),
+                weeklyAdherenceAsync.when(
+                  data: (weeklyData) =>
+                      AdherenceChart(weeklyData: weeklyData),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(AppSpacing.xl),
+                    child: KdShimmerBox(height: 200),
                   ),
                   error: (error, _) =>
-                      MedicationBreakdown(medications: const []),
+                      AdherenceChart(weeklyData: const {}),
                 ),
-          ],
-        ),
+                const SizedBox(height: AppSpacing.lg),
+                ref
+                    .watch(medicationBreakdownProvider)
+                    .when(
+                      data: (medications) =>
+                          MedicationBreakdown(medications: medications),
+                      loading: () => const Padding(
+                        padding: EdgeInsets.all(AppSpacing.lg),
+                        child: KdListShimmer(itemCount: 3, itemHeight: 56),
+                      ),
+                      error: (error, _) =>
+                          MedicationBreakdown(medications: const []),
+                    ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
