@@ -158,6 +158,17 @@ Raw<GoRouter> appRouter(Ref ref) {
         return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
       }
 
+      // Authenticated users who skip /login (already logged in) also need
+      // their pending invite code consumed — e.g. cold-start Universal Link
+      // while the user was already signed in with onboarding complete.
+      if (isAuthenticated && onboardingComplete) {
+        final pendingCode =
+            ref.read(deepLinkServiceProvider).consumePendingInviteCode();
+        if (pendingCode != null) {
+          return '/invite/$pendingCode';
+        }
+      }
+
       return null;
     },
     routes: [
