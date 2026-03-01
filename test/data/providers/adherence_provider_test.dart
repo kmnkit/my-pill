@@ -9,7 +9,6 @@ import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/data/models/adherence_record.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/providers/adherence_provider.dart';
-import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
 

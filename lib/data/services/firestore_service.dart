@@ -217,6 +217,7 @@ class FirestoreService {
   /// Stream of linked patients for caregiver dashboard
   Stream<List<Map<String, dynamic>>> watchLinkedPatients() {
     final caregiverId = _userId;
+    if (caregiverId == null) return Stream.value([]);
     return _db
         .collection('caregiverAccess')
         .doc(caregiverId)

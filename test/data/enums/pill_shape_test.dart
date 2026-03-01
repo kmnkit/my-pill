@@ -77,8 +77,8 @@ void main() {
         expect(PillShape.capsule.icon, Icons.medication_outlined);
       });
 
-      test('oval icon is Icons.circle_outlined', () {
-        expect(PillShape.oval.icon, Icons.circle_outlined);
+      test('oval icon is Icons.egg_outlined', () {
+        expect(PillShape.oval.icon, Icons.egg_outlined);
       });
 
       test('square icon is Icons.square_outlined', () {

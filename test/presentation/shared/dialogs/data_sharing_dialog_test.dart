@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridokioki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
-import 'package:kusuridokioki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
-import 'package:kusuridokiokioki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 

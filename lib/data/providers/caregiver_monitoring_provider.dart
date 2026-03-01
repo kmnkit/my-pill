@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/services/firestore_service.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
@@ -50,6 +51,11 @@ Future<double> patientDailyAdherence(Ref ref, String patientId) async {
 @riverpod
 Stream<List<({String patientId, String patientName, DateTime? linkedAt})>>
 caregiverPatients(Ref ref) {
+  final user = ref.watch(authStateProvider).maybeWhen(
+    data: (u) => u,
+    orElse: () => null,
+  );
+  if (user == null) return Stream.value([]);
   final firestore = ref.watch(firestoreServiceProvider);
   return firestore.watchLinkedPatients().map(
     (docs) => docs.map((doc) {

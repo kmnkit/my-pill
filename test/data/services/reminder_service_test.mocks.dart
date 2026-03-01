@@ -6,7 +6,6 @@
 import 'dart:async' as _i4;
 import 'dart:typed_data' as _i3;
 
-import 'package:mockito/mockito.dart' as _i1;
 import 'package:kusuridoki/data/models/adherence_record.dart' as _i8;
 import 'package:kusuridoki/data/models/caregiver_link.dart' as _i10;
 import 'package:kusuridoki/data/models/medication.dart' as _i5;
@@ -14,6 +13,7 @@ import 'package:kusuridoki/data/models/reminder.dart' as _i7;
 import 'package:kusuridoki/data/models/schedule.dart' as _i6;
 import 'package:kusuridoki/data/models/user_profile.dart' as _i9;
 import 'package:kusuridoki/data/services/storage_service.dart' as _i2;
+import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

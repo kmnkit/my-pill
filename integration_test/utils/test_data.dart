@@ -1,6 +1,7 @@
 /// Test data fixtures for E2E tests
 library;
 
+import 'package:kusuridoki/data/models/caregiver_link.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/schedule.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
@@ -250,6 +251,60 @@ class TestData {
     }
 
     return records;
+  }
+
+  // --- Caregiver Links ---
+
+  static CaregiverLink get sampleCaregiverLink => CaregiverLink(
+    id: 'link-1',
+    patientId: 'test-user-1',
+    caregiverId: 'caregiver-1',
+    caregiverName: 'Jane Caregiver',
+    status: 'connected',
+    linkedAt: DateTime(2024, 1, 15),
+  );
+
+  static CaregiverLink get pendingCaregiverLink => CaregiverLink(
+    id: 'link-2',
+    patientId: 'test-user-1',
+    caregiverId: 'caregiver-2',
+    caregiverName: 'Bob Caregiver',
+    status: 'pending',
+    linkedAt: DateTime(2024, 2, 1),
+  );
+
+  static List<CaregiverLink> get sampleCaregiverLinks => [
+    sampleCaregiverLink,
+    pendingCaregiverLink,
+  ];
+
+  /// Patient data in the shape returned by FirestoreService.watchLinkedPatients()
+  static Map<String, dynamic> get linkedPatientData => {
+    'patientId': 'patient-1',
+    'patientName': 'Tanaka Hanako',
+    'linkedAt': null,
+  };
+
+  static List<Map<String, dynamic>> get linkedPatientsData => [
+    linkedPatientData,
+  ];
+
+  static CaregiverLink createCaregiverLink({
+    String? id,
+    String patientId = 'test-user-1',
+    String caregiverId = 'caregiver-1',
+    String caregiverName = 'Test Caregiver',
+    String status = 'connected',
+    DateTime? linkedAt,
+  }) {
+    return CaregiverLink(
+      id: id ?? 'link-${DateTime.now().millisecondsSinceEpoch}',
+      patientId: patientId,
+      caregiverId: caregiverId,
+      caregiverName: caregiverName,
+      status: status,
+      linkedAt: linkedAt ?? DateTime(2024, 1, 1),
+    );
   }
 
   // --- Helper methods for creating custom test data ---

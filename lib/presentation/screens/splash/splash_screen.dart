@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -15,7 +16,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   late final AnimationController _animationController;
   late final Animation<double> _fadeAnimation;
 
-  static const _splashBackgroundColor = Color(0xFFFFF5F0);
+  static const _splashBackgroundColor = AppColors.primary;
   static const _splashDuration = Duration(seconds: 2);
   static const _fadeInDuration = Duration(milliseconds: 500);
 

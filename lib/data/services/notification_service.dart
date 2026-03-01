@@ -161,8 +161,9 @@ class NotificationService {
     String? dosageTimingLabel,
   }) async {
     final scheduledTime = reminder.scheduledTime;
-    if (scheduledTime.isBefore(DateTime.now()))
+    if (scheduledTime.isBefore(DateTime.now())) {
       return; // Don't schedule past notifications
+    }
 
     // T5.2: Notification actions
     const takeAction = AndroidNotificationAction(

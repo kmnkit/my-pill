@@ -21,11 +21,9 @@ class ScheduleScreen extends ConsumerStatefulWidget {
   const ScheduleScreen({
     super.key,
     required this.medicationId,
-    this.initialScheduleType,
   });
 
   final String medicationId;
-  final ScheduleType? initialScheduleType;
 
   @override
   ConsumerState<ScheduleScreen> createState() => _ScheduleScreenState();
@@ -40,7 +38,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedType = widget.initialScheduleType ?? ScheduleType.daily;
+    _selectedType = ScheduleType.daily;
   }
 
   @override

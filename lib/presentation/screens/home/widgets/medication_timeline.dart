@@ -10,6 +10,7 @@ import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_reminder_dialog.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class MedicationTimeline extends ConsumerWidget {
@@ -104,9 +105,33 @@ class MedicationTimeline extends ConsumerWidget {
                         medicationId: medication.id,
                         reminderStatus: reminder.status,
                         onMarkTaken: reminder.status == ReminderStatus.pending
-                            ? () => ref
-                                  .read(todayRemindersProvider.notifier)
-                                  .markAsTaken(reminder.id)
+                            ? () async {
+                                if (!context.mounted) return;
+                                final action = await MpReminderDialog.show(
+                                  context,
+                                  time: DateFormat('h:mm a')
+                                      .format(reminder.scheduledTime),
+                                  medicationName: medication.name,
+                                  dosage:
+                                      '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
+                                );
+                                if (action == null) return;
+                                if (!context.mounted) return;
+                                final notifier = ref.read(
+                                  todayRemindersProvider.notifier,
+                                );
+                                switch (action) {
+                                  case ReminderAction.take:
+                                    await notifier.markAsTaken(reminder.id);
+                                  case ReminderAction.skip:
+                                    await notifier.markAsSkipped(reminder.id);
+                                  case ReminderAction.snooze:
+                                    await notifier.snooze(
+                                      reminder.id,
+                                      const Duration(minutes: 15),
+                                    );
+                                }
+                              }
                             : null,
                         dosageTimingLabel: dosageTimingLabel,
                         isCritical: medication.isCritical,
