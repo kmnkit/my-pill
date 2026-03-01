@@ -992,6 +992,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'You will be signed out. Your data will be preserved and you can sign back in later.';
 
   @override
+  String get logOutMessageAnonymous =>
+      'You are not signed in. Logging out will permanently delete all medications, schedules, and reminders on this device. This cannot be undone.';
+
+  @override
+  String get logOutMessageAuthenticated =>
+      'Your local data will be removed from this device. You can restore it by signing in again.';
+
+  @override
   String get deactivate => 'Log Out';
 
   @override
@@ -1103,6 +1111,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorSavingMedication =>
       'Failed to save medication. Please try again.';
+
+  @override
+  String get errorSavingSchedule =>
+      'Failed to save schedule. Please try again.';
 
   @override
   String get errorUpdatingMedication =>
@@ -1279,6 +1291,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get failedToAcceptInvite =>
       'Failed to accept invite. Please try again.';
+
+  @override
+  String get inviteNotFound => 'Invite code not found. Please check the link.';
+
+  @override
+  String get inviteExpired =>
+      'This invite has expired. Please ask for a new one.';
+
+  @override
+  String get inviteAlreadyUsed => 'This invite has already been used.';
+
+  @override
+  String get inviteSelfError => 'You cannot accept your own invite.';
 
   @override
   String get inviteLinkGenerated => 'Invite link generated successfully!';
@@ -1501,7 +1526,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingMedStyleTitle => 'How do you receive your medication?';
 
   @override
-  String get onboardingMedStyleSubtitle => 'We\'ll optimize the app for you';
+  String get onboardingMedStyleSubtitle =>
+      'Your choice sets the default when adding medications';
 
   @override
   String get onboardingIndividualPills => 'Individual pills or tablets';
@@ -1558,4 +1584,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String timeOutOfRange(String min, String max) {
     return 'Time must be between $min:00 and $max:59';
   }
+
+  @override
+  String get changeTimezone => 'Change Timezone';
+
+  @override
+  String get searchTimezone => 'Search timezones...';
+
+  @override
+  String get selectDestinationTimezone => 'Select Destination Timezone';
+
+  @override
+  String get clearAllDataTitle => 'Clear All Data';
+
+  @override
+  String get clearAllDataMessage =>
+      'Delete all medications, schedules, reminders, and adherence records?';
+
+  @override
+  String get clearAllDataConfirm => 'Clear';
+
+  @override
+  String get addPatient => 'Add Patient';
+
+  @override
+  String get enterCodeManually => 'Enter code manually';
+
+  @override
+  String get enterInviteCode => 'Enter Invite Code';
+
+  @override
+  String get inviteCodeHint => '8-character code';
+
+  @override
+  String get invalidInviteCode => 'Please enter a valid 8-character code';
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 
-class MpAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MpAppBar({
+class KdAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const KdAppBar({
     super.key,
     this.title,
     this.showBack = false,

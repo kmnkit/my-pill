@@ -12,7 +12,7 @@ import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -255,14 +255,14 @@ void main() {
       await tester.pumpAndSettle();
 
       // Confirm dialog should appear
-      expect(find.byType(MpConfirmDialog), findsOneWidget);
+      expect(find.byType(KdConfirmDialog), findsOneWidget);
 
       // Tap cancel (not the destructive button)
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
       // Dialog dismissed; settings screen still present
-      expect(find.byType(MpConfirmDialog), findsNothing);
+      expect(find.byType(KdConfirmDialog), findsNothing);
       expect(find.text('Settings'), findsOneWidget);
     });
 
@@ -292,13 +292,13 @@ void main() {
       await tester.pumpAndSettle();
 
       // First confirm dialog
-      expect(find.byType(MpConfirmDialog), findsOneWidget);
+      expect(find.byType(KdConfirmDialog), findsOneWidget);
 
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
       // No second dialog; settings screen intact
-      expect(find.byType(MpConfirmDialog), findsNothing);
+      expect(find.byType(KdConfirmDialog), findsNothing);
       expect(find.text('Settings'), findsOneWidget);
     });
 

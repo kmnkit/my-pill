@@ -3,8 +3,8 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_text_field.dart';
 
 class OnboardingNameStep extends StatefulWidget {
   final VoidCallback onNext;
@@ -124,7 +124,7 @@ class _OnboardingNameStepState extends State<OnboardingNameStep> {
                     const SizedBox(height: AppSpacing.xxxl),
 
                     // Name input field
-                    MpTextField(
+                    KdTextField(
                       controller: _nameController,
                       hint: l10n.onboardingNameHint,
                       prefixIcon: Icons.person,
@@ -167,7 +167,7 @@ class _OnboardingNameStepState extends State<OnboardingNameStep> {
             ],
 
             // Next button
-            MpButton(
+            KdButton(
               label: l10n.onboardingNext,
               onPressed: _hasName
                   ? () {

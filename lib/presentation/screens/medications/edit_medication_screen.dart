@@ -16,10 +16,11 @@ import 'package:kusuridoki/presentation/screens/medications/widgets/inventory_ed
 import 'package:kusuridoki/presentation/screens/medications/widgets/photo_picker_button.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_color_picker.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/pill_shape_selector.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_text_field.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_text_field.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class EditMedicationScreen extends ConsumerStatefulWidget {
@@ -77,9 +78,12 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: GradientScaffold(
-        appBar: MpAppBar(title: l10n.editMedication, showBack: true),
+        appBar: KdAppBar(title: l10n.editMedication, showBack: true),
         body: medicationAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const Padding(
+            padding: EdgeInsets.all(AppSpacing.lg),
+            child: KdListShimmer(itemCount: 5),
+          ),
           error: (error, stackTrace) => Center(
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
@@ -163,7 +167,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  MpTextField(
+                  KdTextField(
                     controller: _nameController,
                     label: l10n.medicationName,
                     hint: _isIppoka ? l10n.ippokaNameHint : l10n.dosageHint,
@@ -174,7 +178,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: MpTextField(
+                        child: KdTextField(
                           controller: _dosageController,
                           label: l10n.dosage,
                           hint: '100',
@@ -224,7 +228,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   ),
                   if (!_isIppoka) ...[
                     const SizedBox(height: AppSpacing.xxl),
-                    MpSectionHeader(title: l10n.pillShape),
+                    KdSectionHeader(title: l10n.pillShape),
                     PillShapeSelector(
                       selectedShape: _selectedShape,
                       onShapeSelected: (shape) {
@@ -234,7 +238,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                       },
                     ),
                     const SizedBox(height: AppSpacing.lg),
-                    MpSectionHeader(title: l10n.pillColor),
+                    KdSectionHeader(title: l10n.pillColor),
                     PillColorPicker(
                       selectedColor: _selectedColor,
                       onColorSelected: (color) {
@@ -252,7 +256,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     },
                   ),
                   const SizedBox(height: AppSpacing.xxl),
-                  MpSectionHeader(title: l10n.inventory),
+                  KdSectionHeader(title: l10n.inventory),
                   InventoryEditor(
                     count: _inventoryCount,
                     onCountChanged: (newCount) {
@@ -262,7 +266,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     },
                   ),
                   const SizedBox(height: AppSpacing.xxl),
-                  MpSectionHeader(title: l10n.criticalMedication),
+                  KdSectionHeader(title: l10n.criticalMedication),
                   const SizedBox(height: AppSpacing.sm),
                   SwitchListTile(
                     title: Text(
@@ -285,7 +289,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   const SizedBox(height: AppSpacing.xxl),
-                  MpButton(
+                  KdButton(
                     label: _isSaving ? l10n.updating : l10n.updateMedication,
                     onPressed: _isSaving
                         ? null

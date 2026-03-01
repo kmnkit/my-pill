@@ -6,8 +6,8 @@ import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
-class MpPillIcon extends StatelessWidget {
-  const MpPillIcon({
+class KdPillIcon extends StatelessWidget {
+  const KdPillIcon({
     super.key,
     required this.shape,
     required this.color,
@@ -21,7 +21,9 @@ class MpPillIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final iconWidget = Icon(shape.icon, color: color.color, size: size);
+    final isLightColor = color.color.computeLuminance() > 0.7;
+    final iconColor = isLightColor ? AppColors.textMuted : color.color;
+    final iconWidget = Icon(shape.icon, color: iconColor, size: size);
 
     final label = shape == PillShape.packet
         ? l10n.dosePackIcon
@@ -29,8 +31,6 @@ class MpPillIcon extends StatelessWidget {
             shape.localizedName(l10n),
             color.localizedName(l10n),
           );
-
-    final isLightColor = color.color.computeLuminance() > 0.7;
 
     return Semantics(
       label: label,

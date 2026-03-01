@@ -124,7 +124,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // MpAppBar with showBack: true renders a back icon
+      // KdAppBar with showBack: true renders a back icon
       expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     });
 

@@ -26,10 +26,11 @@ import 'package:kusuridoki/presentation/screens/settings/widgets/display_setting
 import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/notification_settings.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/premium_banner.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/router/route_names.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
@@ -42,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
     final userSettingsAsync = ref.watch(userSettingsProvider);
 
     return GradientScaffold(
-      appBar: MpAppBar(title: l10n.settingsTitle),
+      appBar: KdAppBar(title: l10n.settingsTitle),
       body: userSettingsAsync.when(
         data: (userSettings) => SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(
@@ -62,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               const DisplaySettings(),
               const SizedBox(height: AppSpacing.xl),
-              MpSectionHeader(title: l10n.features),
+              KdSectionHeader(title: l10n.features),
               _buildListTile(
                 context,
                 l10n.familyCaregivers,
@@ -77,7 +78,7 @@ class SettingsScreen extends ConsumerWidget {
                 () => context.goNamed(RouteNames.travelMode),
               ),
               const SizedBox(height: AppSpacing.xl),
-              MpSectionHeader(title: l10n.safetyPrivacy),
+              KdSectionHeader(title: l10n.safetyPrivacy),
               _buildListTile(
                 context,
                 l10n.dataSharingPreferences,
@@ -106,7 +107,7 @@ class SettingsScreen extends ConsumerWidget {
                 () => launchUrl(Uri.parse(AppConstants.termsOfServiceUrl)),
               ),
               const SizedBox(height: AppSpacing.xl),
-              MpSectionHeader(title: l10n.about),
+              KdSectionHeader(title: l10n.about),
               _buildListTile(
                 context,
                 l10n.appVersion,
@@ -121,14 +122,14 @@ class SettingsScreen extends ConsumerWidget {
               ),
               if (kDebugMode) ...[
                 const SizedBox(height: AppSpacing.xl),
-                MpSectionHeader(title: 'Debug Tools'),
+                KdSectionHeader(title: 'Debug Tools'),
                 _buildListTile(
                   context,
                   'Seed Screenshot Data',
                   Icons.photo_library_outlined,
                   () async {
                     final seeder = ScreenshotSeeder(StorageService());
-                    await seeder.seed();
+                    await seeder.clearAndSeed();
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -139,20 +140,55 @@ class SettingsScreen extends ConsumerWidget {
                     }
                   },
                 ),
+                const SizedBox(height: AppSpacing.sm),
+                _buildListTile(
+                  context,
+                  'Clear All Data',
+                  Icons.delete_sweep_outlined,
+                  () async {
+                    final confirmed = await KdConfirmDialog.show(
+                      context,
+                      title: l10n.clearAllDataTitle,
+                      message: l10n.clearAllDataMessage,
+                      confirmLabel: l10n.clearAllDataConfirm,
+                      isDestructive: true,
+                    );
+                    if (confirmed != true) return;
+
+                    await StorageService().clearUserData();
+                    _invalidateUserProviders(ref);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('All data cleared!')),
+                      );
+                    }
+                  },
+                  textColor: AppColors.error,
+                ),
               ],
               const SizedBox(height: AppSpacing.xl),
               const PremiumBanner(),
               const SizedBox(height: AppSpacing.xl),
-              MpSectionHeader(title: l10n.advanced),
+              KdSectionHeader(title: l10n.advanced),
               _buildListTile(
                 context,
                 l10n.deactivateAccount,
                 Icons.logout,
                 () async {
-                  final confirmed = await MpConfirmDialog.show(
+                  bool isAnonymous;
+                  try {
+                    isAnonymous = FirebaseAuth
+                            .instance.currentUser?.isAnonymous ??
+                        false;
+                  } catch (_) {
+                    isAnonymous = false;
+                  }
+                  final confirmed = await KdConfirmDialog.show(
                     context,
                     title: l10n.deactivateAccountTitle,
-                    message: l10n.deactivateAccountMessage,
+                    message: isAnonymous
+                        ? l10n.logOutMessageAnonymous
+                        : l10n.logOutMessageAuthenticated,
                     confirmLabel: l10n.deactivate,
                     isDestructive: true,
                   );
@@ -186,7 +222,7 @@ class SettingsScreen extends ConsumerWidget {
                 Icons.delete_forever,
                 () async {
                   // First confirmation
-                  final firstConfirm = await MpConfirmDialog.show(
+                  final firstConfirm = await KdConfirmDialog.show(
                     context,
                     title: l10n.deleteAccountTitle,
                     message: l10n.deleteAccountMessage,
@@ -197,7 +233,7 @@ class SettingsScreen extends ConsumerWidget {
                   if (firstConfirm != true || !context.mounted) return;
 
                   // Second confirmation
-                  final secondConfirm = await MpConfirmDialog.show(
+                  final secondConfirm = await KdConfirmDialog.show(
                     context,
                     title: l10n.deleteAccountConfirmTitle,
                     message: l10n.deleteAccountConfirmMessage,
@@ -272,8 +308,10 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
         ),
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const Padding(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: KdListShimmer(itemCount: 6),
+        ),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

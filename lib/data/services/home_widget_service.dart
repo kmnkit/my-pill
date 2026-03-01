@@ -5,7 +5,7 @@ import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 class HomeWidgetService {
-  static const String _appGroupId = 'group.com.mypill.app';
+  static const String _appGroupId = 'group.com.hobbylabo.kusuridoki';
   static const String _androidWidgetName = 'MedicationWidgetProvider';
   static const String _iOSWidgetName = 'MedicationWidget';
 

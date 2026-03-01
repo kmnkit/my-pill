@@ -4,7 +4,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class AdherenceChart extends StatelessWidget {
   /// Weekly adherence data: weekday number ('1'-'7') -> percentage (0-100), null if no data for that day.
@@ -40,7 +40,7 @@ class AdherenceChart extends StatelessWidget {
     }).toList();
     final percentages = entries.map((e) => e.value).toList();
 
-    return MpCard(
+    return KdCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

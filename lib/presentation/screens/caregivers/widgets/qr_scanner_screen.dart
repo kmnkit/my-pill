@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
@@ -20,7 +20,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: MpAppBar(title: l10n.scanQrCode, showBack: true),
+      appBar: KdAppBar(title: l10n.scanQrCode, showBack: true),
       body: Stack(
         children: [
           MobileScanner(
@@ -84,7 +84,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     try {
       // Try to parse as URL
       final uri = Uri.tryParse(scannedValue);
-      if (uri != null && uri.host.contains('mypill.app')) {
+      if (uri != null && uri.host.contains('kusuridoki.app')) {
         // Extract code from path: /invite/{code}
         final segments = uri.pathSegments;
         if (segments.length >= 2 && segments[0] == 'invite') {
@@ -92,7 +92,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         }
       }
 
-      // If not a valid mypill.app URL, return null
+      // If not a valid kusuridoki.app URL, return null
       return null;
     } catch (e) {
       // Invalid URL format

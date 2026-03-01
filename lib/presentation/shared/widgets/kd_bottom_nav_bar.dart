@@ -6,7 +6,7 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/glass_decoration.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
-enum MpNavMode { patient, caregiver }
+enum KdNavMode { patient, caregiver }
 
 class _NavItem {
   const _NavItem({
@@ -20,17 +20,17 @@ class _NavItem {
   final String label;
 }
 
-class MpBottomNavBar extends StatelessWidget {
-  const MpBottomNavBar({
+class KdBottomNavBar extends StatelessWidget {
+  const KdBottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
-    this.mode = MpNavMode.patient,
+    this.mode = KdNavMode.patient,
   });
 
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final MpNavMode mode;
+  final KdNavMode mode;
 
   List<_NavItem> _patientItems(AppLocalizations l10n) => [
     _NavItem(
@@ -150,7 +150,7 @@ class MpBottomNavBar extends StatelessWidget {
     bool isDark,
   ) {
     final blurAmount = GlassDecoration.getBlurAmount(context, strong: true);
-    final items = mode == MpNavMode.patient
+    final items = mode == KdNavMode.patient
         ? _patientItems(l10n)
         : _caregiverItems(l10n);
 
@@ -205,7 +205,7 @@ class MpBottomNavBar extends StatelessWidget {
     AppLocalizations l10n,
     bool isDark,
   ) {
-    final items = mode == MpNavMode.patient
+    final items = mode == KdNavMode.patient
         ? _patientItems(l10n)
         : _caregiverItems(l10n);
 

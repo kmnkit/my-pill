@@ -127,5 +127,32 @@ void main() {
 
       expect(find.textContaining('+0 hours'), findsOneWidget);
     });
+
+    testWidgets('shows edit button for changing timezone', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const LocationDisplay(),
+          overrides: _buildOverrides(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.edit), findsOneWidget);
+    });
+
+    testWidgets('edit button has correct tooltip', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const LocationDisplay(),
+          overrides: _buildOverrides(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final iconButton = tester.widget<IconButton>(
+        find.widgetWithIcon(IconButton, Icons.edit),
+      );
+      expect(iconButton.tooltip, 'Change Timezone');
+    });
   });
 }

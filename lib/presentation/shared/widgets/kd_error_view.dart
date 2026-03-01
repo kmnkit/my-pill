@@ -3,10 +3,10 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
-class MpErrorView extends StatelessWidget {
-  const MpErrorView({super.key, required this.error, this.onRetry});
+class KdErrorView extends StatelessWidget {
+  const KdErrorView({super.key, required this.error, this.onRetry});
 
   final Object error;
   final VoidCallback? onRetry;
@@ -39,7 +39,7 @@ class MpErrorView extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               const SizedBox(height: AppSpacing.xl),
-              MpButton(
+              KdButton(
                 label: AppLocalizations.of(context)!.retry,
                 onPressed: onRetry,
                 variant: MpButtonVariant.secondary,

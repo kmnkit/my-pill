@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_error_view.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_error_view.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpErrorView', () {
+  group('KdErrorView', () {
     testWidgets('renders error icon', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpErrorView(error: 'something went wrong')),
+        createTestableWidget(const KdErrorView(error: 'something went wrong')),
       );
       await tester.pumpAndSettle();
 
@@ -20,7 +20,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpErrorView(error: 'some random error')),
+        createTestableWidget(const KdErrorView(error: 'some random error')),
       );
       await tester.pumpAndSettle();
 
@@ -35,7 +35,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpErrorView(error: 'SocketException: connection refused'),
+          const KdErrorView(error: 'SocketException: connection refused'),
         ),
       );
       await tester.pumpAndSettle();
@@ -50,12 +50,12 @@ void main() {
       var retried = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpErrorView(error: 'some error', onRetry: () => retried = true),
+          KdErrorView(error: 'some error', onRetry: () => retried = true),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpButton), findsOneWidget);
+      expect(find.byType(KdButton), findsOneWidget);
       expect(find.text('Retry'), findsOneWidget);
 
       await tester.tap(find.text('Retry'));
@@ -68,18 +68,18 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpErrorView(error: 'some error')),
+        createTestableWidget(const KdErrorView(error: 'some error')),
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpButton), findsNothing);
+      expect(find.byType(KdButton), findsNothing);
     });
 
     testWidgets('renders generic error message in Japanese locale', (
       tester,
     ) async {
       await tester.pumpWidget(
-        createTestableWidgetJa(const MpErrorView(error: 'some error')),
+        createTestableWidgetJa(const KdErrorView(error: 'some error')),
       );
       await tester.pumpAndSettle();
 

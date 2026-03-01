@@ -4,7 +4,7 @@ import 'package:kusuridoki/data/enums/dosage_timing.dart';
 import 'package:kusuridoki/data/models/dosage_time_slot.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/schedule/widgets/dosage_time_adjuster.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_time_picker.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_time_picker.dart';
 
 Widget buildTestWidget({
   required List<DosageTimeSlot> slots,
@@ -30,7 +30,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpTimePicker), findsNothing);
+      expect(find.byType(KdTimePicker), findsNothing);
     });
 
     testWidgets('renders one row per DosageTimeSlot', (tester) async {
@@ -44,7 +44,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpTimePicker), findsNWidgets(2));
+      expect(find.byType(KdTimePicker), findsNWidgets(2));
     });
 
     testWidgets('shows timing label for each slot', (tester) async {

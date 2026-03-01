@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 
-class MpColorDot extends StatelessWidget {
-  const MpColorDot({
+class KdColorDot extends StatelessWidget {
+  const KdColorDot({
     super.key,
     required this.color,
     required this.isSelected,

@@ -4,10 +4,10 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
 
 class PatientCard extends StatelessWidget {
   const PatientCard({
@@ -27,13 +27,13 @@ class PatientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return MpCard(
+    return KdCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              MpAvatar(initials: initials, size: 48.0),
+              KdAvatar(initials: initials, size: 48.0),
               const SizedBox(width: AppSpacing.lg),
               Expanded(
                 child: Column(
@@ -60,7 +60,7 @@ class PatientCard extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.md),
               child: Row(
                 children: [
-                  MpPillIcon(
+                  KdPillIcon(
                     shape: med['shape'] as PillShape,
                     color: med['color'] as PillColor,
                     size: AppSpacing.iconMd,
@@ -72,7 +72,7 @@ class PatientCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
-                  MpBadge(
+                  KdBadge(
                     label: med['status'] as String,
                     variant: med['variant'] as MpBadgeVariant,
                   ),

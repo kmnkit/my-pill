@@ -8,8 +8,8 @@ import 'package:kusuridoki/core/theme/glass_decoration.dart';
 
 enum MpButtonVariant { primary, secondary, text, destructive }
 
-class MpButton extends StatelessWidget {
-  const MpButton({
+class KdButton extends StatelessWidget {
+  const KdButton({
     super.key,
     required this.label,
     required this.onPressed,

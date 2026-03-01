@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpButton', () {
+  group('KdButton', () {
     testWidgets('renders label text', (tester) async {
       await tester.pumpWidget(
-        createTestableWidget(const MpButton(label: 'Save', onPressed: null)),
+        createTestableWidget(const KdButton(label: 'Save', onPressed: null)),
       );
       await tester.pumpAndSettle();
 
@@ -19,7 +19,7 @@ void main() {
       var tapped = false;
       await tester.pumpWidget(
         createTestableWidget(
-          MpButton(label: 'Tap me', onPressed: () => tapped = true),
+          KdButton(label: 'Tap me', onPressed: () => tapped = true),
         ),
       );
       await tester.pumpAndSettle();
@@ -33,7 +33,7 @@ void main() {
     testWidgets('disabled state when onPressed is null', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpButton(label: 'Disabled', onPressed: null),
+          const KdButton(label: 'Disabled', onPressed: null),
         ),
       );
       await tester.pumpAndSettle();
@@ -47,7 +47,7 @@ void main() {
     testWidgets('secondary variant renders via InkWell', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpButton(
+          KdButton(
             label: 'Secondary',
             onPressed: () {},
             variant: MpButtonVariant.secondary,
@@ -62,7 +62,7 @@ void main() {
     testWidgets('destructive variant renders ElevatedButton', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpButton(
+          KdButton(
             label: 'Delete',
             onPressed: () {},
             variant: MpButtonVariant.destructive,
@@ -78,7 +78,7 @@ void main() {
     testWidgets('text variant renders TextButton', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          MpButton(
+          KdButton(
             label: 'Cancel',
             onPressed: () {},
             variant: MpButtonVariant.text,

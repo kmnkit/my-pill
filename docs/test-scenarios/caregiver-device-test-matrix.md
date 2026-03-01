@@ -128,7 +128,7 @@ flutter run -d <端末B_ID>          # ターミナル 2
 | 1 | 端末 A → FamilyScreen → "Generate Invite Link" | QR + コード表示 | | |
 | 2 | Link アイコン (チェーンマーク) タップ | "Link copied" スナックバー表示、クリップボードに URL 保存 | | |
 | 3 | 端末 A → 別アプリ (メモ等) 実行 | アプリ切り替え | | |
-| 4 | クリップボード貼り付け → URL 確認 | `https://mypill.app/invite/{code}` 形式 | | |
+| 4 | クリップボード貼り付け → URL 確認 | `https://kusuridoki.app/invite/{code}` 形式 | | |
 | 5 | URL を端末 B へ送信 (AirDrop/メッセージ/直接入力) | 端末 B で URL 受信 | | |
 | 6 | 端末 B で URL をタップ | InviteHandlerScreen 表示 | | |
 | 7 | 招待コード表示確認 | "Code: XXXXXXXX" テキスト表示 | | |
@@ -302,7 +302,7 @@ flutter run -d <端末B_ID>          # ターミナル 2
 | # | 操作 | 期待結果 | 結果 | 備考 |
 |---|------|----------|------|------|
 | 1 | 端末 B → QrScannerScreen に入る | カメラビュー表示 | | |
-| 2 | mypill.app ドメイン以外の QR コードをスキャン | **無反応** (スキャン無視) | | |
+| 2 | kusuridoki.app ドメイン以外の QR コードをスキャン | **無反応** (スキャン無視) | | |
 | 3 | アプリクラッシュなし確認 | カメラ正常稼働継続 | | |
 
 ### TC-23: Rate Limit 確認
@@ -394,7 +394,7 @@ flutter run -d <端末B_ID>          # ターミナル 2
 |------|------|
 | Notifications 画面 | Empty State のみ表示 (実際の通知フィード未実装) |
 | Alerts 画面 | アラートタイプの説明のみ表示 (ライブデータフィード未実装) |
-| ディープリンク | `mypill.app` ドメインの実際のアプリ連結設定が必要。未設定時はブラウザで開く |
+| ディープリンク | `kusuridoki.app` ドメインの実際のアプリ連結設定が必要。未設定時はブラウザで開く |
 | QR スキャン | シミュレータ不可、実機必須 |
 | Rate Limit | 1 分あたり 5 回制限、テスト時は間隔調整が必要 |
 | kPremiumEnabled | 現在 `false` — Caregiver スロット数制限 UI 非表示 |

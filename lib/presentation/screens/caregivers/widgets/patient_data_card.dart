@@ -6,6 +6,7 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 
 class PatientDataCard extends ConsumerWidget {
   const PatientDataCard({
@@ -102,13 +103,7 @@ class PatientDataCard extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          const Center(
-            child: SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
+          const KdShimmerBox(height: 24),
         ],
       ),
     );

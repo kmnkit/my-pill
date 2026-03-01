@@ -7,8 +7,8 @@ import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class PremiumBanner extends ConsumerWidget {
@@ -32,7 +32,7 @@ class PremiumBanner extends ConsumerWidget {
   }
 
   Widget _buildUpgradeBanner(BuildContext context, AppLocalizations l10n) {
-    return MpCard(
+    return KdCard(
       color: AppColors.primary.withValues(alpha: 0.1),
       borderColor: AppColors.primary,
       child: Column(
@@ -69,7 +69,7 @@ class PremiumBanner extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
-          MpButton(
+          KdButton(
             label: l10n.unlockPremium,
             onPressed: () => context.push('/premium'),
             variant: MpButtonVariant.primary,
@@ -84,7 +84,7 @@ class PremiumBanner extends ConsumerWidget {
     AppLocalizations l10n,
     SubscriptionStatus status,
   ) {
-    return MpCard(
+    return KdCard(
       color: AppColors.success.withValues(alpha: 0.1),
       borderColor: AppColors.success,
       child: Column(
@@ -133,7 +133,7 @@ class PremiumBanner extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          MpButton(
+          KdButton(
             label: l10n.manageSubscription,
             onPressed: () => context.push('/premium'),
             variant: MpButtonVariant.secondary,

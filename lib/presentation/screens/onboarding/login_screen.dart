@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +24,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
 
-  Future<void> _completeAndNavigate() async {
+  Future<void> _completeAndNavigate({String? credentialDisplayName}) async {
     final authService = ref.read(authServiceProvider);
     final firebaseUser = authService.currentUser;
     if (firebaseUser != null) {
@@ -32,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .syncWithFirebaseUser(
             firebaseUser.uid,
             email: firebaseUser.email,
-            displayName: firebaseUser.displayName,
+            displayName: credentialDisplayName ?? firebaseUser.displayName,
           );
     }
     final role =
@@ -46,6 +47,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  String? _extractDisplayName(UserCredential credential) {
+    // Priority 1: FirebaseAuth user displayName (set by provider)
+    final userDisplayName = credential.user?.displayName;
+    if (userDisplayName != null && userDisplayName.isNotEmpty) {
+      return userDisplayName;
+    }
+
+    // Priority 2: additionalUserInfo.profile (Apple provides name here on first login)
+    final profile = credential.additionalUserInfo?.profile;
+    if (profile != null) {
+      final name = profile['name'];
+      if (name is String && name.isNotEmpty) return name;
+
+      // Apple sometimes nests as firstName/lastName
+      final firstName = profile['firstName'] as String? ?? '';
+      final lastName = profile['lastName'] as String? ?? '';
+      final fullName = '$firstName $lastName'.trim();
+      if (fullName.isNotEmpty) return fullName;
+    }
+
+    return null;
+  }
+
   Future<void> _signInWithApple() async {
     setState(() => _isLoading = true);
     try {
@@ -55,7 +79,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (mounted) setState(() => _isLoading = false);
         return;
       }
-      await _completeAndNavigate();
+
+      final extractedName = _extractDisplayName(result);
+
+      // Persist name to Firebase for future logins (best-effort)
+      if (extractedName != null && result.user?.displayName == null) {
+        try {
+          await result.user?.updateDisplayName(extractedName);
+        } catch (_) {
+          // Non-blocking: name is still passed locally below
+        }
+      }
+
+      await _completeAndNavigate(credentialDisplayName: extractedName);
     } on AppleSignInException catch (e) {
       if (mounted && e.error.shouldShowSnackbar) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +125,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (mounted) setState(() => _isLoading = false);
         return;
       }
-      await _completeAndNavigate();
+      await _completeAndNavigate(
+        credentialDisplayName: _extractDisplayName(result),
+      );
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
@@ -201,7 +239,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const Center(child: CircularProgressIndicator())
               else ...[
                 if (Platform.isIOS) ...[
-                  MpButton(
+                  KdButton(
                     label: l10n?.signInWithApple ?? 'Sign in with Apple',
                     onPressed: _signInWithApple,
                     variant: MpButtonVariant.primary,
@@ -210,7 +248,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: AppSpacing.md),
                 ],
 
-                MpButton(
+                KdButton(
                   label: l10n?.signInWithGoogle ?? 'Sign in with Google',
                   onPressed: _signInWithGoogle,
                   variant: Platform.isIOS
@@ -244,7 +282,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: AppSpacing.md),
 
-                MpButton(
+                KdButton(
                   label: l10n?.tryWithoutAccount ?? 'Try without an account',
                   onPressed: _continueAnonymously,
                   variant: MpButtonVariant.text,

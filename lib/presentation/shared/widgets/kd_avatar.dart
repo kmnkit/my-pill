@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 
-class MpAvatar extends StatelessWidget {
-  const MpAvatar({
+class KdAvatar extends StatelessWidget {
+  const KdAvatar({
     super.key,
     required this.initials,
     this.size = 40,

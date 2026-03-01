@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpButton coverage', () {
+  group('KdButton coverage', () {
     // =========================================================================
     // Primary variant
     // =========================================================================
     group('primary variant', () {
       testWidgets('renders ElevatedButton with label', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(MpButton(label: 'Primary', onPressed: () {})),
+          createTestableWidget(KdButton(label: 'Primary', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -23,7 +23,7 @@ void main() {
 
       testWidgets('is full width by default', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(MpButton(label: 'Wide', onPressed: () {})),
+          createTestableWidget(KdButton(label: 'Wide', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -44,7 +44,7 @@ void main() {
       ) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(label: 'Narrow', onPressed: () {}, isFullWidth: false),
+            KdButton(label: 'Narrow', onPressed: () {}, isFullWidth: false),
           ),
         );
         await tester.pumpAndSettle();
@@ -63,7 +63,7 @@ void main() {
       testWidgets('renders icon when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(label: 'Add', onPressed: () {}, icon: Icons.add),
+            KdButton(label: 'Add', onPressed: () {}, icon: Icons.add),
           ),
         );
         await tester.pumpAndSettle();
@@ -74,7 +74,7 @@ void main() {
       testWidgets('renders iconWidget when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Star',
               onPressed: () {},
               iconWidget: const Icon(Icons.star, key: Key('custom-icon')),
@@ -89,7 +89,7 @@ void main() {
       testWidgets('iconWidget takes precedence over icon', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Precedence',
               onPressed: () {},
               icon: Icons.add,
@@ -105,7 +105,7 @@ void main() {
 
       testWidgets('renders SizedBox.shrink when no icon', (tester) async {
         await tester.pumpWidget(
-          createTestableWidget(MpButton(label: 'No Icon', onPressed: () {})),
+          createTestableWidget(KdButton(label: 'No Icon', onPressed: () {})),
         );
         await tester.pumpAndSettle();
 
@@ -116,7 +116,7 @@ void main() {
       testWidgets('disabled state has null onPressed', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            const MpButton(label: 'Disabled', onPressed: null),
+            const KdButton(label: 'Disabled', onPressed: null),
           ),
         );
         await tester.pumpAndSettle();
@@ -129,7 +129,7 @@ void main() {
         var tapped = false;
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(label: 'Tap', onPressed: () => tapped = true),
+            KdButton(label: 'Tap', onPressed: () => tapped = true),
           ),
         );
         await tester.pumpAndSettle();
@@ -147,7 +147,7 @@ void main() {
       testWidgets('renders InkWell with label', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Glass',
               onPressed: () {},
               variant: MpButtonVariant.secondary,
@@ -164,7 +164,7 @@ void main() {
       testWidgets('is full width by default', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Wide Sec',
               onPressed: () {},
               variant: MpButtonVariant.secondary,
@@ -181,7 +181,7 @@ void main() {
       testWidgets('not full width when isFullWidth is false', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Narrow Sec',
               onPressed: () {},
               variant: MpButtonVariant.secondary,
@@ -197,7 +197,7 @@ void main() {
       testWidgets('renders icon when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Sec Icon',
               onPressed: () {},
               variant: MpButtonVariant.secondary,
@@ -213,7 +213,7 @@ void main() {
       testWidgets('renders iconWidget when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Sec Widget',
               onPressed: () {},
               variant: MpButtonVariant.secondary,
@@ -230,7 +230,7 @@ void main() {
         var tapped = false;
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Sec Tap',
               onPressed: () => tapped = true,
               variant: MpButtonVariant.secondary,
@@ -247,7 +247,7 @@ void main() {
       testWidgets('disabled state does not crash', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            const MpButton(
+            const KdButton(
               label: 'Disabled Sec',
               onPressed: null,
               variant: MpButtonVariant.secondary,
@@ -264,7 +264,7 @@ void main() {
           MaterialApp(
             theme: ThemeData.dark(),
             home: Scaffold(
-              body: MpButton(
+              body: KdButton(
                 label: 'Dark Glass',
                 onPressed: () {},
                 variant: MpButtonVariant.secondary,
@@ -291,7 +291,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid Sec',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
@@ -314,7 +314,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid Wide',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
@@ -345,7 +345,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid Narrow',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
@@ -374,7 +374,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid Icon',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
@@ -395,7 +395,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid IconW',
                   onPressed: () {},
                   variant: MpButtonVariant.secondary,
@@ -420,7 +420,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: MpButton(
+                body: KdButton(
                   label: 'Solid Tap',
                   onPressed: () => tapped = true,
                   variant: MpButtonVariant.secondary,
@@ -442,7 +442,7 @@ void main() {
             data: const MediaQueryData(highContrast: true),
             child: MaterialApp(
               home: Scaffold(
-                body: const MpButton(
+                body: const KdButton(
                   label: 'Solid Disabled',
                   onPressed: null,
                   variant: MpButtonVariant.secondary,
@@ -465,7 +465,7 @@ void main() {
       testWidgets('renders ElevatedButton with label', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Delete',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
@@ -481,7 +481,7 @@ void main() {
       testWidgets('is full width by default', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Destructive Wide',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
@@ -504,7 +504,7 @@ void main() {
       testWidgets('not full width when isFullWidth false', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Destructive Narrow',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
@@ -528,7 +528,7 @@ void main() {
       testWidgets('renders icon when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Del Icon',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
@@ -544,7 +544,7 @@ void main() {
       testWidgets('renders iconWidget when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Del Widget',
               onPressed: () {},
               variant: MpButtonVariant.destructive,
@@ -564,7 +564,7 @@ void main() {
         var tapped = false;
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Del Tap',
               onPressed: () => tapped = true,
               variant: MpButtonVariant.destructive,
@@ -581,7 +581,7 @@ void main() {
       testWidgets('disabled state has null onPressed', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            const MpButton(
+            const KdButton(
               label: 'Del Disabled',
               onPressed: null,
               variant: MpButtonVariant.destructive,
@@ -602,7 +602,7 @@ void main() {
       testWidgets('renders TextButton with label', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Cancel',
               onPressed: () {},
               variant: MpButtonVariant.text,
@@ -618,7 +618,7 @@ void main() {
       testWidgets('has minTapTarget height', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Text Height',
               onPressed: () {},
               variant: MpButtonVariant.text,
@@ -641,7 +641,7 @@ void main() {
       testWidgets('renders icon when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Text Icon',
               onPressed: () {},
               variant: MpButtonVariant.text,
@@ -657,7 +657,7 @@ void main() {
       testWidgets('renders iconWidget when provided', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Text Widget',
               onPressed: () {},
               variant: MpButtonVariant.text,
@@ -674,7 +674,7 @@ void main() {
         var tapped = false;
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'Text Tap',
               onPressed: () => tapped = true,
               variant: MpButtonVariant.text,
@@ -691,7 +691,7 @@ void main() {
       testWidgets('disabled state has null onPressed', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            const MpButton(
+            const KdButton(
               label: 'Text Disabled',
               onPressed: null,
               variant: MpButtonVariant.text,
@@ -707,7 +707,7 @@ void main() {
       testWidgets('renders SizedBox.shrink when no icon', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'No Icon Text',
               onPressed: () {},
               variant: MpButtonVariant.text,
@@ -747,7 +747,7 @@ void main() {
         ) async {
           await tester.pumpWidget(
             createTestableWidget(
-              MpButton(
+              KdButton(
                 label: 'Label ${variant.name}',
                 onPressed: () {},
                 variant: variant,
@@ -768,7 +768,7 @@ void main() {
       testWidgets('renders label only', (tester) async {
         await tester.pumpWidget(
           createTestableWidget(
-            MpButton(
+            KdButton(
               label: 'No Icon Glass',
               onPressed: () {},
               variant: MpButtonVariant.secondary,

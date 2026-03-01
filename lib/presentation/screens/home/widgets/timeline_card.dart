@@ -8,9 +8,9 @@ import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
 
 class TimelineCard extends StatelessWidget {
   const TimelineCard({
@@ -49,12 +49,12 @@ class TimelineCard extends StatelessWidget {
 
     return Semantics(
       label: '$medicationName, $time, $badgeLabel',
-      child: MpCard(
+      child: KdCard(
         onTap: () => context.push('/medications/$medicationId'),
         child: Row(
           children: [
             // Pill icon
-            MpPillIcon(
+            KdPillIcon(
               shape: pillShape,
               color: pillColor,
               size: AppSpacing.iconLg,
@@ -108,7 +108,7 @@ class TimelineCard extends StatelessWidget {
                   style: textTheme.bodySmall,
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                MpBadge(label: badgeLabel, variant: badgeVariant),
+                KdBadge(label: badgeLabel, variant: badgeVariant),
               ],
             ),
 

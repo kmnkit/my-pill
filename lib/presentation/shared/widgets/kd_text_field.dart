@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
-class MpTextField extends StatelessWidget {
-  const MpTextField({
+class KdTextField extends StatelessWidget {
+  const KdTextField({
     super.key,
     this.controller,
     this.label,

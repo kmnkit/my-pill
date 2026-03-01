@@ -1,6 +1,6 @@
 <!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
 
-# MyPill - Medication Management App
+# Kusuridoki - Medication Management App
 
 ## Purpose
 A cross-platform Flutter application for medication management targeting Japanese and English-speaking markets. Provides medication scheduling, inventory tracking, adherence monitoring, caregiver linking, and timezone-aware travel support. Built with a local-first architecture (Hive) with optional Firebase cloud sync.
@@ -15,7 +15,7 @@ A cross-platform Flutter application for medication management targeting Japanes
 | `firestore.rules` | Firestore security rules (user-scoped access, caregiver read-only) |
 | `firestore.indexes.json` | Firestore composite index definitions (currently empty) |
 | `l10n.yaml` | Internationalization config (ARB source, template: app_en.arb) |
-| `my_pill.iml` | IntelliJ module file |
+| `kusuridoki.iml` | IntelliJ module file |
 | `README.md` | Project README |
 
 ## Subdirectories
@@ -64,9 +64,9 @@ A cross-platform Flutter application for medication management targeting Japanes
 
 - **File naming**: `snake_case.dart`
 - **Class naming**: `PascalCase`
-- **Shared widgets**: Prefixed with `Mp` (e.g., `MpButton`)
+- **Shared widgets**: Prefixed with `Kd` (e.g., `KdButton`)
 - **Providers**: `camelCase` with descriptive names (e.g., `medicationListProvider`)
-- **Imports**: Use package imports (`package:my_pill/...`), not relative
+- **Imports**: Use package imports (`package:kusuridoki/...`), not relative
 - **Never edit** `.freezed.dart` or `.g.dart` files — they are auto-generated
 
 ### Common Pitfalls

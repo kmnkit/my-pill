@@ -1940,6 +1940,18 @@ abstract class AppLocalizations {
   /// **'You will be signed out. Your data will be preserved and you can sign back in later.'**
   String get deactivateAccountMessage;
 
+  /// No description provided for @logOutMessageAnonymous.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not signed in. Logging out will permanently delete all medications, schedules, and reminders on this device. This cannot be undone.'**
+  String get logOutMessageAnonymous;
+
+  /// No description provided for @logOutMessageAuthenticated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your local data will be removed from this device. You can restore it by signing in again.'**
+  String get logOutMessageAuthenticated;
+
   /// No description provided for @deactivate.
   ///
   /// In en, this message translates to:
@@ -2137,6 +2149,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save medication. Please try again.'**
   String get errorSavingMedication;
+
+  /// No description provided for @errorSavingSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save schedule. Please try again.'**
+  String get errorSavingSchedule;
 
   /// No description provided for @errorUpdatingMedication.
   ///
@@ -2467,6 +2485,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to accept invite. Please try again.'**
   String get failedToAcceptInvite;
+
+  /// No description provided for @inviteNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code not found. Please check the link.'**
+  String get inviteNotFound;
+
+  /// No description provided for @inviteExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'This invite has expired. Please ask for a new one.'**
+  String get inviteExpired;
+
+  /// No description provided for @inviteAlreadyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'This invite has already been used.'**
+  String get inviteAlreadyUsed;
+
+  /// No description provided for @inviteSelfError.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot accept your own invite.'**
+  String get inviteSelfError;
 
   /// No description provided for @inviteLinkGenerated.
   ///
@@ -2885,7 +2927,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingMedStyleSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'We\'ll optimize the app for you'**
+  /// **'Your choice sets the default when adding medications'**
   String get onboardingMedStyleSubtitle;
 
   /// No description provided for @onboardingIndividualPills.
@@ -2983,6 +3025,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time must be between {min}:00 and {max}:59'**
   String timeOutOfRange(String min, String max);
+
+  /// No description provided for @changeTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Timezone'**
+  String get changeTimezone;
+
+  /// No description provided for @searchTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Search timezones...'**
+  String get searchTimezone;
+
+  /// No description provided for @selectDestinationTimezone.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Destination Timezone'**
+  String get selectDestinationTimezone;
+
+  /// No description provided for @clearAllDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data'**
+  String get clearAllDataTitle;
+
+  /// No description provided for @clearAllDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all medications, schedules, reminders, and adherence records?'**
+  String get clearAllDataMessage;
+
+  /// No description provided for @clearAllDataConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearAllDataConfirm;
+
+  /// No description provided for @addPatient.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Patient'**
+  String get addPatient;
+
+  /// No description provided for @enterCodeManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code manually'**
+  String get enterCodeManually;
+
+  /// No description provided for @enterInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Invite Code'**
+  String get enterInviteCode;
+
+  /// No description provided for @inviteCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'8-character code'**
+  String get inviteCodeHint;
+
+  /// No description provided for @invalidInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid 8-character code'**
+  String get invalidInviteCode;
 }
 
 class _AppLocalizationsDelegate

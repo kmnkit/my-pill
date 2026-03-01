@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
@@ -195,8 +196,7 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.text('Loading...'), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
 
     // =========================================================================
@@ -246,12 +246,13 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Guest User'), findsOneWidget);
+      // displayName comes from profile name 'Alice Smith' (default profile)
+      expect(find.text('Alice Smith'), findsOneWidget);
       expect(find.text('Sign in to sync data'), findsOneWidget);
       // Should show Link with Google button
       expect(find.text('Link with Google'), findsOneWidget);
-      // Avatar with 'G' initials
-      expect(find.text('G'), findsOneWidget);
+      // Avatar initials from 'Alice Smith'
+      expect(find.text('AS'), findsOneWidget);
     });
 
     // =========================================================================
@@ -519,7 +520,8 @@ void main() {
     // =========================================================================
     // Anonymous user — shows 'G' avatar initial
     // =========================================================================
-    testWidgets('anonymous user avatar shows G initial', (tester) async {
+    testWidgets('anonymous user avatar shows initials from profile name',
+        (tester) async {
       final anonUser = _FakeUser(isAnonymous: true);
       await tester.pumpWidget(
         createTestableWidget(
@@ -529,7 +531,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('G'), findsOneWidget);
+      // Default profile name is 'Alice Smith', so initials = 'AS'
+      expect(find.text('AS'), findsOneWidget);
     });
 
     // =========================================================================
@@ -795,9 +798,9 @@ void main() {
     });
 
     // =========================================================================
-    // Authenticated user — MpCard wraps the content (display name from profile)
+    // Authenticated user — KdCard wraps the content (display name from profile)
     // =========================================================================
-    testWidgets('authenticated user renders inside MpCard', (tester) async {
+    testWidgets('authenticated user renders inside KdCard', (tester) async {
       final user = _FakeUser(
         displayName: 'Carol Jones',
         email: 'carol@example.com',
@@ -817,7 +820,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // MpCard is a custom widget — verify text content is present
+      // KdCard is a custom widget — verify text content is present
       expect(find.text('Carol Jones'), findsOneWidget);
     });
 
@@ -885,9 +888,9 @@ void main() {
     });
 
     // =========================================================================
-    // Loading state shows text 'Loading...'
+    // Loading state shows shimmer placeholder
     // =========================================================================
-    testWidgets('loading state shows Loading text', (tester) async {
+    testWidgets('loading state shows shimmer placeholder', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const AccountSection(),
@@ -897,7 +900,7 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(find.text('Loading...'), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
   });
 }

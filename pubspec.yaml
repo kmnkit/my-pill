@@ -59,6 +59,8 @@ dependencies:
   # PDF Generation
   pdf: ^3.11.3
   printing: ^5.14.2
+  # Shimmer Loading
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

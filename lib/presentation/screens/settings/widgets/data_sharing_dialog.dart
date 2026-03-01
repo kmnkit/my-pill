@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class DataSharingDialog extends ConsumerWidget {
@@ -85,7 +85,7 @@ class DataSharingDialog extends ConsumerWidget {
                 contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: AppSpacing.xxl),
-              MpButton(
+              KdButton(
                 label: l10n.close,
                 variant: MpButtonVariant.secondary,
                 onPressed: () => Navigator.of(context).pop(),

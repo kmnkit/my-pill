@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
 void main() {
-  group('MpConfirmDialog', () {
+  group('KdConfirmDialog', () {
     // -----------------------------------------------------------------------
     // Direct widget rendering tests
     // -----------------------------------------------------------------------
@@ -14,7 +14,7 @@ void main() {
     testWidgets('renders title text', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
+          const KdConfirmDialog(
             title: 'Confirm Action',
             message: 'Are you sure?',
           ),
@@ -28,7 +28,7 @@ void main() {
     testWidgets('renders message text', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
+          const KdConfirmDialog(
             title: 'Title',
             message: 'This is the message body.',
           ),
@@ -44,7 +44,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'Title', message: 'Message'),
+          const KdConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -58,7 +58,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'Title', message: 'Message'),
+          const KdConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -70,7 +70,7 @@ void main() {
     testWidgets('renders custom confirm label', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
+          const KdConfirmDialog(
             title: 'Delete',
             message: 'Delete everything?',
             confirmLabel: 'Delete Everything',
@@ -85,7 +85,7 @@ void main() {
     testWidgets('renders custom cancel label', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
+          const KdConfirmDialog(
             title: 'Title',
             message: 'Message',
             cancelLabel: 'Go Back',
@@ -102,14 +102,14 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'Title', message: 'Message'),
+          const KdConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
 
-      // Find the MpButton with primary variant (ElevatedButton inside)
+      // Find the KdButton with primary variant (ElevatedButton inside)
       final buttons = tester
-          .widgetList<MpButton>(find.byType(MpButton))
+          .widgetList<KdButton>(find.byType(KdButton))
           .toList();
       expect(buttons.any((b) => b.variant == MpButtonVariant.primary), isTrue);
     });
@@ -119,7 +119,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(
+          const KdConfirmDialog(
             title: 'Delete Account',
             message: 'This cannot be undone.',
             confirmLabel: 'Delete',
@@ -130,7 +130,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final buttons = tester
-          .widgetList<MpButton>(find.byType(MpButton))
+          .widgetList<KdButton>(find.byType(KdButton))
           .toList();
       expect(
         buttons.any((b) => b.variant == MpButtonVariant.destructive),
@@ -141,13 +141,13 @@ void main() {
     testWidgets('cancel button uses text variant', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'Title', message: 'Message'),
+          const KdConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
 
       final buttons = tester
-          .widgetList<MpButton>(find.byType(MpButton))
+          .widgetList<KdButton>(find.byType(KdButton))
           .toList();
       expect(buttons.any((b) => b.variant == MpButtonVariant.text), isTrue);
     });
@@ -157,7 +157,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'Title', message: 'Message'),
+          const KdConfirmDialog(title: 'Title', message: 'Message'),
         ),
       );
       await tester.pumpAndSettle();
@@ -166,7 +166,7 @@ void main() {
     });
 
     // -----------------------------------------------------------------------
-    // MpConfirmDialog.show() interaction tests
+    // KdConfirmDialog.show() interaction tests
     // -----------------------------------------------------------------------
 
     testWidgets('show() displays dialog with title and message', (
@@ -176,7 +176,7 @@ void main() {
         createTestableWidget(
           Builder(
             builder: (context) => ElevatedButton(
-              onPressed: () => MpConfirmDialog.show(
+              onPressed: () => KdConfirmDialog.show(
                 context,
                 title: 'Confirm This',
                 message: 'Are you sure you want to do this?',
@@ -205,7 +205,7 @@ void main() {
           Builder(
             builder: (context) => ElevatedButton(
               onPressed: () async {
-                result = await MpConfirmDialog.show(
+                result = await KdConfirmDialog.show(
                   context,
                   title: 'Confirm',
                   message: 'Proceed?',
@@ -238,7 +238,7 @@ void main() {
           Builder(
             builder: (context) => ElevatedButton(
               onPressed: () async {
-                result = await MpConfirmDialog.show(
+                result = await KdConfirmDialog.show(
                   context,
                   title: 'Confirm',
                   message: 'Proceed?',
@@ -268,7 +268,7 @@ void main() {
         createTestableWidget(
           Builder(
             builder: (context) => ElevatedButton(
-              onPressed: () => MpConfirmDialog.show(
+              onPressed: () => KdConfirmDialog.show(
                 context,
                 title: 'Delete',
                 message: 'Really delete?',
@@ -286,7 +286,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final buttons = tester
-          .widgetList<MpButton>(find.byType(MpButton))
+          .widgetList<KdButton>(find.byType(KdButton))
           .toList();
       expect(
         buttons.any((b) => b.variant == MpButtonVariant.destructive),
@@ -299,7 +299,7 @@ void main() {
         createTestableWidget(
           Builder(
             builder: (context) => ElevatedButton(
-              onPressed: () => MpConfirmDialog.show(
+              onPressed: () => KdConfirmDialog.show(
                 context,
                 title: 'Confirm',
                 message: 'Message',
@@ -328,7 +328,7 @@ void main() {
         createTestableWidget(
           Builder(
             builder: (context) => ElevatedButton(
-              onPressed: () => MpConfirmDialog.show(
+              onPressed: () => KdConfirmDialog.show(
                 context,
                 title: 'My Dialog Title',
                 message: 'Message',
@@ -354,7 +354,7 @@ void main() {
     testWidgets('renders without error in Japanese locale', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
-          const MpConfirmDialog(title: 'タイトル', message: 'メッセージ'),
+          const KdConfirmDialog(title: 'タイトル', message: 'メッセージ'),
           locale: const Locale('ja'),
         ),
       );

@@ -7,7 +7,7 @@ import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:go_router/go_router.dart';
@@ -203,7 +203,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return MpButton(
+    return KdButton(
       label: l10n.exportReport,
       icon: _isGenerating ? null : Icons.file_download,
       onPressed: _isGenerating ? null : _showReportDialog,

@@ -3,7 +3,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class PrivacyNotice extends StatelessWidget {
   const PrivacyNotice({super.key});
@@ -12,7 +12,7 @@ class PrivacyNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return MpCard(
+    return KdCard(
       color: AppColors.info.withValues(alpha: 0.1),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -3,8 +3,8 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 class OnboardingMedicationStyleStep extends StatefulWidget {
   final VoidCallback onNext;
@@ -94,7 +94,7 @@ class _OnboardingMedicationStyleStepState
               const SizedBox(height: AppSpacing.xxxl),
 
               // Options
-              MpRadioOption<bool>(
+              KdRadioOption<bool>(
                 value: false,
                 groupValue: _isIppoka,
                 onChanged: _onSelected,
@@ -103,7 +103,7 @@ class _OnboardingMedicationStyleStepState
                 description: l10n.onboardingIndividualPillsDesc,
               ),
               const SizedBox(height: AppSpacing.md),
-              MpRadioOption<bool>(
+              KdRadioOption<bool>(
                 value: true,
                 groupValue: _isIppoka,
                 onChanged: _onSelected,
@@ -117,7 +117,7 @@ class _OnboardingMedicationStyleStepState
           const Spacer(),
 
           // Next button
-          MpButton(
+          KdButton(
             label: l10n.onboardingNext,
             onPressed: widget.onNext,
             variant: MpButtonVariant.primary,

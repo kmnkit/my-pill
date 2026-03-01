@@ -17,15 +17,16 @@ import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/adherence_badge.dart';
 import 'package:kusuridoki/presentation/screens/medications/widgets/history_list_item.dart';
-import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
 import 'package:kusuridoki/presentation/shared/dialogs/inventory_update_dialog.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_progress_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_progress_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class MedicationDetailScreen extends ConsumerWidget {
@@ -35,7 +36,7 @@ class MedicationDetailScreen extends ConsumerWidget {
 
   Future<void> _handleDelete(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context)!;
-    final confirmed = await MpConfirmDialog.show(
+    final confirmed = await KdConfirmDialog.show(
       context,
       title: l10n.deleteMedicationTitle,
       message: l10n.deleteMedicationConfirm,
@@ -68,7 +69,7 @@ class MedicationDetailScreen extends ConsumerWidget {
     );
 
     return GradientScaffold(
-      appBar: MpAppBar(
+      appBar: KdAppBar(
         title: medicationTitle,
         showBack: true,
         actions: [
@@ -114,7 +115,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                           ),
                         )
                       else
-                        MpPillIcon(
+                        KdPillIcon(
                           shape: medication.shape,
                           color: medication.color,
                           size: 64,
@@ -139,7 +140,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.xxl),
 
                 // Inventory card
-                MpCard(
+                KdCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -151,19 +152,19 @@ class MedicationDetailScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           if (isLowStock)
-                            MpBadge(
+                            KdBadge(
                               label: l10n.lowStock,
                               variant: MpBadgeVariant.lowStock,
                             ),
                         ],
                       ),
                       const SizedBox(height: AppSpacing.lg),
-                      MpProgressBar(
+                      KdProgressBar(
                         current: medication.inventoryRemaining,
                         total: medication.inventoryTotal,
                       ),
                       const SizedBox(height: AppSpacing.lg),
-                      MpButton(
+                      KdButton(
                         label: l10n.updateInventory,
                         variant: MpButtonVariant.secondary,
                         onPressed: () async {
@@ -190,7 +191,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.lg),
 
                 // Schedule info card
-                MpCard(
+                KdCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -257,9 +258,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                             ],
                           );
                         },
-                        loading: () => const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        ),
+                        loading: () => const KdShimmerBox(height: 48),
                         error: (_, _) => _InfoRow(
                           label: l10n.status,
                           value: l10n.errorLoadingSchedule,
@@ -271,7 +270,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.xxl),
 
                 // Recent history
-                MpSectionHeader(title: l10n.recentHistory),
+                KdSectionHeader(title: l10n.recentHistory),
                 const SizedBox(height: AppSpacing.md),
                 historyAsync.when(
                   data: (records) {
@@ -300,11 +299,9 @@ class MedicationDetailScreen extends ConsumerWidget {
                       }).toList(),
                     );
                   },
-                  loading: () => const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.xl),
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(AppSpacing.xl),
+                    child: KdListShimmer(itemCount: 3, itemHeight: 40),
                   ),
                   error: (_, _) => Center(
                     child: Padding(
@@ -330,8 +327,10 @@ class MedicationDetailScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const Padding(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: KdListShimmer(itemCount: 5),
+        ),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -449,10 +448,10 @@ class _EncryptedPhotoWidgetState extends ConsumerState<_EncryptedPhotoWidget> {
               ),
             );
           }
-          return const SizedBox(
+          return const KdShimmerBox(
             width: 120,
             height: 120,
-            child: Center(child: CircularProgressIndicator.adaptive()),
+            borderRadius: AppSpacing.radiusMd,
           );
         },
       );

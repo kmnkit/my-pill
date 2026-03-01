@@ -4,8 +4,8 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
-class MpProgressBar extends StatelessWidget {
-  const MpProgressBar({
+class KdProgressBar extends StatelessWidget {
+  const KdProgressBar({
     super.key,
     required this.current,
     required this.total,

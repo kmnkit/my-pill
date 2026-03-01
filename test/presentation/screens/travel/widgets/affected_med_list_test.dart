@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:kusuridoki/data/enums/dosage_unit.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
@@ -219,7 +219,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
 
     testWidgets('shows loading indicator while schedules load', (
@@ -238,7 +238,7 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
 
     testWidgets('shows error message on medication load failure', (

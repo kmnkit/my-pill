@@ -5,7 +5,7 @@ import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/services/firestore_service.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 
 part 'caregiver_monitoring_provider.g.dart';
 

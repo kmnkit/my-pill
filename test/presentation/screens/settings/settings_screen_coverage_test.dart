@@ -267,7 +267,7 @@ void main() {
       expect(find.text('Settings'), findsOneWidget);
     });
 
-    testWidgets('loading state shows CircularProgressIndicator', (
+    testWidgets('loading state shows shimmer placeholder', (
       tester,
     ) async {
       await tester.pumpWidget(

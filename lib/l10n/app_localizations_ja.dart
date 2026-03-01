@@ -967,6 +967,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deactivateAccountMessage => 'サインアウトされます。データは保持され、後でサインインできます。';
 
   @override
+  String get logOutMessageAnonymous =>
+      'サインインしていません。ログアウトすると、この端末のすべてのお薬、スケジュール、リマインダーが完全に削除されます。この操作は取り消せません。';
+
+  @override
+  String get logOutMessageAuthenticated =>
+      'この端末のローカルデータが削除されます。再度サインインすると復元できます。';
+
+  @override
   String get deactivate => 'ログアウト';
 
   @override
@@ -1071,6 +1079,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get errorSavingMedication => 'お薬の保存に失敗しました。もう一度お試しください。';
+
+  @override
+  String get errorSavingSchedule => 'スケジュールの保存に失敗しました。もう一度お試しください。';
 
   @override
   String get errorUpdatingMedication => 'お薬の更新に失敗しました。もう一度お試しください。';
@@ -1240,6 +1251,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get failedToAcceptInvite => '招待の受け入れに失敗しました。もう一度お試しください。';
+
+  @override
+  String get inviteNotFound => '招待コードが見つかりません。リンクを確認してください。';
+
+  @override
+  String get inviteExpired => 'この招待の有効期限が切れています。新しい招待を依頼してください。';
+
+  @override
+  String get inviteAlreadyUsed => 'この招待はすでに使用されています。';
+
+  @override
+  String get inviteSelfError => '自分自身の招待を受け入れることはできません。';
 
   @override
   String get inviteLinkGenerated => '招待リンクが生成されました！';
@@ -1457,7 +1480,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingMedStyleTitle => 'お薬はどのように受け取っていますか？';
 
   @override
-  String get onboardingMedStyleSubtitle => 'アプリを最適化するために教えてください';
+  String get onboardingMedStyleSubtitle => 'お薬を追加するときのデフォルト設定に反映されます';
 
   @override
   String get onboardingIndividualPills => '個別の薬（錠剤・カプセルなど）';
@@ -1511,4 +1534,37 @@ class AppLocalizationsJa extends AppLocalizations {
   String timeOutOfRange(String min, String max) {
     return '時間は$min:00から$max:59の間である必要があります';
   }
+
+  @override
+  String get changeTimezone => 'タイムゾーンを変更';
+
+  @override
+  String get searchTimezone => 'タイムゾーンを検索...';
+
+  @override
+  String get selectDestinationTimezone => '渡航先のタイムゾーンを選択';
+
+  @override
+  String get clearAllDataTitle => 'すべてのデータを消去';
+
+  @override
+  String get clearAllDataMessage => 'すべてのお薬、スケジュール、リマインダー、服薬記録を削除しますか？';
+
+  @override
+  String get clearAllDataConfirm => '消去';
+
+  @override
+  String get addPatient => '患者を追加';
+
+  @override
+  String get enterCodeManually => 'コードを手入力';
+
+  @override
+  String get enterInviteCode => '招待コードを入力';
+
+  @override
+  String get inviteCodeHint => '8文字のコード';
+
+  @override
+  String get invalidInviteCode => '有効な8文字のコードを入力してください';
 }

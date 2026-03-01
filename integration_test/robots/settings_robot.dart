@@ -12,7 +12,7 @@ class SettingsRobot {
 
   // ===== FINDERS =====
 
-  // Screen title (MpAppBar)
+  // Screen title (KdAppBar)
   Finder get settingsTitle => find.text('Settings');
 
   // Language section
@@ -119,6 +119,11 @@ class SettingsRobot {
   /// Scroll to and tap Log Out
   Future<void> tapLogOut() async {
     await _scrollAndTap(logOutTile);
+  }
+
+  /// Tap Travel Mode ListTile
+  Future<void> tapTravelMode() async {
+    await _scrollAndTap(travelMode);
   }
 
   /// Tap Cancel in the Log Out dialog

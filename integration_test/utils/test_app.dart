@@ -25,7 +25,8 @@ import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/invite_handler_screen.dart';
 import 'package:kusuridoki/presentation/screens/onboarding/login_screen.dart';
 import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_bottom_nav_bar.dart';
+import 'package:kusuridoki/presentation/screens/travel/travel_mode_screen.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_bottom_nav_bar.dart';
 
 import 'mock_services.dart';
 import 'test_data.dart';
@@ -227,7 +228,7 @@ Widget buildTestApp(TestAppConfig config) {
       storageServiceProvider.overrideWithValue(storageService),
       authServiceProvider.overrideWithValue(authService),
     ],
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 }
 
@@ -237,7 +238,7 @@ Widget buildTestApp(TestAppConfig config) {
 
   final widget = UncontrolledProviderScope(
     container: container.container,
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 
   return (widget, container);
@@ -293,7 +294,7 @@ Widget buildCaregiverTestApp(
 
   return ProviderScope(
     overrides: overrides,
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 }
 
@@ -380,7 +381,7 @@ Widget buildLoginTestApp(TestAppConfig config) {
       authServiceProvider.overrideWithValue(authService),
       appRouterProvider.overrideWith((_) => _buildLoginTestRouter()),
     ],
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 }
 
@@ -404,7 +405,7 @@ Widget buildLoginTestApp(TestAppConfig config) {
 
   final widget = UncontrolledProviderScope(
     container: container,
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 
   return (widget, authService);
@@ -466,7 +467,7 @@ Widget buildPatientTestApp(
         (_) => _buildPatientTestRouter(initialRoute),
       ),
     ],
-    child: const MyPillApp(),
+    child: const KusuridokiApp(),
   );
 }
 
@@ -492,9 +493,7 @@ GoRouter _buildPatientTestRouter(String initialRoute) {
           GoRoute(
             path: 'travel',
             name: RouteNames.travelMode,
-            builder: (_, _) => const Scaffold(
-              body: Center(child: Text('Travel Mode')),
-            ),
+            builder: (_, _) => const TravelModeScreen(),
           ),
         ],
       ),
@@ -520,7 +519,7 @@ class _TestCaregiverShell extends StatelessWidget {
       extendBody: true,
       backgroundColor: Colors.transparent,
       body: navigationShell,
-      bottomNavigationBar: MpBottomNavBar(
+      bottomNavigationBar: KdBottomNavBar(
         currentIndex: navigationShell.currentIndex,
         onTap: (index) {
           navigationShell.goBranch(
@@ -528,7 +527,7 @@ class _TestCaregiverShell extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        mode: MpNavMode.caregiver,
+        mode: KdNavMode.caregiver,
       ),
     );
   }

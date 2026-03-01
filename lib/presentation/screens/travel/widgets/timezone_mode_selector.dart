@@ -4,7 +4,7 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_radio_option.dart';
 
 class TimezoneModeSelector extends ConsumerWidget {
   const TimezoneModeSelector({super.key});
@@ -16,7 +16,7 @@ class TimezoneModeSelector extends ConsumerWidget {
 
     return Column(
       children: [
-        MpRadioOption<TimezoneMode>(
+        KdRadioOption<TimezoneMode>(
           value: TimezoneMode.fixedInterval,
           groupValue: timezoneState.mode,
           onChanged: (value) {
@@ -27,7 +27,7 @@ class TimezoneModeSelector extends ConsumerWidget {
           description: l10n.fixedIntervalDesc,
         ),
         const SizedBox(height: AppSpacing.md),
-        MpRadioOption<TimezoneMode>(
+        KdRadioOption<TimezoneMode>(
           value: TimezoneMode.localTime,
           groupValue: timezoneState.mode,
           onChanged: (value) {

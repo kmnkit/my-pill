@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
 import 'package:kusuridoki/data/models/medication.dart';
@@ -263,7 +264,7 @@ void main() {
       // Only pump once — do not settle — so loading state is visible
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(Shimmer), findsOneWidget);
     });
 
     testWidgets('shows OK badge when stock is above threshold', (tester) async {

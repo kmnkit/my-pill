@@ -4,10 +4,10 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverAlertsScreen extends ConsumerWidget {
@@ -18,7 +18,7 @@ class CaregiverAlertsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return GradientScaffold(
-      appBar: MpAppBar(title: l10n.alerts),
+      appBar: KdAppBar(title: l10n.alerts),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(
@@ -30,15 +30,15 @@ class CaregiverAlertsScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MpEmptyState(
+              KdEmptyState(
                 icon: Icons.warning_amber,
                 title: l10n.alerts,
                 description: l10n.alertsWillAppear,
               ),
               const SizedBox(height: AppSpacing.xxxl),
-              MpSectionHeader(title: l10n.alertTypes),
+              KdSectionHeader(title: l10n.alertTypes),
               const SizedBox(height: AppSpacing.md),
-              MpCard(
+              KdCard(
                 child: Row(
                   children: [
                     Icon(
@@ -68,7 +68,7 @@ class CaregiverAlertsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
-              MpCard(
+              KdCard(
                 child: Row(
                   children: [
                     Icon(

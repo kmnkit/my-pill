@@ -3,7 +3,7 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class OverallScore extends StatelessWidget {
   const OverallScore({super.key, required this.percentage});
@@ -32,7 +32,7 @@ class OverallScore extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final displayText = percentage != null ? '$percentage%' : '--';
 
-    return MpCard(
+    return KdCard(
       child: Column(
         children: [
           Text(

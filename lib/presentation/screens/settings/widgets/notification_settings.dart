@@ -4,8 +4,8 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 
 class NotificationSettings extends ConsumerWidget {
   const NotificationSettings({super.key});
@@ -23,8 +23,8 @@ class NotificationSettings extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MpSectionHeader(title: l10n.notifications),
-            MpToggleSwitch(
+            KdSectionHeader(title: l10n.notifications),
+            KdToggleSwitch(
               value: settings.notificationsEnabled,
               onChanged: (value) {
                 final updated = settings.copyWith(notificationsEnabled: value);
@@ -33,7 +33,7 @@ class NotificationSettings extends ConsumerWidget {
               label: l10n.pushNotifications,
             ),
             const SizedBox(height: AppSpacing.md),
-            MpToggleSwitch(
+            KdToggleSwitch(
               value: settings.criticalAlerts,
               onChanged: (value) {
                 final updated = settings.copyWith(criticalAlerts: value);

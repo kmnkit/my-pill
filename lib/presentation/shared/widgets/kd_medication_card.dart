@@ -3,12 +3,12 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/enums/pill_color.dart';
 import 'package:kusuridoki/data/enums/pill_shape.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
 
-class MpMedicationCard extends StatelessWidget {
-  const MpMedicationCard({
+class KdMedicationCard extends StatelessWidget {
+  const KdMedicationCard({
     super.key,
     required this.name,
     required this.dosage,
@@ -33,11 +33,11 @@ class MpMedicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MpCard(
+    return KdCard(
       onTap: onTap,
       child: Row(
         children: [
-          MpPillIcon(shape: shape, color: color),
+          KdPillIcon(shape: shape, color: color),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -77,7 +77,7 @@ class MpMedicationCard extends StatelessWidget {
             ),
           ),
           if (badgeVariant != null && badgeLabel != null) ...[
-            MpBadge(label: badgeLabel!, variant: badgeVariant!),
+            KdBadge(label: badgeLabel!, variant: badgeVariant!),
             const SizedBox(width: AppSpacing.sm),
           ],
           Icon(Icons.chevron_right, color: context.appColors.textMuted),

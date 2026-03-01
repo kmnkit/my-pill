@@ -63,7 +63,7 @@
 - **Firestore security rules**: All user data is gated on `request.auth.uid == userId`. Caregiver access uses a separate `caregiverAccess` collection only writable by Cloud Functions (`allow write: if false`). Invite writes are also Cloud Functions-only. Architecture is correct.
 - **Rate limiting on all Cloud Functions**: `checkRateLimit` (5/min) is applied to `generateInviteLink`, `acceptInvite`, `revokeAccess`, `deleteUserAccount`, and `verifyReceipt`. Brute force and abuse are mitigated.
 - **Self-invitation prevention**: `acceptInvite` checks `caregiverId === patientId` and throws `invalid-argument`. Correct.
-- **Deep link validation**: `DeepLinkService` whitelists allowed hosts (`mypill.app`, `www.mypill.app`) and validates invite codes against a strict 8-character regex before emitting them. Strong input validation.
+- **Deep link validation**: `DeepLinkService` whitelists allowed hosts (`kusuridoki.app`, `www.kusuridoki.app`) and validates invite codes against a strict 8-character regex before emitting them. Strong input validation.
 - **No hardcoded secrets in application code**: No passwords, API secrets, or private keys found in `.dart` files (excluding `firebase_options.dart` which is gitignored).
 - **No HTTP URLs**: All network communication uses HTTPS. Zero plain-HTTP URLs found in Dart source.
 - **ErrorHandler never exposes internals to users**: `ErrorHandler.getMessage()` maps exception types to user-friendly strings without leaking stack traces or internal state to the UI.

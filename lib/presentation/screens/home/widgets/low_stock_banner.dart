@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_alert_banner.dart';
 
 class LowStockBanner extends ConsumerWidget {
   const LowStockBanner({super.key});
@@ -27,7 +27,7 @@ class LowStockBanner extends ConsumerWidget {
           return const SizedBox.shrink();
         }
 
-        return MpAlertBanner(
+        return KdAlertBanner(
           title: l10n.lowStockAlert(
             lowStockMed.name,
             lowStockMed.inventoryRemaining,

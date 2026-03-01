@@ -193,6 +193,29 @@ class StorageService {
     await box.delete(id);
   }
 
+  /// Delete all reminders scheduled before the given date (exclusive).
+  /// Reminders on [date] itself are preserved.
+  Future<void> deleteRemindersBeforeDate(DateTime date) async {
+    final box = await _openBox(_remindersBox);
+    final cutoff = DateTime(date.year, date.month, date.day);
+    final toDelete = <String>[];
+
+    for (final json in box.values) {
+      final reminder =
+          Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>);
+      final scheduled = reminder.scheduledTime;
+      final scheduledDay =
+          DateTime(scheduled.year, scheduled.month, scheduled.day);
+      if (scheduledDay.isBefore(cutoff)) {
+        toDelete.add(reminder.id);
+      }
+    }
+
+    for (final id in toDelete) {
+      await box.delete(id);
+    }
+  }
+
   Future<void> deleteRemindersForMedication(String medicationId) async {
     final box = await _openBox(_remindersBox);
     final toDelete = box.values

@@ -42,7 +42,7 @@ exports.generateInviteLink = onCall(async (request) => {
     status: 'pending',
   });
 
-  return { url: `https://mypill.app/invite/${code}`, code };
+  return { url: `https://kusuridoki.app/invite/${code}`, code };
 });
 
 // Accept invite

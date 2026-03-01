@@ -9,7 +9,7 @@ import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/notification_settings.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 
 import '../../../../helpers/widget_test_helpers.dart';
 
@@ -106,7 +106,7 @@ void main() {
     // Both toggles present
     // -----------------------------------------------------------------------
 
-    testWidgets('two MpToggleSwitch widgets are rendered', (tester) async {
+    testWidgets('two KdToggleSwitch widgets are rendered', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const NotificationSettings(),
@@ -115,7 +115,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(MpToggleSwitch), findsNWidgets(2));
+      expect(find.byType(KdToggleSwitch), findsNWidgets(2));
     });
 
     // -----------------------------------------------------------------------
