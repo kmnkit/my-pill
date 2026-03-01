@@ -1,9 +1,9 @@
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 import 'package:uuid/uuid.dart';
 
 class ReminderService {
@@ -31,9 +31,11 @@ class ReminderService {
         final scheduledTime = _parseTimeForDate(timeString, date);
 
         // Check if reminder already exists for this medicationId + scheduledTime
-        final alreadyExists = existing.any((r) =>
-            r.medicationId == schedule.medicationId &&
-            r.scheduledTime.isAtSameMomentAs(scheduledTime));
+        final alreadyExists = existing.any(
+          (r) =>
+              r.medicationId == schedule.medicationId &&
+              r.scheduledTime.isAtSameMomentAs(scheduledTime),
+        );
 
         if (!alreadyExists) {
           final reminder = Reminder(
@@ -76,8 +78,9 @@ class ReminderService {
         // Use Unix epoch as a fixed reference so interval cycles are consistent.
         // Both dates use local time to avoid timezone-related day boundary shifts.
         final targetDate = DateTime(date.year, date.month, date.day);
-        final daysSinceEpoch =
-            targetDate.difference(DateTime(1970, 1, 1)).inDays;
+        final daysSinceEpoch = targetDate
+            .difference(DateTime(1970, 1, 1))
+            .inDays;
 
         return daysSinceEpoch % intervalDays == 0;
     }
@@ -168,9 +171,11 @@ class ReminderService {
   Future<DateTime?> getNextReminderTime() async {
     final today = await _storage.getRemindersForDate(DateTime.now());
     final pending = today
-        .where((r) =>
-            r.status == ReminderStatus.pending ||
-            r.status == ReminderStatus.snoozed)
+        .where(
+          (r) =>
+              r.status == ReminderStatus.pending ||
+              r.status == ReminderStatus.snoozed,
+        )
         .toList();
 
     if (pending.isEmpty) return null;

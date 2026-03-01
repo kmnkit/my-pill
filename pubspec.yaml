@@ -1,4 +1,4 @@
-name: my_pill
+name: kusuridoki
 description: "Kusuridoki - Your reliable medication companion"
 publish_to: 'none'
 version: 1.0.0+1
@@ -38,8 +38,8 @@ dependencies:
   # Ads
   google_mobile_ads: ^7.0.0
   google_sign_in: ^7.2.0
-  # IAP
-  in_app_purchase: ^3.2.3
+  # In-App Review
+  in_app_review: ^2.0.10
   # Home Screen Widgets
   home_widget: ^0.9.0
   # Utilities
@@ -54,6 +54,8 @@ dependencies:
   collection: ^1.19.1
   # Security
   flutter_secure_storage: ^9.2.4
+  # Error Monitoring
+  sentry_flutter: ^9.0.0
   # PDF Generation
   pdf: ^3.11.3
   printing: ^5.14.2
@@ -67,6 +69,7 @@ dev_dependencies:
   build_runner: ^2.10.5
   json_serializable: ^6.13.0
   freezed: ^3.2.3
+  riverpod: ^3.1.0
   riverpod_generator: ^4.0.0
   mockito: ^5.6.3
   firebase_core_platform_interface: ^6.0.2
@@ -75,11 +78,11 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
-  min_sdk_android: 21
-  adaptive_icon_background: "#FFF5F0"
-  adaptive_icon_foreground: "assets/images/kusuridoki.png"
+  image_path: "assets/icons/app_icon.png"
   remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#0D968B"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
 
 flutter:
   uses-material-design: true
@@ -87,3 +90,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/fonts/
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Regular.ttf

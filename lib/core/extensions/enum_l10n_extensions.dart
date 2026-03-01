@@ -1,6 +1,9 @@
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 extension PillShapeL10n on PillShape {
   String localizedName(AppLocalizations l10n) {
@@ -36,6 +39,57 @@ extension DosageUnitL10n on DosageUnit {
         return l10n.units;
       case DosageUnit.packs:
         return l10n.packs;
+    }
+  }
+}
+
+extension PillColorL10n on PillColor {
+  String localizedName(AppLocalizations l10n) {
+    switch (this) {
+      case PillColor.white:
+        return l10n.colorWhite;
+      case PillColor.blue:
+        return l10n.colorBlue;
+      case PillColor.yellow:
+        return l10n.colorYellow;
+      case PillColor.pink:
+        return l10n.colorPink;
+      case PillColor.red:
+        return l10n.colorRed;
+      case PillColor.green:
+        return l10n.colorGreen;
+      case PillColor.orange:
+        return l10n.colorOrange;
+      case PillColor.purple:
+        return l10n.colorPurple;
+    }
+  }
+}
+
+extension ScheduleTypeL10n on ScheduleType {
+  String localizedName(AppLocalizations l10n) {
+    switch (this) {
+      case ScheduleType.daily:
+        return l10n.scheduleTypeDaily;
+      case ScheduleType.specificDays:
+        return l10n.scheduleTypeSpecificDays;
+      case ScheduleType.interval:
+        return l10n.scheduleTypeInterval;
+    }
+  }
+}
+
+extension DosageTimingL10n on DosageTiming {
+  String localizedName(AppLocalizations l10n) {
+    switch (this) {
+      case DosageTiming.morning:
+        return l10n.dosageTimingMorning;
+      case DosageTiming.noon:
+        return l10n.dosageTimingNoon;
+      case DosageTiming.evening:
+        return l10n.dosageTimingEvening;
+      case DosageTiming.bedtime:
+        return l10n.dosageTimingBedtime;
     }
   }
 }

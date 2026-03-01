@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_avatar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_avatar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 class CaregiverListTile extends StatelessWidget {
-  const CaregiverListTile({
-    super.key,
-    required this.link,
-    this.onRevoke,
-  });
+  const CaregiverListTile({super.key, required this.link, this.onRevoke});
 
   final CaregiverLink link;
   final VoidCallback? onRevoke;
@@ -67,13 +63,17 @@ class CaregiverListTile extends StatelessWidget {
                 value: 'revoke',
                 child: Row(
                   children: [
-                    Icon(Icons.person_remove, size: AppSpacing.iconMd, color: AppColors.error),
+                    Icon(
+                      Icons.person_remove,
+                      size: AppSpacing.iconMd,
+                      color: AppColors.error,
+                    ),
                     const SizedBox(width: AppSpacing.sm),
                     Text(
                       l10n.revokeAccess,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.error,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
                     ),
                   ],
                 ),

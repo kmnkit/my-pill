@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:my_pill/core/utils/photo_encryption.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
+import 'package:kusuridoki/core/utils/photo_encryption.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
 
 class StorageService {
   // Box names
@@ -102,8 +102,10 @@ class StorageService {
   Future<List<Medication>> getAllMedications() async {
     final box = await _openBox(_medicationsBox);
     return box.values
-        .map((json) =>
-            Medication.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) =>
+              Medication.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -128,16 +130,18 @@ class StorageService {
   Future<List<Schedule>> getAllSchedules() async {
     final box = await _openBox(_schedulesBox);
     return box.values
-        .map((json) =>
-            Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .toList();
   }
 
   Future<List<Schedule>> getSchedulesForMedication(String medicationId) async {
     final box = await _openBox(_schedulesBox);
     return box.values
-        .map((json) =>
-            Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => Schedule.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .where((schedule) => schedule.medicationId == medicationId)
         .toList();
   }
@@ -163,22 +167,25 @@ class StorageService {
   Future<List<Reminder>> getAllReminders() async {
     final box = await _openBox(_remindersBox);
     return box.values
-        .map((json) =>
-            Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .toList();
   }
 
   Future<List<Reminder>> getRemindersForDate(DateTime date) async {
     final box = await _openBox(_remindersBox);
     return box.values
-        .map((json) =>
-            Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .where((reminder) {
-      final scheduledTime = reminder.scheduledTime;
-      return scheduledTime.year == date.year &&
-          scheduledTime.month == date.month &&
-          scheduledTime.day == date.day;
-    }).toList();
+          final scheduledTime = reminder.scheduledTime;
+          return scheduledTime.year == date.year &&
+              scheduledTime.month == date.month &&
+              scheduledTime.day == date.day;
+        })
+        .toList();
   }
 
   Future<void> deleteReminder(String id) async {
@@ -189,8 +196,9 @@ class StorageService {
   Future<void> deleteRemindersForMedication(String medicationId) async {
     final box = await _openBox(_remindersBox);
     final toDelete = box.values
-        .map((json) =>
-            Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => Reminder.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .where((reminder) => reminder.medicationId == medicationId)
         .map((reminder) => reminder.id)
         .toList();
@@ -213,8 +221,11 @@ class StorageService {
   }) async {
     final box = await _openBox(_adherenceBox);
     var records = box.values
-        .map((json) =>
-            AdherenceRecord.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => AdherenceRecord.fromJson(
+            jsonDecode(json) as Map<String, dynamic>,
+          ),
+        )
         .toList();
 
     if (medicationId != null) {
@@ -225,15 +236,21 @@ class StorageService {
 
     if (startDate != null) {
       records = records
-          .where((record) => record.date.isAfter(startDate) ||
-              record.date.isAtSameMomentAs(startDate))
+          .where(
+            (record) =>
+                record.date.isAfter(startDate) ||
+                record.date.isAtSameMomentAs(startDate),
+          )
           .toList();
     }
 
     if (endDate != null) {
       records = records
-          .where((record) => record.date.isBefore(endDate) ||
-              record.date.isAtSameMomentAs(endDate))
+          .where(
+            (record) =>
+                record.date.isBefore(endDate) ||
+                record.date.isAtSameMomentAs(endDate),
+          )
           .toList();
     }
 
@@ -243,8 +260,11 @@ class StorageService {
   Future<void> deleteAdherenceRecordsForMedication(String medicationId) async {
     final box = await _openBox(_adherenceBox);
     final toDelete = box.values
-        .map((json) =>
-            AdherenceRecord.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) => AdherenceRecord.fromJson(
+            jsonDecode(json) as Map<String, dynamic>,
+          ),
+        )
         .where((record) => record.medicationId == medicationId)
         .map((record) => record.id)
         .toList();
@@ -276,8 +296,10 @@ class StorageService {
   Future<List<CaregiverLink>> getAllCaregiverLinks() async {
     final box = await _openBox(_caregiverLinksBox);
     return box.values
-        .map((json) =>
-            CaregiverLink.fromJson(jsonDecode(json) as Map<String, dynamic>))
+        .map(
+          (json) =>
+              CaregiverLink.fromJson(jsonDecode(json) as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -342,6 +364,20 @@ class StorageService {
     } catch (_) {
       // Best-effort: box might be corrupted or not yet opened
     }
+  }
+
+  // --- Generic Settings ---
+
+  Future<String?> getSetting(String key) async {
+    final box = await _openBox(_settingsBox);
+    final value = box.get(key);
+    if (value == null) return null;
+    return value.toString();
+  }
+
+  Future<void> saveSetting(String key, String value) async {
+    final box = await _openBox(_settingsBox);
+    await box.put(key, value);
   }
 
   /// Clear all data including app settings. Use for account deletion.

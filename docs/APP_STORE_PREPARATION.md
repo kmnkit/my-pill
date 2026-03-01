@@ -84,15 +84,15 @@
 - 인사말 헤더에 이름이 표시되도록 설정 (예: "Good morning, Yuki")
 - 재고 부족 배너가 보이면 더 좋음
 
-#### Screenshot 2: 약 추가 화면 - 직관적인 등록
+#### Screenshot 2: 一包化 약 추가 화면 - 차별화 포인트
 
-**화면:** `AddMedicationScreen` (PillShapeSelector + PillColorPicker + InventoryEditor)
-**캡션 (EN):** "Add medications easily with shape, color, and schedule"
-**캡션 (JA):** "形・色・スケジュールで簡単に薬を登録"
+**화면:** `AddMedicationScreen` (一包化 토글 ON 상태)
+**캡션 (EN):** "Supports dose packs (一包化) — manage bundled medications easily"
+**캡션 (JA):** "一包化にも対応 — まとめた薬もカンタン管理"
 **촬영 팁:**
-- 약 이름, 용량이 입력된 상태
-- 약 모양(PillShape)과 색상(PillColor)이 선택된 상태
-- 재고 수량이 입력된 상태
+- 一包化(Dose Pack) 토글이 ON인 상태
+- 약 이름에 "朝の薬" 등 一包化에 적합한 이름 입력
+- 용량 1 pack(s) 표시 상태
 - 스크롤하여 스케줄 타입 선택기도 보이면 이상적
 
 #### Screenshot 3: 복약 준수율 - 주간 요약
@@ -126,15 +126,15 @@
 - "Fixed Interval" / "Local Time" 선택기가 보이도록
 - 영향받는 약 목록이 1~2개 표시
 
-#### Screenshot 6: 설정 화면 - 다국어 + 알림 커스터마이징
+#### Screenshot 6: 온보딩 一包化 선택 화면
 
-**화면:** `SettingsScreen` (AccountSection + LanguageSelector + NotificationSettings)
-**캡션 (EN):** "Personalize notifications, language, and privacy settings"
-**캡션 (JA):** "通知・言語・プライバシーを自分好みにカスタマイズ"
+**화면:** `OnboardingScreen` (MedicationStyleStep - 一包化 선택 단계)
+**캡션 (EN):** "Personalized setup — choose your medication style from the start"
+**캡션 (JA):** "あなたに最適化 — 一包化か個別薬かを最初に選べます"
 **촬영 팁:**
-- 계정 섹션에 로그인된 상태 (Apple 또는 Google 아바타)
-- 언어 선택기에서 English/日本語 전환 가능함을 보여주기
-- 알림 설정이 ON 상태
+- 一包化(Dose Pack) 옵션이 선택된 상태
+- 프로그레스 인디케이터가 6단계 중 3단계를 표시
+- EN/JA 각각 캡처
 
 ### 2.3 스크린샷 촬영 가이드
 
@@ -168,7 +168,7 @@ xcrun simctl io booted screenshot ~/Desktop/screenshot_1_home.png
 | 필드 | English | Japanese |
 |------|---------|----------|
 | **App Name** | Kusuridoki | くすりどき |
-| **Subtitle** | Your medication reminder companion | あなたの服薬リマインダー |
+| **Subtitle** | Pills & Dose Packs, All in One | 一包化・個別薬まとめて管理 |
 | **Category** | Medical (Primary), Health & Fitness (Secondary) | 메디컬 (Primary), ヘルスケア (Secondary) |
 | **Age Rating** | 4+ | 4+ |
 | **Price** | Free (IAP 포함) | 無料 (アプリ内課金あり) |
@@ -177,7 +177,7 @@ xcrun simctl io booted screenshot ~/Desktop/screenshot_1_home.png
 
 **English:**
 ```
-Kusuridoki is a smart medication management app designed to help you never miss a dose.
+Kusuridoki is a smart medication management app designed to help you never miss a dose — whether you take individual pills or pre-packaged dose packs (一包化).
 
 Whether you manage daily supplements, chronic condition medications, or complex multi-drug schedules, Kusuridoki keeps you on track with timely reminders and intuitive tracking.
 
@@ -210,9 +210,9 @@ Kusuridoki does not replace professional medical advice. Always consult your hea
 
 **Japanese:**
 ```
-くすりどきは、薬の飲み忘れを防ぐスマートな服薬管理アプリです。
+くすりどきは、一包化・個別薬どちらにも対応した、スマートな服薬管理アプリです。飲み忘れゼロを目指しましょう。
 
-毎日のサプリメントから慢性疾患の薬、複雑な服薬スケジュールまで、タイムリーなリマインダーと直感的な記録で服薬習慣をサポートします。
+毎日のサプリメントから慢性疾患の薬、一包化（分包薬）まで、タイムリーなリマインダーと直感的な記録で服薬習慣をサポートします。
 
 主な機能：
 
@@ -245,12 +245,12 @@ Kusuridoki does not replace professional medical advice. Always consult your hea
 
 **English:**
 ```
-medication,pill,reminder,health,tracker,adherence,caregiver,inventory,travel,timezone
+medication,pill,reminder,health,tracker,adherence,caregiver,dose pack,medication organizer,travel
 ```
 
 **Japanese:**
 ```
-薬,服薬,リマインダー,健康,記録,在庫,保護者,見守り,旅行,時差
+薬,服薬,リマインダー,健康,一包化,一包化アプリ,分包薬,保護者,見守り,在庫
 ```
 
 ### 3.4 What's New (릴리즈 노트)

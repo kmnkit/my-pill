@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
 class OnboardingProgressIndicator extends StatelessWidget {
   final int currentStep;
@@ -28,7 +29,7 @@ class OnboardingProgressIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             color: isActive || isCompleted
                 ? AppColors.primary
-                : AppColors.textMuted.withValues(alpha: 0.3),
+                : context.appColors.textMuted.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           ),
         );

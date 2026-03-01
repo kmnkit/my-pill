@@ -1,17 +1,20 @@
 /// Test data fixtures for E2E tests
 library;
 
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/dosage_timing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
 
 /// Test data factory for creating test fixtures
 class TestData {
@@ -20,148 +23,148 @@ class TestData {
   // --- User Profiles ---
 
   static UserProfile get newUserProfile => const UserProfile(
-        id: 'test-user-1',
-        name: null,
-        language: 'en',
-        onboardingComplete: false,
-        userRole: 'patient',
-      );
+    id: 'test-user-1',
+    name: null,
+    language: 'en',
+    onboardingComplete: false,
+    userRole: 'patient',
+  );
 
   static UserProfile get completedOnboardingPatient => const UserProfile(
-        id: 'test-user-1',
-        name: 'Test User',
-        language: 'en',
-        onboardingComplete: true,
-        userRole: 'patient',
-        homeTimezone: 'America/New_York',
-        notificationsEnabled: true,
-      );
+    id: 'test-user-1',
+    name: 'Test User',
+    language: 'en',
+    onboardingComplete: true,
+    userRole: 'patient',
+    homeTimezone: 'America/New_York',
+    notificationsEnabled: true,
+  );
 
   static UserProfile get completedOnboardingCaregiver => const UserProfile(
-        id: 'test-user-2',
-        name: 'Caregiver User',
-        language: 'en',
-        onboardingComplete: true,
-        userRole: 'caregiver',
-        homeTimezone: 'America/New_York',
-        notificationsEnabled: true,
-      );
+    id: 'test-user-2',
+    name: 'Caregiver User',
+    language: 'en',
+    onboardingComplete: true,
+    userRole: 'caregiver',
+    homeTimezone: 'America/New_York',
+    notificationsEnabled: true,
+  );
 
   // --- Medications ---
 
   static Medication get sampleMedication => Medication(
-        id: 'med-1',
-        name: 'Aspirin',
-        dosage: 100,
-        dosageUnit: DosageUnit.mg,
-        shape: PillShape.round,
-        color: PillColor.white,
-        inventoryTotal: 30,
-        inventoryRemaining: 25,
-        lowStockThreshold: 5,
-        isCritical: false,
-        createdAt: DateTime(2024, 1, 1),
-      );
+    id: 'med-1',
+    name: 'Aspirin',
+    dosage: 100,
+    dosageUnit: DosageUnit.mg,
+    shape: PillShape.round,
+    color: PillColor.white,
+    inventoryTotal: 30,
+    inventoryRemaining: 25,
+    lowStockThreshold: 5,
+    isCritical: false,
+    createdAt: DateTime(2024, 1, 1),
+  );
 
   static Medication get criticalMedication => Medication(
-        id: 'med-2',
-        name: 'Blood Pressure Med',
-        dosage: 50,
-        dosageUnit: DosageUnit.mg,
-        shape: PillShape.oval,
-        color: PillColor.blue,
-        inventoryTotal: 30,
-        inventoryRemaining: 3,
-        lowStockThreshold: 5,
-        isCritical: true,
-        createdAt: DateTime(2024, 1, 1),
-      );
+    id: 'med-2',
+    name: 'Blood Pressure Med',
+    dosage: 50,
+    dosageUnit: DosageUnit.mg,
+    shape: PillShape.oval,
+    color: PillColor.blue,
+    inventoryTotal: 30,
+    inventoryRemaining: 3,
+    lowStockThreshold: 5,
+    isCritical: true,
+    createdAt: DateTime(2024, 1, 1),
+  );
 
   static Medication get lowStockMedication => Medication(
-        id: 'med-3',
-        name: 'Vitamin D',
-        dosage: 1000,
-        dosageUnit: DosageUnit.units,
-        shape: PillShape.round,
-        color: PillColor.yellow,
-        inventoryTotal: 60,
-        inventoryRemaining: 4,
-        lowStockThreshold: 5,
-        isCritical: false,
-        createdAt: DateTime(2024, 1, 1),
-      );
+    id: 'med-3',
+    name: 'Vitamin D',
+    dosage: 1000,
+    dosageUnit: DosageUnit.units,
+    shape: PillShape.round,
+    color: PillColor.yellow,
+    inventoryTotal: 60,
+    inventoryRemaining: 4,
+    lowStockThreshold: 5,
+    isCritical: false,
+    createdAt: DateTime(2024, 1, 1),
+  );
 
   static List<Medication> get sampleMedications => [
-        sampleMedication,
-        criticalMedication,
-        lowStockMedication,
-      ];
+    sampleMedication,
+    criticalMedication,
+    lowStockMedication,
+  ];
 
   // --- Schedules ---
 
   static Schedule get dailySchedule => const Schedule(
-        id: 'schedule-1',
-        medicationId: 'med-1',
-        type: ScheduleType.daily,
-        timesPerDay: 2,
-        times: ['08:00', '20:00'],
-        timezoneMode: TimezoneMode.fixedInterval,
-        isActive: true,
-      );
+    id: 'schedule-1',
+    medicationId: 'med-1',
+    type: ScheduleType.daily,
+    dosageSlots: [
+      DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+      DosageTimeSlot(timing: DosageTiming.evening, time: '20:00'),
+    ],
+    timezoneMode: TimezoneMode.fixedInterval,
+    isActive: true,
+  );
 
   static Schedule get specificDaysSchedule => const Schedule(
-        id: 'schedule-2',
-        medicationId: 'med-2',
-        type: ScheduleType.specificDays,
-        timesPerDay: 1,
-        times: ['09:00'],
-        specificDays: [1, 3, 5], // Mon, Wed, Fri
-        timezoneMode: TimezoneMode.fixedInterval,
-        isActive: true,
-      );
+    id: 'schedule-2',
+    medicationId: 'med-2',
+    type: ScheduleType.specificDays,
+    dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '09:00')],
+    specificDays: [1, 3, 5], // Mon, Wed, Fri
+    timezoneMode: TimezoneMode.fixedInterval,
+    isActive: true,
+  );
 
   static Schedule get intervalSchedule => const Schedule(
-        id: 'schedule-3',
-        medicationId: 'med-3',
-        type: ScheduleType.interval,
-        timesPerDay: 1,
-        times: ['10:00'],
-        intervalHours: 8,
-        timezoneMode: TimezoneMode.fixedInterval,
-        isActive: true,
-      );
+    id: 'schedule-3',
+    medicationId: 'med-3',
+    type: ScheduleType.interval,
+    dosageSlots: [DosageTimeSlot(timing: DosageTiming.morning, time: '10:00')],
+    intervalHours: 8,
+    timezoneMode: TimezoneMode.fixedInterval,
+    isActive: true,
+  );
 
   // --- Reminders ---
 
   static Reminder pendingReminder(DateTime scheduledTime) => Reminder(
-        id: 'reminder-1',
-        medicationId: 'med-1',
-        scheduledTime: scheduledTime,
-        status: ReminderStatus.pending,
-      );
+    id: 'reminder-1',
+    medicationId: 'med-1',
+    scheduledTime: scheduledTime,
+    status: ReminderStatus.pending,
+  );
 
   static Reminder takenReminder(DateTime scheduledTime) => Reminder(
-        id: 'reminder-2',
-        medicationId: 'med-1',
-        scheduledTime: scheduledTime,
-        status: ReminderStatus.taken,
-        actionTime: scheduledTime.add(const Duration(minutes: 5)),
-      );
+    id: 'reminder-2',
+    medicationId: 'med-1',
+    scheduledTime: scheduledTime,
+    status: ReminderStatus.taken,
+    actionTime: scheduledTime.add(const Duration(minutes: 5)),
+  );
 
   static Reminder missedReminder(DateTime scheduledTime) => Reminder(
-        id: 'reminder-3',
-        medicationId: 'med-2',
-        scheduledTime: scheduledTime,
-        status: ReminderStatus.missed,
-      );
+    id: 'reminder-3',
+    medicationId: 'med-2',
+    scheduledTime: scheduledTime,
+    status: ReminderStatus.missed,
+  );
 
   static Reminder snoozedReminder(DateTime scheduledTime) => Reminder(
-        id: 'reminder-4',
-        medicationId: 'med-1',
-        scheduledTime: scheduledTime,
-        status: ReminderStatus.snoozed,
-        snoozedUntil: scheduledTime.add(const Duration(minutes: 15)),
-      );
+    id: 'reminder-4',
+    medicationId: 'med-1',
+    scheduledTime: scheduledTime,
+    status: ReminderStatus.snoozed,
+    snoozedUntil: scheduledTime.add(const Duration(minutes: 15)),
+  );
 
   static List<Reminder> todayReminders() {
     final now = DateTime.now();
@@ -177,13 +180,13 @@ class TestData {
   // --- Adherence Records ---
 
   static AdherenceRecord takenAdherenceRecord(DateTime date) => AdherenceRecord(
-        id: 'adherence-1',
-        medicationId: 'med-1',
-        date: date,
-        status: ReminderStatus.taken,
-        scheduledTime: date.add(const Duration(hours: 8)),
-        actionTime: date.add(const Duration(hours: 8, minutes: 5)),
-      );
+    id: 'adherence-1',
+    medicationId: 'med-1',
+    date: date,
+    status: ReminderStatus.taken,
+    scheduledTime: date.add(const Duration(hours: 8)),
+    actionTime: date.add(const Duration(hours: 8, minutes: 5)),
+  );
 
   static AdherenceRecord missedAdherenceRecord(DateTime date) =>
       AdherenceRecord(
@@ -203,43 +206,105 @@ class TestData {
       final dayDate = DateTime(date.year, date.month, date.day);
 
       // Add 2 taken, 1 missed per day for 70% adherence
-      records.add(AdherenceRecord(
-        id: 'adherence-taken-$i-1',
-        medicationId: 'med-1',
-        date: dayDate,
-        status: ReminderStatus.taken,
-        scheduledTime: dayDate.add(const Duration(hours: 8)),
-        actionTime: dayDate.add(const Duration(hours: 8, minutes: 5)),
-      ));
-      records.add(AdherenceRecord(
-        id: 'adherence-taken-$i-2',
-        medicationId: 'med-1',
-        date: dayDate,
-        status: ReminderStatus.taken,
-        scheduledTime: dayDate.add(const Duration(hours: 12)),
-        actionTime: dayDate.add(const Duration(hours: 12, minutes: 10)),
-      ));
-      if (i % 3 == 0) {
-        records.add(AdherenceRecord(
-          id: 'adherence-missed-$i',
-          medicationId: 'med-1',
-          date: dayDate,
-          status: ReminderStatus.missed,
-          scheduledTime: dayDate.add(const Duration(hours: 20)),
-        ));
-      } else {
-        records.add(AdherenceRecord(
-          id: 'adherence-taken-$i-3',
+      records.add(
+        AdherenceRecord(
+          id: 'adherence-taken-$i-1',
           medicationId: 'med-1',
           date: dayDate,
           status: ReminderStatus.taken,
-          scheduledTime: dayDate.add(const Duration(hours: 20)),
-          actionTime: dayDate.add(const Duration(hours: 20, minutes: 3)),
-        ));
+          scheduledTime: dayDate.add(const Duration(hours: 8)),
+          actionTime: dayDate.add(const Duration(hours: 8, minutes: 5)),
+        ),
+      );
+      records.add(
+        AdherenceRecord(
+          id: 'adherence-taken-$i-2',
+          medicationId: 'med-1',
+          date: dayDate,
+          status: ReminderStatus.taken,
+          scheduledTime: dayDate.add(const Duration(hours: 12)),
+          actionTime: dayDate.add(const Duration(hours: 12, minutes: 10)),
+        ),
+      );
+      if (i % 3 == 0) {
+        records.add(
+          AdherenceRecord(
+            id: 'adherence-missed-$i',
+            medicationId: 'med-1',
+            date: dayDate,
+            status: ReminderStatus.missed,
+            scheduledTime: dayDate.add(const Duration(hours: 20)),
+          ),
+        );
+      } else {
+        records.add(
+          AdherenceRecord(
+            id: 'adherence-taken-$i-3',
+            medicationId: 'med-1',
+            date: dayDate,
+            status: ReminderStatus.taken,
+            scheduledTime: dayDate.add(const Duration(hours: 20)),
+            actionTime: dayDate.add(const Duration(hours: 20, minutes: 3)),
+          ),
+        );
       }
     }
 
     return records;
+  }
+
+  // --- Caregiver Links ---
+
+  static CaregiverLink get sampleCaregiverLink => CaregiverLink(
+    id: 'link-1',
+    patientId: 'test-user-1',
+    caregiverId: 'caregiver-1',
+    caregiverName: 'Jane Caregiver',
+    status: 'connected',
+    linkedAt: DateTime(2024, 1, 15),
+  );
+
+  static CaregiverLink get pendingCaregiverLink => CaregiverLink(
+    id: 'link-2',
+    patientId: 'test-user-1',
+    caregiverId: 'caregiver-2',
+    caregiverName: 'Bob Caregiver',
+    status: 'pending',
+    linkedAt: DateTime(2024, 2, 1),
+  );
+
+  static List<CaregiverLink> get sampleCaregiverLinks => [
+    sampleCaregiverLink,
+    pendingCaregiverLink,
+  ];
+
+  /// Patient data in the shape returned by FirestoreService.watchLinkedPatients()
+  static Map<String, dynamic> get linkedPatientData => {
+    'patientId': 'patient-1',
+    'patientName': 'Tanaka Hanako',
+    'linkedAt': null,
+  };
+
+  static List<Map<String, dynamic>> get linkedPatientsData => [
+    linkedPatientData,
+  ];
+
+  static CaregiverLink createCaregiverLink({
+    String? id,
+    String patientId = 'test-user-1',
+    String caregiverId = 'caregiver-1',
+    String caregiverName = 'Test Caregiver',
+    String status = 'connected',
+    DateTime? linkedAt,
+  }) {
+    return CaregiverLink(
+      id: id ?? 'link-${DateTime.now().millisecondsSinceEpoch}',
+      patientId: patientId,
+      caregiverId: caregiverId,
+      caregiverName: caregiverName,
+      status: status,
+      linkedAt: linkedAt ?? DateTime(2024, 1, 1),
+    );
   }
 
   // --- Helper methods for creating custom test data ---
@@ -275,8 +340,9 @@ class TestData {
     String? id,
     required String medicationId,
     ScheduleType type = ScheduleType.daily,
-    int timesPerDay = 1,
-    List<String> times = const ['08:00'],
+    List<DosageTimeSlot> dosageSlots = const [
+      DosageTimeSlot(timing: DosageTiming.morning, time: '08:00'),
+    ],
     List<int> specificDays = const [],
     int? intervalHours,
   }) {
@@ -284,8 +350,7 @@ class TestData {
       id: id ?? 'schedule-${DateTime.now().millisecondsSinceEpoch}',
       medicationId: medicationId,
       type: type,
-      timesPerDay: timesPerDay,
-      times: times,
+      dosageSlots: dosageSlots,
       specificDays: specificDays,
       intervalHours: intervalHours,
       timezoneMode: TimezoneMode.fixedInterval,

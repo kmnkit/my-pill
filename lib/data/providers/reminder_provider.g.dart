@@ -33,7 +33,7 @@ final class TodayRemindersProvider
   TodayReminders create() => TodayReminders();
 }
 
-String _$todayRemindersHash() => r'6ceccb329f24b294a8b0a05efe4457d63431a260';
+String _$todayRemindersHash() => r'be92a96ca0a17aa8cc85c7d0cfb2620d2085aca8';
 
 abstract class _$TodayReminders extends $AsyncNotifier<List<Reminder>> {
   FutureOr<List<Reminder>> build();

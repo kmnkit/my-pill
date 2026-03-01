@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/caregiver_provider.dart';
-import 'package:my_pill/data/providers/invite_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/caregiver_list_tile.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/privacy_notice.dart';
-import 'package:my_pill/presentation/screens/caregivers/widgets/qr_invite_section.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/presentation/shared/widgets/premium_badge.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/caregiver_list_tile.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/privacy_notice.dart';
+import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_invite_section.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/premium_badge.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class FamilyScreen extends ConsumerWidget {
   const FamilyScreen({super.key});
@@ -34,45 +35,49 @@ class FamilyScreen extends ConsumerWidget {
             // Linked caregivers section with count
             Row(
               children: [
-                Expanded(
-                  child: MpSectionHeader(title: l10n.linkedCaregivers),
-                ),
-                caregiverLinksAsync.maybeWhen(
-                  data: (links) => Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                      vertical: AppSpacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${links.length}/$maxCaregivers',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                Expanded(child: MpSectionHeader(title: l10n.linkedCaregivers)),
+                if (kPremiumEnabled)
+                  caregiverLinksAsync.maybeWhen(
+                    data: (links) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusFull,
                         ),
-                        if (!isPremium) ...[
-                          const SizedBox(width: AppSpacing.xs),
-                          const PremiumBadge.iconOnly(),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${links.length}/$maxCaregivers',
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          if (!isPremium) ...[
+                            const SizedBox(width: AppSpacing.xs),
+                            const PremiumBadge.iconOnly(),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
+                    orElse: () => const SizedBox.shrink(),
                   ),
-                  orElse: () => const SizedBox.shrink(),
-                ),
               ],
             ),
             caregiverLinksAsync.when(
               data: (links) {
                 if (links.isEmpty) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.lg,
+                    ),
                     child: MpEmptyState(
                       icon: Icons.people_outline,
                       title: l10n.noCaregiversLinked,
@@ -95,11 +100,13 @@ class FamilyScreen extends ConsumerWidget {
                               ),
                               actions: [
                                 TextButton(
-                                  onPressed: () => Navigator.of(context).pop(false),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
                                   child: Text(l10n.cancel),
                                 ),
                                 TextButton(
-                                  onPressed: () => Navigator.of(context).pop(true),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
                                   child: Text(l10n.revoke),
                                 ),
                               ],
@@ -108,13 +115,17 @@ class FamilyScreen extends ConsumerWidget {
                           if (confirmed == true) {
                             try {
                               // Call Cloud Function to revoke server-side
-                              final cfService = ref.read(cloudFunctionsServiceProvider);
+                              final cfService = ref.read(
+                                cloudFunctionsServiceProvider,
+                              );
                               await cfService.revokeAccess(
                                 caregiverId: link.caregiverId,
                                 linkId: link.id,
                               );
                               // Remove local record
-                              await ref.read(caregiverLinksProvider.notifier).removeLink(link.id);
+                              await ref
+                                  .read(caregiverLinksProvider.notifier)
+                                  .removeLink(link.id);
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +139,9 @@ class FamilyScreen extends ConsumerWidget {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(l10n.failedToRevokeAccess(e.toString())),
+                                    content: Text(
+                                      l10n.failedToRevokeAccess(e.toString()),
+                                    ),
                                   ),
                                 );
                               }

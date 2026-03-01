@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +16,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   late final AnimationController _animationController;
   late final Animation<double> _fadeAnimation;
 
-  static const _splashBackgroundColor = Color(0xFFFFF5F0);
+  static const _splashBackgroundColor = AppColors.primary;
   static const _splashDuration = Duration(seconds: 2);
   static const _fadeInDuration = Duration(milliseconds: 500);
 
@@ -29,10 +30,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeIn,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
     );
 
     _animationController.forward();
@@ -83,7 +81,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Image.asset(
-            'assets/images/app_icon.png',
+            'assets/icons/app_icon.png',
             width: 150,
             height: 150,
           ),

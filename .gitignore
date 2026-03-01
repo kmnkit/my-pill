@@ -19,10 +19,8 @@ Thumbs.db
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VS Code
+.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -44,7 +42,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android Studio build artifacts
 /android/app/debug
 /android/app/profile
 /android/app/release
@@ -77,3 +75,35 @@ functions/node_modules/
 .mcp.json
 .claude/settings.local.json
 .claude/worktrees/
+
+# Android local properties
+android/local.properties
+
+# Android signing
+android/upload-keystore.jks
+android/key.properties
+
+# Working files
+findings.md
+task_plan.md
+
+# Privacy policy site build output
+site/build/
+site/node_modules/
+
+# Ruby / Bundler
+vendor/bundle/
+
+# Fastlane build artifacts
+*.ipa
+*.aab
+*.dSYM.zip
+*.dSYM
+
+# Fastlane generated files
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+ios/fastlane/README.md
+android/fastlane/README.md

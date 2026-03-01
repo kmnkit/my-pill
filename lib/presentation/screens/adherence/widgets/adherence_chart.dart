@@ -1,9 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 class AdherenceChart extends StatelessWidget {
   /// Weekly adherence data: weekday number ('1'-'7') -> percentage (0-100), null if no data for that day.
@@ -12,7 +13,15 @@ class AdherenceChart extends StatelessWidget {
   const AdherenceChart({super.key, required this.weeklyData});
 
   List<String> _dayLabels(AppLocalizations l10n) {
-    return [l10n.mon, l10n.tue, l10n.wed, l10n.thu, l10n.fri, l10n.sat, l10n.sun];
+    return [
+      l10n.mon,
+      l10n.tue,
+      l10n.wed,
+      l10n.thu,
+      l10n.fri,
+      l10n.sat,
+      l10n.sun,
+    ];
   }
 
   @override
@@ -35,10 +44,7 @@ class AdherenceChart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.thisWeek,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(l10n.thisWeek, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: AppSpacing.xxl),
           SizedBox(
             height: 200,
@@ -53,14 +59,16 @@ class AdherenceChart extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
-                        if (value.toInt() >= 0 && value.toInt() < dayLabels.length) {
+                        if (value.toInt() >= 0 &&
+                            value.toInt() < dayLabels.length) {
                           return Padding(
                             padding: const EdgeInsets.only(top: AppSpacing.sm),
                             child: Text(
                               dayLabels[value.toInt()],
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textMuted,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: context.appColors.textMuted,
+                                  ),
                             ),
                           );
                         }
@@ -91,8 +99,16 @@ class AdherenceChart extends StatelessWidget {
                         width: 24,
                         rodStackItems: takenValue != null
                             ? [
-                                BarChartRodStackItem(0, takenValue, AppColors.primary),
-                                BarChartRodStackItem(takenValue, 100, AppColors.error),
+                                BarChartRodStackItem(
+                                  0,
+                                  takenValue,
+                                  AppColors.primary,
+                                ),
+                                BarChartRodStackItem(
+                                  takenValue,
+                                  100,
+                                  AppColors.error,
+                                ),
                               ]
                             : [
                                 // Gray bar for no data
@@ -127,10 +143,7 @@ class AdherenceChart extends StatelessWidget {
 }
 
 class _LegendItem extends StatelessWidget {
-  const _LegendItem({
-    required this.color,
-    required this.label,
-  });
+  const _LegendItem({required this.color, required this.label});
 
   final Color color;
   final String label;
@@ -151,9 +164,9 @@ class _LegendItem extends StatelessWidget {
         const SizedBox(width: AppSpacing.sm),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColors.textMuted,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
         ),
       ],
     );

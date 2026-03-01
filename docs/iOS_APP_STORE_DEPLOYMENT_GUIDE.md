@@ -29,7 +29,7 @@ This phase configures code signing and team credentials in Xcode. Without this, 
 ### Step 1.1: Open Xcode Project
 
 1. Launch Xcode
-2. Open `/Users/gingermarco/develop/flutter/my_pill/ios/Runner.xcworkspace` (use `.xcworkspace`, not `.xcodeproj`)
+2. Open `/Users/gingermarco/develop/flutter/kusuridoki/ios/Runner.xcworkspace` (use `.xcworkspace`, not `.xcodeproj`)
 3. Select the **Runner** target in the sidebar
 
 ### Step 1.2: Configure Team Signing
@@ -68,7 +68,7 @@ If any are missing, click **+ Capability** and add them.
 
 ### Step 1.5: Verify Entitlements File
 
-The entitlements file at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Runner.entitlements` should contain:
+The entitlements file at `/Users/gingermarco/develop/flutter/kusuridoki/ios/Runner/Runner.entitlements` should contain:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -97,7 +97,7 @@ The entitlements file at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/
 
 - ✅ Sign In with Apple entitlement added to Runner.entitlements
 - ✅ Push Notifications capability enabled with aps-environment = "production"
-- ✅ File location: `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Runner.entitlements`
+- ✅ File location: `/Users/gingermarco/develop/flutter/kusuridoki/ios/Runner/Runner.entitlements`
 
 **No further action needed for this phase.**
 
@@ -109,7 +109,7 @@ The entitlements file at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/
 
 ### What Was Done
 
-Privacy manifest created at `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/PrivacyInfo.xcprivacy` with:
+Privacy manifest created at `/Users/gingermarco/develop/flutter/kusuridoki/ios/Runner/PrivacyInfo.xcprivacy` with:
 
 **Data Collection Declared:**
 - Health data (app functionality)
@@ -150,7 +150,7 @@ To verify it's included in your build:
 
 ### What Was Done
 
-Six permission descriptions added to `/Users/gingermarco/develop/flutter/my_pill/ios/Runner/Info.plist`:
+Six permission descriptions added to `/Users/gingermarco/develop/flutter/kusuridoki/ios/Runner/Info.plist`:
 
 ```xml
 <key>NSCameraUsageDescription</key>
@@ -311,7 +311,7 @@ Always consult your healthcare provider before taking medications.
 
 ### What Was Prepared
 
-All marketing materials are documented in `/Users/gingermarco/develop/flutter/my_pill/docs/APP_STORE_METADATA.md`:
+All marketing materials are documented in `/Users/gingermarco/develop/flutter/kusuridoki/docs/APP_STORE_METADATA.md`:
 
 **Screenshots:**
 - Format: 6.7" Display (1290×2796 PNG)
@@ -342,7 +342,7 @@ Before starting Phase 7:
 
 ### Step 7.1: Update Build Version Numbers
 
-1. Open `/Users/gingermarco/develop/flutter/my_pill/pubspec.yaml`
+1. Open `/Users/gingermarco/develop/flutter/kusuridoki/pubspec.yaml`
 2. Update the version line for your release:
    ```yaml
    version: 1.0.0+1
@@ -359,7 +359,7 @@ Before starting Phase 7:
 ### Step 7.2: Clean Previous Builds
 
 ```bash
-cd /Users/gingermarco/develop/flutter/my_pill
+cd /Users/gingermarco/develop/flutter/kusuridoki
 flutter clean
 cd ios
 rm -rf Pods Podfile.lock
@@ -370,7 +370,7 @@ flutter pub get
 ### Step 7.3: Prepare iOS for Release Build
 
 ```bash
-cd /Users/gingermarco/develop/flutter/my_pill/ios
+cd /Users/gingermarco/develop/flutter/kusuridoki/ios
 pod install --repo-update
 cd ..
 ```
@@ -674,7 +674,7 @@ Solution:
 
 Solution:
 ```bash
-cd /Users/gingermarco/develop/flutter/my_pill
+cd /Users/gingermarco/develop/flutter/kusuridoki
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 flutter clean
 cd ios && rm -rf Pods Podfile.lock

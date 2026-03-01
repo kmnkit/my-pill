@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/services/notification_service.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 class OnboardingNotificationStep extends StatefulWidget {
   final VoidCallback onFinish;
@@ -139,7 +140,7 @@ class _OnboardingNotificationStepState
               Text(
                 l10n.onboardingNotificationSubtitle,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -210,7 +211,7 @@ class _OnboardingNotificationStepState
               child: Text(
                 l10n.onboardingNotificationSkip,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textMuted,
+                  color: context.appColors.textMuted,
                 ),
               ),
             ),

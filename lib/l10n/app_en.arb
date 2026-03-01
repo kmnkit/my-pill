@@ -4,7 +4,7 @@
   "appTitle": "Kusuridoki",
 
   "onboardingHeadline": "Your reliable medication companion",
-  "onboardingFeature1": "Never miss a dose",
+  "onboardingFeature1": "Dose packs & individual pills",
   "onboardingFeature2": "Works across timezones",
   "onboardingFeature3": "Keep family connected",
   "getStarted": "Get Started",
@@ -23,6 +23,8 @@
   "onboardingNameSubtitle": "We'll use this to personalize your experience",
   "onboardingNameHint": "Enter your name",
   "onboardingNameSkip": "Skip for now",
+  "onboardingNameRequired": "Your name will be shown to the patients you support",
+  "onboardingNameMinLength": "Please enter at least 2 characters",
 
   "onboardingRoleTitle": "How will you use Kusuridoki?",
   "onboardingRoleSubtitle": "Choose the option that best describes you",
@@ -196,6 +198,7 @@
   "normal": "Normal",
   "large": "Large",
   "extraLarge": "XL",
+  "features": "Features",
   "safetyPrivacy": "Safety & Privacy",
   "exportHistory": "Export History",
   "privacyPolicy": "Privacy Policy",
@@ -281,7 +284,7 @@
   "weeklySummary": "Weekly Summary",
   "premium": "Premium",
   "premiumMonthly": "Monthly Plan",
-  "premiumYearly": "Yearly Plan (34% off)",
+  "premiumYearly": "Yearly Plan",
   "premiumMonthlyPrice": "¥480/mo",
   "premiumYearlyPrice": "¥3,800/yr",
   "unlockPremium": "Upgrade to Premium",
@@ -443,14 +446,12 @@
   "errorLoadingSchedule": "Error loading schedule",
   "deleteMedicationTitle": "Delete Medication",
   "howOften": "How often?",
-  "howManyTimesPerDay": "How many times per day?",
   "whatTimes": "What times?",
   "whichDays": "Which days?",
   "whatTime": "What time?",
   "every": "Every",
   "hours": "hours",
   "daysUnit": "days",
-  "addAnotherTimeLabel": "Add another time",
   "dailyDesc": "Take every day at the same time",
   "specificDaysDesc": "Take on selected days of the week",
   "intervalDesc": "Take every X hours or days",
@@ -482,8 +483,7 @@
   "successfullyLinked": "Successfully linked as caregiver!",
   "failedToAcceptInvite": "Failed to accept invite. Please try again.",
   "inviteLinkGenerated": "Invite link generated successfully!",
-  "failedToGenerateInvite": "Failed to generate invite: {error}",
-  "@failedToGenerateInvite": { "placeholders": { "error": { "type": "String" } } },
+  "failedToGenerateInvite": "Failed to generate invite. Please try again.",
   "cannotAddMoreCaregivers": "Cannot add more caregivers",
   "generateInviteLink": "Generate Invite Link",
   "generating": "Generating...",
@@ -521,5 +521,97 @@
   "ippokaNameHint": "e.g. Morning Meds, Evening Meds",
 
   "timeoutError": "Request timed out. Please try again.",
-  "defaultUserName": "User"
+  "defaultUserName": "User",
+
+  "colorWhite": "White",
+  "colorBlue": "Blue",
+  "colorYellow": "Yellow",
+  "colorPink": "Pink",
+  "colorRed": "Red",
+  "colorGreen": "Green",
+  "colorOrange": "Orange",
+  "colorPurple": "Purple",
+
+  "dayMonday": "Monday",
+  "dayTuesday": "Tuesday",
+  "dayWednesday": "Wednesday",
+  "dayThursday": "Thursday",
+  "dayFriday": "Friday",
+  "daySaturday": "Saturday",
+  "daySunday": "Sunday",
+  "dayMondayShort": "M",
+  "dayTuesdayShort": "T",
+  "dayWednesdayShort": "W",
+  "dayThursdayShort": "T",
+  "dayFridayShort": "F",
+  "daySaturdayShort": "S",
+  "daySundayShort": "S",
+
+  "snoozeMinutesSemanticLabel": "{duration} minutes snooze, {selected}",
+  "@snoozeMinutesSemanticLabel": {
+    "placeholders": {
+      "duration": {"type": "int"},
+      "selected": {"type": "String"}
+    }
+  },
+  "selected": "selected",
+  "notSelected": "not selected",
+
+  "inventorySemanticLabel": "Inventory: {current} of {total}, {percent}%",
+  "@inventorySemanticLabel": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"},
+      "percent": {"type": "int"}
+    }
+  },
+  "dosePackIcon": "Dose pack icon",
+  "medicationIconLabel": "Medication icon: {shape} {color}",
+  "@medicationIconLabel": {
+    "placeholders": {
+      "shape": {"type": "String"},
+      "color": {"type": "String"}
+    }
+  },
+
+  "scheduleTypeDaily": "Daily",
+  "scheduleTypeSpecificDays": "Specific Days",
+  "scheduleTypeInterval": "Interval",
+
+  "errorLoadingPatients": "Failed to load patients. Please try again.",
+
+  "onboardingMedStyleTitle": "How do you receive your medication?",
+  "onboardingMedStyleSubtitle": "We'll optimize the app for you",
+  "onboardingIndividualPills": "Individual pills or tablets",
+  "onboardingIndividualPillsDesc": "Separate medications from the pharmacy",
+  "onboardingDosePack": "Dose packs (一包化)",
+  "onboardingDosePackDesc": "Pre-packaged sachets bundling multiple meds",
+
+  "dosageTimingTitle": "Dosage Timing",
+  "dosageTimingMorning": "Morning",
+  "dosageTimingNoon": "Noon",
+  "dosageTimingEvening": "Evening",
+  "dosageTimingBedtime": "Before Bed",
+  "dosageTimingRequired": "Required",
+
+  "subscriptionTerms": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.",
+
+  "selectDosageTiming": "When do you take it?",
+  "adjustTimes": "Adjust Times",
+  "timeRangeHint": "{timing}: {min}:00 ~ {max}:59",
+  "@timeRangeHint": {
+    "placeholders": {
+      "timing": {"type": "String"},
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  },
+  "pleaseSelectAtLeastOneTiming": "Please select at least one timing",
+  "timeOutOfRange": "Time must be between {min}:00 and {max}:59",
+  "@timeOutOfRange": {
+    "placeholders": {
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  }
 }

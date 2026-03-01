@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_color_dot.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_color_dot.dart';
 
 class PillColorPicker extends StatelessWidget {
   const PillColorPicker({
@@ -15,6 +17,8 @@ class PillColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Wrap(
       spacing: AppSpacing.md,
       runSpacing: AppSpacing.md,
@@ -24,6 +28,7 @@ class PillColorPicker extends StatelessWidget {
           isSelected: pillColor == selectedColor,
           onTap: () => onColorSelected(pillColor),
           size: 44,
+          colorLabel: pillColor.localizedName(l10n),
         );
       }).toList(),
     );

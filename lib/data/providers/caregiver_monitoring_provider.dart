@@ -1,10 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/services/firestore_service.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/services/firestore_service.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
 
 part 'caregiver_monitoring_provider.g.dart';
 
@@ -35,8 +36,8 @@ Future<double> patientDailyAdherence(Ref ref, String patientId) async {
   final today = DateTime.now();
   final todayReminders = reminders.where((r) {
     return r.scheduledTime.year == today.year &&
-           r.scheduledTime.month == today.month &&
-           r.scheduledTime.day == today.day;
+        r.scheduledTime.month == today.month &&
+        r.scheduledTime.day == today.day;
   }).toList();
 
   if (todayReminders.isEmpty) return 100.0;
@@ -48,35 +49,53 @@ Future<double> patientDailyAdherence(Ref ref, String patientId) async {
 
 // Stream of linked patients from Firestore
 @riverpod
-Stream<List<({String patientId, String patientName, DateTime? linkedAt})>> caregiverPatients(Ref ref) {
+Stream<List<({String patientId, String patientName, DateTime? linkedAt})>>
+caregiverPatients(Ref ref) {
+  final user = ref.watch(authStateProvider).maybeWhen(
+    data: (u) => u,
+    orElse: () => null,
+  );
+  if (user == null) return Stream.value([]);
   final firestore = ref.watch(firestoreServiceProvider);
-  return firestore.watchLinkedPatients().map((docs) => docs.map((doc) {
-    return (
-      patientId: doc['patientId'] as String? ?? '',
-      patientName: doc['patientName'] as String? ?? 'Patient',
-      linkedAt: doc['linkedAt'] != null
-        ? (doc['linkedAt'] as Timestamp).toDate()
-        : null,
-    );
-  }).toList());
+  return firestore.watchLinkedPatients().map(
+    (docs) => docs.map((doc) {
+      return (
+        patientId: doc['patientId'] as String? ?? '',
+        patientName: doc['patientName'] as String? ?? 'Patient',
+        linkedAt: doc['linkedAt'] != null
+            ? (doc['linkedAt'] as Timestamp).toDate()
+            : null,
+      );
+    }).toList(),
+  );
 }
 
 // Combines medications + reminders into PatientCard format
 @riverpod
-Future<List<Map<String, dynamic>>> patientMedicationStatus(Ref ref, String patientId) async {
-  final medications = await ref.watch(patientMedicationsProvider(patientId).future);
+Future<List<Map<String, dynamic>>> patientMedicationStatus(
+  Ref ref,
+  String patientId,
+) async {
+  final medications = await ref.watch(
+    patientMedicationsProvider(patientId).future,
+  );
   final reminders = await ref.watch(patientRemindersProvider(patientId).future);
 
   final today = DateTime.now();
-  final todayReminders = reminders.where((r) =>
-    r.scheduledTime.year == today.year &&
-    r.scheduledTime.month == today.month &&
-    r.scheduledTime.day == today.day
-  ).toList();
+  final todayReminders = reminders
+      .where(
+        (r) =>
+            r.scheduledTime.year == today.year &&
+            r.scheduledTime.month == today.month &&
+            r.scheduledTime.day == today.day,
+      )
+      .toList();
 
   return medications.map((med) {
     // Find today's reminder for this medication
-    final medReminders = todayReminders.where((r) => r.medicationId == med.id).toList();
+    final medReminders = todayReminders
+        .where((r) => r.medicationId == med.id)
+        .toList();
 
     ReminderStatus status;
     if (medReminders.isEmpty) {

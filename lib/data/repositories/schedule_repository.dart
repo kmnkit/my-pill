@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
 
 class ScheduleRepository {
   final StorageService _storage;
@@ -77,13 +77,9 @@ class ScheduleRepository {
     for (final timeStr in schedule.times) {
       final time = _parseTime(timeStr);
       if (time != null) {
-        slots.add(DateTime(
-          date.year,
-          date.month,
-          date.day,
-          time.hour,
-          time.minute,
-        ));
+        slots.add(
+          DateTime(date.year, date.month, date.day, time.hour, time.minute),
+        );
       }
     }
 
@@ -104,7 +100,13 @@ class ScheduleRepository {
     if (schedule.times.isNotEmpty) {
       final time = _parseTime(schedule.times.first);
       if (time != null) {
-        startTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+        startTime = DateTime(
+          date.year,
+          date.month,
+          date.day,
+          time.hour,
+          time.minute,
+        );
       } else {
         startTime = DateTime(date.year, date.month, date.day);
       }
@@ -116,7 +118,8 @@ class ScheduleRepository {
     DateTime currentTime = startTime;
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
 
-    while (currentTime.isBefore(endOfDay) || currentTime.isAtSameMomentAs(endOfDay)) {
+    while (currentTime.isBefore(endOfDay) ||
+        currentTime.isAtSameMomentAs(endOfDay)) {
       slots.add(currentTime);
       currentTime = currentTime.add(Duration(hours: intervalHours));
     }

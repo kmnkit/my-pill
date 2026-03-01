@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class CaregiverAlertsScreen extends ConsumerWidget {
   const CaregiverAlertsScreen({super.key});
@@ -15,7 +17,7 @@ class CaregiverAlertsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: MpAppBar(title: l10n.alerts),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -56,9 +58,8 @@ class CaregiverAlertsScreen extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.xs),
                           Text(
                             l10n.missedDoseDesc,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textMuted,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: context.appColors.textMuted),
                           ),
                         ],
                       ),
@@ -87,9 +88,8 @@ class CaregiverAlertsScreen extends ConsumerWidget {
                           const SizedBox(height: AppSpacing.xs),
                           Text(
                             l10n.lowStockDesc,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textMuted,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: context.appColors.textMuted),
                           ),
                         ],
                       ),

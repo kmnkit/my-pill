@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_toggle_switch.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_toggle_switch.dart';
 
 class DisplaySettings extends ConsumerWidget {
   const DisplaySettings({super.key});
@@ -46,10 +46,7 @@ class DisplaySettings extends ConsumerWidget {
               label: l10n.highContrast,
             ),
             const SizedBox(height: AppSpacing.xl),
-            Text(
-              l10n.textSize,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            Text(l10n.textSize, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: AppSpacing.md),
             Row(
               children: ['normal', 'large', 'xl'].map((storedValue) {
@@ -60,11 +57,15 @@ class DisplaySettings extends ConsumerWidget {
                   child: Semantics(
                     button: true,
                     selected: isSelected,
-                    label: '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
-                    child: GestureDetector(
+                    label:
+                        '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
+                    child: InkWell(
                       onTap: () {
-                        ref.read(userSettingsProvider.notifier).updateTextSize(storedValue);
+                        ref
+                            .read(userSettingsProvider.notifier)
+                            .updateTextSize(storedValue);
                       },
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
@@ -73,13 +74,20 @@ class DisplaySettings extends ConsumerWidget {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? AppColors.primary
-                              : (isDark ? AppColors.cardDark : AppColors.cardLight),
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                              : (isDark
+                                    ? AppColors.cardDark
+                                    : AppColors.cardLight),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusMd,
+                          ),
                         ),
                         child: Text(
                           displayLabel,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: isSelected ? AppColors.textOnPrimary : null,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: isSelected
+                                    ? AppColors.textOnPrimary
+                                    : null,
                               ),
                         ),
                       ),

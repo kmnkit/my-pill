@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/constants/app_typography.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_typography.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 
 /// Configuration for building a theme variant.
 class _ThemeConfig {
@@ -61,7 +62,7 @@ abstract final class AppTheme {
     textMuted: AppColors.textMuted,
     border: AppColors.borderLight,
     navSelected: AppColors.primary,
-    navUnselected: AppColors.textMuted,
+    navUnselected: AppColors.navUnselectedLight,
     textButtonForeground: AppColors.primary,
   );
 
@@ -79,7 +80,7 @@ abstract final class AppTheme {
     textMuted: AppColors.textMutedDark,
     border: AppColors.borderDark,
     navSelected: AppColors.primaryBright,
-    navUnselected: AppColors.textMutedDark,
+    navUnselected: AppColors.navUnselectedDark,
     textButtonForeground: AppColors.primaryBright,
   );
 
@@ -234,7 +235,10 @@ abstract final class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           ),
-          side: BorderSide(color: config.primary, width: config.cardBorder != null ? 2.0 : 1.0),
+          side: BorderSide(
+            color: config.primary,
+            width: config.cardBorder != null ? 2.0 : 1.0,
+          ),
           textStyle: textTheme.labelLarge,
         ),
       ),
@@ -247,26 +251,14 @@ abstract final class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: config.brightness == Brightness.dark
-            ? AppColors.glassDark
-            : AppColors.glassWhite,
+        fillColor: config.surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: config.inputBorder ??
-              BorderSide(
-                color: config.brightness == Brightness.dark
-                    ? AppColors.glassBorderDark
-                    : AppColors.glassBorder,
-              ),
+          borderSide: config.inputBorder ?? BorderSide(color: config.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          borderSide: config.inputBorder ??
-              BorderSide(
-                color: config.brightness == Brightness.dark
-                    ? AppColors.glassBorderDark
-                    : AppColors.glassBorder,
-              ),
+          borderSide: config.inputBorder ?? BorderSide(color: config.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
@@ -287,7 +279,9 @@ abstract final class AppTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         elevation: 0,
-        backgroundColor: config.brightness == Brightness.light ? Colors.white : config.surface,
+        backgroundColor: config.brightness == Brightness.light
+            ? Colors.white
+            : config.surface,
         selectedItemColor: config.navSelected,
         unselectedItemColor: config.navUnselected,
         type: BottomNavigationBarType.fixed,
@@ -303,7 +297,8 @@ abstract final class AppTheme {
         backgroundColor: config.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-          side: config.dialogBorder ??
+          side:
+              config.dialogBorder ??
               BorderSide(
                 color: config.brightness == Brightness.dark
                     ? AppColors.glassBorderDark
@@ -324,6 +319,12 @@ abstract final class AppTheme {
         ),
         side: BorderSide.none,
       ),
+      extensions: [
+        AppColorsExtension(
+          textMuted: config.textMuted,
+          textPrimary: config.textPrimary,
+        ),
+      ],
     );
   }
 }

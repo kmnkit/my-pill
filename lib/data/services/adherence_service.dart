@@ -1,6 +1,6 @@
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 class AdherenceService {
   final StorageService _storage;
@@ -17,7 +17,9 @@ class AdherenceService {
 
     // Filter to just taken and missed (exclude skipped from calculation)
     final taken = records.where((r) => r.status == ReminderStatus.taken).length;
-    final missed = records.where((r) => r.status == ReminderStatus.missed).length;
+    final missed = records
+        .where((r) => r.status == ReminderStatus.missed)
+        .length;
 
     final total = taken + missed;
 
@@ -39,7 +41,9 @@ class AdherenceService {
 
     // Filter to just taken and missed (exclude skipped from calculation)
     final taken = records.where((r) => r.status == ReminderStatus.taken).length;
-    final missed = records.where((r) => r.status == ReminderStatus.missed).length;
+    final missed = records
+        .where((r) => r.status == ReminderStatus.missed)
+        .length;
 
     final total = taken + missed;
 
@@ -65,7 +69,9 @@ class AdherenceService {
 
     // Filter to just taken and missed (exclude skipped from calculation)
     final taken = records.where((r) => r.status == ReminderStatus.taken).length;
-    final missed = records.where((r) => r.status == ReminderStatus.missed).length;
+    final missed = records
+        .where((r) => r.status == ReminderStatus.missed)
+        .length;
 
     final total = taken + missed;
 
@@ -91,10 +97,7 @@ class AdherenceService {
   /// Per-medication breakdown: returns list of (medicationId, medicationName, percentage)
   /// Percentage is nullable - null indicates no data for that medication.
   Future<List<({String id, String name, double? percentage})>>
-      getMedicationBreakdown(
-    List<Medication> medications, {
-    int days = 7,
-  }) async {
+  getMedicationBreakdown(List<Medication> medications, {int days = 7}) async {
     final result = <({String id, String name, double? percentage})>[];
 
     for (final medication in medications) {

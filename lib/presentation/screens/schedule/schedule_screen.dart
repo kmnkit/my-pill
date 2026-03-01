@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/day_selector.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/dosage_multiplier.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/frequency_selector.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/interval_picker.dart';
-import 'package:my_pill/presentation/screens/schedule/widgets/time_slot_picker.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/dosage_time_slot.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/day_selector.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/dosage_time_adjuster.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/dosage_timing_selector.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/frequency_selector.dart';
+import 'package:kusuridoki/presentation/screens/schedule/widgets/interval_picker.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
 
 class ScheduleScreen extends ConsumerStatefulWidget {
   const ScheduleScreen({
@@ -29,29 +30,29 @@ class ScheduleScreen extends ConsumerStatefulWidget {
 }
 
 class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
-  ScheduleType _selectedType = ScheduleType.daily;
-  int _dosageCount = 1;
-  List<String> _times = [];
+  late ScheduleType _selectedType;
+  List<DosageTimeSlot> _dosageSlots = [];
   List<int> _selectedDays = [];
   int _intervalHours = 8;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = ScheduleType.daily;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: MpAppBar(
-        title: l10n.setSchedule,
-        showBack: true,
-      ),
+      appBar: MpAppBar(title: l10n.setSchedule, showBack: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              l10n.howOften,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            // 1. Frequency selector (all types)
+            Text(l10n.howOften, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: AppSpacing.md),
             FrequencySelector(
               selectedType: _selectedType,
@@ -62,35 +63,8 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
               },
             ),
             const SizedBox(height: AppSpacing.xxl),
-            if (_selectedType == ScheduleType.daily) ...[
-              Text(
-                l10n.howManyTimesPerDay,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              DosageMultiplier(
-                selectedCount: _dosageCount,
-                onChanged: (count) {
-                  setState(() {
-                    _dosageCount = count;
-                  });
-                },
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-              Text(
-                l10n.whatTimes,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              TimeSlotPicker(
-                dosageCount: _dosageCount,
-                onTimesChanged: (times) {
-                  setState(() {
-                    _times = times;
-                  });
-                },
-              ),
-            ],
+
+            // 2. Day selector (specificDays only)
             if (_selectedType == ScheduleType.specificDays) ...[
               Text(
                 l10n.whichDays,
@@ -105,20 +79,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.xxl),
-              Text(
-                l10n.whatTime,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              TimeSlotPicker(
-                dosageCount: 1,
-                onTimesChanged: (times) {
-                  setState(() {
-                    _times = times;
-                  });
-                },
-              ),
             ],
+
+            // 3. Interval picker (interval only)
             if (_selectedType == ScheduleType.interval) ...[
               Text(
                 l10n.howOften,
@@ -133,25 +96,44 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
                 },
               ),
               const SizedBox(height: AppSpacing.xxl),
+            ],
+
+            // 4. Dosage timing selector (shared across ALL types)
+            Text(
+              l10n.selectDosageTiming,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            DosageTimingSelector(
+              selectedSlots: _dosageSlots,
+              onChanged: (slots) {
+                setState(() {
+                  _dosageSlots = slots;
+                });
+              },
+            ),
+
+            // 5. Time adjuster (appears when slots exist)
+            if (_dosageSlots.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xxl),
               Text(
-                l10n.whatTime,
+                l10n.adjustTimes,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: AppSpacing.md),
-              TimeSlotPicker(
-                dosageCount: 1,
-                onTimesChanged: (times) {
+              DosageTimeAdjuster(
+                slots: _dosageSlots,
+                onSlotsChanged: (slots) {
                   setState(() {
-                    _times = times;
+                    _dosageSlots = slots;
                   });
                 },
               ),
             ],
+
+            // 6. Save button
             const SizedBox(height: AppSpacing.xxxl),
-            MpButton(
-              label: l10n.continueButton,
-              onPressed: _saveSchedule,
-            ),
+            MpButton(label: l10n.continueButton, onPressed: _saveSchedule),
           ],
         ),
       ),
@@ -161,17 +143,17 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
   void _saveSchedule() async {
     final l10n = AppLocalizations.of(context)!;
 
-    if (_times.isEmpty) {
+    if (_dosageSlots.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneTime)),
+        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneTiming)),
       );
       return;
     }
 
     if (_selectedType == ScheduleType.specificDays && _selectedDays.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pleaseSelectAtLeastOneDay)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.pleaseSelectAtLeastOneDay)));
       return;
     }
 
@@ -179,10 +161,11 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
       id: const Uuid().v4(),
       medicationId: widget.medicationId,
       type: _selectedType,
-      timesPerDay: _dosageCount,
-      times: _times,
+      dosageSlots: _dosageSlots,
       specificDays: _selectedDays,
-      intervalHours: _selectedType == ScheduleType.interval ? _intervalHours : null,
+      intervalHours: _selectedType == ScheduleType.interval
+          ? _intervalHours
+          : null,
       timezoneMode: TimezoneMode.fixedInterval,
       isActive: true,
     );

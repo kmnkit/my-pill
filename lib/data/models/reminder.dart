@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 part 'reminder.freezed.dart';
 part 'reminder.g.dart';

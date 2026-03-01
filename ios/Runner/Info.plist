@@ -24,7 +24,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -47,23 +47,19 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8394008055710959~6717172611</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Kusuridoki uses your camera to take photos of your medications for easy identification.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Use Face ID for secure login to Kusuridoki.</string>
 	<key>NSNotificationUsageDescription</key>
-	<string>Get reminders when it's time to take your medication.</string>
+	<string>Get reminders when it&apos;s time to take your medication.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Kusuridoki saves medication photos to your library for your records.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We use tracking to show you personalized ads and improve the app.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -225,10 +221,7 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>
