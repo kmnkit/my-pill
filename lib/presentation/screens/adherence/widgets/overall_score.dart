@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 class OverallScore extends StatelessWidget {
-  const OverallScore({
-    super.key,
-    required this.percentage,
-  });
+  const OverallScore({super.key, required this.percentage});
 
   /// Percentage as an integer (0-100), or null if no data available.
   final int? percentage;
@@ -40,21 +38,20 @@ class OverallScore extends StatelessWidget {
           Text(
             displayText,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              color: percentage != null ? AppColors.primary : AppColors.textMuted,
+              color: percentage != null
+                  ? AppColors.primary
+                  : context.appColors.textMuted,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          Text(
-            _rating(l10n),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(_rating(l10n), style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: AppSpacing.md),
           Text(
             _message(l10n),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textMuted,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
             textAlign: TextAlign.center,
           ),
         ],

@@ -4,7 +4,7 @@
   "appTitle": "くすりどき",
 
   "onboardingHeadline": "あなたの信頼できる服薬管理パートナー",
-  "onboardingFeature1": "飲み忘れを防止",
+  "onboardingFeature1": "一包化・個別薬に対応",
   "onboardingFeature2": "タイムゾーンをまたいで対応",
   "onboardingFeature3": "ご家族とつながる",
   "getStarted": "はじめる",
@@ -23,6 +23,8 @@
   "onboardingNameSubtitle": "あなたに合わせた体験を提供するために使用します",
   "onboardingNameHint": "名前を入力",
   "onboardingNameSkip": "今はスキップ",
+  "onboardingNameRequired": "サポートする方にあなたの名前が表示されます",
+  "onboardingNameMinLength": "2文字以上入力してください",
 
   "onboardingRoleTitle": "くすりどきをどのように使いますか？",
   "onboardingRoleSubtitle": "あなたに最も当てはまるものを選んでください",
@@ -196,6 +198,7 @@
   "normal": "標準",
   "large": "大",
   "extraLarge": "特大",
+  "features": "機能",
   "safetyPrivacy": "安全とプライバシー",
   "exportHistory": "履歴をエクスポート",
   "privacyPolicy": "プライバシーポリシー",
@@ -281,7 +284,7 @@
   "weeklySummary": "週間サマリー",
   "premium": "プレミアム",
   "premiumMonthly": "月額プラン",
-  "premiumYearly": "年額プラン (34%お得)",
+  "premiumYearly": "年額プラン",
   "premiumMonthlyPrice": "¥480/月",
   "premiumYearlyPrice": "¥3,800/年",
   "unlockPremium": "プレミアムにアップグレード",
@@ -443,14 +446,12 @@
   "errorLoadingSchedule": "スケジュールの読み込みに失敗しました",
   "deleteMedicationTitle": "お薬を削除",
   "howOften": "どのくらいの頻度で？",
-  "howManyTimesPerDay": "1日に何回？",
   "whatTimes": "何時に？",
   "whichDays": "どの曜日に？",
   "whatTime": "何時に？",
   "every": "毎",
   "hours": "時間",
   "daysUnit": "日",
-  "addAnotherTimeLabel": "時間を追加",
   "dailyDesc": "毎日同じ時間に服用",
   "specificDaysDesc": "選択した曜日に服用",
   "intervalDesc": "X時間またはX日ごとに服用",
@@ -482,8 +483,7 @@
   "successfullyLinked": "介護者として連携されました！",
   "failedToAcceptInvite": "招待の受け入れに失敗しました。もう一度お試しください。",
   "inviteLinkGenerated": "招待リンクが生成されました！",
-  "failedToGenerateInvite": "招待の生成に失敗しました: {error}",
-  "@failedToGenerateInvite": { "placeholders": { "error": { "type": "String" } } },
+  "failedToGenerateInvite": "招待の生成に失敗しました。もう一度お試しください。",
   "cannotAddMoreCaregivers": "これ以上介護者を追加できません",
   "generateInviteLink": "招待リンクを生成",
   "generating": "生成中...",
@@ -521,5 +521,97 @@
   "ippokaNameHint": "例：朝の薬、夕の薬",
 
   "timeoutError": "リクエストがタイムアウトしました。もう一度お試しください。",
-  "defaultUserName": "ユーザー"
+  "defaultUserName": "ユーザー",
+
+  "colorWhite": "白",
+  "colorBlue": "青",
+  "colorYellow": "黄",
+  "colorPink": "ピンク",
+  "colorRed": "赤",
+  "colorGreen": "緑",
+  "colorOrange": "オレンジ",
+  "colorPurple": "紫",
+
+  "dayMonday": "月曜日",
+  "dayTuesday": "火曜日",
+  "dayWednesday": "水曜日",
+  "dayThursday": "木曜日",
+  "dayFriday": "金曜日",
+  "daySaturday": "土曜日",
+  "daySunday": "日曜日",
+  "dayMondayShort": "月",
+  "dayTuesdayShort": "火",
+  "dayWednesdayShort": "水",
+  "dayThursdayShort": "木",
+  "dayFridayShort": "金",
+  "daySaturdayShort": "土",
+  "daySundayShort": "日",
+
+  "snoozeMinutesSemanticLabel": "スヌーズ{duration}分、{selected}",
+  "@snoozeMinutesSemanticLabel": {
+    "placeholders": {
+      "duration": {"type": "int"},
+      "selected": {"type": "String"}
+    }
+  },
+  "selected": "選択中",
+  "notSelected": "未選択",
+
+  "inventorySemanticLabel": "在庫: {total}個中{current}個、{percent}%",
+  "@inventorySemanticLabel": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"},
+      "percent": {"type": "int"}
+    }
+  },
+  "dosePackIcon": "一包化アイコン",
+  "medicationIconLabel": "お薬アイコン: {shape} {color}",
+  "@medicationIconLabel": {
+    "placeholders": {
+      "shape": {"type": "String"},
+      "color": {"type": "String"}
+    }
+  },
+
+  "scheduleTypeDaily": "毎日",
+  "scheduleTypeSpecificDays": "曜日指定",
+  "scheduleTypeInterval": "間隔指定",
+
+  "errorLoadingPatients": "患者情報の読み込みに失敗しました。もう一度お試しください。",
+
+  "onboardingMedStyleTitle": "お薬はどのように受け取っていますか？",
+  "onboardingMedStyleSubtitle": "アプリを最適化するために教えてください",
+  "onboardingIndividualPills": "個別の薬（錠剤・カプセルなど）",
+  "onboardingIndividualPillsDesc": "薬局で一種類ずつ受け取るタイプ",
+  "onboardingDosePack": "一包化（分包薬）",
+  "onboardingDosePackDesc": "複数の薬をまとめた分包薬",
+
+  "dosageTimingTitle": "服用タイミング",
+  "dosageTimingMorning": "朝",
+  "dosageTimingNoon": "昼",
+  "dosageTimingEvening": "夕",
+  "dosageTimingBedtime": "寝る前",
+  "dosageTimingRequired": "必須",
+
+  "subscriptionTerms": "お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。",
+
+  "selectDosageTiming": "いつ服用しますか？",
+  "adjustTimes": "時間を調整",
+  "timeRangeHint": "{timing}: {min}:00 ~ {max}:59",
+  "@timeRangeHint": {
+    "placeholders": {
+      "timing": {"type": "String"},
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  },
+  "pleaseSelectAtLeastOneTiming": "少なくとも1つのタイミングを選択してください",
+  "timeOutOfRange": "時間は{min}:00から{max}:59の間である必要があります",
+  "@timeOutOfRange": {
+    "placeholders": {
+      "min": {"type": "String"},
+      "max": {"type": "String"}
+    }
+  }
 }

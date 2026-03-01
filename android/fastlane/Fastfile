@@ -1,0 +1,46 @@
+default_platform(:android)
+
+AAB_PATH = "../build/app/outputs/bundle/release/app-release.aab"
+# GOOGLE_PLAY_JSON_KEY_FILE is set by CI workflow (decoded from GOOGLE_PLAY_JSON_KEY secret)
+JSON_KEY_FILE = ENV["GOOGLE_PLAY_JSON_KEY_FILE"]
+
+platform :android do
+  desc "Build release AAB"
+  lane :build do
+    sh("cd .. && flutter build appbundle --release")
+  end
+
+  desc "Build and upload to Play Store internal test track"
+  lane :internal do
+    build
+    upload_to_play_store(
+      track: "internal",
+      aab: AAB_PATH,
+      json_key: JSON_KEY_FILE,
+      release_status: "completed",
+    )
+  end
+
+  desc "Build and upload to Play Store beta track"
+  lane :beta do
+    build
+    upload_to_play_store(
+      track: "beta",
+      aab: AAB_PATH,
+      json_key: JSON_KEY_FILE,
+      release_status: "completed",
+    )
+  end
+
+  desc "Build and upload to Play Store production (10% rollout)"
+  lane :release do
+    build
+    upload_to_play_store(
+      track: "production",
+      aab: AAB_PATH,
+      json_key: JSON_KEY_FILE,
+      rollout: "0.1",
+      release_status: "inProgress",
+    )
+  end
+end

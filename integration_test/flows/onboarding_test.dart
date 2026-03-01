@@ -236,4 +236,126 @@ void main() {
       await robot.verifyOnCaregiverDashboard();
     });
   });
+
+  group('OnboardingNameStep — isRequired=true (caregiver role)', () {
+    // Navigate to the Name step as caregiver (isRequired=true, onSkip=null).
+    // Current step order: Welcome(0) → Role(1) → Name(3) [caregiver skips MedStyle(2)]
+    Future<void> navigateToCaregiverNameStep(
+      WidgetTester tester,
+      OnboardingRobot robot,
+    ) async {
+      await robot.verifyOnWelcomeStep();
+      await robot.tapNext();
+      await robot.verifyOnRoleStep();
+      await robot.selectCaregiverRole();
+      await robot.tapNext();
+      await robot.verifyOnNameStep();
+    }
+
+    testWidgets('NS-01: initial state — Next button disabled', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Assert: empty initial value → Next disabled
+      await robot.verifyNextButtonDisabled();
+    });
+
+    testWidgets('NS-02: 1-char input — Next still disabled', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Act: enter a single character
+      await robot.enterName('A');
+
+      // Assert: 1 char < 2 required → Next still disabled
+      await robot.verifyNextButtonDisabled();
+    });
+
+    testWidgets('NS-03: 2+ char input — Next enabled', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Act: enter two characters (minimum required)
+      await robot.enterName('AB');
+
+      // Assert: 2 chars satisfies isRequired → Next enabled
+      await robot.verifyNextButtonEnabled();
+    });
+
+    testWidgets('NS-04: no error message before any interaction',
+        (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Assert: _hasInteracted is false → error must be absent
+      expect(robot.nameMinLengthError, findsNothing);
+    });
+
+    testWidgets('NS-05: enter then clear — error message shown', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Act: type 1 char to set _hasInteracted=true, then clear
+      await robot.enterName('A');
+      await robot.clearName();
+
+      // Assert: _hasInteracted sticky=true, name empty → error shown
+      await robot.verifyNameMinLengthErrorShown();
+    });
+
+    testWidgets('NS-06: skip button absent for isRequired=true', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Assert: onSkip=null for caregiver → skip button not rendered
+      await robot.verifySkipButtonAbsent();
+    });
+
+    testWidgets('NS-07: 2+ chars → tap Next → timezone step', (tester) async {
+      // Arrange
+      final app = buildTestApp(TestAppConfig.newUser());
+      await tester.pumpWidget(app);
+      await tester.pumpAndSettle();
+
+      final robot = OnboardingRobot(tester);
+      await navigateToCaregiverNameStep(tester, robot);
+
+      // Act: enter valid name and proceed
+      await robot.enterName('AB');
+      await robot.tapNext();
+
+      // Assert: transitions to Timezone step (step 4)
+      await robot.verifyOnTimezoneStep();
+    });
+  });
 }

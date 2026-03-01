@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/providers/reminder_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/screens/home/widgets/timeline_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_empty_state.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/reminder_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/timeline_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_empty_state.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_reminder_dialog.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class MedicationTimeline extends ConsumerWidget {
   const MedicationTimeline({super.key});
@@ -64,7 +66,12 @@ class MedicationTimeline extends ConsumerWidget {
               if (i > 0) const SizedBox(height: AppSpacing.md),
               Consumer(
                 builder: (context, ref, _) {
-                  final medicationAsync = ref.watch(medicationProvider(reminders[i].medicationId));
+                  final medicationAsync = ref.watch(
+                    medicationProvider(reminders[i].medicationId),
+                  );
+                  final schedulesAsync = ref.watch(
+                    medicationSchedulesProvider(reminders[i].medicationId),
+                  );
 
                   return medicationAsync.when(
                     data: (medication) {
@@ -73,10 +80,24 @@ class MedicationTimeline extends ConsumerWidget {
                       }
 
                       final reminder = reminders[i];
+                      final dosageTimingLabel = schedulesAsync.whenOrNull(
+                        data: (schedules) {
+                          if (schedules.isEmpty) return null;
+                          final timings = schedules.first.dosageTimings;
+                          if (timings.isEmpty) return null;
+                          return timings
+                              .map((t) => t.localizedName(l10n))
+                              .join('・');
+                        },
+                      );
+
                       return TimelineCard(
                         medicationName: medication.name,
-                        dosage: '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
-                        time: DateFormat('h:mm a').format(reminder.scheduledTime),
+                        dosage:
+                            '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
+                        time: DateFormat(
+                          'h:mm a',
+                        ).format(reminder.scheduledTime),
                         badgeVariant: _getBadgeVariant(reminder.status),
                         badgeLabel: _getBadgeLabel(reminder.status, l10n),
                         pillShape: medication.shape,
@@ -84,13 +105,43 @@ class MedicationTimeline extends ConsumerWidget {
                         medicationId: medication.id,
                         reminderStatus: reminder.status,
                         onMarkTaken: reminder.status == ReminderStatus.pending
-                            ? () => ref.read(todayRemindersProvider.notifier).markAsTaken(reminder.id)
+                            ? () async {
+                                if (!context.mounted) return;
+                                final action = await MpReminderDialog.show(
+                                  context,
+                                  time: DateFormat('h:mm a')
+                                      .format(reminder.scheduledTime),
+                                  medicationName: medication.name,
+                                  dosage:
+                                      '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
+                                );
+                                if (action == null) return;
+                                if (!context.mounted) return;
+                                final notifier = ref.read(
+                                  todayRemindersProvider.notifier,
+                                );
+                                switch (action) {
+                                  case ReminderAction.take:
+                                    await notifier.markAsTaken(reminder.id);
+                                  case ReminderAction.skip:
+                                    await notifier.markAsSkipped(reminder.id);
+                                  case ReminderAction.snooze:
+                                    await notifier.snooze(
+                                      reminder.id,
+                                      const Duration(minutes: 15),
+                                    );
+                                }
+                              }
                             : null,
+                        dosageTimingLabel: dosageTimingLabel,
+                        isCritical: medication.isCritical,
                       );
                     },
                     loading: () => const SizedBox(
                       height: 80,
-                      child: Center(child: CircularProgressIndicator.adaptive()),
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
                     ),
                     error: (error, stack) => const SizedBox.shrink(),
                   );

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/deep_link_service.dart';
+import 'package:kusuridoki/data/services/deep_link_service.dart';
 
 void main() {
   group('DeepLinkService.inviteCodePattern', () {
@@ -34,6 +34,25 @@ void main() {
       expect(pattern.hasMatch('ABCDEF-H'), isFalse);
       expect(pattern.hasMatch('ABCDEF H'), isFalse);
       expect(pattern.hasMatch('ABCDEF!H'), isFalse);
+    });
+  });
+
+  group('DeepLinkService instance', () {
+    test('can be created', () {
+      final service = DeepLinkService();
+      expect(service, isNotNull);
+      service.dispose();
+    });
+
+    test('inviteCodes stream is a broadcast stream', () {
+      final service = DeepLinkService();
+      expect(service.inviteCodes.isBroadcast, isTrue);
+      service.dispose();
+    });
+
+    test('dispose does not throw', () {
+      final service = DeepLinkService();
+      expect(() => service.dispose(), returnsNormally);
     });
   });
 }

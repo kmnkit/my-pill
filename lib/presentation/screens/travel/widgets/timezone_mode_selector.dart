@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/providers/timezone_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_radio_option.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_radio_option.dart';
 
 class TimezoneModeSelector extends ConsumerWidget {
   const TimezoneModeSelector({super.key});

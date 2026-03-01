@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Premium badge widget
 ///
@@ -29,18 +29,14 @@ class PremiumBadge extends StatelessWidget {
   });
 
   /// Compact version with icon only
-  const PremiumBadge.iconOnly({
-    super.key,
-    this.mini = true,
-  }) : showIcon = true,
-       showText = false;
+  const PremiumBadge.iconOnly({super.key, this.mini = true})
+    : showIcon = true,
+      showText = false;
 
   /// Compact version with text only
-  const PremiumBadge.textOnly({
-    super.key,
-    this.mini = false,
-  }) : showIcon = false,
-       showText = true;
+  const PremiumBadge.textOnly({super.key, this.mini = false})
+    : showIcon = false,
+      showText = true;
 
   @override
   Widget build(BuildContext context) {

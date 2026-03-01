@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/services/ad_service.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
 
 part 'ad_provider.g.dart';
 

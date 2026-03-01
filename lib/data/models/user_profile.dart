@@ -26,6 +26,7 @@ abstract class UserProfile with _$UserProfile {
     @Default(true) bool allowCaregiverNotifications,
     @Default(true) bool missedDoseAlerts,
     @Default(true) bool lowStockAlerts,
+    @Default(false) bool defaultIppoka,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>

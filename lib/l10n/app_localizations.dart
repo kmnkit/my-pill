@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingFeature1.
   ///
   /// In en, this message translates to:
-  /// **'Never miss a dose'**
+  /// **'Dose packs & individual pills'**
   String get onboardingFeature1;
 
   /// No description provided for @onboardingFeature2.
@@ -217,6 +217,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip for now'**
   String get onboardingNameSkip;
+
+  /// No description provided for @onboardingNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name will be shown to the patients you support'**
+  String get onboardingNameRequired;
+
+  /// No description provided for @onboardingNameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter at least 2 characters'**
+  String get onboardingNameMinLength;
 
   /// No description provided for @onboardingRoleTitle.
   ///
@@ -968,6 +980,12 @@ abstract class AppLocalizations {
   /// **'XL'**
   String get extraLarge;
 
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
   /// No description provided for @safetyPrivacy.
   ///
   /// In en, this message translates to:
@@ -1391,7 +1409,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumYearly.
   ///
   /// In en, this message translates to:
-  /// **'Yearly Plan (34% off)'**
+  /// **'Yearly Plan'**
   String get premiumYearly;
 
   /// No description provided for @premiumMonthlyPrice.
@@ -2240,12 +2258,6 @@ abstract class AppLocalizations {
   /// **'How often?'**
   String get howOften;
 
-  /// No description provided for @howManyTimesPerDay.
-  ///
-  /// In en, this message translates to:
-  /// **'How many times per day?'**
-  String get howManyTimesPerDay;
-
   /// No description provided for @whatTimes.
   ///
   /// In en, this message translates to:
@@ -2281,12 +2293,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'days'**
   String get daysUnit;
-
-  /// No description provided for @addAnotherTimeLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Add another time'**
-  String get addAnotherTimeLabel;
 
   /// No description provided for @dailyDesc.
   ///
@@ -2471,8 +2477,8 @@ abstract class AppLocalizations {
   /// No description provided for @failedToGenerateInvite.
   ///
   /// In en, this message translates to:
-  /// **'Failed to generate invite: {error}'**
-  String failedToGenerateInvite(String error);
+  /// **'Failed to generate invite. Please try again.'**
+  String get failedToGenerateInvite;
 
   /// No description provided for @cannotAddMoreCaregivers.
   ///
@@ -2677,6 +2683,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'User'**
   String get defaultUserName;
+
+  /// No description provided for @colorWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get colorWhite;
+
+  /// No description provided for @colorBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get colorBlue;
+
+  /// No description provided for @colorYellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get colorYellow;
+
+  /// No description provided for @colorPink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get colorPink;
+
+  /// No description provided for @colorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get colorRed;
+
+  /// No description provided for @colorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get colorGreen;
+
+  /// No description provided for @colorOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get colorOrange;
+
+  /// No description provided for @colorPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get colorPurple;
+
+  /// No description provided for @dayMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get dayMonday;
+
+  /// No description provided for @dayTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get dayTuesday;
+
+  /// No description provided for @dayWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get dayWednesday;
+
+  /// No description provided for @dayThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get dayThursday;
+
+  /// No description provided for @dayFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get dayFriday;
+
+  /// No description provided for @daySaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get daySaturday;
+
+  /// No description provided for @daySunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get daySunday;
+
+  /// No description provided for @dayMondayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'M'**
+  String get dayMondayShort;
+
+  /// No description provided for @dayTuesdayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get dayTuesdayShort;
+
+  /// No description provided for @dayWednesdayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get dayWednesdayShort;
+
+  /// No description provided for @dayThursdayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get dayThursdayShort;
+
+  /// No description provided for @dayFridayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'F'**
+  String get dayFridayShort;
+
+  /// No description provided for @daySaturdayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get daySaturdayShort;
+
+  /// No description provided for @daySundayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get daySundayShort;
+
+  /// No description provided for @snoozeMinutesSemanticLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration} minutes snooze, {selected}'**
+  String snoozeMinutesSemanticLabel(int duration, String selected);
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get selected;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'not selected'**
+  String get notSelected;
+
+  /// No description provided for @inventorySemanticLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory: {current} of {total}, {percent}%'**
+  String inventorySemanticLabel(int current, int total, int percent);
+
+  /// No description provided for @dosePackIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose pack icon'**
+  String get dosePackIcon;
+
+  /// No description provided for @medicationIconLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication icon: {shape} {color}'**
+  String medicationIconLabel(String shape, String color);
+
+  /// No description provided for @scheduleTypeDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get scheduleTypeDaily;
+
+  /// No description provided for @scheduleTypeSpecificDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific Days'**
+  String get scheduleTypeSpecificDays;
+
+  /// No description provided for @scheduleTypeInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval'**
+  String get scheduleTypeInterval;
+
+  /// No description provided for @errorLoadingPatients.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load patients. Please try again.'**
+  String get errorLoadingPatients;
+
+  /// No description provided for @onboardingMedStyleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you receive your medication?'**
+  String get onboardingMedStyleTitle;
+
+  /// No description provided for @onboardingMedStyleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll optimize the app for you'**
+  String get onboardingMedStyleSubtitle;
+
+  /// No description provided for @onboardingIndividualPills.
+  ///
+  /// In en, this message translates to:
+  /// **'Individual pills or tablets'**
+  String get onboardingIndividualPills;
+
+  /// No description provided for @onboardingIndividualPillsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate medications from the pharmacy'**
+  String get onboardingIndividualPillsDesc;
+
+  /// No description provided for @onboardingDosePack.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose packs (一包化)'**
+  String get onboardingDosePack;
+
+  /// No description provided for @onboardingDosePackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pre-packaged sachets bundling multiple meds'**
+  String get onboardingDosePackDesc;
+
+  /// No description provided for @dosageTimingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage Timing'**
+  String get dosageTimingTitle;
+
+  /// No description provided for @dosageTimingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get dosageTimingMorning;
+
+  /// No description provided for @dosageTimingNoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Noon'**
+  String get dosageTimingNoon;
+
+  /// No description provided for @dosageTimingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get dosageTimingEvening;
+
+  /// No description provided for @dosageTimingBedtime.
+  ///
+  /// In en, this message translates to:
+  /// **'Before Bed'**
+  String get dosageTimingBedtime;
+
+  /// No description provided for @dosageTimingRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get dosageTimingRequired;
+
+  /// No description provided for @subscriptionTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.'**
+  String get subscriptionTerms;
+
+  /// No description provided for @selectDosageTiming.
+  ///
+  /// In en, this message translates to:
+  /// **'When do you take it?'**
+  String get selectDosageTiming;
+
+  /// No description provided for @adjustTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Times'**
+  String get adjustTimes;
+
+  /// No description provided for @timeRangeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'{timing}: {min}:00 ~ {max}:59'**
+  String timeRangeHint(String timing, String min, String max);
+
+  /// No description provided for @pleaseSelectAtLeastOneTiming.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one timing'**
+  String get pleaseSelectAtLeastOneTiming;
+
+  /// No description provided for @timeOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Time must be between {min}:00 and {max}:59'**
+  String timeOutOfRange(String min, String max);
 }
 
 class _AppLocalizationsDelegate

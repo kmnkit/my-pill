@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/enums/timezone_mode.dart';
-import 'package:my_pill/data/services/timezone_service.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/services/timezone_service.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 part 'timezone_provider.g.dart';
 
@@ -15,11 +16,19 @@ typedef TimezoneState = ({
 class TimezoneSettings extends _$TimezoneSettings {
   @override
   TimezoneState build() {
+    final deviceTimezone = TimezoneService().currentLocation.name;
+
+    // Read home timezone from UserProfile (fallback to device timezone)
+    final userSettingsAsync = ref.watch(userSettingsProvider);
+    final homeTimezone =
+        userSettingsAsync.whenOrNull(data: (profile) => profile.homeTimezone) ??
+        deviceTimezone;
+
     return (
       enabled: false,
       mode: TimezoneMode.fixedInterval,
-      homeTimezone: 'America/New_York',
-      currentTimezone: 'America/New_York',
+      homeTimezone: homeTimezone,
+      currentTimezone: deviceTimezone,
     );
   }
 

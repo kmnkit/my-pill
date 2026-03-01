@@ -22,7 +22,7 @@ final class DeepLinkServiceProvider
         argument: null,
         retry: null,
         name: r'deepLinkServiceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -49,7 +49,7 @@ final class DeepLinkServiceProvider
   }
 }
 
-String _$deepLinkServiceHash() => r'35f810f5ddae76fd7b9fc4a198ec9d917f754ef7';
+String _$deepLinkServiceHash() => r'654a34468b4df696be83201b01499570aaf54483';
 
 @ProviderFor(inviteCode)
 final inviteCodeProvider = InviteCodeProvider._();

@@ -4,9 +4,9 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 class ReportService {
   /// Generate weekly medication adherence report
@@ -21,17 +21,28 @@ class ReportService {
 
     // Calculate statistics
     final taken = records.where((r) => r.status == ReminderStatus.taken).length;
-    final missed = records.where((r) => r.status == ReminderStatus.missed).length;
-    final skipped = records.where((r) => r.status == ReminderStatus.skipped).length;
+    final missed = records
+        .where((r) => r.status == ReminderStatus.missed)
+        .length;
+    final skipped = records
+        .where((r) => r.status == ReminderStatus.skipped)
+        .length;
     final total = taken + missed;
-    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
+    final adherenceRate = total > 0
+        ? (taken / total * 100).toStringAsFixed(1)
+        : 'N/A';
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(32),
         build: (context) => [
-          _buildHeader('Weekly Medication Report', startDate, endDate, userName),
+          _buildHeader(
+            'Weekly Medication Report',
+            startDate,
+            endDate,
+            userName,
+          ),
           pw.SizedBox(height: 24),
           _buildSummarySection(taken, missed, skipped, adherenceRate),
           pw.SizedBox(height: 24),
@@ -44,7 +55,8 @@ class ReportService {
 
     // Save file
     final dir = await getTemporaryDirectory();
-    final fileName = 'weekly_report_${DateFormat('yyyyMMdd').format(startDate)}.pdf';
+    final fileName =
+        'weekly_report_${DateFormat('yyyyMMdd').format(startDate)}.pdf';
     final file = File('${dir.path}/$fileName');
     await file.writeAsBytes(await pdf.save());
     return file;
@@ -64,10 +76,16 @@ class ReportService {
 
     // Calculate statistics
     final taken = records.where((r) => r.status == ReminderStatus.taken).length;
-    final missed = records.where((r) => r.status == ReminderStatus.missed).length;
-    final skipped = records.where((r) => r.status == ReminderStatus.skipped).length;
+    final missed = records
+        .where((r) => r.status == ReminderStatus.missed)
+        .length;
+    final skipped = records
+        .where((r) => r.status == ReminderStatus.skipped)
+        .length;
     final total = taken + missed;
-    final adherenceRate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
+    final adherenceRate = total > 0
+        ? (taken / total * 100).toStringAsFixed(1)
+        : 'N/A';
 
     pdf.addPage(
       pw.MultiPage(
@@ -129,10 +147,7 @@ class ReportService {
       children: [
         pw.Text(
           title,
-          style: pw.TextStyle(
-            fontSize: 24,
-            fontWeight: pw.FontWeight.bold,
-          ),
+          style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
         ),
         pw.SizedBox(height: 8),
         pw.Text(
@@ -172,7 +187,11 @@ class ReportService {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              _buildStatItem('Adherence Rate', '$adherenceRate%', PdfColors.green),
+              _buildStatItem(
+                'Adherence Rate',
+                '$adherenceRate%',
+                PdfColors.green,
+              ),
               _buildStatItem('Taken', taken.toString(), PdfColors.blue),
               _buildStatItem('Missed', missed.toString(), PdfColors.red),
               _buildStatItem('Skipped', skipped.toString(), PdfColors.orange),
@@ -223,17 +242,18 @@ class ReportService {
           cellAlignment: pw.Alignment.centerLeft,
           data: medications.map((med) {
             final medRecords = records.where((r) => r.medicationId == med.id);
-            final taken = medRecords.where((r) => r.status == ReminderStatus.taken).length;
-            final missed = medRecords.where((r) => r.status == ReminderStatus.missed).length;
+            final taken = medRecords
+                .where((r) => r.status == ReminderStatus.taken)
+                .length;
+            final missed = medRecords
+                .where((r) => r.status == ReminderStatus.missed)
+                .length;
             final total = taken + missed;
-            final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
+            final rate = total > 0
+                ? (taken / total * 100).toStringAsFixed(1)
+                : 'N/A';
 
-            return [
-              med.name,
-              taken.toString(),
-              missed.toString(),
-              '$rate%',
-            ];
+            return [med.name, taken.toString(), missed.toString(), '$rate%'];
           }).toList(),
         ),
       ],
@@ -250,14 +270,19 @@ class ReportService {
 
     for (int i = 0; i < days; i++) {
       final date = startDate.add(Duration(days: i));
-      final dayRecords = records.where((r) =>
-        r.date.year == date.year &&
-        r.date.month == date.month &&
-        r.date.day == date.day
+      final dayRecords = records.where(
+        (r) =>
+            r.date.year == date.year &&
+            r.date.month == date.month &&
+            r.date.day == date.day,
       );
 
-      final taken = dayRecords.where((r) => r.status == ReminderStatus.taken).length;
-      final missed = dayRecords.where((r) => r.status == ReminderStatus.missed).length;
+      final taken = dayRecords
+          .where((r) => r.status == ReminderStatus.taken)
+          .length;
+      final missed = dayRecords
+          .where((r) => r.status == ReminderStatus.missed)
+          .length;
       final total = taken + missed;
       final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
@@ -282,12 +307,16 @@ class ReportService {
           headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
           headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
           cellAlignment: pw.Alignment.centerLeft,
-          data: dailyData.map((day) => [
-            day['date'],
-            day['taken'].toString(),
-            day['missed'].toString(),
-            '${day['rate']}%',
-          ]).toList(),
+          data: dailyData
+              .map(
+                (day) => [
+                  day['date'],
+                  day['taken'].toString(),
+                  day['missed'].toString(),
+                  '${day['rate']}%',
+                ],
+              )
+              .toList(),
         ),
       ],
     );
@@ -309,13 +338,18 @@ class ReportService {
         weekStart.day + 6,
       );
 
-      final weekRecords = records.where((r) =>
-        r.date.isAfter(weekStart.subtract(const Duration(days: 1))) &&
-        r.date.isBefore(weekEnd.add(const Duration(days: 1)))
+      final weekRecords = records.where(
+        (r) =>
+            r.date.isAfter(weekStart.subtract(const Duration(days: 1))) &&
+            r.date.isBefore(weekEnd.add(const Duration(days: 1))),
       );
 
-      final taken = weekRecords.where((r) => r.status == ReminderStatus.taken).length;
-      final missed = weekRecords.where((r) => r.status == ReminderStatus.missed).length;
+      final taken = weekRecords
+          .where((r) => r.status == ReminderStatus.taken)
+          .length;
+      final missed = weekRecords
+          .where((r) => r.status == ReminderStatus.missed)
+          .length;
       final total = taken + missed;
       final rate = total > 0 ? (taken / total * 100).toStringAsFixed(1) : 'N/A';
 
@@ -340,12 +374,16 @@ class ReportService {
           headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
           headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
           cellAlignment: pw.Alignment.centerLeft,
-          data: weeklyData.map((week) => [
-            week['week'],
-            week['taken'].toString(),
-            week['missed'].toString(),
-            '${week['rate']}%',
-          ]).toList(),
+          data: weeklyData
+              .map(
+                (week) => [
+                  week['week'],
+                  week['taken'].toString(),
+                  week['missed'].toString(),
+                  '${week['rate']}%',
+                ],
+              )
+              .toList(),
         ),
       ],
     );

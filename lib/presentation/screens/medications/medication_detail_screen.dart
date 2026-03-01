@@ -2,38 +2,36 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/utils/photo_encryption.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/core/utils/photo_encryption.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/core/extensions/enum_l10n_extensions.dart';
-import 'package:my_pill/data/providers/adherence_provider.dart';
-import 'package:my_pill/data/providers/schedule_provider.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
-import 'package:my_pill/data/enums/schedule_type.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/screens/medications/widgets/adherence_badge.dart';
-import 'package:my_pill/presentation/screens/medications/widgets/history_list_item.dart';
-import 'package:my_pill/presentation/shared/dialogs/mp_confirm_dialog.dart';
-import 'package:my_pill/presentation/shared/dialogs/inventory_update_dialog.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_badge.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_pill_icon.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_progress_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/enums/schedule_type.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/screens/medications/widgets/adherence_badge.dart';
+import 'package:kusuridoki/presentation/screens/medications/widgets/history_list_item.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/mp_confirm_dialog.dart';
+import 'package:kusuridoki/presentation/shared/dialogs/inventory_update_dialog.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_badge.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_pill_icon.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_progress_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class MedicationDetailScreen extends ConsumerWidget {
   final String medicationId;
 
-  const MedicationDetailScreen({
-    super.key,
-    required this.medicationId,
-  });
+  const MedicationDetailScreen({super.key, required this.medicationId});
 
   Future<void> _handleDelete(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context)!;
@@ -46,7 +44,9 @@ class MedicationDetailScreen extends ConsumerWidget {
     );
 
     if (confirmed == true && context.mounted) {
-      await ref.read(medicationListProvider.notifier).deleteMedication(medicationId);
+      await ref
+          .read(medicationListProvider.notifier)
+          .deleteMedication(medicationId);
       if (context.mounted) {
         context.pop();
       }
@@ -61,9 +61,15 @@ class MedicationDetailScreen extends ConsumerWidget {
     final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
     final historyAsync = ref.watch(medicationHistoryProvider(medicationId));
 
-    return Scaffold(
+    final medicationTitle = medicationAsync.when(
+      data: (m) => m?.name ?? l10n.medications,
+      loading: () => '',
+      error: (_, _) => l10n.medications,
+    );
+
+    return GradientScaffold(
       appBar: MpAppBar(
-        title: 'MyPill',
+        title: medicationTitle,
         showBack: true,
         actions: [
           IconButton(
@@ -83,12 +89,11 @@ class MedicationDetailScreen extends ConsumerWidget {
       body: medicationAsync.when(
         data: (medication) {
           if (medication == null) {
-            return Center(
-              child: Text(l10n.medicationNotFound),
-            );
+            return Center(child: Text(l10n.medicationNotFound));
           }
 
-          final isLowStock = medication.inventoryRemaining <= medication.lowStockThreshold;
+          final isLowStock =
+              medication.inventoryRemaining <= medication.lowStockThreshold;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
@@ -101,7 +106,9 @@ class MedicationDetailScreen extends ConsumerWidget {
                     children: [
                       if (medication.photoPath != null)
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusMd,
+                          ),
                           child: _EncryptedPhotoWidget(
                             photoPath: medication.photoPath!,
                           ),
@@ -122,7 +129,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       Text(
                         '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textMuted,
+                          color: context.appColors.textMuted,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -171,7 +178,9 @@ class MedicationDetailScreen extends ConsumerWidget {
                               inventoryTotal: result.total,
                               updatedAt: DateTime.now(),
                             );
-                            await ref.read(medicationListProvider.notifier).updateMedication(updated);
+                            await ref
+                                .read(medicationListProvider.notifier)
+                                .updateMedication(updated);
                           }
                         },
                       ),
@@ -203,13 +212,18 @@ class MedicationDetailScreen extends ConsumerWidget {
                             children: [
                               _InfoRow(
                                 label: l10n.type,
-                                value: schedule.type.label,
+                                value: schedule.type.localizedName(l10n),
                               ),
-                              if (schedule.times.isNotEmpty) ...[
+                              if (schedule.dosageSlots.isNotEmpty) ...[
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
-                                  label: l10n.times,
-                                  value: schedule.times.join(', '),
+                                  label: l10n.dosageTimingTitle,
+                                  value: schedule.dosageSlots
+                                      .map(
+                                        (slot) =>
+                                            '${slot.timing.localizedName(l10n)} ${slot.time}',
+                                      )
+                                      .join(', '),
                                 ),
                               ],
                               if (schedule.type == ScheduleType.specificDays &&
@@ -217,7 +231,10 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
                                   label: l10n.days,
-                                  value: _formatDays(schedule.specificDays, l10n),
+                                  value: _formatDays(
+                                    schedule.specificDays,
+                                    l10n,
+                                  ),
                                 ),
                               ],
                               if (schedule.type == ScheduleType.interval &&
@@ -225,13 +242,17 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 const SizedBox(height: AppSpacing.sm),
                                 _InfoRow(
                                   label: l10n.interval,
-                                  value: l10n.everyNHoursLabel(schedule.intervalHours!),
+                                  value: l10n.everyNHoursLabel(
+                                    schedule.intervalHours!,
+                                  ),
                                 ),
                               ],
                               const SizedBox(height: AppSpacing.sm),
                               _InfoRow(
                                 label: l10n.added,
-                                value: DateFormat('MMM d, yyyy').format(medication.createdAt),
+                                value: DateFormat(
+                                  'MMM d, yyyy',
+                                ).format(medication.createdAt),
                               ),
                             ],
                           );
@@ -260,7 +281,9 @@ class MedicationDetailScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(AppSpacing.xl),
                           child: Text(
                             l10n.noHistoryYet,
-                            style: const TextStyle(color: AppColors.textMuted),
+                            style: TextStyle(
+                              color: context.appColors.textMuted,
+                            ),
                           ),
                         ),
                       );
@@ -269,7 +292,9 @@ class MedicationDetailScreen extends ConsumerWidget {
                       children: records.map((record) {
                         return HistoryListItem(
                           date: DateFormat('MMM d, yyyy').format(record.date),
-                          time: DateFormat('h:mm a').format(record.scheduledTime),
+                          time: DateFormat(
+                            'h:mm a',
+                          ).format(record.scheduledTime),
                           wasTaken: record.status == ReminderStatus.taken,
                         );
                       }).toList(),
@@ -286,7 +311,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       padding: const EdgeInsets.all(AppSpacing.xl),
                       child: Text(
                         l10n.errorLoadingHistory,
-                        style: const TextStyle(color: AppColors.textMuted),
+                        style: TextStyle(color: context.appColors.textMuted),
                       ),
                     ),
                   ),
@@ -296,9 +321,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                 // Adherence badge
                 adherenceAsync.when(
                   data: (adherence) => adherence != null
-                      ? AdherenceBadge(
-                          percentage: (adherence * 100).round(),
-                        )
+                      ? AdherenceBadge(percentage: (adherence * 100).round())
                       : const SizedBox.shrink(),
                   loading: () => const SizedBox.shrink(),
                   error: (error, stack) => const SizedBox.shrink(),
@@ -307,9 +330,8 @@ class MedicationDetailScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -317,7 +339,8 @@ class MedicationDetailScreen extends ConsumerWidget {
               Text(l10n.errorLoadingMedication),
               const SizedBox(height: AppSpacing.md),
               TextButton(
-                onPressed: () => ref.invalidate(medicationProvider(medicationId)),
+                onPressed: () =>
+                    ref.invalidate(medicationProvider(medicationId)),
                 child: Text(l10n.retry),
               ),
             ],
@@ -329,10 +352,7 @@ class MedicationDetailScreen extends ConsumerWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.label,
-    required this.value,
-  });
+  const _InfoRow({required this.label, required this.value});
 
   final String label;
   final String value;
@@ -344,21 +364,26 @@ class _InfoRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textMuted,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
         ),
-        Text(
-          value,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text(value, style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }
 }
 
 String _formatDays(List<int> days, AppLocalizations l10n) {
-  const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final dayNames = [
+    l10n.mon,
+    l10n.tue,
+    l10n.wed,
+    l10n.thu,
+    l10n.fri,
+    l10n.sat,
+    l10n.sun,
+  ];
   return days.map((d) => d >= 1 && d <= 7 ? dayNames[d - 1] : '?').join(', ');
 }
 
@@ -372,8 +397,7 @@ class _EncryptedPhotoWidget extends ConsumerStatefulWidget {
       _EncryptedPhotoWidgetState();
 }
 
-class _EncryptedPhotoWidgetState
-    extends ConsumerState<_EncryptedPhotoWidget> {
+class _EncryptedPhotoWidgetState extends ConsumerState<_EncryptedPhotoWidget> {
   Future<Uint8List>? _decryptFuture;
 
   @override
@@ -414,11 +438,14 @@ class _EncryptedPhotoWidgetState
             );
           }
           if (snapshot.hasError) {
-            return const SizedBox(
+            return SizedBox(
               width: 120,
               height: 120,
               child: Center(
-                child: Icon(Icons.broken_image, color: AppColors.textMuted),
+                child: Icon(
+                  Icons.broken_image,
+                  color: context.appColors.textMuted,
+                ),
               ),
             );
           }

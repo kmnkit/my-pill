@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
 part 'settings_provider.g.dart';
 
@@ -43,7 +43,11 @@ class UserSettings extends _$UserSettings {
     state = AsyncData(profile);
   }
 
-  Future<void> syncWithFirebaseUser(String uid, {String? email, String? displayName}) async {
+  Future<void> syncWithFirebaseUser(
+    String uid, {
+    String? email,
+    String? displayName,
+  }) async {
     final current = await future;
     final updated = current.copyWith(
       id: uid,
@@ -75,7 +79,9 @@ class UserSettings extends _$UserSettings {
 
   Future<void> toggleTravelMode() async {
     final current = await future;
-    final updated = current.copyWith(travelModeEnabled: !current.travelModeEnabled);
+    final updated = current.copyWith(
+      travelModeEnabled: !current.travelModeEnabled,
+    );
     await updateProfile(updated);
   }
 
@@ -106,6 +112,12 @@ class UserSettings extends _$UserSettings {
   Future<void> updateNotificationsEnabled(bool enabled) async {
     final current = await future;
     final updated = current.copyWith(notificationsEnabled: enabled);
+    await updateProfile(updated);
+  }
+
+  Future<void> updateDefaultIppoka(bool value) async {
+    final current = await future;
+    final updated = current.copyWith(defaultIppoka: value);
     await updateProfile(updated);
   }
 

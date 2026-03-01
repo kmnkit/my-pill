@@ -1,8 +1,7 @@
 # === Generated code (build_runner, l10n) ===
 **/*.freezed.dart
 **/*.g.dart
-**/app_localizations_*.dart
-**/app_localizations.dart
+**/*.mocks.dart
 
 # === Build artifacts ===
 build/
@@ -33,6 +32,13 @@ android/app/profile/
 android/app/release/
 android/.cxx/
 android/gradle/
+android/gradlew
+android/gradlew.bat
+android/settings.gradle.kts
+android/build.gradle.kts
+android/app/build.gradle.kts
+android/local.properties
+android/gradle.properties
 
 # === Firebase / Hosting ===
 .firebase/
@@ -93,8 +99,28 @@ test-results/
 # === Wrangler (Cloudflare) ===
 .wrangler/
 
+# === Privacy policy site ===
+site/
+
+# === Misc tool directory ===
+tool/
+
 # === OS / misc files ===
 .DS_Store
 Thumbs.db
 *.log
 *.swp
+
+# === Integration tests (heavy, rarely relevant for code changes) ===
+integration_test/
+
+# === Screenshots & ad creatives (binary assets) ===
+screenshots/
+ads/
+
+# === Working files ===
+findings.md
+task_plan.md
+
+# === GitHub workflows ===
+.github/

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
 
 part 'caregiver_provider.g.dart';
 
@@ -16,12 +16,14 @@ class CaregiverLinks extends _$CaregiverLinks {
   Future<void> addLink(CaregiverLink link) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveCaregiverLink(link);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 
   Future<void> removeLink(String id) async {
     final storage = ref.read(storageServiceProvider);
     await storage.deleteCaregiverLink(id);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 }
