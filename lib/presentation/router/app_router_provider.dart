@@ -4,9 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/deep_link_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/presentation/router/route_names.dart';
-import 'package:kusuridoki/presentation/shared/widgets/mp_bottom_nav_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_bottom_nav_bar.dart';
 import 'package:kusuridoki/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:kusuridoki/presentation/screens/onboarding/login_screen.dart';
 import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
@@ -143,6 +144,17 @@ Raw<GoRouter> appRouter(Ref ref) {
 
       // Authenticated but on login screen -> redirect to appropriate home
       if (isAuthenticated && isLoginRoute) {
+        // 1. Honor redirect query param (set when deep link arrived pre-auth)
+        final redirectPath = state.uri.queryParameters['redirect'];
+        if (redirectPath != null && redirectPath.isNotEmpty) {
+          return redirectPath;
+        }
+        // 2. Consume pending invite code from cold-start deep link
+        final pendingCode =
+            ref.read(deepLinkServiceProvider).consumePendingInviteCode();
+        if (pendingCode != null) {
+          return '/invite/$pendingCode';
+        }
         return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
       }
 
@@ -355,7 +367,7 @@ class _PatientShellScreenState extends State<_PatientShellScreen> {
       extendBody: true,
       backgroundColor: Colors.transparent,
       body: widget.navigationShell,
-      bottomNavigationBar: MpBottomNavBar(
+      bottomNavigationBar: KdBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
         onTap: (index) {
           widget.navigationShell.goBranch(
@@ -363,7 +375,7 @@ class _PatientShellScreenState extends State<_PatientShellScreen> {
             initialLocation: index == widget.navigationShell.currentIndex,
           );
         },
-        mode: MpNavMode.patient,
+        mode: KdNavMode.patient,
       ),
     );
   }
@@ -386,7 +398,7 @@ class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
       extendBody: true,
       backgroundColor: Colors.transparent,
       body: widget.navigationShell,
-      bottomNavigationBar: MpBottomNavBar(
+      bottomNavigationBar: KdBottomNavBar(
         currentIndex: widget.navigationShell.currentIndex,
         onTap: (index) {
           widget.navigationShell.goBranch(
@@ -394,7 +406,7 @@ class _CaregiverShellScreenState extends State<_CaregiverShellScreen> {
             initialLocation: index == widget.navigationShell.currentIndex,
           );
         },
-        mode: MpNavMode.caregiver,
+        mode: KdNavMode.caregiver,
       ),
     );
   }
