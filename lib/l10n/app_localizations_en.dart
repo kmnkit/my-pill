@@ -1618,4 +1618,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidInviteCode => 'Please enter a valid 8-character code';
+
+  @override
+  String markedAsTaken(String name) {
+    return 'Marked $name as taken';
+  }
+
+  @override
+  String markedAsSkipped(String name) {
+    return 'Skipped $name';
+  }
+
+  @override
+  String snoozedReminder(String name) {
+    return 'Snoozed $name for 15 minutes';
+  }
+
+  @override
+  String get howToConnectPatient => 'How to connect';
+
+  @override
+  String get connectStep1 => 'Install くすりどき on the patient\'s phone';
+
+  @override
+  String get connectStep2 =>
+      'On the patient\'s app: Settings → Family & Supporters → Generate QR Code';
+
+  @override
+  String get connectStep3 =>
+      'Tap \"Add Patient\" (top right) and scan the QR code';
 }

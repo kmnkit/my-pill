@@ -3091,6 +3091,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a valid 8-character code'**
   String get invalidInviteCode;
+
+  /// No description provided for @markedAsTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked {name} as taken'**
+  String markedAsTaken(String name);
+
+  /// No description provided for @markedAsSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped {name}'**
+  String markedAsSkipped(String name);
+
+  /// No description provided for @snoozedReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Snoozed {name} for 15 minutes'**
+  String snoozedReminder(String name);
+
+  /// No description provided for @howToConnectPatient.
+  ///
+  /// In en, this message translates to:
+  /// **'How to connect'**
+  String get howToConnectPatient;
+
+  /// No description provided for @connectStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Install くすりどき on the patient\'s phone'**
+  String get connectStep1;
+
+  /// No description provided for @connectStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'On the patient\'s app: Settings → Family & Supporters → Generate QR Code'**
+  String get connectStep2;
+
+  /// No description provided for @connectStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap \"Add Patient\" (top right) and scan the QR code'**
+  String get connectStep3;
 }
 
 class _AppLocalizationsDelegate

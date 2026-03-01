@@ -634,5 +634,23 @@
   "enterCodeManually": "コードを手入力",
   "enterInviteCode": "招待コードを入力",
   "inviteCodeHint": "8文字のコード",
-  "invalidInviteCode": "有効な8文字のコードを入力してください"
+  "invalidInviteCode": "有効な8文字のコードを入力してください",
+
+  "markedAsTaken": "{name}を服用済みにしました",
+  "@markedAsTaken": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+  "markedAsSkipped": "{name}をスキップしました",
+  "@markedAsSkipped": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+  "snoozedReminder": "{name}を15分スヌーズしました",
+  "@snoozedReminder": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+
+  "howToConnectPatient": "連携方法",
+  "connectStep1": "患者のスマホにくすりどきをインストール",
+  "connectStep2": "患者のアプリで 設定 → ご家族とサポーター → QRコードを生成",
+  "connectStep3": "右上の「患者を追加」ボタンでQRをスキャン"
 }

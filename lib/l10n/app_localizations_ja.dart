@@ -1567,4 +1567,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get invalidInviteCode => '有効な8文字のコードを入力してください';
+
+  @override
+  String markedAsTaken(String name) {
+    return '$nameを服用済みにしました';
+  }
+
+  @override
+  String markedAsSkipped(String name) {
+    return '$nameをスキップしました';
+  }
+
+  @override
+  String snoozedReminder(String name) {
+    return '$nameを15分スヌーズしました';
+  }
+
+  @override
+  String get howToConnectPatient => '連携方法';
+
+  @override
+  String get connectStep1 => '患者のスマホにくすりどきをインストール';
+
+  @override
+  String get connectStep2 => '患者のアプリで 設定 → ご家族とサポーター → QRコードを生成';
+
+  @override
+  String get connectStep3 => '右上の「患者を追加」ボタンでQRをスキャン';
 }
