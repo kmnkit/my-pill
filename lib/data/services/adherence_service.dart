@@ -10,9 +10,12 @@ class AdherenceService {
   /// Calculate daily adherence for a date: taken / (taken + missed) * 100
   /// Returns null if no adherence records exist for the date.
   Future<double?> getDailyAdherence(DateTime date) async {
+    // Normalize to date-only (midnight) so time component doesn't cause
+    // records stored at 00:00:00 to be filtered out.
+    final normalizedDate = DateTime(date.year, date.month, date.day);
     final records = await _storage.getAdherenceRecords(
-      startDate: date,
-      endDate: date,
+      startDate: normalizedDate,
+      endDate: normalizedDate,
     );
 
     // Filter to just taken and missed (exclude skipped from calculation)
@@ -32,7 +35,8 @@ class AdherenceService {
   /// Calculate overall adherence for all medications
   /// Returns null if no adherence records exist in the period.
   Future<double?> getOverallAdherence({int days = 30}) async {
-    final endDate = DateTime.now();
+    final today = DateTime.now();
+    final endDate = DateTime(today.year, today.month, today.day);
     final startDate = endDate.subtract(Duration(days: days));
     final records = await _storage.getAdherenceRecords(
       startDate: startDate,
@@ -59,7 +63,8 @@ class AdherenceService {
     String medicationId, {
     int days = 30,
   }) async {
-    final endDate = DateTime.now();
+    final today = DateTime.now();
+    final endDate = DateTime(today.year, today.month, today.day);
     final startDate = endDate.subtract(Duration(days: days));
     final records = await _storage.getAdherenceRecords(
       medicationId: medicationId,

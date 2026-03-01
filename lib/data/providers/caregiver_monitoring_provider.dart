@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/data/services/firestore_service.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
@@ -50,14 +51,18 @@ Future<double> patientDailyAdherence(Ref ref, String patientId) async {
 // Stream of linked patients from Firestore
 @riverpod
 Stream<List<({String patientId, String patientName, DateTime? linkedAt})>>
-caregiverPatients(Ref ref) {
+caregiverPatients(Ref ref) async* {
   final user = ref.watch(authStateProvider).maybeWhen(
     data: (u) => u,
     orElse: () => null,
   );
-  if (user == null) return Stream.value([]);
+  if (user == null) {
+    yield [];
+    return;
+  }
   final firestore = ref.watch(firestoreServiceProvider);
-  return firestore.watchLinkedPatients().map(
+  yield [];
+  yield* firestore.watchLinkedPatients().map(
     (docs) => docs.map((doc) {
       return (
         patientId: doc['patientId'] as String? ?? '',
@@ -114,6 +119,14 @@ Future<List<Map<String, dynamic>>> patientMedicationStatus(
       'variant': _reminderStatusToVariant(status),
     };
   }).toList();
+}
+
+/// Check if caregiver can add another patient based on subscription tier
+@riverpod
+Future<bool> canAddPatient(Ref ref) async {
+  final patients = await ref.watch(caregiverPatientsProvider.future);
+  final maxPatients = ref.watch(maxPatientsProvider);
+  return patients.length < maxPatients;
 }
 
 // Helper function to map ReminderStatus to MpBadgeVariant

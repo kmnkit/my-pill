@@ -51,6 +51,8 @@ class RouterRefreshNotifier extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void trigger() => notifyListeners();
 }
 
 @riverpod
@@ -72,9 +74,22 @@ RouterRefreshNotifier routerRefreshNotifier(Ref ref) {
   return notifier;
 }
 
+/// Notifier that fires when a warm-start invite code arrives via deep link.
+@riverpod
+RouterRefreshNotifier inviteRefreshNotifier(Ref ref) {
+  final notifier = RouterRefreshNotifier();
+
+  ref.listen<AsyncValue<String>>(inviteCodeProvider, (_, next) {
+    next.whenData((_) => notifier.trigger());
+  });
+
+  return notifier;
+}
+
 @riverpod
 Raw<GoRouter> appRouter(Ref ref) {
   final refreshNotifier = ref.watch(routerRefreshProvider);
+  final inviteNotifier = ref.watch(inviteRefreshProvider);
 
   // Get initial settings synchronously if available
   UserProfile? currentSettings;
@@ -86,7 +101,7 @@ Raw<GoRouter> appRouter(Ref ref) {
 
   return GoRouter(
     initialLocation: '/splash',
-    refreshListenable: refreshNotifier,
+    refreshListenable: Listenable.merge([refreshNotifier, inviteNotifier]),
     observers: [SentryNavigatorObserver()],
     onException: (_, state, router) {
       // Handle unknown routes gracefully:
@@ -113,6 +128,8 @@ Raw<GoRouter> appRouter(Ref ref) {
           final invitePath = state.matchedLocation;
           return '/login?redirect=$invitePath';
         }
+        // Consume any pending code so it doesn't cause a redundant redirect later
+        ref.read(deepLinkServiceProvider).consumePendingInviteCode();
         return null;
       }
 

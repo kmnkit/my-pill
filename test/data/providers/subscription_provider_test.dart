@@ -84,6 +84,41 @@ void main() {
     });
   });
 
+  group('maxPatients provider', () {
+    test('provider exists and has correct name', () {
+      expect(maxPatientsProvider.name, 'maxPatientsProvider');
+    });
+
+    test('returns 999 when kPremiumEnabled is false (feature flag)', () {
+      final service = SubscriptionService();
+      final container = ProviderContainer(
+        overrides: [subscriptionServiceProvider.overrideWithValue(service)],
+      );
+      addTearDown(container.dispose);
+
+      // kPremiumEnabled = false → unlimited patients
+      expect(container.read(maxPatientsProvider), 999);
+    });
+
+    test('can be overridden directly with premium value', () {
+      final container = ProviderContainer(
+        overrides: [maxPatientsProvider.overrideWithValue(999)],
+      );
+      addTearDown(container.dispose);
+
+      expect(container.read(maxPatientsProvider), 999);
+    });
+
+    test('can be overridden directly with free value', () {
+      final container = ProviderContainer(
+        overrides: [maxPatientsProvider.overrideWithValue(1)],
+      );
+      addTearDown(container.dispose);
+
+      expect(container.read(maxPatientsProvider), 1);
+    });
+  });
+
   group('subscriptionStatus provider', () {
     test('provider exists and has correct name', () {
       expect(subscriptionStatusProvider.name, 'subscriptionStatusProvider');

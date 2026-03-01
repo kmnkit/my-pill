@@ -57,6 +57,59 @@ final class RouterRefreshNotifierProvider
 String _$routerRefreshNotifierHash() =>
     r'ab22e17a4382934453586c365dc3f060e953be02';
 
+/// Notifier that fires when a warm-start invite code arrives via deep link.
+
+@ProviderFor(inviteRefreshNotifier)
+final inviteRefreshProvider = InviteRefreshNotifierProvider._();
+
+/// Notifier that fires when a warm-start invite code arrives via deep link.
+
+final class InviteRefreshNotifierProvider
+    extends
+        $FunctionalProvider<
+          RouterRefreshNotifier,
+          RouterRefreshNotifier,
+          RouterRefreshNotifier
+        >
+    with $Provider<RouterRefreshNotifier> {
+  /// Notifier that fires when a warm-start invite code arrives via deep link.
+  InviteRefreshNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'inviteRefreshProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$inviteRefreshNotifierHash();
+
+  @$internal
+  @override
+  $ProviderElement<RouterRefreshNotifier> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RouterRefreshNotifier create(Ref ref) {
+    return inviteRefreshNotifier(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RouterRefreshNotifier value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RouterRefreshNotifier>(value),
+    );
+  }
+}
+
+String _$inviteRefreshNotifierHash() =>
+    r'066f0ef15b31d8692b436c5e588bdab24ba8aa86';
+
 @ProviderFor(appRouter)
 final appRouterProvider = AppRouterProvider._();
 
@@ -96,4 +149,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'ddb61d2745d0fb936870049c91718c619d6088f5';
+String _$appRouterHash() => r'68367306de8964bd0df0f916233388dcae493e8b';

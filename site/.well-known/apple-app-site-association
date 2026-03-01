@@ -2,8 +2,15 @@
   "applinks": {
     "details": [
       {
-        "appID": "7W8B42BG5D.com.hobbylabo.kusuridoki",
-        "paths": ["/invite/*"]
+        "appIDs": [
+          "7W8B42BG5D.com.hobbylabo.kusuridoki"
+        ],
+        "components": [
+          {
+            "/": "/invite/*",
+            "comment": "Matches caregiver invite links"
+          }
+        ]
       }
     ]
   }

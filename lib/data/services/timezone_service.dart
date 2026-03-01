@@ -25,7 +25,7 @@ class TimezoneService {
     final now = tz.TZDateTime.now(tz.UTC);
     final homeOffset = home.timeZone(now.millisecondsSinceEpoch).offset;
     final currentOffset = current.timeZone(now.millisecondsSinceEpoch).offset;
-    return ((currentOffset - homeOffset) / 3600000).round();
+    return ((currentOffset - homeOffset).inMilliseconds / 3600000).round();
   }
 
   // Convert a time from one timezone to another

@@ -23,6 +23,7 @@ class SubscriptionService {
   SubscriptionStatus get status => _status;
   bool get isPremium => _status.isPremium;
   int get maxCaregivers => isPremium ? 999 : 1;
+  int get maxPatients => isPremium ? 999 : 1;
 
   Future<void> initialize() async {
     debugPrint('SubscriptionService: IAP disabled');

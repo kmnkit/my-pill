@@ -137,6 +137,46 @@ final class MaxCaregiversProvider extends $FunctionalProvider<int, int, int>
 
 String _$maxCaregiversHash() => r'582eb67fbb8c36638f4e1a8858c8cfabf71c0689';
 
+@ProviderFor(maxPatients)
+final maxPatientsProvider = MaxPatientsProvider._();
+
+final class MaxPatientsProvider extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  MaxPatientsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'maxPatientsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$maxPatientsHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return maxPatients(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$maxPatientsHash() => r'134ac974a4cae4d71c9924b4bc6afc8978b69d32';
+
 @ProviderFor(subscriptionStatus)
 final subscriptionStatusProvider = SubscriptionStatusProvider._();
 
