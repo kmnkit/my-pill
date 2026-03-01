@@ -1,4 +1,4 @@
 abstract final class AppConstants {
-  static const String privacyPolicyUrl = 'https://kusuridoki.hobbylabo.dev/privacy-policy';
-  static const String termsOfServiceUrl = 'https://kusuridoki.hobbylabo.dev/terms';
+  static const String privacyPolicyUrl = 'https://kusuridoki.app/privacy-policy';
+  static const String termsOfServiceUrl = 'https://kusuridoki.app/terms';
 }
