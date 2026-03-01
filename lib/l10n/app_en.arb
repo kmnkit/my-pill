@@ -634,5 +634,23 @@
   "enterCodeManually": "Enter code manually",
   "enterInviteCode": "Enter Invite Code",
   "inviteCodeHint": "8-character code",
-  "invalidInviteCode": "Please enter a valid 8-character code"
+  "invalidInviteCode": "Please enter a valid 8-character code",
+
+  "markedAsTaken": "Marked {name} as taken",
+  "@markedAsTaken": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+  "markedAsSkipped": "Skipped {name}",
+  "@markedAsSkipped": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+  "snoozedReminder": "Snoozed {name} for 15 minutes",
+  "@snoozedReminder": {
+    "placeholders": {"name": {"type": "String"}}
+  },
+
+  "howToConnectPatient": "How to connect",
+  "connectStep1": "Install くすりどき on the patient's phone",
+  "connectStep2": "On the patient's app: Settings → Family & Supporters → Generate QR Code",
+  "connectStep3": "Tap \"Add Patient\" (top right) and scan the QR code"
 }

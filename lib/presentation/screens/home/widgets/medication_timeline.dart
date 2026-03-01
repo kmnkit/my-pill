@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
@@ -137,13 +138,56 @@ class MedicationTimeline extends ConsumerWidget {
                                 switch (action) {
                                   case ReminderAction.take:
                                     await notifier.markAsTaken(reminder.id);
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            l10n.markedAsTaken(
+                                              medication.name,
+                                            ),
+                                          ),
+                                          backgroundColor: AppColors.success,
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
                                   case ReminderAction.skip:
                                     await notifier.markAsSkipped(reminder.id);
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            l10n.markedAsSkipped(
+                                              medication.name,
+                                            ),
+                                          ),
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
                                   case ReminderAction.snooze:
                                     await notifier.snooze(
                                       reminder.id,
                                       const Duration(minutes: 15),
                                     );
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            l10n.snoozedReminder(
+                                              medication.name,
+                                            ),
+                                          ),
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
                                 }
                               }
                             : null,

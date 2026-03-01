@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
-import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_error_view.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
@@ -115,13 +115,7 @@ class _CaregiverDashboardScreenState
                   ),
                   data: (patients) {
                     if (patients.isEmpty) {
-                      return KdEmptyState(
-                        icon: Icons.people_outline,
-                        title: l10n.noPatientsLinked,
-                        description: l10n.noPatientsLinkedDesc,
-                        actionLabel: l10n.scanQrCode,
-                        onAction: _scanQrCode,
-                      );
+                      return _CaregiverConnectGuide(onScanQr: _scanQrCode);
                     }
 
                     return ListView.builder(
@@ -151,6 +145,99 @@ class _CaregiverDashboardScreenState
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CaregiverConnectGuide extends StatelessWidget {
+  const _CaregiverConnectGuide({required this.onScanQr});
+
+  final VoidCallback onScanQr;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xxxl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.people_outline,
+              size: 64,
+              color: context.appColors.textMuted,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l10n.noPatientsLinked,
+              style: textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l10n.howToConnectPatient,
+              style: textTheme.titleSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _StepItem(step: 1, text: l10n.connectStep1),
+            const SizedBox(height: AppSpacing.sm),
+            _StepItem(step: 2, text: l10n.connectStep2),
+            const SizedBox(height: AppSpacing.sm),
+            _StepItem(step: 3, text: l10n.connectStep3),
+            const SizedBox(height: AppSpacing.xxl),
+            ElevatedButton.icon(
+              onPressed: onScanQr,
+              icon: const Icon(Icons.qr_code_scanner),
+              label: Text(l10n.scanQrCode),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StepItem extends StatelessWidget {
+  const _StepItem({required this.step, required this.text});
+
+  final int step;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: const BoxDecoration(
+            color: AppColors.primary,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Text(
+              '$step',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ],
     );
   }
 }

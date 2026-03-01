@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
-import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
@@ -40,7 +39,7 @@ void main() {
       expect(find.byIcon(Icons.person_add), findsNothing);
     });
 
-    testWidgets('shows KdEmptyState when no patients linked', (tester) async {
+    testWidgets('shows connect guide when no patients linked', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const CaregiverDashboardScreen(),
@@ -52,7 +51,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(KdEmptyState), findsOneWidget);
+      expect(find.byIcon(Icons.people_outline), findsOneWidget);
+      expect(find.byIcon(Icons.qr_code_scanner), findsOneWidget);
+      expect(find.text('How to connect'), findsOneWidget);
     });
 
     testWidgets('does not show FAB (removed in favour of header IconButton)',
