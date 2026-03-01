@@ -5,14 +5,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
-import 'package:my_pill/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._();
   factory NotificationService() => _instance;
   NotificationService._();
 
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   // Callback for notification actions
@@ -28,7 +29,9 @@ class NotificationService {
     await initializeTimezone();
 
     // Initialize local notifications
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -37,7 +40,10 @@ class NotificationService {
     );
 
     await _localNotifications.initialize(
-      settings: const InitializationSettings(android: androidSettings, iOS: iosSettings),
+      settings: const InitializationSettings(
+        android: androidSettings,
+        iOS: iosSettings,
+      ),
       onDidReceiveNotificationResponse: _onNotificationResponse,
     );
 
@@ -53,7 +59,10 @@ class NotificationService {
   }
 
   Future<void> _createChannels() async {
-    final android = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final android = _localNotifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android != null) {
       // Standard medication reminder channel
       const channel1 = AndroidNotificationChannel(
@@ -77,12 +86,23 @@ class NotificationService {
 
   Future<bool> requestPermissions() async {
     if (Platform.isIOS) {
-      final iosPlugin = _localNotifications.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
-      final granted = await iosPlugin?.requestPermissions(alert: true, badge: true, sound: true, critical: true);
+      final iosPlugin = _localNotifications
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >();
+      final granted = await iosPlugin?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+        critical: true,
+      );
       return granted ?? false;
     }
     if (Platform.isAndroid) {
-      final androidPlugin = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _localNotifications
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       final granted = await androidPlugin?.requestNotificationsPermission();
       return granted ?? false;
     }
@@ -97,7 +117,10 @@ class NotificationService {
       return settings.authorizationStatus == AuthorizationStatus.authorized;
     }
     if (Platform.isAndroid) {
-      final androidPlugin = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _localNotifications
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       final areEnabled = await androidPlugin?.areNotificationsEnabled();
       return areEnabled ?? false;
     }
@@ -131,12 +154,23 @@ class NotificationService {
   }
 
   // Schedule a local notification for a reminder
-  Future<void> scheduleReminder(Reminder reminder, String medicationName, String dosage) async {
+  Future<void> scheduleReminder(
+    Reminder reminder,
+    String medicationName,
+    String dosage, {
+    String? dosageTimingLabel,
+  }) async {
     final scheduledTime = reminder.scheduledTime;
-    if (scheduledTime.isBefore(DateTime.now())) return; // Don't schedule past notifications
+    if (scheduledTime.isBefore(DateTime.now())) {
+      return; // Don't schedule past notifications
+    }
 
     // T5.2: Notification actions
-    const takeAction = AndroidNotificationAction('take', 'Take Now', showsUserInterface: true);
+    const takeAction = AndroidNotificationAction(
+      'take',
+      'Take Now',
+      showsUserInterface: true,
+    );
     const snoozeAction = AndroidNotificationAction('snooze', 'Snooze 15min');
     const skipAction = AndroidNotificationAction('skip', 'Skip');
 
@@ -156,7 +190,10 @@ class NotificationService {
       categoryIdentifier: 'medication_reminder',
     );
 
-    final details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+    final details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
     // Use deterministic hash for stable notification IDs across sessions
     final notificationId = _stableId(reminder.id);
@@ -164,7 +201,9 @@ class NotificationService {
     await _localNotifications.zonedSchedule(
       id: notificationId,
       title: 'Time to take $medicationName',
-      body: '$dosage - Tap to respond',
+      body: dosageTimingLabel != null
+          ? '$dosage ($dosageTimingLabel) - Tap to respond'
+          : '$dosage - Tap to respond',
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -173,7 +212,12 @@ class NotificationService {
   }
 
   // T5.3: Schedule critical alert (iOS - bypasses DND)
-  Future<void> scheduleCriticalReminder(Reminder reminder, String medicationName, String dosage) async {
+  Future<void> scheduleCriticalReminder(
+    Reminder reminder,
+    String medicationName,
+    String dosage, {
+    String? dosageTimingLabel,
+  }) async {
     final scheduledTime = reminder.scheduledTime;
     if (scheduledTime.isBefore(DateTime.now())) return;
 
@@ -197,12 +241,17 @@ class NotificationService {
       interruptionLevel: InterruptionLevel.critical,
     );
 
-    final details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+    final details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
     await _localNotifications.zonedSchedule(
       id: _stableId(reminder.id),
       title: 'CRITICAL: Take $medicationName',
-      body: '$dosage - This medication is marked as critical',
+      body: dosageTimingLabel != null
+          ? '$dosage ($dosageTimingLabel) - This medication is marked as critical'
+          : '$dosage - This medication is marked as critical',
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -223,22 +272,39 @@ class NotificationService {
   // Schedule all reminders for today
   Future<void> scheduleTodayReminders(
     List<Reminder> reminders,
-    Map<String, ({String name, String dosage, bool isCritical})> medicationInfo,
+    Map<
+      String,
+      ({String name, String dosage, bool isCritical, String? dosageTimingLabel})
+    >
+    medicationInfo,
   ) async {
     for (final reminder in reminders) {
       final info = medicationInfo[reminder.medicationId];
       if (info == null) continue;
 
       if (info.isCritical) {
-        await scheduleCriticalReminder(reminder, info.name, info.dosage);
+        await scheduleCriticalReminder(
+          reminder,
+          info.name,
+          info.dosage,
+          dosageTimingLabel: info.dosageTimingLabel,
+        );
       } else {
-        await scheduleReminder(reminder, info.name, info.dosage);
+        await scheduleReminder(
+          reminder,
+          info.name,
+          info.dosage,
+          dosageTimingLabel: info.dosageTimingLabel,
+        );
       }
     }
   }
 
   /// Show immediate notification for low stock
-  Future<void> showLowStockNotification(String medicationName, int remaining) async {
+  Future<void> showLowStockNotification(
+    String medicationName,
+    int remaining,
+  ) async {
     const androidDetails = AndroidNotificationDetails(
       'medication_reminders',
       'Medication Reminders',
@@ -253,7 +319,10 @@ class NotificationService {
       presentSound: true,
     );
 
-    const details = NotificationDetails(android: androidDetails, iOS: iosDetails);
+    const details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
     // Use a unique ID based on medication name to avoid duplicate notifications
     final notificationId = _stableId('low_stock_$medicationName');

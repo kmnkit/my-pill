@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_section_header.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_section_header.dart';
 
 class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
@@ -64,26 +64,38 @@ class LanguageSelector extends ConsumerWidget {
     bool isSelected,
     bool isDark,
   ) {
-    return GestureDetector(
-      onTap: () async {
-        if (!isSelected) {
-          await ref.read(userSettingsProvider.notifier).updateLanguage(languageCode);
-        }
-      },
-      child: Container(
-        height: AppSpacing.buttonHeight,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary
-              : (isDark ? AppColors.cardDark : AppColors.cardLight),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        ),
-        child: Center(
-          child: Text(
-            displayLabel,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: displayLabel,
+      child: InkWell(
+        onTap: () async {
+          if (!isSelected) {
+            await ref
+                .read(userSettingsProvider.notifier)
+                .updateLanguage(languageCode);
+          }
+        },
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        child: Container(
+          height: AppSpacing.buttonHeight,
+          decoration: BoxDecoration(
+            color: isSelected
+                ? AppColors.primary
+                : (isDark ? AppColors.cardDark : AppColors.cardLight),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          ),
+          child: Center(
+            child: ExcludeSemantics(
+              child: Text(
+                displayLabel,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: isSelected
+                      ? AppColors.textOnPrimary
+                      : AppColors.textPrimary,
                 ),
+              ),
+            ),
           ),
         ),
       ),

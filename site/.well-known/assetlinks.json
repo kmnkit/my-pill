@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.hobbylabo.kusuridoki",
+      "sha256_cert_fingerprints": [
+        "8C:8E:CA:31:BB:C9:A9:AA:C8:DE:5A:D3:91:17:0E:A1:5F:F3:52:8C:77:4B:D4:DB:00:AC:31:2E:DF:70:C3:97"
+      ]
+    }
+  }
+]

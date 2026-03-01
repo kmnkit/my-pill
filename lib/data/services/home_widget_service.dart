@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/reminder_status.dart';
 
 class HomeWidgetService {
   static const String _appGroupId = 'group.com.mypill.app';
@@ -34,14 +34,23 @@ class HomeWidgetService {
     try {
       // Calculate summary
       final total = todayReminders.length;
-      final taken = todayReminders.where((r) => r.status == ReminderStatus.taken).length;
-      final pending = todayReminders.where((r) => r.status == ReminderStatus.pending).length;
+      final taken = todayReminders
+          .where((r) => r.status == ReminderStatus.taken)
+          .length;
+      final pending = todayReminders
+          .where((r) => r.status == ReminderStatus.pending)
+          .length;
 
       // Find next upcoming medication
-      final upcoming = todayReminders
-          .where((r) => r.status == ReminderStatus.pending || r.status == ReminderStatus.snoozed)
-          .toList()
-        ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
+      final upcoming =
+          todayReminders
+              .where(
+                (r) =>
+                    r.status == ReminderStatus.pending ||
+                    r.status == ReminderStatus.snoozed,
+              )
+              .toList()
+            ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
 
       String nextMedTime = '';
 
@@ -63,7 +72,10 @@ class HomeWidgetService {
       await HomeWidget.saveWidgetData('next_med_time', nextMedTime);
       await HomeWidget.saveWidgetData('next_med_dosage', '');
       await HomeWidget.saveWidgetData('summary_text', summaryText);
-      await HomeWidget.saveWidgetData('last_updated', DateTime.now().toIso8601String());
+      await HomeWidget.saveWidgetData(
+        'last_updated',
+        DateTime.now().toIso8601String(),
+      );
 
       // Trigger widget update
       await HomeWidget.updateWidget(
@@ -86,7 +98,9 @@ class HomeWidgetService {
   }
 
   /// Register callback for widget interactions
-  static Future<void> registerInteractivityCallback(Future<void> Function(Uri?) callback) async {
+  static Future<void> registerInteractivityCallback(
+    Future<void> Function(Uri?) callback,
+  ) async {
     try {
       await HomeWidget.registerInteractivityCallback(callback);
     } catch (e) {

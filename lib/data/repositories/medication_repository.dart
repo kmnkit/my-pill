@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/data/services/notification_service.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
 
 class MedicationRepository {
   final StorageService _storage;
@@ -94,7 +94,9 @@ class MedicationRepository {
     }
 
     if (medication.inventoryRemaining <= 0) {
-      throw Exception('No inventory remaining for medication: ${medication.name}');
+      throw Exception(
+        'No inventory remaining for medication: ${medication.name}',
+      );
     }
 
     final updated = medication.copyWith(
@@ -121,7 +123,10 @@ class MedicationRepository {
   }
 
   /// Manual inventory update (refill)
-  Future<Medication> updateInventory(String medicationId, int newRemaining) async {
+  Future<Medication> updateInventory(
+    String medicationId,
+    int newRemaining,
+  ) async {
     final medication = await getMedication(medicationId);
     if (medication == null) {
       throw Exception('Medication not found: $medicationId');

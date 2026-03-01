@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class DataSharingDialog extends ConsumerWidget {
   const DataSharingDialog({super.key});
@@ -43,15 +43,17 @@ class DataSharingDialog extends ConsumerWidget {
               Text(
                 l10n.dataSharingSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textMuted,
-                    ),
+                  color: context.appColors.textMuted,
+                ),
               ),
               const SizedBox(height: AppSpacing.xl),
               SwitchListTile(
                 value: settings.shareAdherenceData,
                 onChanged: (value) {
                   final updated = settings.copyWith(shareAdherenceData: value);
-                  ref.read(userSettingsProvider.notifier).updateProfile(updated);
+                  ref
+                      .read(userSettingsProvider.notifier)
+                      .updateProfile(updated);
                 },
                 title: Text(l10n.shareAdherenceData),
                 contentPadding: EdgeInsets.zero,
@@ -61,7 +63,9 @@ class DataSharingDialog extends ConsumerWidget {
                 value: settings.shareMedicationList,
                 onChanged: (value) {
                   final updated = settings.copyWith(shareMedicationList: value);
-                  ref.read(userSettingsProvider.notifier).updateProfile(updated);
+                  ref
+                      .read(userSettingsProvider.notifier)
+                      .updateProfile(updated);
                 },
                 title: Text(l10n.shareMedicationList),
                 contentPadding: EdgeInsets.zero,
@@ -70,8 +74,12 @@ class DataSharingDialog extends ConsumerWidget {
               SwitchListTile(
                 value: settings.allowCaregiverNotifications,
                 onChanged: (value) {
-                  final updated = settings.copyWith(allowCaregiverNotifications: value);
-                  ref.read(userSettingsProvider.notifier).updateProfile(updated);
+                  final updated = settings.copyWith(
+                    allowCaregiverNotifications: value,
+                  );
+                  ref
+                      .read(userSettingsProvider.notifier)
+                      .updateProfile(updated);
                 },
                 title: Text(l10n.allowCaregiverNotifications),
                 contentPadding: EdgeInsets.zero,

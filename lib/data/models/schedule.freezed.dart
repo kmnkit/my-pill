@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Schedule {
 
- String get id; String get medicationId; ScheduleType get type; int get timesPerDay; List<String> get times; List<int> get specificDays; int? get intervalHours; TimezoneMode get timezoneMode; bool get isActive;
+ String get id; String get medicationId; ScheduleType get type; List<DosageTimeSlot> get dosageSlots; List<int> get specificDays; int? get intervalHours; TimezoneMode get timezoneMode; bool get isActive;
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ScheduleCopyWith<Schedule> get copyWith => _$ScheduleCopyWithImpl<Schedule>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.medicationId, medicationId) || other.medicationId == medicationId)&&(identical(other.type, type) || other.type == type)&&(identical(other.timesPerDay, timesPerDay) || other.timesPerDay == timesPerDay)&&const DeepCollectionEquality().equals(other.times, times)&&const DeepCollectionEquality().equals(other.specificDays, specificDays)&&(identical(other.intervalHours, intervalHours) || other.intervalHours == intervalHours)&&(identical(other.timezoneMode, timezoneMode) || other.timezoneMode == timezoneMode)&&(identical(other.isActive, isActive) || other.isActive == isActive));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.medicationId, medicationId) || other.medicationId == medicationId)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.dosageSlots, dosageSlots)&&const DeepCollectionEquality().equals(other.specificDays, specificDays)&&(identical(other.intervalHours, intervalHours) || other.intervalHours == intervalHours)&&(identical(other.timezoneMode, timezoneMode) || other.timezoneMode == timezoneMode)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,medicationId,type,timesPerDay,const DeepCollectionEquality().hash(times),const DeepCollectionEquality().hash(specificDays),intervalHours,timezoneMode,isActive);
+int get hashCode => Object.hash(runtimeType,id,medicationId,type,const DeepCollectionEquality().hash(dosageSlots),const DeepCollectionEquality().hash(specificDays),intervalHours,timezoneMode,isActive);
 
 @override
 String toString() {
-  return 'Schedule(id: $id, medicationId: $medicationId, type: $type, timesPerDay: $timesPerDay, times: $times, specificDays: $specificDays, intervalHours: $intervalHours, timezoneMode: $timezoneMode, isActive: $isActive)';
+  return 'Schedule(id: $id, medicationId: $medicationId, type: $type, dosageSlots: $dosageSlots, specificDays: $specificDays, intervalHours: $intervalHours, timezoneMode: $timezoneMode, isActive: $isActive)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ScheduleCopyWith<$Res>  {
   factory $ScheduleCopyWith(Schedule value, $Res Function(Schedule) _then) = _$ScheduleCopyWithImpl;
 @useResult
 $Res call({
- String id, String medicationId, ScheduleType type, int timesPerDay, List<String> times, List<int> specificDays, int? intervalHours, TimezoneMode timezoneMode, bool isActive
+ String id, String medicationId, ScheduleType type, List<DosageTimeSlot> dosageSlots, List<int> specificDays, int? intervalHours, TimezoneMode timezoneMode, bool isActive
 });
 
 
@@ -65,14 +65,13 @@ class _$ScheduleCopyWithImpl<$Res>
 
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? medicationId = null,Object? type = null,Object? timesPerDay = null,Object? times = null,Object? specificDays = null,Object? intervalHours = freezed,Object? timezoneMode = null,Object? isActive = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? medicationId = null,Object? type = null,Object? dosageSlots = null,Object? specificDays = null,Object? intervalHours = freezed,Object? timezoneMode = null,Object? isActive = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,medicationId: null == medicationId ? _self.medicationId : medicationId // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ScheduleType,timesPerDay: null == timesPerDay ? _self.timesPerDay : timesPerDay // ignore: cast_nullable_to_non_nullable
-as int,times: null == times ? _self.times : times // ignore: cast_nullable_to_non_nullable
-as List<String>,specificDays: null == specificDays ? _self.specificDays : specificDays // ignore: cast_nullable_to_non_nullable
+as ScheduleType,dosageSlots: null == dosageSlots ? _self.dosageSlots : dosageSlots // ignore: cast_nullable_to_non_nullable
+as List<DosageTimeSlot>,specificDays: null == specificDays ? _self.specificDays : specificDays // ignore: cast_nullable_to_non_nullable
 as List<int>,intervalHours: freezed == intervalHours ? _self.intervalHours : intervalHours // ignore: cast_nullable_to_non_nullable
 as int?,timezoneMode: null == timezoneMode ? _self.timezoneMode : timezoneMode // ignore: cast_nullable_to_non_nullable
 as TimezoneMode,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
@@ -161,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String medicationId,  ScheduleType type,  int timesPerDay,  List<String> times,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String medicationId,  ScheduleType type,  List<DosageTimeSlot> dosageSlots,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Schedule() when $default != null:
-return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.times,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
+return $default(_that.id,_that.medicationId,_that.type,_that.dosageSlots,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
   return orElse();
 
 }
@@ -182,10 +181,10 @@ return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String medicationId,  ScheduleType type,  int timesPerDay,  List<String> times,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String medicationId,  ScheduleType type,  List<DosageTimeSlot> dosageSlots,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)  $default,) {final _that = this;
 switch (_that) {
 case _Schedule():
-return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.times,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
+return $default(_that.id,_that.medicationId,_that.type,_that.dosageSlots,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +201,10 @@ return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String medicationId,  ScheduleType type,  int timesPerDay,  List<String> times,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String medicationId,  ScheduleType type,  List<DosageTimeSlot> dosageSlots,  List<int> specificDays,  int? intervalHours,  TimezoneMode timezoneMode,  bool isActive)?  $default,) {final _that = this;
 switch (_that) {
 case _Schedule() when $default != null:
-return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.times,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
+return $default(_that.id,_that.medicationId,_that.type,_that.dosageSlots,_that.specificDays,_that.intervalHours,_that.timezoneMode,_that.isActive);case _:
   return null;
 
 }
@@ -214,21 +213,20 @@ return $default(_that.id,_that.medicationId,_that.type,_that.timesPerDay,_that.t
 }
 
 /// @nodoc
-@JsonSerializable()
 
-class _Schedule implements Schedule {
-  const _Schedule({required this.id, required this.medicationId, required this.type, this.timesPerDay = 1, final  List<String> times = const [], final  List<int> specificDays = const [], this.intervalHours, this.timezoneMode = TimezoneMode.fixedInterval, this.isActive = true}): _times = times,_specificDays = specificDays;
+@JsonSerializable(explicitToJson: true)
+class _Schedule extends Schedule {
+  const _Schedule({required this.id, required this.medicationId, required this.type, final  List<DosageTimeSlot> dosageSlots = const [], final  List<int> specificDays = const [], this.intervalHours, this.timezoneMode = TimezoneMode.fixedInterval, this.isActive = true}): _dosageSlots = dosageSlots,_specificDays = specificDays,super._();
   factory _Schedule.fromJson(Map<String, dynamic> json) => _$ScheduleFromJson(json);
 
 @override final  String id;
 @override final  String medicationId;
 @override final  ScheduleType type;
-@override@JsonKey() final  int timesPerDay;
- final  List<String> _times;
-@override@JsonKey() List<String> get times {
-  if (_times is EqualUnmodifiableListView) return _times;
+ final  List<DosageTimeSlot> _dosageSlots;
+@override@JsonKey() List<DosageTimeSlot> get dosageSlots {
+  if (_dosageSlots is EqualUnmodifiableListView) return _dosageSlots;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_times);
+  return EqualUnmodifiableListView(_dosageSlots);
 }
 
  final  List<int> _specificDays;
@@ -255,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.medicationId, medicationId) || other.medicationId == medicationId)&&(identical(other.type, type) || other.type == type)&&(identical(other.timesPerDay, timesPerDay) || other.timesPerDay == timesPerDay)&&const DeepCollectionEquality().equals(other._times, _times)&&const DeepCollectionEquality().equals(other._specificDays, _specificDays)&&(identical(other.intervalHours, intervalHours) || other.intervalHours == intervalHours)&&(identical(other.timezoneMode, timezoneMode) || other.timezoneMode == timezoneMode)&&(identical(other.isActive, isActive) || other.isActive == isActive));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Schedule&&(identical(other.id, id) || other.id == id)&&(identical(other.medicationId, medicationId) || other.medicationId == medicationId)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._dosageSlots, _dosageSlots)&&const DeepCollectionEquality().equals(other._specificDays, _specificDays)&&(identical(other.intervalHours, intervalHours) || other.intervalHours == intervalHours)&&(identical(other.timezoneMode, timezoneMode) || other.timezoneMode == timezoneMode)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,medicationId,type,timesPerDay,const DeepCollectionEquality().hash(_times),const DeepCollectionEquality().hash(_specificDays),intervalHours,timezoneMode,isActive);
+int get hashCode => Object.hash(runtimeType,id,medicationId,type,const DeepCollectionEquality().hash(_dosageSlots),const DeepCollectionEquality().hash(_specificDays),intervalHours,timezoneMode,isActive);
 
 @override
 String toString() {
-  return 'Schedule(id: $id, medicationId: $medicationId, type: $type, timesPerDay: $timesPerDay, times: $times, specificDays: $specificDays, intervalHours: $intervalHours, timezoneMode: $timezoneMode, isActive: $isActive)';
+  return 'Schedule(id: $id, medicationId: $medicationId, type: $type, dosageSlots: $dosageSlots, specificDays: $specificDays, intervalHours: $intervalHours, timezoneMode: $timezoneMode, isActive: $isActive)';
 }
 
 
@@ -275,7 +273,7 @@ abstract mixin class _$ScheduleCopyWith<$Res> implements $ScheduleCopyWith<$Res>
   factory _$ScheduleCopyWith(_Schedule value, $Res Function(_Schedule) _then) = __$ScheduleCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String medicationId, ScheduleType type, int timesPerDay, List<String> times, List<int> specificDays, int? intervalHours, TimezoneMode timezoneMode, bool isActive
+ String id, String medicationId, ScheduleType type, List<DosageTimeSlot> dosageSlots, List<int> specificDays, int? intervalHours, TimezoneMode timezoneMode, bool isActive
 });
 
 
@@ -292,14 +290,13 @@ class __$ScheduleCopyWithImpl<$Res>
 
 /// Create a copy of Schedule
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? medicationId = null,Object? type = null,Object? timesPerDay = null,Object? times = null,Object? specificDays = null,Object? intervalHours = freezed,Object? timezoneMode = null,Object? isActive = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? medicationId = null,Object? type = null,Object? dosageSlots = null,Object? specificDays = null,Object? intervalHours = freezed,Object? timezoneMode = null,Object? isActive = null,}) {
   return _then(_Schedule(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,medicationId: null == medicationId ? _self.medicationId : medicationId // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ScheduleType,timesPerDay: null == timesPerDay ? _self.timesPerDay : timesPerDay // ignore: cast_nullable_to_non_nullable
-as int,times: null == times ? _self._times : times // ignore: cast_nullable_to_non_nullable
-as List<String>,specificDays: null == specificDays ? _self._specificDays : specificDays // ignore: cast_nullable_to_non_nullable
+as ScheduleType,dosageSlots: null == dosageSlots ? _self._dosageSlots : dosageSlots // ignore: cast_nullable_to_non_nullable
+as List<DosageTimeSlot>,specificDays: null == specificDays ? _self._specificDays : specificDays // ignore: cast_nullable_to_non_nullable
 as List<int>,intervalHours: freezed == intervalHours ? _self.intervalHours : intervalHours // ignore: cast_nullable_to_non_nullable
 as int?,timezoneMode: null == timezoneMode ? _self.timezoneMode : timezoneMode // ignore: cast_nullable_to_non_nullable
 as TimezoneMode,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable

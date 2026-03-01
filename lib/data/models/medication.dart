@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
 
 part 'medication.freezed.dart';
 part 'medication.g.dart';

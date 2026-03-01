@@ -15,6 +15,18 @@ class DeepLinkService {
 
   Stream<String> get inviteCodes => _inviteCodeController.stream;
 
+  // Stores the invite code from cold-start deep link until it is consumed
+  // by the router after auth/onboarding completes.
+  String? _pendingInviteCode;
+
+  /// Returns and clears the invite code captured during cold-start.
+  /// Returns null if no pending code exists.
+  String? consumePendingInviteCode() {
+    final code = _pendingInviteCode;
+    _pendingInviteCode = null;
+    return code;
+  }
+
   // Initialize - call from main.dart
   Future<void> initialize() async {
     // Handle cold start (app opened via link)
@@ -36,15 +48,16 @@ class DeepLinkService {
 
   void _handleUri(Uri uri) {
     // Domain whitelist
-    const allowedHosts = ['mypill.app', 'www.mypill.app'];
+    const allowedHosts = ['kusuridoki.app', 'www.kusuridoki.app'];
     if (!allowedHosts.contains(uri.host)) return;
 
-    // Expected format: https://mypill.app/invite/{code}
+    // Expected format: https://kusuridoki.app/invite/{code}
     if (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'invite') {
       final code = uri.pathSegments[1];
       // Validate invite code format: server-side charset only, 8 characters
       if (inviteCodePattern.hasMatch(code)) {
-        _inviteCodeController.add(code);
+        _pendingInviteCode = code; // persist for cold-start
+        _inviteCodeController.add(code); // stream for warm-start listeners
       }
     }
   }

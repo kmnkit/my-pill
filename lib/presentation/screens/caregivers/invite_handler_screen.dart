@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/data/providers/invite_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_card.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_card.dart';
 
 class InviteHandlerScreen extends ConsumerStatefulWidget {
-  const InviteHandlerScreen({
-    super.key,
-    required this.inviteCode,
-  });
+  const InviteHandlerScreen({super.key, required this.inviteCode});
 
   final String inviteCode;
 
@@ -32,6 +31,9 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
     try {
       final cfService = ref.read(cloudFunctionsServiceProvider);
       await cfService.acceptInvite(widget.inviteCode);
+
+      // Refresh caregiver links after successful accept
+      ref.invalidate(caregiverLinksProvider);
 
       if (!mounted) return;
 
@@ -75,10 +77,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: MpAppBar(
-        title: l10n.invitation,
-        showBack: true,
-      ),
+      appBar: MpAppBar(title: l10n.invitation, showBack: true),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -107,7 +106,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                       style: textTheme.headlineSmall?.copyWith(
                         color: isDark
                             ? AppColors.textPrimaryDark
-                            : AppColors.textPrimary,
+                            : context.appColors.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
@@ -116,7 +115,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     Text(
                       l10n.inviteCodeLabel(widget.inviteCode),
                       style: textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textMuted,
+                        color: context.appColors.textMuted,
                       ),
                       textAlign: TextAlign.center,
                     ),

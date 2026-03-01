@@ -1,11 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/utils/error_handler.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 
 void main() {
   group('ErrorHandler', () {
     group('getErrorCode', () {
       test('returns network for SocketException', () {
-        final code = ErrorHandler.getErrorCode(Exception('SocketException: Failed'));
+        final code = ErrorHandler.getErrorCode(
+          Exception('SocketException: Failed'),
+        );
         expect(code, ErrorCode.network);
       });
 
@@ -53,6 +55,41 @@ void main() {
             Exception('test error'),
             null,
             'testContext',
+          ),
+          returnsNormally,
+        );
+      });
+    });
+
+    group('captureException', () {
+      test('does not throw in debug mode', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('test error'),
+            StackTrace.current,
+            'testContext',
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('does not throw with null stackTrace', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('test error'),
+            null,
+            'testContext',
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('does not throw for permissionDenied errors', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('permission-denied'),
+            StackTrace.current,
+            'authContext',
           ),
           returnsNormally,
         );

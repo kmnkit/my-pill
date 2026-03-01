@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_pill/data/enums/apple_auth_error.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/enums/apple_auth_error.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Extension to provide localized error messages for Apple Sign-In errors.
 extension AppleAuthErrorMessages on AppleAuthError {

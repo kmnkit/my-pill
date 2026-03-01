@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingHeadline => 'Your reliable medication companion';
 
   @override
-  String get onboardingFeature1 => 'Never miss a dose';
+  String get onboardingFeature1 => 'Dose packs & individual pills';
 
   @override
   String get onboardingFeature2 => 'Works across timezones';
@@ -70,6 +70,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNameSkip => 'Skip for now';
+
+  @override
+  String get onboardingNameRequired =>
+      'Your name will be shown to the patients you support';
+
+  @override
+  String get onboardingNameMinLength => 'Please enter at least 2 characters';
 
   @override
   String get onboardingRoleTitle => 'How will you use Kusuridoki?';
@@ -469,6 +476,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extraLarge => 'XL';
 
   @override
+  String get features => 'Features';
+
+  @override
   String get safetyPrivacy => 'Safety & Privacy';
 
   @override
@@ -697,7 +707,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumMonthly => 'Monthly Plan';
 
   @override
-  String get premiumYearly => 'Yearly Plan (34% off)';
+  String get premiumYearly => 'Yearly Plan';
 
   @override
   String get premiumMonthlyPrice => '¥480/mo';
@@ -1158,9 +1168,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howOften => 'How often?';
 
   @override
-  String get howManyTimesPerDay => 'How many times per day?';
-
-  @override
   String get whatTimes => 'What times?';
 
   @override
@@ -1177,9 +1184,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get daysUnit => 'days';
-
-  @override
-  String get addAnotherTimeLabel => 'Add another time';
 
   @override
   String get dailyDesc => 'Take every day at the same time';
@@ -1280,9 +1284,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inviteLinkGenerated => 'Invite link generated successfully!';
 
   @override
-  String failedToGenerateInvite(String error) {
-    return 'Failed to generate invite: $error';
-  }
+  String get failedToGenerateInvite =>
+      'Failed to generate invite. Please try again.';
 
   @override
   String get cannotAddMoreCaregivers => 'Cannot add more caregivers';
@@ -1390,4 +1393,169 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get defaultUserName => 'User';
+
+  @override
+  String get colorWhite => 'White';
+
+  @override
+  String get colorBlue => 'Blue';
+
+  @override
+  String get colorYellow => 'Yellow';
+
+  @override
+  String get colorPink => 'Pink';
+
+  @override
+  String get colorRed => 'Red';
+
+  @override
+  String get colorGreen => 'Green';
+
+  @override
+  String get colorOrange => 'Orange';
+
+  @override
+  String get colorPurple => 'Purple';
+
+  @override
+  String get dayMonday => 'Monday';
+
+  @override
+  String get dayTuesday => 'Tuesday';
+
+  @override
+  String get dayWednesday => 'Wednesday';
+
+  @override
+  String get dayThursday => 'Thursday';
+
+  @override
+  String get dayFriday => 'Friday';
+
+  @override
+  String get daySaturday => 'Saturday';
+
+  @override
+  String get daySunday => 'Sunday';
+
+  @override
+  String get dayMondayShort => 'M';
+
+  @override
+  String get dayTuesdayShort => 'T';
+
+  @override
+  String get dayWednesdayShort => 'W';
+
+  @override
+  String get dayThursdayShort => 'T';
+
+  @override
+  String get dayFridayShort => 'F';
+
+  @override
+  String get daySaturdayShort => 'S';
+
+  @override
+  String get daySundayShort => 'S';
+
+  @override
+  String snoozeMinutesSemanticLabel(int duration, String selected) {
+    return '$duration minutes snooze, $selected';
+  }
+
+  @override
+  String get selected => 'selected';
+
+  @override
+  String get notSelected => 'not selected';
+
+  @override
+  String inventorySemanticLabel(int current, int total, int percent) {
+    return 'Inventory: $current of $total, $percent%';
+  }
+
+  @override
+  String get dosePackIcon => 'Dose pack icon';
+
+  @override
+  String medicationIconLabel(String shape, String color) {
+    return 'Medication icon: $shape $color';
+  }
+
+  @override
+  String get scheduleTypeDaily => 'Daily';
+
+  @override
+  String get scheduleTypeSpecificDays => 'Specific Days';
+
+  @override
+  String get scheduleTypeInterval => 'Interval';
+
+  @override
+  String get errorLoadingPatients =>
+      'Failed to load patients. Please try again.';
+
+  @override
+  String get onboardingMedStyleTitle => 'How do you receive your medication?';
+
+  @override
+  String get onboardingMedStyleSubtitle => 'We\'ll optimize the app for you';
+
+  @override
+  String get onboardingIndividualPills => 'Individual pills or tablets';
+
+  @override
+  String get onboardingIndividualPillsDesc =>
+      'Separate medications from the pharmacy';
+
+  @override
+  String get onboardingDosePack => 'Dose packs (一包化)';
+
+  @override
+  String get onboardingDosePackDesc =>
+      'Pre-packaged sachets bundling multiple meds';
+
+  @override
+  String get dosageTimingTitle => 'Dosage Timing';
+
+  @override
+  String get dosageTimingMorning => 'Morning';
+
+  @override
+  String get dosageTimingNoon => 'Noon';
+
+  @override
+  String get dosageTimingEvening => 'Evening';
+
+  @override
+  String get dosageTimingBedtime => 'Before Bed';
+
+  @override
+  String get dosageTimingRequired => 'Required';
+
+  @override
+  String get subscriptionTerms =>
+      'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.';
+
+  @override
+  String get selectDosageTiming => 'When do you take it?';
+
+  @override
+  String get adjustTimes => 'Adjust Times';
+
+  @override
+  String timeRangeHint(String timing, String min, String max) {
+    return '$timing: $min:00 ~ $max:59';
+  }
+
+  @override
+  String get pleaseSelectAtLeastOneTiming =>
+      'Please select at least one timing';
+
+  @override
+  String timeOutOfRange(String min, String max) {
+    return 'Time must be between $min:00 and $max:59';
+  }
 }

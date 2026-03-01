@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/repositories/medication_repository.dart';
-import 'package:my_pill/data/services/storage_service.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/enums/pill_shape.dart';
-import 'package:my_pill/data/enums/pill_color.dart';
-import 'package:my_pill/data/enums/dosage_unit.dart';
+import 'package:kusuridoki/data/repositories/medication_repository.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/enums/pill_shape.dart';
+import 'package:kusuridoki/data/enums/pill_color.dart';
+import 'package:kusuridoki/data/enums/dosage_unit.dart';
 
 // Test medication repository logic
 void main() {

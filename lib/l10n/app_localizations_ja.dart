@@ -15,7 +15,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingHeadline => 'あなたの信頼できる服薬管理パートナー';
 
   @override
-  String get onboardingFeature1 => '飲み忘れを防止';
+  String get onboardingFeature1 => '一包化・個別薬に対応';
 
   @override
   String get onboardingFeature2 => 'タイムゾーンをまたいで対応';
@@ -67,6 +67,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardingNameSkip => '今はスキップ';
+
+  @override
+  String get onboardingNameRequired => 'サポートする方にあなたの名前が表示されます';
+
+  @override
+  String get onboardingNameMinLength => '2文字以上入力してください';
 
   @override
   String get onboardingRoleTitle => 'くすりどきをどのように使いますか？';
@@ -460,6 +466,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get extraLarge => '特大';
 
   @override
+  String get features => '機能';
+
+  @override
   String get safetyPrivacy => '安全とプライバシー';
 
   @override
@@ -678,7 +687,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumMonthly => '月額プラン';
 
   @override
-  String get premiumYearly => '年額プラン (34%お得)';
+  String get premiumYearly => '年額プラン';
 
   @override
   String get premiumMonthlyPrice => '¥480/月';
@@ -1126,9 +1135,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get howOften => 'どのくらいの頻度で？';
 
   @override
-  String get howManyTimesPerDay => '1日に何回？';
-
-  @override
   String get whatTimes => '何時に？';
 
   @override
@@ -1145,9 +1151,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get daysUnit => '日';
-
-  @override
-  String get addAnotherTimeLabel => '時間を追加';
 
   @override
   String get dailyDesc => '毎日同じ時間に服用';
@@ -1242,9 +1245,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get inviteLinkGenerated => '招待リンクが生成されました！';
 
   @override
-  String failedToGenerateInvite(String error) {
-    return '招待の生成に失敗しました: $error';
-  }
+  String get failedToGenerateInvite => '招待の生成に失敗しました。もう一度お試しください。';
 
   @override
   String get cannotAddMoreCaregivers => 'これ以上介護者を追加できません';
@@ -1349,4 +1350,165 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get defaultUserName => 'ユーザー';
+
+  @override
+  String get colorWhite => '白';
+
+  @override
+  String get colorBlue => '青';
+
+  @override
+  String get colorYellow => '黄';
+
+  @override
+  String get colorPink => 'ピンク';
+
+  @override
+  String get colorRed => '赤';
+
+  @override
+  String get colorGreen => '緑';
+
+  @override
+  String get colorOrange => 'オレンジ';
+
+  @override
+  String get colorPurple => '紫';
+
+  @override
+  String get dayMonday => '月曜日';
+
+  @override
+  String get dayTuesday => '火曜日';
+
+  @override
+  String get dayWednesday => '水曜日';
+
+  @override
+  String get dayThursday => '木曜日';
+
+  @override
+  String get dayFriday => '金曜日';
+
+  @override
+  String get daySaturday => '土曜日';
+
+  @override
+  String get daySunday => '日曜日';
+
+  @override
+  String get dayMondayShort => '月';
+
+  @override
+  String get dayTuesdayShort => '火';
+
+  @override
+  String get dayWednesdayShort => '水';
+
+  @override
+  String get dayThursdayShort => '木';
+
+  @override
+  String get dayFridayShort => '金';
+
+  @override
+  String get daySaturdayShort => '土';
+
+  @override
+  String get daySundayShort => '日';
+
+  @override
+  String snoozeMinutesSemanticLabel(int duration, String selected) {
+    return 'スヌーズ$duration分、$selected';
+  }
+
+  @override
+  String get selected => '選択中';
+
+  @override
+  String get notSelected => '未選択';
+
+  @override
+  String inventorySemanticLabel(int current, int total, int percent) {
+    return '在庫: $total個中$current個、$percent%';
+  }
+
+  @override
+  String get dosePackIcon => '一包化アイコン';
+
+  @override
+  String medicationIconLabel(String shape, String color) {
+    return 'お薬アイコン: $shape $color';
+  }
+
+  @override
+  String get scheduleTypeDaily => '毎日';
+
+  @override
+  String get scheduleTypeSpecificDays => '曜日指定';
+
+  @override
+  String get scheduleTypeInterval => '間隔指定';
+
+  @override
+  String get errorLoadingPatients => '患者情報の読み込みに失敗しました。もう一度お試しください。';
+
+  @override
+  String get onboardingMedStyleTitle => 'お薬はどのように受け取っていますか？';
+
+  @override
+  String get onboardingMedStyleSubtitle => 'アプリを最適化するために教えてください';
+
+  @override
+  String get onboardingIndividualPills => '個別の薬（錠剤・カプセルなど）';
+
+  @override
+  String get onboardingIndividualPillsDesc => '薬局で一種類ずつ受け取るタイプ';
+
+  @override
+  String get onboardingDosePack => '一包化（分包薬）';
+
+  @override
+  String get onboardingDosePackDesc => '複数の薬をまとめた分包薬';
+
+  @override
+  String get dosageTimingTitle => '服用タイミング';
+
+  @override
+  String get dosageTimingMorning => '朝';
+
+  @override
+  String get dosageTimingNoon => '昼';
+
+  @override
+  String get dosageTimingEvening => '夕';
+
+  @override
+  String get dosageTimingBedtime => '寝る前';
+
+  @override
+  String get dosageTimingRequired => '必須';
+
+  @override
+  String get subscriptionTerms =>
+      'お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。';
+
+  @override
+  String get selectDosageTiming => 'いつ服用しますか？';
+
+  @override
+  String get adjustTimes => '時間を調整';
+
+  @override
+  String timeRangeHint(String timing, String min, String max) {
+    return '$timing: $min:00 ~ $max:59';
+  }
+
+  @override
+  String get pleaseSelectAtLeastOneTiming => '少なくとも1つのタイミングを選択してください';
+
+  @override
+  String timeOutOfRange(String min, String max) {
+    return '時間は$min:00から$max:59の間である必要があります';
+  }
 }

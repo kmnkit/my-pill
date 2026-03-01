@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/data/providers/report_provider.dart';
-import 'package:my_pill/data/providers/subscription_provider.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/data/providers/settings_provider.dart';
-import 'package:my_pill/data/providers/storage_service_provider.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_button.dart';
-import 'package:my_pill/core/constants/app_spacing.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/data/providers/report_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_button.dart';
+import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:go_router/go_router.dart';
 
 enum ReportPeriod { weekly, monthly }
 
@@ -69,7 +70,8 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
       final reportService = ref.read(reportServiceProvider);
       final storageService = ref.read(storageServiceProvider);
       final medications = await ref.read(medicationListProvider.future);
-      final userName = ref.read(userSettingsProvider).value?.name ?? l10n.defaultUserName;
+      final userName =
+          ref.read(userSettingsProvider).value?.name ?? l10n.defaultUserName;
 
       final now = DateTime.now();
       late final File file;
@@ -174,12 +176,9 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              // TODO: Navigate to subscription screen
-              // context.push('/settings/subscription');
+              context.push('/premium');
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
             child: Text(l10n.upgradeToPremium),
           ),
         ],

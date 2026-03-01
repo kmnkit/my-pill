@@ -325,7 +325,7 @@ final class CaregiverPatientsProvider
   }
 }
 
-String _$caregiverPatientsHash() => r'82fb5277076dd524051f9894719c55b72b7fb539';
+String _$caregiverPatientsHash() => r'18659b313f66d52b935cf116eacb5fbd8b20eda8';
 
 @ProviderFor(patientMedicationStatus)
 final patientMedicationStatusProvider = PatientMedicationStatusFamily._();

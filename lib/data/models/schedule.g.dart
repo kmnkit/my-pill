@@ -10,9 +10,10 @@ _Schedule _$ScheduleFromJson(Map<String, dynamic> json) => _Schedule(
   id: json['id'] as String,
   medicationId: json['medicationId'] as String,
   type: $enumDecode(_$ScheduleTypeEnumMap, json['type']),
-  timesPerDay: (json['timesPerDay'] as num?)?.toInt() ?? 1,
-  times:
-      (json['times'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+  dosageSlots:
+      (json['dosageSlots'] as List<dynamic>?)
+          ?.map((e) => DosageTimeSlot.fromJson(e as Map<String, dynamic>))
+          .toList() ??
       const [],
   specificDays:
       (json['specificDays'] as List<dynamic>?)
@@ -30,8 +31,7 @@ Map<String, dynamic> _$ScheduleToJson(_Schedule instance) => <String, dynamic>{
   'id': instance.id,
   'medicationId': instance.medicationId,
   'type': _$ScheduleTypeEnumMap[instance.type]!,
-  'timesPerDay': instance.timesPerDay,
-  'times': instance.times,
+  'dosageSlots': instance.dosageSlots.map((e) => e.toJson()).toList(),
   'specificDays': instance.specificDays,
   'intervalHours': instance.intervalHours,
   'timezoneMode': _$TimezoneModeEnumMap[instance.timezoneMode]!,

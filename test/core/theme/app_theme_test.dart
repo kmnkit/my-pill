@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/core/constants/app_typography.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/constants/app_typography.dart';
 
 void main() {
   group('AppTypography', () {

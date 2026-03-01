@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_pill/data/services/adherence_service.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/services/adherence_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 void main() {
   group('AdherenceService', () {

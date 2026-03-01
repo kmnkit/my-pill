@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/data/providers/medication_provider.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_alert_banner.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_alert_banner.dart';
 
 class LowStockBanner extends ConsumerWidget {
   const LowStockBanner({super.key});
@@ -28,7 +28,10 @@ class LowStockBanner extends ConsumerWidget {
         }
 
         return MpAlertBanner(
-          title: l10n.lowStockAlert(lowStockMed.name, lowStockMed.inventoryRemaining),
+          title: l10n.lowStockAlert(
+            lowStockMed.name,
+            lowStockMed.inventoryRemaining,
+          ),
           icon: Icons.warning_amber_rounded,
           color: AppColors.warning,
           onTap: () {

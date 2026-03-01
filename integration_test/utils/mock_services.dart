@@ -4,15 +4,17 @@ library;
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_pill/data/models/medication.dart';
-import 'package:my_pill/data/models/schedule.dart';
-import 'package:my_pill/data/models/reminder.dart';
-import 'package:my_pill/data/models/adherence_record.dart';
-import 'package:my_pill/data/models/user_profile.dart';
-import 'package:my_pill/data/models/caregiver_link.dart';
-import 'package:my_pill/data/models/subscription_status.dart';
-import 'package:my_pill/data/services/auth_service.dart';
-import 'package:my_pill/data/services/storage_service.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
+import 'package:kusuridoki/data/models/reminder.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/models/caregiver_link.dart';
+import 'package:kusuridoki/data/models/subscription_status.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
+import 'package:kusuridoki/data/services/firestore_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 
 /// Mock implementation of AuthService for testing
 class MockAuthService implements AuthService {
@@ -22,16 +24,50 @@ class MockAuthService implements AuthService {
   bool _shouldFailNextOperation = false;
   String? _failureMessage;
 
+  // Per-method failure flags
+  bool _shouldFailNextGoogleSignIn = false;
+  String? _googleFailureMessage;
+  bool _shouldFailNextAnonymousSignIn = false;
+  String? _anonymousFailureMessage;
+
+  // Completer for holding sign-in in-flight (used in loading-state tests)
+  Completer<void>? _pendingSignInCompleter;
+
   @override
   Stream<User?> get authStateChanges => _authStateController.stream;
 
   @override
   User? get currentUser => _currentUser;
 
-  /// Configure the mock to fail the next operation
+  /// Configure the mock to fail the next operation (any method)
   void setNextOperationToFail([String? message]) {
     _shouldFailNextOperation = true;
     _failureMessage = message ?? 'Mock operation failed';
+  }
+
+  /// Configure the mock to fail the next Google sign-in
+  void setNextGoogleSignInToFail([String? message]) {
+    _shouldFailNextGoogleSignIn = true;
+    _googleFailureMessage = message ?? 'Google sign-in failed';
+  }
+
+  /// Configure the mock to fail the next anonymous sign-in
+  void setNextAnonymousSignInToFail([String? message]) {
+    _shouldFailNextAnonymousSignIn = true;
+    _anonymousFailureMessage = message ?? 'Anonymous sign-in failed';
+  }
+
+  /// Hold the next sign-in in-flight until [releaseSignIn] is called.
+  /// Returns the completer so callers can await it if needed.
+  Completer<void> holdNextSignIn() {
+    _pendingSignInCompleter = Completer<void>();
+    return _pendingSignInCompleter!;
+  }
+
+  /// Release a held sign-in operation.
+  void releaseSignIn() {
+    _pendingSignInCompleter?.complete();
+    _pendingSignInCompleter = null;
   }
 
   /// Set the current user state
@@ -53,8 +89,19 @@ class MockAuthService implements AuthService {
   @override
   Future<UserCredential> signInAnonymously() async {
     _checkFailure();
-    // Return a mock credential - we just update internal state
-    _currentUser = _MockUser(uid: 'anonymous-${DateTime.now().millisecondsSinceEpoch}');
+    if (_shouldFailNextAnonymousSignIn) {
+      _shouldFailNextAnonymousSignIn = false;
+      throw FirebaseAuthException(
+        code: 'mock-error',
+        message: _anonymousFailureMessage ?? 'Anonymous sign-in failed',
+      );
+    }
+    if (_pendingSignInCompleter != null) {
+      await _pendingSignInCompleter!.future;
+    }
+    _currentUser = _MockUser(
+      uid: 'anonymous-${DateTime.now().millisecondsSinceEpoch}',
+    );
     _authStateController.add(_currentUser);
     return _MockUserCredential(_currentUser);
   }
@@ -62,6 +109,16 @@ class MockAuthService implements AuthService {
   @override
   Future<UserCredential?> signInWithGoogle() async {
     _checkFailure();
+    if (_shouldFailNextGoogleSignIn) {
+      _shouldFailNextGoogleSignIn = false;
+      throw FirebaseAuthException(
+        code: 'mock-error',
+        message: _googleFailureMessage ?? 'Google sign-in failed',
+      );
+    }
+    if (_pendingSignInCompleter != null) {
+      await _pendingSignInCompleter!.future;
+    }
     _currentUser = _MockUser(
       uid: 'google-user-1',
       email: 'test@gmail.com',
@@ -146,11 +203,7 @@ class _MockUser implements User {
   @override
   final String? displayName;
 
-  _MockUser({
-    required this.uid,
-    this.email,
-    this.displayName,
-  });
+  _MockUser({required this.uid, this.email, this.displayName});
 
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -322,14 +375,17 @@ class MockStorageService implements StorageService {
     }
     if (startDate != null) {
       records = records
-          .where((r) =>
-              r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate))
+          .where(
+            (r) =>
+                r.date.isAfter(startDate) || r.date.isAtSameMomentAs(startDate),
+          )
           .toList();
     }
     if (endDate != null) {
       records = records
-          .where((r) =>
-              r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate))
+          .where(
+            (r) => r.date.isBefore(endDate) || r.date.isAtSameMomentAs(endDate),
+          )
           .toList();
     }
 
@@ -415,6 +471,17 @@ class MockStorageService implements StorageService {
     // No-op for testing
   }
 
+  // --- Generic Settings ---
+  final Map<String, String> _settings = {};
+
+  @override
+  Future<String?> getSetting(String key) async => _settings[key];
+
+  @override
+  Future<void> saveSetting(String key, String value) async {
+    _settings[key] = value;
+  }
+
   /// Get current state for assertions
   Map<String, Medication> get medications => Map.unmodifiable(_medications);
   Map<String, Schedule> get schedules => Map.unmodifiable(_schedules);
@@ -453,13 +520,15 @@ class MockNotificationService {
     required String dosage,
     required DateTime scheduledTime,
   }) async {
-    _scheduledNotifications.add(ScheduledNotification(
-      id: id,
-      medicationName: medicationName,
-      dosage: dosage,
-      scheduledTime: scheduledTime,
-      isCritical: false,
-    ));
+    _scheduledNotifications.add(
+      ScheduledNotification(
+        id: id,
+        medicationName: medicationName,
+        dosage: dosage,
+        scheduledTime: scheduledTime,
+        isCritical: false,
+      ),
+    );
   }
 
   Future<void> scheduleCriticalReminder({
@@ -468,13 +537,15 @@ class MockNotificationService {
     required String dosage,
     required DateTime scheduledTime,
   }) async {
-    _scheduledNotifications.add(ScheduledNotification(
-      id: id,
-      medicationName: medicationName,
-      dosage: dosage,
-      scheduledTime: scheduledTime,
-      isCritical: true,
-    ));
+    _scheduledNotifications.add(
+      ScheduledNotification(
+        id: id,
+        medicationName: medicationName,
+        dosage: dosage,
+        scheduledTime: scheduledTime,
+        isCritical: true,
+      ),
+    );
   }
 
   Future<void> cancelReminder(String id) async {
@@ -521,6 +592,98 @@ class ScheduledNotification {
   });
 }
 
+/// Mock implementation of CloudFunctionsService for testing
+class MockCloudFunctionsService implements CloudFunctionsService {
+  bool _shouldFailNextOperation = false;
+  String? _failureMessage;
+
+  /// Configure the mock to fail the next operation
+  void setNextOperationToFail([String? message]) {
+    _shouldFailNextOperation = true;
+    _failureMessage = message ?? 'Mock operation failed';
+  }
+
+  void _checkFailure() {
+    if (_shouldFailNextOperation) {
+      _shouldFailNextOperation = false;
+      throw Exception(_failureMessage ?? 'Mock operation failed');
+    }
+  }
+
+  @override
+  Future<({String url, String code})> generateInviteLink() async {
+    _checkFailure();
+    return (
+      url: 'https://app.kusuridoki.com/invite/test-code-123',
+      code: 'test-code-123',
+    );
+  }
+
+  @override
+  Future<String> acceptInvite(String code) async {
+    _checkFailure();
+    return 'patient-1';
+  }
+
+  @override
+  Future<void> revokeAccess({
+    required String caregiverId,
+    required String linkId,
+  }) async {
+    _checkFailure();
+  }
+
+  @override
+  Future<void> verifyReceipt({
+    required String productId,
+    required String purchaseToken,
+    required String source,
+  }) async {
+    _checkFailure();
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    _checkFailure();
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+/// Mock implementation of FirestoreService for caregiver monitoring tests
+class MockFirestoreService implements FirestoreService {
+  final List<Map<String, dynamic>> _patients;
+  final List<Medication> _patientMedications;
+  final List<Reminder> _patientReminders;
+
+  MockFirestoreService({
+    List<Map<String, dynamic>>? patients,
+    List<Medication>? patientMedications,
+    List<Reminder>? patientReminders,
+  })  : _patients = patients ?? [],
+        _patientMedications = patientMedications ?? [],
+        _patientReminders = patientReminders ?? [];
+
+  @override
+  Stream<List<Map<String, dynamic>>> watchLinkedPatients() {
+    return Stream.value(_patients);
+  }
+
+  @override
+  Stream<List<Medication>> watchPatientMedications(String patientId) {
+    return Stream.value(_patientMedications);
+  }
+
+  @override
+  Stream<List<Reminder>> watchPatientReminders(String patientId) {
+    return Stream.value(_patientReminders);
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
 /// Mock implementation of SubscriptionService for testing
 class MockSubscriptionService {
   final StreamController<SubscriptionStatus> _statusController =
@@ -551,14 +714,12 @@ class MockSubscriptionService {
   }
 
   Future<bool> purchaseMonthly() async {
-    setPremium(true,
-        expiresAt: DateTime.now().add(const Duration(days: 30)));
+    setPremium(true, expiresAt: DateTime.now().add(const Duration(days: 30)));
     return true;
   }
 
   Future<bool> purchaseYearly() async {
-    setPremium(true,
-        expiresAt: DateTime.now().add(const Duration(days: 365)));
+    setPremium(true, expiresAt: DateTime.now().add(const Duration(days: 365)));
     return true;
   }
 

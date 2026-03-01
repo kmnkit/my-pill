@@ -4,44 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — Kusuridoki (くすりどき)</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F0FDFA',
+              100: '#CCFBF1',
+              200: '#99F6E4',
+              400: '#2DD4BF',
+              500: '#0D9488',
+              600: '#0EA699',
+              700: '#0F766E',
+              800: '#065F56',
+              900: '#134E4A',
+            },
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
   <style>
-    :root { --bg: #f8f9fa; --card: #fff; --text: #1a1a2e; --muted: #555; --accent: #4a90d9; --border: #e0e0e0; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-    .container { max-width: 720px; margin: 0 auto; padding: 40px 24px; }
-    .card { background: var(--card); border-radius: 12px; padding: 40px 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    h1 { font-size: 1.8rem; margin-bottom: 8px; }
-    h2 { font-size: 1.2rem; margin-top: 28px; margin-bottom: 8px; color: var(--accent); }
-    p, li { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; }
-    ul { padding-left: 20px; }
-    .lang-switch { text-align: right; margin-bottom: 16px; }
-    .lang-switch a { text-decoration: none; color: var(--accent); font-size: 0.9rem; padding: 4px 12px; border: 1px solid var(--accent); border-radius: 6px; }
-    .lang-switch a:hover { background: var(--accent); color: #fff; }
-    .updated { font-size: 0.85rem; color: #999; margin-bottom: 24px; }
-    .contact { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
-    footer { text-align: center; padding: 24px; font-size: 0.8rem; color: #999; }
     .section { display: block; }
     .hidden { display: none; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="card">
-      <div class="lang-switch">
-        <a href="#" onclick="switchLang('en'); return false;" id="btn-en">English</a>
-        <a href="#" onclick="switchLang('ja'); return false;" id="btn-ja">日本語</a>
-      </div>
+<body class="bg-brand-50 text-gray-900 font-sans leading-relaxed">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-brand-500 via-brand-600 to-brand-800 text-white py-8">
+    <div class="max-w-3xl mx-auto px-6">
+      <a href="/" class="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mb-4 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        <span id="home-en">Home</span><span id="home-ja" class="hidden">ホームへ戻る</span>
+      </a>
+      <h1 class="text-2xl md:text-3xl font-bold" id="header-en">Privacy Policy</h1>
+      <h1 class="text-2xl md:text-3xl font-bold hidden" id="header-ja">プライバシーポリシー</h1>
+    </div>
+  </header>
+
+  <!-- Language Switch -->
+  <div class="max-w-3xl mx-auto px-6 pt-6 flex justify-end">
+    <div class="inline-flex rounded-full border border-brand-500 overflow-hidden">
+      <button onclick="switchLang('en')" id="btn-en" class="px-4 py-1.5 text-sm font-medium transition-colors bg-brand-500 text-white">English</button>
+      <button onclick="switchLang('ja')" id="btn-ja" class="px-4 py-1.5 text-sm font-medium transition-colors text-brand-500">日本語</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="max-w-3xl mx-auto px-6 py-8 pb-16">
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-8 md:p-10">
 
       <!-- English -->
       <div id="en" class="section">
-        <h1>Privacy Policy</h1>
-        <p class="updated">Last updated: February 23, 2026</p>
+        <p class="text-sm text-gray-400 mb-6">Last updated: February 23, 2026</p>
 
-        <p>Kusuridoki ("we", "our", "the app") is a medication management application. We are committed to protecting your privacy and handling your data responsibly.</p>
+        <p class="text-gray-600 mb-6">Kusuridoki ("we", "our", "the app") is a medication management application. We are committed to protecting your privacy and handling your data responsibly.</p>
 
-        <h2>1. Information We Collect</h2>
-        <p>We collect the following types of information:</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">1. Information We Collect</h2>
+        <p class="text-gray-600 mb-3">We collect the following types of information:</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>Account information:</strong> When you sign in with Apple or Google, we receive your name and email address (or Apple's private relay email). Anonymous sign-in collects no personal information.</li>
           <li><strong>Medication data:</strong> Medication names, dosages, schedules, and adherence records you enter.</li>
           <li><strong>Photos:</strong> Optional pill photos you take, stored locally with AES-256 encryption.</li>
@@ -49,8 +83,8 @@
           <li><strong>Device information:</strong> Timezone, language preference, and push notification tokens for delivering reminders.</li>
         </ul>
 
-        <h2>2. How We Use Your Information</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">2. How We Use Your Information</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Deliver medication reminders and track adherence</li>
           <li>Sync your data across devices via Firebase Cloud Firestore</li>
           <li>Enable caregiver monitoring (only with your explicit consent)</li>
@@ -58,8 +92,8 @@
           <li>Display personalized ads via Google AdMob (free tier)</li>
         </ul>
 
-        <h2>3. Data Storage and Security</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">3. Data Storage and Security</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Local data is encrypted using Hive with AES encryption</li>
           <li>Pill photos are encrypted with AES-256 before storage</li>
           <li>Cloud data is stored in Firebase (Google Cloud) with user-scoped security rules</li>
@@ -67,55 +101,54 @@
           <li>All network communication uses HTTPS</li>
         </ul>
 
-        <h2>4. Data Sharing</h2>
-        <p>We do not sell your personal data. Data is shared only in these cases:</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">4. Data Sharing</h2>
+        <p class="text-gray-600 mb-3">We do not sell your personal data. Data is shared only in these cases:</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>Caregivers:</strong> Medication status is shared with caregivers you explicitly link</li>
           <li><strong>Google AdMob:</strong> Advertising identifiers for displaying ads (you can opt out via device settings)</li>
           <li><strong>Firebase Analytics:</strong> Anonymized usage data for app improvement</li>
         </ul>
 
-        <h2>5. Third-Party Services</h2>
-        <p>The app uses the following third-party services:</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. Third-Party Services</h2>
+        <p class="text-gray-600 mb-3">The app uses the following third-party services:</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Firebase Authentication, Firestore, Cloud Functions, Cloud Messaging (Google)</li>
           <li>Google AdMob (advertising)</li>
           <li>Apple Sign-In (authentication)</li>
         </ul>
-        <p>Each service has its own privacy policy. Please refer to <a href="https://policies.google.com/privacy">Google's Privacy Policy</a> and <a href="https://www.apple.com/legal/privacy/">Apple's Privacy Policy</a>.</p>
+        <p class="text-gray-600 mb-4">Each service has its own privacy policy. Please refer to <a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Google's Privacy Policy</a> and <a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Apple's Privacy Policy</a>.</p>
 
-        <h2>6. Your Rights</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. Your Rights</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>Access:</strong> View all your data within the app</li>
           <li><strong>Export:</strong> Generate PDF reports of your adherence data</li>
           <li><strong>Deletion:</strong> Delete your account from Settings. This permanently removes all server-side data including subcollections, caregiver links, and authentication records</li>
           <li><strong>Revoke caregiver access:</strong> Remove linked caregivers at any time from Settings</li>
         </ul>
-        <p>These rights comply with Japan's Act on the Protection of Personal Information (APPI) and the EU General Data Protection Regulation (GDPR).</p>
+        <p class="text-gray-600 mb-4">These rights comply with Japan's Act on the Protection of Personal Information (APPI) and the EU General Data Protection Regulation (GDPR).</p>
 
-        <h2>7. Children's Privacy</h2>
-        <p>This app is not intended for children under 13. We do not knowingly collect data from children under 13. If you believe we have collected such data, please contact us.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. Children's Privacy</h2>
+        <p class="text-gray-600 mb-4">This app is not intended for children under 13. We do not knowingly collect data from children under 13. If you believe we have collected such data, please contact us.</p>
 
-        <h2>8. Changes to This Policy</h2>
-        <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the app after changes constitutes acceptance.</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">8. Changes to This Policy</h2>
+        <p class="text-gray-600 mb-4">We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the app after changes constitutes acceptance.</p>
 
-        <div class="contact">
-          <h2>9. Contact Us</h2>
-          <p>If you have questions about this privacy policy, please contact us at:</p>
-          <p><strong>Email:</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h2 class="text-lg font-bold text-brand-500 mb-3">9. Contact Us</h2>
+          <p class="text-gray-600 mb-2">If you have questions about this privacy policy, please contact us at:</p>
+          <p class="text-gray-600"><strong>Email:</strong> <a href="mailto:support@kusuridoki.app" class="text-brand-500 hover:text-brand-700 transition-colors">support@kusuridoki.app</a></p>
         </div>
       </div>
 
       <!-- Japanese -->
       <div id="ja" class="section hidden">
-        <h1>プライバシーポリシー</h1>
-        <p class="updated">最終更新日: 2026年2月23日</p>
+        <p class="text-sm text-gray-400 mb-6">最終更新日: 2026年2月23日</p>
 
-        <p>くすりどき（以下「当アプリ」）は、お薬管理アプリケーションです。お客様のプライバシーを保護し、データを適切に取り扱うことに努めています。</p>
+        <p class="text-gray-600 mb-6">くすりどき（以下「当アプリ」）は、お薬管理アプリケーションです。お客様のプライバシーを保護し、データを適切に取り扱うことに努めています。</p>
 
-        <h2>1. 収集する情報</h2>
-        <p>当アプリは以下の情報を収集します：</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">1. 収集する情報</h2>
+        <p class="text-gray-600 mb-3">当アプリは以下の情報を収集します：</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>アカウント情報：</strong>AppleまたはGoogleでサインインする際、お名前とメールアドレス（またはAppleのプライベートリレーメール）を取得します。匿名サインインでは個人情報を収集しません。</li>
           <li><strong>お薬データ：</strong>ご入力いただくお薬の名前、用量、スケジュール、服薬記録。</li>
           <li><strong>写真：</strong>任意で撮影するお薬の写真（AES-256暗号化でローカル保存）。</li>
@@ -123,8 +156,8 @@
           <li><strong>デバイス情報：</strong>タイムゾーン、言語設定、リマインダー配信用プッシュ通知トークン。</li>
         </ul>
 
-        <h2>2. 情報の利用目的</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">2. 情報の利用目的</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>お薬リマインダーの配信と服薬状況の記録</li>
           <li>Firebase Cloud Firestoreを介したデバイス間データ同期</li>
           <li>見守り機能の提供（お客様の明示的な同意がある場合のみ）</li>
@@ -132,8 +165,8 @@
           <li>Google AdMobによる広告表示（無料プラン）</li>
         </ul>
 
-        <h2>3. データの保存とセキュリティ</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">3. データの保存とセキュリティ</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>ローカルデータはHive + AES暗号化で保護</li>
           <li>お薬の写真はAES-256で暗号化してから保存</li>
           <li>クラウドデータはFirebase（Google Cloud）にユーザー単位のセキュリティルールで保存</li>
@@ -141,57 +174,100 @@
           <li>すべての通信はHTTPSを使用</li>
         </ul>
 
-        <h2>4. データの共有</h2>
-        <p>当アプリはお客様の個人データを販売しません。以下の場合にのみデータを共有します：</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">4. データの共有</h2>
+        <p class="text-gray-600 mb-3">当アプリはお客様の個人データを販売しません。以下の場合にのみデータを共有します：</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>見守り者：</strong>お客様が明示的にリンクした見守り者に服薬状況を共有</li>
           <li><strong>Google AdMob：</strong>広告表示のための広告識別子（デバイス設定でオプトアウト可能）</li>
           <li><strong>Firebase Analytics：</strong>アプリ改善のための匿名化された利用データ</li>
         </ul>
 
-        <h2>5. 第三者サービス</h2>
-        <p>当アプリは以下の第三者サービスを利用しています：</p>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. 第三者サービス</h2>
+        <p class="text-gray-600 mb-3">当アプリは以下の第三者サービスを利用しています：</p>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li>Firebase Authentication、Firestore、Cloud Functions、Cloud Messaging（Google）</li>
           <li>Google AdMob（広告）</li>
           <li>Appleサインイン（認証）</li>
         </ul>
-        <p>各サービスには独自のプライバシーポリシーがあります。<a href="https://policies.google.com/privacy">Googleのプライバシーポリシー</a>および<a href="https://www.apple.com/legal/privacy/">Appleのプライバシーポリシー</a>をご参照ください。</p>
+        <p class="text-gray-600 mb-4">各サービスには独自のプライバシーポリシーがあります。<a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Googleのプライバシーポリシー</a>および<a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Appleのプライバシーポリシー</a>をご参照ください。</p>
 
-        <h2>6. お客様の権利</h2>
-        <ul>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. お客様の権利</h2>
+        <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>アクセス：</strong>アプリ内でご自身のデータをすべて閲覧可能</li>
           <li><strong>エクスポート：</strong>服薬データのPDFレポートを生成可能</li>
           <li><strong>削除：</strong>設定からアカウントを削除できます。サーバー側のすべてのデータ（サブコレクション、見守りリンク、認証情報を含む）が完全に削除されます</li>
           <li><strong>見守りアクセスの取消：</strong>設定からいつでもリンク済みの見守り者を削除可能</li>
         </ul>
-        <p>これらの権利は、日本の個人情報保護法（APPI）およびEU一般データ保護規則（GDPR）に準拠しています。</p>
+        <p class="text-gray-600 mb-4">これらの権利は、日本の個人情報保護法（APPI）およびEU一般データ保護規則（GDPR）に準拠しています。</p>
 
-        <h2>7. お子様のプライバシー</h2>
-        <p>当アプリは13歳未満のお子様を対象としていません。13歳未満のお子様のデータを意図的に収集することはありません。該当するデータを収集した可能性がある場合は、お問い合わせください。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. お子様のプライバシー</h2>
+        <p class="text-gray-600 mb-4">当アプリは13歳未満のお子様を対象としていません。13歳未満のお子様のデータを意図的に収集することはありません。該当するデータを収集した可能性がある場合は、お問い合わせください。</p>
 
-        <h2>8. ポリシーの変更</h2>
-        <p>本ポリシーは随時更新される場合があります。変更は本ページに更新日とともに掲載されます。変更後のアプリの継続利用は、変更への同意とみなされます。</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">8. ポリシーの変更</h2>
+        <p class="text-gray-600 mb-4">本ポリシーは随時更新される場合があります。変更は本ページに更新日とともに掲載されます。変更後のアプリの継続利用は、変更への同意とみなされます。</p>
 
-        <div class="contact">
-          <h2>9. お問い合わせ</h2>
-          <p>本プライバシーポリシーに関するご質問は、以下までご連絡ください：</p>
-          <p><strong>メール：</strong> <a href="mailto:support@hobbylabo.dev">support@hobbylabo.dev</a></p>
+        <div class="mt-8 pt-6 border-t border-gray-200">
+          <h2 class="text-lg font-bold text-brand-500 mb-3">9. お問い合わせ</h2>
+          <p class="text-gray-600 mb-2">本プライバシーポリシーに関するご質問は、以下までご連絡ください：</p>
+          <p class="text-gray-600"><strong>メール：</strong> <a href="mailto:support@kusuridoki.app" class="text-brand-500 hover:text-brand-700 transition-colors">support@kusuridoki.app</a></p>
         </div>
       </div>
+
     </div>
-  </div>
-  <footer>&copy; 2026 Kusuridoki (くすりどき). All rights reserved.</footer>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="/privacy-policy#ja" class="hover:text-white transition-colors">プライバシーポリシー</a>
+        <a href="/terms#ja" class="hover:text-white transition-colors">利用規約</a>
+        <a href="/support#ja" class="hover:text-white transition-colors">サポート</a>
+        <a href="mailto:support@kusuridoki.app" class="hover:text-white transition-colors">お問い合わせ</a>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+        <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="/support" class="hover:text-white transition-colors">Support</a>
+        <a href="mailto:support@kusuridoki.app" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center">
+        <p class="text-xs text-gray-500 mb-4 max-w-lg mx-auto leading-relaxed">
+          ※ This app is not a medical device and does not replace professional medical advice.
+        </p>
+        <p class="text-xs text-gray-500">&copy; 2026 HobbyLabo. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
   <script>
     function switchLang(lang) {
       document.getElementById('en').classList.toggle('hidden', lang !== 'en');
       document.getElementById('ja').classList.toggle('hidden', lang !== 'ja');
-      document.getElementById('btn-en').style.opacity = lang === 'en' ? '1' : '0.5';
-      document.getElementById('btn-ja').style.opacity = lang === 'ja' ? '1' : '0.5';
+      // Header
+      document.getElementById('header-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('header-ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('home-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('home-ja').classList.toggle('hidden', lang !== 'ja');
+      // Pill buttons
+      const btnEn = document.getElementById('btn-en');
+      const btnJa = document.getElementById('btn-ja');
+      if (lang === 'en') {
+        btnEn.classList.add('bg-brand-500', 'text-white');
+        btnEn.classList.remove('text-brand-500');
+        btnJa.classList.remove('bg-brand-500', 'text-white');
+        btnJa.classList.add('text-brand-500');
+      } else {
+        btnJa.classList.add('bg-brand-500', 'text-white');
+        btnJa.classList.remove('text-brand-500');
+        btnEn.classList.remove('bg-brand-500', 'text-white');
+        btnEn.classList.add('text-brand-500');
+      }
     }
-    // Default to browser language
-    const isJa = navigator.language.startsWith('ja');
-    switchLang(isJa ? 'ja' : 'en');
+    // Default: hash or browser language
+    const hash = window.location.hash.replace('#', '');
+    const defaultLang = (hash === 'ja' || hash === 'en') ? hash : (navigator.language.startsWith('ja') ? 'ja' : 'en');
+    switchLang(defaultLang);
   </script>
 </body>
 </html>

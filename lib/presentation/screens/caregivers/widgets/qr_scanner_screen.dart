@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:my_pill/core/constants/app_colors.dart';
-import 'package:my_pill/l10n/app_localizations.dart';
-import 'package:my_pill/presentation/shared/widgets/mp_app_bar.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/presentation/shared/widgets/mp_app_bar.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
@@ -69,9 +69,9 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               child: Text(
                 l10n.positionQrCode,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
             ),
           ),
