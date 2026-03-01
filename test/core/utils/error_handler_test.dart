@@ -60,5 +60,40 @@ void main() {
         );
       });
     });
+
+    group('captureException', () {
+      test('does not throw in debug mode', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('test error'),
+            StackTrace.current,
+            'testContext',
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('does not throw with null stackTrace', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('test error'),
+            null,
+            'testContext',
+          ),
+          returnsNormally,
+        );
+      });
+
+      test('does not throw for permissionDenied errors', () {
+        expect(
+          () => ErrorHandler.captureException(
+            Exception('permission-denied'),
+            StackTrace.current,
+            'authContext',
+          ),
+          returnsNormally,
+        );
+      });
+    });
   });
 }

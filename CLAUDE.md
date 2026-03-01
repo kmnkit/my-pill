@@ -36,6 +36,7 @@ flutter pub get                                                    # Install dep
 dart run build_runner build --delete-conflicting-outputs            # Code generation (Freezed, Riverpod, JSON)
 flutter gen-l10n                                                   # Generate l10n from ARB files
 flutter run                                                        # Run app
+flutter run --dart-define=SENTRY_DSN=<your-dsn>                    # Run with Sentry error reporting
 flutter test                                                       # Run all tests
 flutter analyze                                                    # Static analysis
 flutter clean && flutter pub get                                   # Clean rebuild
@@ -68,13 +69,13 @@ Clean Architecture with Riverpod, Freezed, GoRouter.
 
 ```
 lib/
-├── main.dart                    # Entry: Hive init, Firebase init, ProviderScope
+├── main.dart                    # Entry: Sentry init, Hive init, Firebase init, ProviderScope
 ├── app.dart                     # MaterialApp.router (themes, l10n, GoRouter)
 ├── firebase_options.dart        # Firebase config (auto-generated)
 ├── core/
 │   ├── constants/               # AppColors, AppSpacing, AppTypography
 │   ├── theme/                   # AppTheme, GlassDecoration
-│   ├── utils/                   # ErrorHandler, TimezoneUtils, AppleAuthErrorMessages
+│   ├── utils/                   # ErrorHandler, SentryScrubber, TimezoneUtils, AppleAuthErrorMessages
 │   └── extensions/              # (Dart extension methods)
 ├── data/
 │   ├── enums/                   # PillShape, PillColor, DosageUnit, DosageTiming,
@@ -164,6 +165,7 @@ GoRouter with two `StatefulShellRoute.indexedStack` shells:
 | Deep Links | app_links |
 | Home Widget | home_widget |
 | Utilities | intl, timezone, uuid, share_plus, url_launcher, path_provider, collection |
+| Error Monitoring | sentry_flutter |
 | Security | flutter_secure_storage |
 | Code Gen | freezed, freezed_annotation, json_serializable, json_annotation, riverpod_generator, build_runner |
 

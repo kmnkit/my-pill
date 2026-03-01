@@ -40,9 +40,9 @@ abstract final class AppColors {
   static const Color pillOrange = Color(0xFFF59E0B);
   static const Color pillPurple = Color(0xFF8B5CF6);
 
-  // Nav Bar Unselected (neutral blue-gray, hue 218-220 — distinct from teal hue 174-176)
-  static const Color navUnselectedLight = Color(0xFF6B7280); // H=220 S=9% L=46%
-  static const Color navUnselectedDark = Color(0xFF9CA3AF);  // H=218 S=11% L=65%
+  // Nav Bar Unselected (teal-gray, hue 175-176 — consistent with primary teal theme)
+  static const Color navUnselectedLight = Color(0xFF608A87); // H=176 S=18% L=46%
+  static const Color navUnselectedDark = Color(0xFF94ADAB);  // H=175 S=13% L=63%
 
   // Borders
   static const Color borderLight = Color(0xFFE2E8F0);

@@ -2,11 +2,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz_lib;
 
 void main() {
   late ProviderContainer container;
 
   setUp(() {
+    tz.initializeTimeZones();
+    // Explicitly set local timezone so tests are deterministic regardless of
+    // what other test files do to global tz state (e.g. reminder_provider_test
+    // resets tz.local to UTC via initializeTimeZones).
+    tz_lib.setLocalLocation(tz_lib.getLocation('America/New_York'));
     container = ProviderContainer();
   });
 

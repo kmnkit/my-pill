@@ -15,18 +15,21 @@ class ScheduleList extends _$ScheduleList {
   Future<void> addSchedule(Schedule schedule) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveSchedule(schedule);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 
   Future<void> updateSchedule(Schedule schedule) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveSchedule(schedule);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 
   Future<void> deleteSchedule(String id) async {
     final storage = ref.read(storageServiceProvider);
     await storage.deleteSchedule(id);
+    if (!ref.mounted) return;
     ref.invalidateSelf();
   }
 }

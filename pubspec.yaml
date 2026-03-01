@@ -1,7 +1,7 @@
 name: kusuridoki
 description: "Kusuridoki - Your reliable medication companion"
 publish_to: 'none'
-version: 1.0.0+4
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.8
@@ -54,6 +54,8 @@ dependencies:
   collection: ^1.19.1
   # Security
   flutter_secure_storage: ^9.2.4
+  # Error Monitoring
+  sentry_flutter: ^9.0.0
   # PDF Generation
   pdf: ^3.11.3
   printing: ^5.14.2
@@ -74,10 +76,13 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
 
 flutter_launcher_icons:
-  android: false
+  android: true
   ios: true
   image_path: "assets/icons/app_icon.png"
   remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#0D968B"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
 
 flutter:
   uses-material-design: true

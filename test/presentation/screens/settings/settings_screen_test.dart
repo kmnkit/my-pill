@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
@@ -279,7 +277,7 @@ void main() {
 
       // l10n: unlockPremium -> "Upgrade to Premium"
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows premium status banner for premium user', (tester) async {
       await tester.pumpWidget(
@@ -294,7 +292,7 @@ void main() {
       expect(find.text("You're a Premium member"), findsOneWidget);
       // l10n: manageSubscription -> "Manage Subscription"
       expect(find.text('Manage Subscription'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows premium expiry date when subscription has expiry', (
       tester,
@@ -309,7 +307,7 @@ void main() {
 
       // l10n: premiumExpiresAt('2030-12-31') contains the date
       expect(find.textContaining('2030'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows current plan text when premium has no expiry date', (
       tester,
@@ -325,14 +323,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Current Plan'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('retry button in error state invalidates provider', (
       tester,
     ) async {
-      // Track how many times build() is called
-      var buildCount = 0;
-
       // Build a notifier that fails the first time, succeeds the second
       // We can't easily toggle state in a Fake, so we just verify tap doesn't crash
       await tester.pumpWidget(

@@ -18,7 +18,7 @@ class AppleSignInException implements Exception {
 }
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
 
   // Current user stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();

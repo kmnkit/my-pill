@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
-import 'package:kusuridoki/data/services/storage_service.dart';
 
 // Reuse the MockStorageService generated for settings_provider_test
 import 'settings_provider_test.mocks.dart';

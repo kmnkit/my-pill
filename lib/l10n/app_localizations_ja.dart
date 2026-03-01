@@ -69,6 +69,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingNameSkip => '今はスキップ';
 
   @override
+  String get onboardingNameRequired => 'サポートする方にあなたの名前が表示されます';
+
+  @override
+  String get onboardingNameMinLength => '2文字以上入力してください';
+
+  @override
   String get onboardingRoleTitle => 'くすりどきをどのように使いますか？';
 
   @override

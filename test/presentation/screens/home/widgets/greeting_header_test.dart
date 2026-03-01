@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';

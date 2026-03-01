@@ -136,7 +136,7 @@ class _OnboardingTimezoneStepState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Back button
+          // Back button — fixed at top
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton.icon(
@@ -146,77 +146,81 @@ class _OnboardingTimezoneStepState
             ),
           ),
 
-          const Spacer(),
+          // Center content — scrollable to survive keyboard transition
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: AppSpacing.xxxl),
 
-          // Center content
-          Column(
-            children: [
-              // Icon
-              Icon(Icons.access_time, size: 80, color: AppColors.primary),
-              const SizedBox(height: AppSpacing.xl),
+                  // Icon
+                  Icon(Icons.access_time, size: 80, color: AppColors.primary),
+                  const SizedBox(height: AppSpacing.xl),
 
-              // Title
-              Text(
-                l10n.onboardingTimezoneTitle,
-                style: textTheme.headlineLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.md),
-
-              // Subtitle
-              Text(
-                l10n.onboardingTimezoneSubtitle,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: context.appColors.textMuted,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppSpacing.xxxl),
-
-              // Detected timezone display
-              MpCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(
-                        l10n.onboardingTimezoneDetected,
-                        style: textTheme.labelLarge?.copyWith(
-                          color: context.appColors.textMuted,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Text(
-                        _selectedTimezone,
-                        style: textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        _formatTimezone(_selectedTimezone),
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
+                  // Title
+                  Text(
+                    l10n.onboardingTimezoneTitle,
+                    style: textTheme.headlineLarge,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.md),
 
-              // Change timezone button
-              TextButton.icon(
-                onPressed: _showTimezonePicker,
-                icon: const Icon(Icons.edit),
-                label: Text(l10n.onboardingTimezoneChange),
+                  // Subtitle
+                  Text(
+                    l10n.onboardingTimezoneSubtitle,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: context.appColors.textMuted,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSpacing.xxxl),
+
+                  // Detected timezone display
+                  MpCard(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.onboardingTimezoneDetected,
+                            style: textTheme.labelLarge?.copyWith(
+                              color: context.appColors.textMuted,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            _selectedTimezone,
+                            style: textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          Text(
+                            _formatTimezone(_selectedTimezone),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Change timezone button
+                  TextButton.icon(
+                    onPressed: _showTimezonePicker,
+                    icon: const Icon(Icons.edit),
+                    label: Text(l10n.onboardingTimezoneChange),
+                  ),
+
+                  const SizedBox(height: AppSpacing.xxxl),
+                ],
               ),
-            ],
+            ),
           ),
 
-          const Spacer(),
-
-          // Next button
+          // Next button — fixed at bottom
           MpButton(
             label: l10n.onboardingNext,
             onPressed: widget.onNext,

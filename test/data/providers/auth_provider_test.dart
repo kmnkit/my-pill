@@ -65,7 +65,7 @@ void main() {
       addTearDown(container.dispose);
 
       // Listen to trigger provider evaluation
-      container.listen(authStateProvider, (_, __) {});
+      container.listen(authStateProvider, (_, _) {});
 
       controller.add(null);
       await container.pump();
@@ -87,7 +87,7 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      container.listen(authStateProvider, (_, __) {});
+      container.listen(authStateProvider, (_, _) {});
       container.read(authStateProvider);
 
       verify(mockService.authStateChanges).called(1);

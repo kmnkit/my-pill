@@ -1,5 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -17,8 +21,27 @@ import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
 
+import '../../mock_firebase.dart';
+
 @GenerateMocks([StorageService])
 import 'reminder_provider_test.mocks.dart';
+
+/// No-op stub for [FlutterLocalNotificationsPlatform] so unit tests
+/// don't require a real notification platform.
+class _StubLocalNotificationsPlatform
+    extends FlutterLocalNotificationsPlatform {
+  @override
+  Future<void> cancel({required int id}) async {}
+  @override
+  Future<void> cancelAll() async {}
+  @override
+  Future<void> cancelAllPendingNotifications() async {}
+  @override
+  Future<List<PendingNotificationRequest>>
+  pendingNotificationRequests() async => [];
+  @override
+  Future<List<ActiveNotification>> getActiveNotifications() async => [];
+}
 
 /// Intercept all platform channels used by [NotificationService] and
 /// [FirebaseMessaging] so that unit tests do not require a real device or
@@ -26,6 +49,14 @@ import 'reminder_provider_test.mocks.dart';
 /// response.
 void _stubNotificationChannels() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setupFirebaseAuthMocks();
+  tz.initializeTimeZones();
+  // Use macOS target so zonedSchedule's Android branch (with !) is not taken.
+  // The macOS branch uses ?. so a non-MacOS stub results in a safe no-op.
+  debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+  addTearDown(() => debugDefaultTargetPlatformOverride = null);
+  FlutterLocalNotificationsPlatform.instance =
+      _StubLocalNotificationsPlatform();
   final messenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
 
@@ -542,7 +573,7 @@ void main() {
       // mid-flight when we call generateAndScheduleToday.
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -566,7 +597,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -709,7 +740,7 @@ void main() {
       // Keep provider alive so invalidateSelf() (line 33) runs cleanly.
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -734,7 +765,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -760,7 +791,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -789,7 +820,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -816,7 +847,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -841,7 +872,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -877,7 +908,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -917,7 +948,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -950,7 +981,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -979,7 +1010,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -1007,7 +1038,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -1038,7 +1069,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -1078,7 +1109,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -1114,7 +1145,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);
@@ -1138,7 +1169,7 @@ void main() {
       final container = makeContainer();
       container.listen<AsyncValue<List<Reminder>>>(
         todayRemindersProvider,
-        (_, __) {},
+        (_, _) {},
         fireImmediately: true,
       );
       await container.read(todayRemindersProvider.future);

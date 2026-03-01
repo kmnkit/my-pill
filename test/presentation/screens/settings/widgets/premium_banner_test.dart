@@ -21,6 +21,24 @@ List<dynamic> _premiumOverrides({DateTime? expiresAt}) => [
 ];
 
 void main() {
+  // kPremiumEnabled = false → PremiumBanner always returns SizedBox.shrink()
+  group('PremiumBanner — feature flag disabled', () {
+    testWidgets('returns SizedBox.shrink when kPremiumEnabled is false', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const PremiumBanner(),
+          overrides: _freeOverrides(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Premium'), findsNothing);
+      expect(find.text('Upgrade to Premium'), findsNothing);
+    });
+  });
+
   group('PremiumBanner — free user', () {
     testWidgets('shows Premium label', (tester) async {
       await tester.pumpWidget(
@@ -32,7 +50,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Premium'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows upgrade message', (tester) async {
       await tester.pumpWidget(
@@ -44,7 +62,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade for a cleaner experience'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows Upgrade to Premium button', (tester) async {
       await tester.pumpWidget(
@@ -56,7 +74,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows diamond icon for free user', (tester) async {
       await tester.pumpWidget(
@@ -68,7 +86,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.diamond), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
   });
 
   group('PremiumBanner — premium user', () {
@@ -82,7 +100,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows check_circle icon for premium user', (tester) async {
       await tester.pumpWidget(
@@ -94,7 +112,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows Manage Subscription button for premium user', (
       tester,
@@ -108,7 +126,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Manage Subscription'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows Current Plan when expiresAt is null', (tester) async {
       await tester.pumpWidget(
@@ -120,7 +138,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Current Plan'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('shows expiry date when expiresAt is set', (tester) async {
       final expiry = DateTime(2026, 12, 31);
@@ -133,7 +151,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.textContaining('2026-12-31'), findsOneWidget);
-    });
+    }, skip: true); // kPremiumEnabled is false
 
     testWidgets('does not show upgrade message for premium user', (
       tester,
@@ -147,6 +165,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade for a cleaner experience'), findsNothing);
-    });
+    }, skip: true); // kPremiumEnabled is false
   });
 }
