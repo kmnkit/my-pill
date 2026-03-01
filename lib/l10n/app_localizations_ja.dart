@@ -1594,4 +1594,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get connectStep3 => '右上の「患者を追加」ボタンでQRをスキャン';
+
+  @override
+  String get shareConnectGuide => 'この手順を共有する';
 }
