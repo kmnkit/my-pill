@@ -1,5 +1,19 @@
 # Kusuridoki - App Store Marketing Materials
 
+## App Name & Subtitle (30 chars max each)
+
+### Japanese
+
+- **Name:** くすりどき - 服薬リマインダー&記録 (19 chars)
+- **Subtitle:** 飲み忘れゼロへ導く服薬パートナー (16 chars)
+
+### English
+
+- **Name:** Kusuridoki: Pill Reminder (26 chars)
+- **Subtitle:** Never Miss a Dose Again (24 chars)
+
+---
+
 ## Screenshots
 
 - Format: 6.5" Display (iPhone)
@@ -22,23 +36,23 @@
 
 ## Promotional Text (170 chars max)
 
-### Japanese (111 chars)
+### Japanese (106 chars)
 
-一包化・個別薬どちらにも対応した服薬管理アプリ。服薬アラーム、在庫管理、週間レポート、家族の見守り機能、タイムゾーン自動調整まで。毎日の服薬習慣をやさしくサポートします。
+一包化も個別薬もまとめて管理。服薬リマインダー、在庫アラート、週間レポート、家族見守り、タイムゾーン自動調整。毎日の服薬習慣をやさしくサポートします。
 
-### English (163 chars)
+### English (168 chars)
 
-Smart medication manager for dose packs and individual pills. Reminders, inventory tracking, weekly reports, caregiver monitoring, and timezone support.
+Manage dose packs and individual pills in one app. Smart reminders, inventory alerts, weekly adherence reports, caregiver monitoring, and automatic timezone adjustment.
 
 ---
 
 ## Keywords (100 chars max)
 
-### Japanese (94 chars)
+### Japanese (99 chars)
 
-服薬管理,薬,リマインダー,一包化,分包薬,服薬記録,在庫管理,見守り,服薬アラーム,飲み忘れ,タイムゾーン,旅行,家族,服薬率,処方薬,お薬手帳,高齢者
+服薬管理,薬,リマインダー,一包化,分包薬,服薬記録,在庫管理,見守り,服薬アラーム,飲み忘れ,タイムゾーン,旅行,家族,処方薬,お薬手帳,高齢者
 
-### English (100 chars)
+### English (99 chars)
 
 medication,pill,reminder,dose pack,adherence,tracker,caregiver,family,inventory,travel,timezone,ADHD
 
@@ -48,73 +62,73 @@ medication,pill,reminder,dose pack,adherence,tracker,caregiver,family,inventory,
 
 ### Japanese
 
-くすりどきは、一包化（分包薬）にも個別薬にも対応した、スマートな服薬管理アプリです。複雑な服薬スケジュールをシンプルに管理し、毎日の服薬習慣をやさしくサポートします。
+くすりどきは、一包化（分包薬）にも個別薬にも対応したスマートな服薬管理アプリです。複雑な服薬スケジュールをシンプルに整理し、毎日の服薬習慣をやさしくサポートします。
 
 ■ 一包化・個別薬に対応
-一包化（分包薬）と個別の錠剤・カプセル、どちらの服薬スタイルにも対応。お薬の名前、用量、形状、色を登録し、写真も保存できます。
+一包化（分包薬）でも、個別の錠剤・カプセルでも、どちらの服薬スタイルにもフィット。お薬の名前・用量・形状・色を登録し、写真を保存してひと目で見分けられます。
 
-■ 服薬アラーム
-毎日・曜日指定・間隔指定など、柔軟なスケジュール設定が可能。指定した時間にプッシュ通知でお知らせします。スヌーズ・スキップにも対応。
+■ スマートリマインダー
+毎日・曜日指定・間隔指定など、柔軟なスケジュール設定が可能。指定した時間にプッシュ通知でお知らせ。スヌーズやスキップにも対応しているので、無理なく続けられます。
 
 ■ 服薬記録と週間レポート
-日々の服薬状況をワンタップで記録。週間レポートでお薬ごとの服薬率をグラフで確認でき、健康的な服薬習慣を可視化します。
+日々の服薬をワンタップで記録。週間レポートではお薬ごとの服薬率をグラフで確認でき、ご自身の習慣を可視化。通院時に医師へ見せる資料としても活用できます。
 
 ■ 在庫管理
-お薬の残量を自動で追跡。残りが少なくなったらアラートでお知らせするので、薬切れの心配がありません。
+お薬の残量を自動で追跡し、残りが少なくなるとアラートでお知らせ。「薬が足りない！」という事態を未然に防ぎます。
 
 ■ 家族の見守り機能
-招待リンクやQRコードで家族をかんたんに接続。離れて暮らすご家族が服薬状況や在庫不足をリアルタイムで確認できます。接続はいつでも解除可能です。
+招待リンクやQRコードで家族とかんたんに接続。離れて暮らすご家族でも、服薬状況や在庫の不足をリアルタイムで確認できます。接続はご本人がいつでも解除できるので、プライバシーも安心です。
 
 ■ タイムゾーン自動調整（トラベルモード）
-海外旅行や出張時も安心。自宅時間での固定間隔と現地時刻への適応、2つのモードから選択できます。
+海外旅行や出張の際も安心。自宅時間での固定間隔（インスリンなど）と、現地時刻への適応（朝の薬を現地の朝に）の2つのモードから選択できます。
 
 ■ プライバシーとセキュリティ
-お薬のデータはFirebaseで安全に管理されます。サポーターが閲覧できるのは服薬状況とスケジュールのみで、個人的なメモやその他の健康データはご本人だけに表示されます。アカウントはアプリ内からいつでも削除できます。
+データはFirebaseで安全に管理。見守り役が閲覧できるのは服薬状況とスケジュールのみで、個人的なメモや健康情報はご本人だけに表示されます。アカウントと全データはアプリ内からいつでも削除可能です。
 
 ■ 対応言語
-日本語・英語に対応。アプリ内でいつでも切り替え可能です。
+日本語・英語の2言語に対応。設定画面からいつでも切り替えできます。
 
 くすりどきで、安心の服薬習慣を始めましょう。
 
-⚠️ 医療に関するご注意：くすりどきは服薬管理をサポートするアプリであり、医療専門家による診断・治療・助言に代わるものではありません。お薬に関するご質問は、かかりつけの医師または薬剤師にご相談ください。
+⚠️ 医療に関するご注意：くすりどきは服薬管理をサポートするツールであり、医師・薬剤師による診断・治療・助言に代わるものではありません。お薬に関するご質問はかかりつけの医療専門家にご相談ください。
 
-プライバシーポリシー：https://kusuridoki.hobbylabo.dev/privacy-policy
-利用規約：https://kusuridoki.hobbylabo.dev/terms
+プライバシーポリシー：https://kusuridoki.app/privacy-policy
+利用規約：https://kusuridoki.app/terms
 
 ### English
 
-Kusuridoki is a smart medication management app designed for both dose packs and individual pills. Simplify complex medication schedules and never miss a dose again.
+Kusuridoki is a smart medication management app built for both dose packs and individual pills. Simplify complex medication schedules and build better habits — one tap at a time.
 
 DOSE PACK & INDIVIDUAL PILL SUPPORT
-Manage any medication style — dose packs or individual tablets and capsules. Register medication name, dosage, shape, and color. Save photos for easy identification.
+Manage any medication style — dose packs, tablets, or capsules. Register each medication with name, dosage, shape, and color. Save a photo for easy identification at a glance.
 
-MEDICATION REMINDERS
-Flexible scheduling with daily, specific days, or interval-based options. Receive push notifications at the right time. Snooze or skip as needed.
+SMART REMINDERS
+Set flexible schedules: daily, specific days of the week, or custom intervals. Receive timely push notifications so you never miss a dose. Snooze or skip when needed.
 
 ADHERENCE TRACKING & WEEKLY REPORTS
-Record doses with a single tap. View weekly reports with per-medication adherence charts to visualize your healthy habits.
+Record each dose with a single tap. View weekly reports with per-medication adherence charts that help you and your doctor see progress clearly.
 
 INVENTORY MANAGEMENT
-Automatically track remaining pill counts. Get alerts when stock runs low so you never run out.
+Track remaining pill counts automatically. Receive low-stock alerts before you run out, so refills are never a surprise.
 
 CAREGIVER MONITORING
-Connect family members easily via invite links or QR codes. Caregivers can check adherence status and low stock alerts in real time — even from afar. Patients can revoke access at any time.
+Connect family members via invite links or QR codes in seconds. Caregivers can check adherence status and low-stock alerts in real time — even from across the country. Patients remain in full control and can revoke access at any time.
 
 TRAVEL TIMEZONE SUPPORT
-Stay on track while traveling. Choose between fixed home-time intervals or local time adaptation when crossing time zones.
+Crossing time zones? Choose between fixed home-time intervals (ideal for insulin or hormones) or local time adaptation (shift morning meds to local morning). Travel with confidence.
 
 PRIVACY & SECURITY
-Your medication data is securely managed with Firebase. Caregivers can only view adherence status and schedules — personal notes and other health data remain private. You can delete your account at any time from within the app.
+Your data is securely stored with Firebase. Caregivers can only view adherence status and schedules — personal notes and health details remain private. Delete your account and all associated data at any time from within the app.
 
 LANGUAGES
-Available in Japanese and English. Switch anytime in app settings.
+Available in English and Japanese. Switch anytime in Settings.
 
-Start building better medication habits with Kusuridoki.
+Start building healthier medication habits today with Kusuridoki.
 
-⚠️ Medical Disclaimer: Kusuridoki is a medication management tool and does not replace professional medical diagnosis, treatment, or advice. Always consult your physician or pharmacist with questions about your medications.
+Medical Disclaimer: Kusuridoki is a medication management tool and does not replace professional medical diagnosis, treatment, or advice. Consult your physician or pharmacist with any questions about your medications.
 
-Privacy Policy: https://kusuridoki.hobbylabo.dev/privacy-policy
-Terms of Service: https://kusuridoki.hobbylabo.dev/terms
+Privacy Policy: https://kusuridoki.app/privacy-policy
+Terms of Service: https://kusuridoki.app/terms
 
 ---
 
@@ -124,7 +138,7 @@ Terms of Service: https://kusuridoki.hobbylabo.dev/terms
 
 | Requirement | Status | Implementation |
 |-------------|--------|----------------|
-| Privacy Policy URL | ✅ | `https://kusuridoki.hobbylabo.dev/privacy-policy` (in-app + description) |
+| Privacy Policy URL | ✅ | `https://kusuridoki.app/privacy-policy` (in-app + description) |
 | Data collection disclosure | ✅ | Description states shared data scope (adherence + schedule only) |
 | Secure data storage | ✅ | Firebase + Firestore security rules |
 
