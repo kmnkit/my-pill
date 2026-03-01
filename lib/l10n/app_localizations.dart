@@ -3133,6 +3133,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap \"Add Patient\" (top right) and scan the QR code'**
   String get connectStep3;
+
+  /// No description provided for @shareConnectGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this guide'**
+  String get shareConnectGuide;
 }
 
 class _AppLocalizationsDelegate

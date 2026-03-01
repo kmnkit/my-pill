@@ -652,5 +652,6 @@
   "howToConnectPatient": "連携方法",
   "connectStep1": "患者のスマホにくすりどきをインストール",
   "connectStep2": "患者のアプリで 設定 → ご家族とサポーター → QRコードを生成",
-  "connectStep3": "右上の「患者を追加」ボタンでQRをスキャン"
+  "connectStep3": "右上の「患者を追加」ボタンでQRをスキャン",
+  "shareConnectGuide": "この手順を共有する"
 }

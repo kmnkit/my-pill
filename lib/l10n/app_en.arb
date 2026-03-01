@@ -652,5 +652,6 @@
   "howToConnectPatient": "How to connect",
   "connectStep1": "Install くすりどき on the patient's phone",
   "connectStep2": "On the patient's app: Settings → Family & Supporters → Generate QR Code",
-  "connectStep3": "Tap \"Add Patient\" (top right) and scan the QR code"
+  "connectStep3": "Tap \"Add Patient\" (top right) and scan the QR code",
+  "shareConnectGuide": "Share this guide"
 }

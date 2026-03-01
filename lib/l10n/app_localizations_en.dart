@@ -1647,4 +1647,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get connectStep3 =>
       'Tap \"Add Patient\" (top right) and scan the QR code';
+
+  @override
+  String get shareConnectGuide => 'Share this guide';
 }
