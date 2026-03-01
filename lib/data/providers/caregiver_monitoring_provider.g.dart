@@ -325,7 +325,7 @@ final class CaregiverPatientsProvider
   }
 }
 
-String _$caregiverPatientsHash() => r'18659b313f66d52b935cf116eacb5fbd8b20eda8';
+String _$caregiverPatientsHash() => r'946ca6731ab713ac6d2f86c6748d7400cd0f6e99';
 
 @ProviderFor(patientMedicationStatus)
 final patientMedicationStatusProvider = PatientMedicationStatusFamily._();
@@ -409,3 +409,41 @@ final class PatientMedicationStatusFamily extends $Family
   @override
   String toString() => r'patientMedicationStatusProvider';
 }
+
+/// Check if caregiver can add another patient based on subscription tier
+
+@ProviderFor(canAddPatient)
+final canAddPatientProvider = CanAddPatientProvider._();
+
+/// Check if caregiver can add another patient based on subscription tier
+
+final class CanAddPatientProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
+    with $FutureModifier<bool>, $FutureProvider<bool> {
+  /// Check if caregiver can add another patient based on subscription tier
+  CanAddPatientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'canAddPatientProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$canAddPatientHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<bool> create(Ref ref) {
+    return canAddPatient(ref);
+  }
+}
+
+String _$canAddPatientHash() => r'84d4c07a6affb4578097bad19a07c1ca835744ea';

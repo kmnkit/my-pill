@@ -15,7 +15,6 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
-import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
 import 'package:kusuridoki/presentation/router/route_names.dart';
 
 class QrInviteSection extends ConsumerStatefulWidget {
@@ -184,14 +183,6 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             _isGenerating ? l10n.generating : l10n.generateInviteLink,
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        const Divider(),
-        const SizedBox(height: AppSpacing.lg),
-        OutlinedButton.icon(
-          onPressed: () => _scanQrCode(context),
-          icon: const Icon(Icons.qr_code_scanner),
-          label: Text(l10n.scanQrCode),
-        ),
       ],
     );
   }
@@ -255,15 +246,6 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             label: Text(l10n.newLink),
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () => _scanQrCode(context),
-            icon: const Icon(Icons.qr_code_scanner),
-            label: Text(l10n.scanQrCode),
-          ),
-        ),
       ],
     );
   }
@@ -287,53 +269,6 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
     await SharePlus.instance.share(
       ShareParams(text: inviteUrl, subject: l10n.joinMeOnMyPill),
     );
-  }
-
-  Future<void> _scanQrCode(BuildContext context) async {
-    final code = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (context) => const QrScannerScreen()),
-    );
-
-    if (code != null && context.mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.processingInvite),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-
-      try {
-        final cfService = ref.read(cloudFunctionsServiceProvider);
-        await cfService.acceptInvite(code);
-
-        // Refresh caregiver links after successful accept
-        ref.invalidate(caregiverLinksProvider);
-
-        if (context.mounted) {
-          final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.inviteAccepted),
-              backgroundColor: AppColors.success,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      } catch (e, st) {
-        ErrorHandler.debugLog(e, st, 'acceptInviteQr');
-        if (context.mounted) {
-          final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.failedToAcceptInvite),
-              backgroundColor: AppColors.error,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      }
-    }
   }
 
   Widget _buildShareButton(

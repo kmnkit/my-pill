@@ -58,17 +58,25 @@ class AdherenceChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      // Reserve enough height for large accessibility text
+                      reservedSize: MediaQuery.textScalerOf(context).scale(32),
                       getTitlesWidget: (value, meta) {
                         if (value.toInt() >= 0 &&
                             value.toInt() < dayLabels.length) {
                           return Padding(
                             padding: const EdgeInsets.only(top: AppSpacing.sm),
-                            child: Text(
-                              dayLabels[value.toInt()],
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: context.appColors.textMuted,
-                                  ),
+                            child: SizedBox(
+                              width: 32,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  dayLabels[value.toInt()],
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: context.appColors.textMuted,
+                                      ),
+                                ),
+                              ),
                             ),
                           );
                         }

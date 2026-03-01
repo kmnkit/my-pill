@@ -42,6 +42,13 @@ int maxCaregivers(Ref ref) {
 }
 
 @riverpod
+int maxPatients(Ref ref) {
+  if (!kPremiumEnabled) return 999;
+  final subscription = ref.watch(subscriptionServiceProvider);
+  return subscription.maxPatients;
+}
+
+@riverpod
 SubscriptionStatus subscriptionStatus(Ref ref) {
   final subscription = ref.watch(subscriptionServiceProvider);
   return subscription.status;

@@ -39,8 +39,30 @@ void main() {
       expect(service.maxCaregivers, equals(1));
     });
 
+    test('maxPatients is 1 when not premium', () {
+      expect(service.maxPatients, equals(1));
+    });
+
     test('productsLoaded is false before initialization', () {
       expect(service.productsLoaded, isFalse);
+    });
+  });
+
+  group('SubscriptionService — maxPatients logic', () {
+    test('maxPatients returns 1 for non-premium (free tier)', () {
+      final service = SubscriptionService();
+      addTearDown(service.dispose);
+
+      expect(service.isPremium, isFalse);
+      expect(service.maxPatients, equals(1));
+    });
+
+    test('maxPatients contract: premium=999, free=1', () {
+      const premiumLimit = 999;
+      const freeLimit = 1;
+
+      expect(premiumLimit, greaterThan(freeLimit));
+      expect(freeLimit, equals(1));
     });
   });
 

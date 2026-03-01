@@ -73,6 +73,10 @@ class _CaregiverDashboardScreenState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final patientsAsync = ref.watch(caregiverPatientsProvider);
+    final canAdd = ref.watch(canAddPatientProvider).maybeWhen(
+      data: (v) => v,
+      orElse: () => true,
+    );
 
     return GradientScaffold(
       body: SafeArea(
@@ -81,13 +85,26 @@ class _CaregiverDashboardScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                l10n.myPatients,
-                style: Theme.of(context).textTheme.headlineLarge,
+              Row(
+                children: [
+                  Text(
+                    l10n.myPatients,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const Spacer(),
+                  if (canAdd)
+                    IconButton(
+                      icon: const Icon(Icons.person_add),
+                      tooltip: l10n.addPatient,
+                      onPressed: _scanQrCode,
+                    ),
+                ],
               ),
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: patientsAsync.when(
+                  skipLoadingOnReload: true,
+                  skipLoadingOnRefresh: true,
                   loading: () => const Padding(
                     padding: EdgeInsets.all(AppSpacing.lg),
                     child: KdListShimmer(itemCount: 3),

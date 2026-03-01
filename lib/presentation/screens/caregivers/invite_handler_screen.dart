@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,8 +6,10 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
@@ -32,8 +35,10 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       final cfService = ref.read(cloudFunctionsServiceProvider);
       await cfService.acceptInvite(widget.inviteCode);
 
-      // Refresh caregiver links after successful accept
+      // Refresh caregiver links and patients after successful accept
       ref.invalidate(caregiverLinksProvider);
+      ref.invalidate(caregiverPatientsProvider);
+      await ref.read(userSettingsProvider.notifier).updateUserRole('caregiver');
 
       if (!mounted) return;
 
@@ -45,7 +50,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
         ),
       );
 
-      context.go('/home');
+      context.go('/caregiver/patients');
     } catch (e, st) {
       ErrorHandler.debugLog(e, st, 'acceptInvite');
       if (!mounted) return;
@@ -53,13 +58,32 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       setState(() => _isProcessing = false);
 
       final l10n = AppLocalizations.of(context)!;
+      final message = _errorMessage(e, l10n);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.failedToAcceptInvite),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );
     }
+  }
+
+  String _errorMessage(Object e, AppLocalizations l10n) {
+    if (e is FirebaseFunctionsException) {
+      switch (e.code) {
+        case 'not-found':
+          return l10n.inviteNotFound;
+        case 'failed-precondition':
+          final details = e.message ?? '';
+          if (details.toLowerCase().contains('expir')) return l10n.inviteExpired;
+          return l10n.inviteAlreadyUsed;
+        case 'invalid-argument':
+          return l10n.inviteSelfError;
+        default:
+          return l10n.failedToAcceptInvite;
+      }
+    }
+    return l10n.failedToAcceptInvite;
   }
 
   void _decline() {
