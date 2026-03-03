@@ -3,13 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSPrivacyTracking</key>
-	<true/>
+	<false/>
 	<key>NSPrivacyTrackingDomains</key>
-	<array>
-		<string>googleadservices.com</string>
-		<string>google.com</string>
-		<string>doubleclick.net</string>
-	</array>
+	<array/>
 	<key>NSPrivacyCollectedDataTypes</key>
 	<array>
 		<dict>
@@ -54,10 +50,10 @@
 			<key>NSPrivacyCollectedDataTypeLinked</key>
 			<false/>
 			<key>NSPrivacyCollectedDataTypeTracking</key>
-			<true/>
+			<false/>
 			<key>NSPrivacyCollectedDataTypePurposes</key>
 			<array>
-				<string>NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising</string>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
 			</array>
 		</dict>
 	</array>
