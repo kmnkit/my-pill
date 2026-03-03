@@ -35,6 +35,12 @@ platform :ios do
       xcodeproj: "Runner.xcodeproj",
     )
 
+    # Strip IntegrationTestPlugin from release build.
+    # GeneratedPluginRegistrant.m has #ifdef DEBUG guards when committed,
+    # but flutter pub get regenerates the file without them.
+    # This sed is a safety net for that case.
+    sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
+
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -48,6 +54,9 @@ platform :ios do
       clean: true,
       output_name: "Kusuridoki.ipa",
     )
+
+    # Restore GeneratedPluginRegistrant.m (with #ifdef DEBUG guards)
+    sh("git checkout ../Runner/GeneratedPluginRegistrant.m 2>/dev/null || true")
   end
 
   desc "Build and upload to TestFlight"
@@ -84,6 +93,73 @@ platform :ios do
       api_key: @api_key,
       submit_for_review: false,
       force: true,
+    )
+  end
+
+  desc "Upload screenshots only to App Store Connect (skips binary and metadata)"
+  lane :upload_screenshots do
+    upload_to_app_store(
+      api_key: @api_key,
+      skip_binary_upload: true,
+      skip_metadata: true,
+      overwrite_screenshots: true,
+      submit_for_review: false,
+      force: true,
+      run_precheck_before_submit: false,
+    )
+  end
+
+  desc "Build and upload to App Store without Match (uses local certificate + downloads profile)"
+  lane :release_local do
+    # Download App Store provisioning profile via API key
+    profile_path = get_provisioning_profile(
+      api_key: @api_key,
+      app_identifier: APP_IDENTIFIER,
+      output_path: "./fastlane/profiles",
+    )
+    profile_uuid = ENV["sigh_#{APP_IDENTIFIER}_appstore_profile-uuid"]
+
+    # Auto-increment build number based on latest TestFlight build
+    current_build = latest_testflight_build_number(
+      api_key: @api_key,
+      app_identifier: APP_IDENTIFIER,
+    )
+    increment_build_number(
+      build_number: current_build + 1,
+      xcodeproj: "Runner.xcodeproj",
+    )
+
+    # Strip IntegrationTestPlugin from release build.
+    # GeneratedPluginRegistrant.m has #ifdef DEBUG guards when committed,
+    # but flutter pub get regenerates the file without them.
+    # This sed removes both the import block AND the registration call.
+    sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
+
+    # Build using downloaded profile
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          APP_IDENTIFIER => profile_uuid,
+        },
+        signingStyle: "manual",
+        signingCertificate: "Apple Distribution",
+      },
+      clean: true,
+      output_name: "Kusuridoki.ipa",
+    )
+
+    # Restore GeneratedPluginRegistrant.m for development use
+    sh("git checkout ../Runner/GeneratedPluginRegistrant.m 2>/dev/null || true")
+
+    upload_to_app_store(
+      api_key: @api_key,
+      submit_for_review: false,
+      force: true,
+      run_precheck_before_submit: false,
     )
   end
 end
