@@ -1,7 +1,29 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/firestore_service.dart';
+
+// ---------------------------------------------------------------------------
+// Test helpers
+// ---------------------------------------------------------------------------
+
+class _MockUser extends Fake implements User {
+  @override
+  String get uid => 'test-uid';
+}
+
+class _FakeFirestoreService extends Fake implements FirestoreService {
+  final Stream<List<Map<String, dynamic>>> _stream;
+  _FakeFirestoreService(this._stream);
+
+  @override
+  Stream<List<Map<String, dynamic>>> watchLinkedPatients() => _stream;
+}
 
 void main() {
   group('canAddPatientProvider', () {
@@ -80,6 +102,109 @@ void main() {
 
       final canAdd = await container.read(canAddPatientProvider.future);
       expect(canAdd, isTrue);
+    });
+  });
+
+  group('caregiverPatientsProvider - error handling', () {
+    /// Build a container where auth is resolved immediately and the Firestore
+    /// stream is controlled by the provided [StreamController].
+    ProviderContainer makeContainer(
+      StreamController<List<Map<String, dynamic>>> controller,
+    ) {
+      return ProviderContainer(
+        overrides: [
+          authStateProvider.overrideWith((ref) => Stream.value(_MockUser())),
+          firestoreServiceProvider.overrideWith(
+            (ref) => _FakeFirestoreService(controller.stream),
+          ),
+        ],
+      );
+    }
+
+    /// Runs several event-loop ticks to let Riverpod process async state.
+    Future<void> drain() async {
+      for (var i = 0; i < 8; i++) {
+        await Future<void>.delayed(Duration.zero);
+      }
+    }
+
+    test('permission-denied emits empty list (graceful degradation)', () async {
+      final controller = StreamController<List<Map<String, dynamic>>>();
+      final container = makeContainer(controller);
+      addTearDown(container.dispose);
+      addTearDown(controller.close);
+
+      // Activate the provider and wait for auth to resolve + provider to
+      // start listening to the Firestore stream.
+      container.listen(caregiverPatientsProvider, (_, _) {});
+      await drain();
+
+      // Emit the permission-denied error — the transform swallows it and
+      // emits an empty list instead.
+      controller.addError(
+        FirebaseException(plugin: 'cloud_firestore', code: 'permission-denied'),
+      );
+      await drain();
+
+      final state = container.read(caregiverPatientsProvider);
+      expect(state, isA<AsyncData>());
+      expect(state.value, isEmpty);
+    });
+
+    test('other Firestore error propagates as AsyncError', () async {
+      final controller = StreamController<List<Map<String, dynamic>>>();
+      final container = makeContainer(controller);
+      addTearDown(container.dispose);
+      addTearDown(controller.close);
+
+      // Collect ALL state transitions: Riverpod v3 auto-restarts the stream
+      // provider after its async* generator terminates with error, so the
+      // AsyncError state is brief before transitioning to AsyncLoading again.
+      final states = <AsyncValue>[];
+      container.listen(
+        caregiverPatientsProvider,
+        (_, next) => states.add(next),
+        fireImmediately: true,
+      );
+      await drain(); // let auth resolve + provider start listening
+
+      controller.addError(
+        FirebaseException(plugin: 'cloud_firestore', code: 'unavailable'),
+      );
+      await drain(); // let error propagate through transform
+
+      // Riverpod v3 may skip the AsyncError state and transition directly to
+      // AsyncLoading(error: ...) as it auto-restarts the stream. Check that
+      // the error was carried in any emitted state.
+      expect(
+        states.any((s) => s.error != null),
+        isTrue,
+        reason: 'expected error in state transitions: $states',
+      );
+    });
+
+    test('non-Firebase error propagates as AsyncError', () async {
+      final controller = StreamController<List<Map<String, dynamic>>>();
+      final container = makeContainer(controller);
+      addTearDown(container.dispose);
+      addTearDown(controller.close);
+
+      final states = <AsyncValue>[];
+      container.listen(
+        caregiverPatientsProvider,
+        (_, next) => states.add(next),
+        fireImmediately: true,
+      );
+      await drain();
+
+      controller.addError(Exception('unexpected network failure'));
+      await drain();
+
+      expect(
+        states.any((s) => s.error != null),
+        isTrue,
+        reason: 'expected error in state transitions: $states',
+      );
     });
   });
 }
