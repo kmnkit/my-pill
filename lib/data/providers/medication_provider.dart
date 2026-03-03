@@ -19,14 +19,14 @@ class MedicationList extends _$MedicationList {
     final storage = ref.read(storageServiceProvider);
     await storage.saveMedication(medication);
     if (!ref.mounted) return;
-    ref.invalidateSelf();
+    await _refreshState();
   }
 
   Future<void> updateMedication(Medication medication) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveMedication(medication);
     if (!ref.mounted) return;
-    ref.invalidateSelf();
+    await _refreshState();
   }
 
   Future<void> deleteMedication(String id) async {
@@ -34,9 +34,17 @@ class MedicationList extends _$MedicationList {
     final repository = MedicationRepository(storage);
     await repository.deleteMedication(id);
     if (!ref.mounted) return;
-    ref.invalidateSelf();
+    await _refreshState();
     ref.invalidate(todayRemindersProvider);
     ref.invalidate(scheduleListProvider);
+  }
+
+  // Update state directly instead of invalidateSelf() to avoid triggering
+  // runOnDispose on the .future proxy subscription held by downstream
+  // providers (e.g. medicationBreakdownProvider), which causes a Riverpod
+  // internal pause-count assertion (pausedActiveSubscriptionCount mismatch).
+  Future<void> _refreshState() async {
+    state = AsyncData(await ref.read(storageServiceProvider).getAllMedications());
   }
 }
 

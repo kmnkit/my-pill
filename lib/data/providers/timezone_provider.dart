@@ -18,16 +18,32 @@ class TimezoneSettings extends _$TimezoneSettings {
   TimezoneState build() {
     final deviceTimezone = TimezoneService().currentLocation.name;
 
-    // Read home timezone from UserProfile (fallback to device timezone)
-    final userSettingsAsync = ref.watch(userSettingsProvider);
-    final homeTimezone =
-        userSettingsAsync.whenOrNull(data: (profile) => profile.homeTimezone) ??
+    // Read homeTimezone once at init — no subscription, so profile changes
+    // (name, notifications, etc.) don't trigger a full notifier rebuild.
+    final initialHomeTimezone =
+        ref.read(userSettingsProvider).whenOrNull(
+          data: (profile) => profile.homeTimezone,
+        ) ??
         deviceTimezone;
+
+    // Listen for profile changes and update homeTimezone in-place, preserving
+    // enabled / mode / currentTimezone that the user may have already set.
+    ref.listen(userSettingsProvider, (_, next) {
+      final nextHomeTimezone = next.asData?.value.homeTimezone;
+      if (nextHomeTimezone != null && nextHomeTimezone != state.homeTimezone) {
+        state = (
+          enabled: state.enabled,
+          mode: state.mode,
+          homeTimezone: nextHomeTimezone,
+          currentTimezone: state.currentTimezone,
+        );
+      }
+    });
 
     return (
       enabled: false,
       mode: TimezoneMode.fixedInterval,
-      homeTimezone: homeTimezone,
+      homeTimezone: initialHomeTimezone,
       currentTimezone: deviceTimezone,
     );
   }
