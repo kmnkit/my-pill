@@ -59,22 +59,22 @@ platform :ios do
     )
   end
 
-  desc "Capture App Store screenshots (6.5-inch, Japanese)"
+  desc "Capture App Store screenshots — all 8 screens (6.7-inch, Japanese)"
   lane :screenshots do
     device = "iPhone 15 Pro Max" # 6.7-inch App Store category (available locally)
 
     # Boot simulator if not already running
     sh("xcrun simctl boot '#{device}' 2>/dev/null || true")
 
-    # Run flutter drive from project root
+    # Run flutter drive from project root (captures all 8 screens)
     sh(
       "cd ../.. && flutter drive " \
-      "--driver=test_driver/integration_test.dart " \
-      "--target=integration_test/screenshots/home_screenshot_test.dart " \
+      "--driver=test_driver/screenshot_driver.dart " \
+      "--target=integration_test/screenshots/all_screenshots_test.dart " \
       "-d '#{device}'"
     )
 
-    puts "Screenshots saved to build/ios_integration/"
+    puts "Screenshots saved to assets/marketing/screenshots/ (by screenshot_driver)"
   end
 
   desc "Build and upload to App Store (manual review submission)"
