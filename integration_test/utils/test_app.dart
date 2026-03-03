@@ -22,7 +22,13 @@ import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_s
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_notifications_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_settings_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
+import 'package:kusuridoki/presentation/screens/adherence/weekly_summary_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/invite_handler_screen.dart';
+import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/add_medication_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/edit_medication_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/medication_detail_screen.dart';
+import 'package:kusuridoki/presentation/screens/medications/medications_list_screen.dart';
 import 'package:kusuridoki/presentation/screens/onboarding/login_screen.dart';
 import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 import 'package:kusuridoki/presentation/screens/travel/travel_mode_screen.dart';
@@ -528,6 +534,150 @@ class _TestCaregiverShell extends StatelessWidget {
           );
         },
         mode: KdNavMode.caregiver,
+      ),
+    );
+  }
+}
+
+/// Build a test app for patient shell E2E tests that bypasses router auth checks.
+///
+/// The production [appRouterProvider] router uses [FirebaseAuth.instance.currentUser]
+/// directly in its redirect logic, which cannot be overridden in tests.
+/// This helper creates an isolated test router for the patient shell.
+///
+/// [initialRoute]: Starting route (default: '/home')
+Widget buildPatientShellTestApp(
+  TestAppConfig config, {
+  String initialRoute = '/home',
+}) {
+  final storageService = MockStorageService(
+    medications: config.medications,
+    schedules: config.schedules,
+    reminders: config.reminders,
+    adherenceRecords: config.adherenceRecords,
+    caregiverLinks: config.caregiverLinks,
+    userProfile: config.userProfile,
+  );
+
+  final authService = MockAuthService();
+
+  return ProviderScope(
+    overrides: [
+      storageServiceProvider.overrideWithValue(storageService),
+      authServiceProvider.overrideWithValue(authService),
+      appRouterProvider.overrideWith(
+        (_) => _buildPatientShellTestRouter(initialRoute),
+      ),
+    ],
+    child: const KusuridokiApp(),
+  );
+}
+
+/// Build an isolated [GoRouter] for patient shell E2E tests.
+///
+/// Starts at [initialRoute] with no auth redirect. Covers all patient
+/// shell tabs plus standalone routes used in medication flows.
+GoRouter _buildPatientShellTestRouter(String initialRoute) {
+  return GoRouter(
+    initialLocation: initialRoute,
+    redirect: (_, _) => null,
+    routes: [
+      // Patient shell (4 tabs)
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            _TestPatientShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                builder: (_, _) => const HomeScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/adherence',
+                builder: (_, _) => const WeeklySummaryScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/medications',
+                builder: (_, _) => const MedicationsListScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/settings',
+                name: RouteNames.settings,
+                builder: (_, _) => const SettingsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'travel',
+                    name: RouteNames.travelMode,
+                    builder: (_, _) => const TravelModeScreen(),
+                  ),
+                  GoRoute(
+                    path: 'family',
+                    name: RouteNames.familyCaregivers,
+                    builder: (_, _) => const FamilyScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      // Standalone route: add medication
+      GoRoute(
+        path: '/medications/add',
+        builder: (_, _) => const AddMedicationScreen(),
+      ),
+      // Standalone route: medication detail
+      GoRoute(
+        path: '/medications/:id',
+        builder: (context, state) => MedicationDetailScreen(
+          medicationId: state.pathParameters['id'] ?? '',
+        ),
+      ),
+      // Standalone route: edit medication
+      GoRoute(
+        path: '/medications/:id/edit',
+        builder: (context, state) => EditMedicationScreen(
+          medicationId: state.pathParameters['id'] ?? '',
+        ),
+      ),
+    ],
+  );
+}
+
+/// Minimal patient shell scaffold with bottom navigation for testing.
+class _TestPatientShell extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const _TestPatientShell({required this.navigationShell});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.transparent,
+      body: navigationShell,
+      bottomNavigationBar: KdBottomNavBar(
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) {
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
+        mode: KdNavMode.patient,
       ),
     );
   }

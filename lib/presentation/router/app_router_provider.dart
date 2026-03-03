@@ -108,8 +108,10 @@ Raw<GoRouter> appRouter(Ref ref) {
       // - Firebase Auth OAuth callback URLs (Google/Apple sign-in redirects)
       // - Root path "/" which has no defined route
       // - Any other unexpected deep links
-      // The redirect logic will then handle auth state appropriately.
-      router.go('/home');
+      // Use addPostFrameCallback to avoid reentrant navigation during route processing.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        router.go('/home');
+      });
     },
     redirect: (context, state) {
       final isSplashRoute = state.matchedLocation == '/splash';
