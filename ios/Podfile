@@ -42,5 +42,17 @@ post_install do |installer|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
     end
+
+    # Exclude integration_test from Release/Profile builds to prevent
+    # "Test finished." overlay in production (Guideline 2.1/2.2).
+    # GeneratedPluginRegistrant.m also has #ifdef DEBUG guards, but this
+    # ensures the pod itself produces no output outside Debug builds.
+    if target.name == 'integration_test'
+      target.build_configurations.each do |config|
+        unless config.name == 'Debug'
+          config.build_settings['EXCLUDED_SOURCE_FILE_NAMES'] = '**'
+        end
+      end
+    end
   end
 end
