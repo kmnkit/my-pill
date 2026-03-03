@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
+<!-- Generated: 2026-02-02 | Updated: 2026-03-01 -->
 
 # screens — Feature Screens
 
@@ -17,7 +17,9 @@ Application screens organized by feature domain. Each feature has its own direct
 | `settings/` | User preferences — language, notifications, display, account (see `settings/AGENTS.md`) |
 | `travel/` | Timezone management — location display, affected medications (see `travel/AGENTS.md`) |
 | `caregivers/` | Family linking — caregiver dashboard, QR scanner, patient monitoring (see `caregivers/AGENTS.md`) |
-| `onboarding/` | First-launch welcome — language selection, feature highlights (see `onboarding/AGENTS.md`) |
+| `onboarding/` | First-launch onboarding — 5-step flow with auth (Apple/Google/Anonymous) (see `onboarding/AGENTS.md`) |
+| `premium/` | Premium subscription upsell screen — IAP integration (see `premium/AGENTS.md`) |
+| `splash/` | Initial loading screen during app startup (see `splash/AGENTS.md`) |
 
 ## For AI Agents
 

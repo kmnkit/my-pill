@@ -56,6 +56,21 @@ void main() {
       expect(find.text('How to connect'), findsOneWidget);
     });
 
+    testWidgets('shows share guide button in connect guide', (tester) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const CaregiverDashboardScreen(),
+          overrides: [
+            caregiverPatientsProvider.overrideWith((ref) => Stream.value([])),
+            canAddPatientProvider.overrideWith((ref) => Future.value(true)),
+          ],
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.share), findsOneWidget);
+    });
+
     testWidgets('does not show FAB (removed in favour of header IconButton)',
         (tester) async {
       await tester.pumpWidget(

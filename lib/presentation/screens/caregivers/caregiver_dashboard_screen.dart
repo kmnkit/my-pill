@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
@@ -193,6 +194,16 @@ class _CaregiverConnectGuide extends StatelessWidget {
               onPressed: onScanQr,
               icon: const Icon(Icons.qr_code_scanner),
               label: Text(l10n.scanQrCode),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton.icon(
+              onPressed: () {
+                final shareText =
+                    '1. ${l10n.connectStep1}\n2. ${l10n.connectStep2}\n3. ${l10n.connectStep3}';
+                SharePlus.instance.share(ShareParams(text: shareText));
+              },
+              icon: const Icon(Icons.share),
+              label: Text(l10n.shareConnectGuide),
             ),
           ],
         ),

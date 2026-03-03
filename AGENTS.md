@@ -1,4 +1,4 @@
-<!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
+<!-- Generated: 2026-02-02 | Updated: 2026-03-01 -->
 
 # Kusuridoki - Medication Management App
 
@@ -24,11 +24,16 @@ A cross-platform Flutter application for medication management targeting Japanes
 |-----------|---------|
 | `lib/` | Flutter application source code (see `lib/AGENTS.md`) |
 | `test/` | Unit and widget tests (see `test/AGENTS.md`) |
-| `functions/` | Firebase Cloud Functions for caregiver linking (see `functions/AGENTS.md`) |
-| `docs/` | Product requirements documents in EN/JA (see `docs/AGENTS.md`) |
-| `assets/` | Static assets — icons and images (see `assets/AGENTS.md`) |
-| `android/` | Android platform-specific code and configuration |
-| `ios/` | iOS platform-specific code and configuration |
+| `integration_test/` | Integration and E2E tests — Robot pattern (see `integration_test/AGENTS.md`) |
+| `functions/` | Firebase Cloud Functions — Node.js backend (see `functions/AGENTS.md`) |
+| `docs/` | Product and deployment documentation (see `docs/AGENTS.md`) |
+| `assets/` | Static assets — fonts, icons, images, marketing (see `assets/AGENTS.md`) |
+| `ads/` | Ad creative assets for LINE campaigns (see `ads/AGENTS.md`) |
+| `android/` | Android platform-specific code and configuration (see `android/AGENTS.md`) |
+| `ios/` | iOS platform-specific code and configuration (see `ios/AGENTS.md`) |
+| `hosting/` | Firebase Hosting static pages — privacy policy, account deletion (see `hosting/AGENTS.md`) |
+| `site/` | Static site — deep links, privacy policy, support (see `site/AGENTS.md`) |
+| `tool/` | Dart utility scripts (see `tool/AGENTS.md`) |
 
 ## For AI Agents
 

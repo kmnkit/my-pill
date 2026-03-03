@@ -149,7 +149,7 @@ class MedicationTimeline extends ConsumerWidget {
                                             ),
                                           ),
                                           backgroundColor: AppColors.success,
-                                          duration: const Duration(seconds: 2),
+                                          duration: const Duration(seconds: 4),
                                         ),
                                       );
                                     }
@@ -165,7 +165,7 @@ class MedicationTimeline extends ConsumerWidget {
                                               medication.name,
                                             ),
                                           ),
-                                          duration: const Duration(seconds: 2),
+                                          duration: const Duration(seconds: 4),
                                         ),
                                       );
                                     }
@@ -184,7 +184,7 @@ class MedicationTimeline extends ConsumerWidget {
                                               medication.name,
                                             ),
                                           ),
-                                          duration: const Duration(seconds: 2),
+                                          duration: const Duration(seconds: 4),
                                         ),
                                       );
                                     }

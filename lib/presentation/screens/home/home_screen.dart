@@ -6,6 +6,7 @@ import 'package:kusuridoki/data/services/ad_service.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/greeting_header.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/low_stock_banner.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/medication_timeline.dart';
+import 'package:kusuridoki/presentation/screens/home/widgets/weekly_adherence_summary_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -57,7 +58,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const GreetingHeader(),
-              const SizedBox(height: AppSpacing.xxl),
+              const SizedBox(height: AppSpacing.lg),
+              const WeeklyAdherenceSummaryCard(),
+              const SizedBox(height: AppSpacing.lg),
               const MedicationTimeline(),
               const SizedBox(height: AppSpacing.lg),
               const LowStockBanner(),
