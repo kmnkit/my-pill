@@ -224,6 +224,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<true/>
 </dict>
 </plist>
