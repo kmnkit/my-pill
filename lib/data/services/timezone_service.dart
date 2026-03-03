@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
@@ -8,6 +10,13 @@ class TimezoneService {
   static Future<void> initialize() async {
     if (!_initialized) {
       tz_data.initializeTimeZones();
+      try {
+        final tzInfo = await FlutterTimezone.getLocalTimezone();
+        tz.setLocalLocation(tz.getLocation(tzInfo.identifier));
+      } catch (e) {
+        // Graceful degradation: keep UTC if device timezone detection fails
+        debugPrint('TimezoneService: failed to detect device timezone: $e');
+      }
       _initialized = true;
     }
   }

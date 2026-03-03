@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/enums/timezone_mode.dart';
+import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/timezone_provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz_lib;
@@ -107,4 +109,71 @@ void main() {
       expect(state.currentTimezone, 'Europe/Berlin');
     });
   });
+
+  group('TimezoneSettings tracks userSettings homeTimezone via ref.listen', () {
+    late ProviderContainer testContainer;
+
+    setUp(() async {
+      testContainer = ProviderContainer(
+        overrides: [userSettingsProvider.overrideWith(_FakeUserSettings.new)],
+      );
+      addTearDown(testContainer.dispose);
+      await testContainer.read(userSettingsProvider.future);
+    });
+
+    test('homeTimezone updates when profile changes, preserving travel mode state',
+        () async {
+      // Configure travel mode state
+      final notifier = testContainer.read(timezoneSettingsProvider.notifier);
+      notifier.toggleEnabled();
+      notifier.setMode(TimezoneMode.localTime);
+      notifier.setCurrentTimezone('Europe/Berlin');
+
+      var state = testContainer.read(timezoneSettingsProvider);
+      expect(state.homeTimezone, 'America/New_York');
+
+      // Update profile — only homeTimezone changes
+      await testContainer
+          .read(userSettingsProvider.notifier)
+          .updateProfile(const UserProfile(id: 'test', homeTimezone: 'Asia/Tokyo'));
+
+      state = testContainer.read(timezoneSettingsProvider);
+      expect(state.homeTimezone, 'Asia/Tokyo');
+      expect(state.enabled, isTrue);
+      expect(state.mode, TimezoneMode.localTime);
+      expect(state.currentTimezone, 'Europe/Berlin');
+    });
+
+    test('unrelated profile changes do not reset travel mode state', () async {
+      final notifier = testContainer.read(timezoneSettingsProvider.notifier);
+      notifier.toggleEnabled();
+      notifier.setCurrentTimezone('Europe/Berlin');
+
+      // Update profile: homeTimezone unchanged, name changes
+      await testContainer.read(userSettingsProvider.notifier).updateProfile(
+            const UserProfile(
+              id: 'test',
+              homeTimezone: 'America/New_York',
+              name: 'Alice',
+            ),
+          );
+
+      final state = testContainer.read(timezoneSettingsProvider);
+      expect(state.enabled, isTrue);
+      expect(state.homeTimezone, 'America/New_York');
+      expect(state.currentTimezone, 'Europe/Berlin');
+    });
+  });
+}
+
+/// Fake UserSettings notifier — returns a fixed profile without touching storage.
+class _FakeUserSettings extends UserSettings {
+  @override
+  Future<UserProfile> build() async =>
+      const UserProfile(id: 'test', homeTimezone: 'America/New_York');
+
+  @override
+  Future<void> updateProfile(UserProfile profile) async {
+    state = AsyncData(profile);
+  }
 }

@@ -45,8 +45,6 @@ post_install do |installer|
 
     # Exclude integration_test from Release/Profile builds to prevent
     # "Test finished." overlay in production (Guideline 2.1/2.2).
-    # GeneratedPluginRegistrant.m also has #ifdef DEBUG guards, but this
-    # ensures the pod itself produces no output outside Debug builds.
     if target.name == 'integration_test'
       target.build_configurations.each do |config|
         unless config.name == 'Debug'
@@ -54,5 +52,57 @@ post_install do |installer|
         end
       end
     end
+  end
+
+  # Re-apply #ifdef DEBUG guards around integration_test in GeneratedPluginRegistrant.m.
+  # flutter pub get regenerates this file without guards, so we patch it here
+  # (post_install runs after pod install, which Flutter triggers on dependency changes).
+  registrant = File.join(File.dirname(File.realpath(__FILE__)), 'Runner/GeneratedPluginRegistrant.m')
+  if File.exist?(registrant)
+    content = File.read(registrant)
+    unless content.include?("#ifdef DEBUG\n#if __has_include(<integration_test/")
+      content.sub!(
+        "#if __has_include(<integration_test/IntegrationTestPlugin.h>)\n#import <integration_test/IntegrationTestPlugin.h>\n#else\n@import integration_test;\n#endif",
+        "#ifdef DEBUG\n#if __has_include(<integration_test/IntegrationTestPlugin.h>)\n#import <integration_test/IntegrationTestPlugin.h>\n#else\n@import integration_test;\n#endif\n#endif"
+      )
+    end
+    unless content.include?("#ifdef DEBUG\n  [IntegrationTestPlugin")
+      content.sub!(
+        "  [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@\"IntegrationTestPlugin\"]];",
+        "#ifdef DEBUG\n  [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@\"IntegrationTestPlugin\"]];\n#endif"
+      )
+    end
+    File.write(registrant, content)
+  end
+
+  # Remove integration_test from Release/Profile linker flags in CocoaPods-generated xcconfigs.
+  # EXCLUDED_SOURCE_FILE_NAMES prevents compilation, but the linker still fails unless we also
+  # remove the -framework flag from the xcconfig files.
+  %w[release profile].each do |config_name|
+    xcconfig = File.join(
+      installer.sandbox.root,
+      "Target Support Files/Pods-Runner/Pods-Runner.#{config_name}.xcconfig"
+    )
+    next unless File.exist?(xcconfig)
+    content = File.read(xcconfig)
+    modified = content.gsub(/-framework\s+"?integration_test"?\s?/, '')
+    File.write(xcconfig, modified) if modified != content
+  end
+
+  # Prevent integration_test.framework from being embedded in Release/Profile builds.
+  # EXCLUDED_SOURCE_FILE_NAMES blocks compilation but the embed script still copies the
+  # empty framework folder, causing MIInstallerErrorDomain error 71 on device install.
+  frameworks_script = File.join(
+    installer.sandbox.root,
+    "Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh"
+  )
+  if File.exist?(frameworks_script)
+    content = File.read(frameworks_script)
+    content.gsub!(
+      /([ \t]*)(install_framework "\$\{BUILT_PRODUCTS_DIR\}\/integration_test\/integration_test\.framework")/,
+      '\1if [[ "${CONFIGURATION}" == "Debug" ]]; then \2; fi'
+    )
+    File.write(frameworks_script, content)
+    FileUtils.chmod('+x', frameworks_script)
   end
 end
