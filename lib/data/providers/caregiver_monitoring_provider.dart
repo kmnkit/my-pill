@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
@@ -62,17 +65,40 @@ caregiverPatients(Ref ref) async* {
   }
   final firestore = ref.watch(firestoreServiceProvider);
   yield [];
-  yield* firestore.watchLinkedPatients().map(
-    (docs) => docs.map((doc) {
-      return (
-        patientId: doc['patientId'] as String? ?? '',
-        patientName: doc['patientName'] as String? ?? 'Patient',
-        linkedAt: doc['linkedAt'] != null
-            ? (doc['linkedAt'] as Timestamp).toDate()
-            : null,
+  yield* firestore
+      .watchLinkedPatients()
+      .map(
+        (docs) => docs.map((doc) {
+          return (
+            patientId: doc['patientId'] as String? ?? '',
+            patientName: doc['patientName'] as String? ?? 'Patient',
+            linkedAt: doc['linkedAt'] != null
+                ? (doc['linkedAt'] as Timestamp).toDate()
+                : null,
+          );
+        }).toList(),
+      )
+      .transform(
+        StreamTransformer.fromHandlers(
+          handleError: (error, stackTrace, sink) {
+            // Graceful degradation: permission-denied means Firestore rules have
+            // not been deployed yet. Treat as no linked patients so the
+            // caregiver sees the connect-guide instead of an error screen.
+            // TODO: revisit after `firebase deploy --only firestore:rules`
+            if (error is FirebaseException &&
+                error.code == 'permission-denied') {
+              ErrorHandler.debugLog(
+                error,
+                stackTrace,
+                'caregiverPatients: permission-denied — emitting empty list',
+              );
+              sink.add([]);
+            } else {
+              sink.addError(error, stackTrace);
+            }
+          },
+        ),
       );
-    }).toList(),
-  );
 }
 
 // Combines medications + reminders into PatientCard format
