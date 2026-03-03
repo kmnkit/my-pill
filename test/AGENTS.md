@@ -1,47 +1,49 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
+<!-- Generated: 2026-02-02 | Updated: 2026-03-01 -->
 
 # test — Test Suite
 
 ## Purpose
-Unit and widget tests for the Kusuridoki application. Tests cover data layer logic including repository calculations, service rating systems, and timezone conversions.
+Unit and widget tests for the Kusuridoki application. Mirrors the `lib/` directory structure. Covers core utilities, data layer (services, repositories, providers, models, enums), and presentation layer (screens, shared widgets).
 
 ## Key Files
 
 | File | Description |
 |------|-------------|
-| `widget_test.dart` | Placeholder smoke test (to be expanded) |
+| `mock_firebase.dart` | Firebase Auth mock setup — call `setupFirebaseAuthMocks()` in setUp for auth-dependent tests |
 
 ## Subdirectories
 
 | Directory | Purpose |
 |-----------|---------|
-| `data/` | Data layer tests (see `data/AGENTS.md`) |
+| `core/` | Core layer tests — constants, extensions, theme, utils (see `core/AGENTS.md`) |
+| `data/` | Data layer tests — services, repositories, providers, models, enums (see `data/AGENTS.md`) |
+| `helpers/` | Shared test helpers — `createTestableWidget` / `createTestableWidgetJa` (see `helpers/AGENTS.md`) |
+| `presentation/` | Widget and screen tests (see `presentation/AGENTS.md`) |
 
 ## For AI Agents
 
 ### Working In This Directory
-- Use `mockito` for mocking services and dependencies
-- Test files mirror the `lib/` directory structure
-- Each test file should correspond to a source file in `lib/`
-- Use `ProviderContainer` for testing Riverpod providers
-- Widget tests must wrap in `ProviderScope`
+- Mock library: **mockito** with `@GenerateMocks` annotation
+- After adding `@GenerateMocks`: run `dart run build_runner build --delete-conflicting-outputs`
+- Use `ProviderContainer` with `overrides` for provider tests
+- Widget tests: use `createTestableWidget()` from `test/helpers/widget_test_helpers.dart`
+- Auth tests: call `setupFirebaseAuthMocks()` from `test/mock_firebase.dart` in `setUpAll`
 
 ### Testing Requirements
-- Run `flutter test` to execute all tests
-- Run `flutter test test/path/to/specific_test.dart` for individual tests
-- Aim for >80% coverage on services and repositories
+- Run `flutter test` — all tests (1470+ pass, ~19 skip)
+- Run `flutter test test/path/to/test.dart` for a specific file
+- Target: >80% coverage
 
-### Common Patterns
-- `group()` for organizing related tests
-- `setUp()` / `tearDown()` for test fixtures
-- Mock objects created with `@GenerateMocks` annotation
-- Assertion style: `expect(actual, matcher)`
+### Critical Notes
+- `kPremiumEnabled = false` — premium-related tests must use `skip: 'kPremiumEnabled is false'`
+- Timezone tests: call `tz.initializeTimeZones()` + explicit `setLocalLocation` in setUp
+- Notification tests: set `debugDefaultTargetPlatformOverride = TargetPlatform.macOS`
 
 ## Dependencies
 
 ### Internal
-- `lib/data/` — Source code under test
+- `lib/` — Source code under test
 
 ### External
 - `flutter_test` — Flutter testing framework
