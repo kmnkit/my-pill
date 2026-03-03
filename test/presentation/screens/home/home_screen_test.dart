@@ -4,6 +4,7 @@ import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
@@ -79,6 +80,7 @@ List<dynamic> _baseOverrides({
   return [
     userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
     medicationListProvider.overrideWith(() => _FakeEmptyMedicationList()),
+    overallAdherenceProvider.overrideWith((ref) => Future.value(null)),
     if (emptyReminders)
       todayRemindersProvider.overrideWith(() => _FakeEmptyReminders())
     else
@@ -152,6 +154,7 @@ void main() {
             medicationListProvider.overrideWith(
               () => _FakeEmptyMedicationList(),
             ),
+            overallAdherenceProvider.overrideWith((ref) => Future.value(null)),
             todayRemindersProvider.overrideWith(() => _FakeEmptyReminders()),
           ],
         ),
@@ -172,6 +175,7 @@ void main() {
             medicationListProvider.overrideWith(
               () => _FakeEmptyMedicationList(),
             ),
+            overallAdherenceProvider.overrideWith((ref) => Future.value(null)),
             todayRemindersProvider.overrideWith(() => _FakeEmptyReminders()),
           ],
         ),
@@ -195,6 +199,7 @@ void main() {
             medicationListProvider.overrideWith(
               () => _FakeEmptyMedicationList(),
             ),
+            overallAdherenceProvider.overrideWith((ref) => Future.value(null)),
             todayRemindersProvider.overrideWith(() => _FakeErrorReminders()),
           ],
         ),

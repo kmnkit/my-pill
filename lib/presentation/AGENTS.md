@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-02 | Updated: 2026-02-02 -->
+<!-- Generated: 2026-02-02 | Updated: 2026-03-01 -->
 
 # presentation — UI Layer
 
@@ -12,7 +12,7 @@ Complete UI layer following MVVM with Riverpod. Contains the router configuratio
 |-----------|---------|
 | `router/` | GoRouter configuration and named route constants (see `router/AGENTS.md`) |
 | `screens/` | Feature screens — home, medications, schedule, adherence, settings, travel, caregivers, onboarding (see `screens/AGENTS.md`) |
-| `shared/` | Reusable widgets and dialogs with `Mp` prefix (see `shared/AGENTS.md`) |
+| `shared/` | Reusable widgets and dialogs with `Kd` prefix (see `shared/AGENTS.md`) |
 
 ## For AI Agents
 
