@@ -37,7 +37,6 @@ class InventoryEditor extends StatelessWidget {
             count.toString(),
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: AppColors.primary,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(width: AppSpacing.xl),

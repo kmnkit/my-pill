@@ -159,7 +159,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
             const SizedBox(height: AppSpacing.md),
             Text(
               l10n.premiumBenefits,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: AppSpacing.sm),
             _buildBenefitItem(l10n.weeklyMonthlyReports),

@@ -92,6 +92,7 @@ class KdBottomNavBar extends StatelessWidget {
   }
 
   Widget _buildNavItems({
+    required BuildContext context,
     required List<_NavItem> items,
     required Color selectedColor,
     required Color unselectedColor,
@@ -124,12 +125,9 @@ class KdBottomNavBar extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       item.label,
-                      style: TextStyle(
-                        fontSize: 13,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: color,
-                        fontWeight: isSelected
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                        fontWeight: isSelected ? FontWeight.w600 : null,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -186,6 +184,7 @@ class KdBottomNavBar extends StatelessWidget {
               ],
             ),
             child: _buildNavItems(
+              context: context,
               items: items,
               selectedColor: isDark
                   ? AppColors.primaryBright
@@ -212,6 +211,7 @@ class KdBottomNavBar extends StatelessWidget {
     return Container(
       color: isDark ? AppColors.surfaceDark : Colors.white,
       child: _buildNavItems(
+        context: context,
         items: items,
         selectedColor: isDark ? AppColors.hcPrimaryDark : AppColors.hcPrimary,
         unselectedColor: isDark

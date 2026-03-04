@@ -233,10 +233,8 @@ class _StepItem extends StatelessWidget {
           child: Center(
             child: Text(
               '$step',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textOnPrimary,
               ),
             ),
           ),

@@ -41,7 +41,6 @@ class OverallScore extends StatelessWidget {
               color: percentage != null
                   ? AppColors.primary
                   : context.appColors.textMuted,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

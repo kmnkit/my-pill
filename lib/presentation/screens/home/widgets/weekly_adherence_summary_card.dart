@@ -43,7 +43,6 @@ class WeeklyAdherenceSummaryCard extends ConsumerWidget {
                   trailing,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
                       ),
                 ),
               ],

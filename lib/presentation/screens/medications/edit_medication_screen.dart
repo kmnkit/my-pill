@@ -90,7 +90,7 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const Icon(Icons.error_outline, size: 64, color: AppColors.error),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     l10n.errorLoadingMedication,
@@ -114,10 +114,10 @@ class _EditMedicationScreenState extends ConsumerState<EditMedicationScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.medication_outlined,
                         size: 64,
-                        color: Colors.grey,
+                        color: context.appColors.textMuted,
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       Text(

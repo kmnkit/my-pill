@@ -151,7 +151,6 @@ class _InventoryUpdateDialogState extends State<InventoryUpdateDialog> {
               l10n.quickActions,
               style: textTheme.labelMedium?.copyWith(
                 color: context.appColors.textMuted,
-                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),

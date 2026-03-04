@@ -16,7 +16,12 @@ class KdTimePicker extends StatelessWidget {
   final ValueChanged<int> onHourChanged;
   final ValueChanged<int> onMinuteChanged;
 
-  Widget _buildColumn(String value, VoidCallback onUp, VoidCallback onDown) {
+  Widget _buildColumn(
+    BuildContext context,
+    String value,
+    VoidCallback onUp,
+    VoidCallback onDown,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -31,7 +36,7 @@ class KdTimePicker extends StatelessWidget {
         ),
         Text(
           value,
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
         IconButton(
           icon: const Icon(Icons.keyboard_arrow_down),
@@ -70,15 +75,17 @@ class KdTimePicker extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildColumn(
+            context,
             displayHour,
             () => onHourChanged((hour + 1) % 24),
             () => onHourChanged((hour - 1 + 24) % 24),
           ),
-          const Text(
+          Text(
             ':',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
           _buildColumn(
+            context,
             displayMinute,
             () => onMinuteChanged((minute + 15) % 60),
             () => onMinuteChanged((minute - 15 + 60) % 60),
