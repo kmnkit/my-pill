@@ -25,7 +25,6 @@ class AdherenceBadge extends StatelessWidget {
             '$percentage%',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
               color: AppColors.primary,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

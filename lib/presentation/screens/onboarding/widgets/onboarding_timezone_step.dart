@@ -190,9 +190,7 @@ class _OnboardingTimezoneStepState
                           const SizedBox(height: AppSpacing.sm),
                           Text(
                             _selectedTimezone,
-                            style: textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: textTheme.titleLarge,
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(
@@ -303,9 +301,7 @@ class _TimezonePickerSheetState extends State<_TimezonePickerSheet> {
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: Text(
               l10n.onboardingTimezonePickerTitle,
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: textTheme.titleLarge,
             ),
           ),
 

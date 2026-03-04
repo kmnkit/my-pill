@@ -62,7 +62,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
     }
@@ -131,7 +131,6 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                         color: isDark
                             ? AppColors.textPrimaryDark
                             : context.appColors.textPrimary,
-                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
                     ),

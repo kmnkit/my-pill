@@ -63,7 +63,6 @@ class FamilyScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.labelSmall
                                 ?.copyWith(
                                   color: AppColors.primary,
-                                  fontWeight: FontWeight.w600,
                                 ),
                           ),
                           if (!isPremium) ...[
