@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/adherence_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
@@ -16,6 +17,42 @@ class WeeklySummaryScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<WeeklySummaryScreen> createState() =>
       _WeeklySummaryScreenState();
+}
+
+class _TrendBadge extends StatelessWidget {
+  const _TrendBadge({required this.delta, required this.l10n});
+
+  final int delta;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, icon, label) = switch (delta) {
+      > 0 => (
+          AppColors.success,
+          Icons.arrow_upward,
+          l10n.weeklyTrendImproved(delta),
+        ),
+      < 0 => (
+          AppColors.error,
+          Icons.arrow_downward,
+          l10n.weeklyTrendDeclined(-delta),
+        ),
+      _ => (AppColors.info, Icons.arrow_forward, l10n.weeklyTrendSame),
+    };
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, size: 14, color: color),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color),
+        ),
+      ],
+    );
+  }
 }
 
 class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
@@ -51,6 +88,16 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
                     child: KdShimmerBox(height: 120),
                   ),
                   error: (error, _) => const OverallScore(percentage: null),
+                ),
+                ref.watch(weeklyTrendProvider).when(
+                  data: (delta) => delta != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: AppSpacing.xs),
+                          child: _TrendBadge(delta: delta, l10n: l10n),
+                        )
+                      : const SizedBox.shrink(),
+                  loading: () => const SizedBox.shrink(),
+                  error: (_, _) => const SizedBox.shrink(),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 weeklyAdherenceAsync.when(

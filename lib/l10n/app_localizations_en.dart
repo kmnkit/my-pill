@@ -392,6 +392,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keepItUp => 'Keep up the great work!';
 
   @override
+  String streakDays(int count) {
+    return '$count-day streak';
+  }
+
+  @override
+  String nextDoseAt(String time) {
+    return 'Next: $time';
+  }
+
+  @override
+  String get allDoneForToday => 'All done for today!';
+
+  @override
+  String get allDoneCelebration =>
+      'You took all your medications today. Keep it up!';
+
+  @override
+  String weeklyTrendImproved(int delta) {
+    return '+$delta% vs last week';
+  }
+
+  @override
+  String weeklyTrendDeclined(int delta) {
+    return '-$delta% vs last week';
+  }
+
+  @override
+  String get weeklyTrendSame => 'Same as last week';
+
+  @override
   String get medicationBreakdown => 'Medication Breakdown';
 
   @override
@@ -1650,4 +1680,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareConnectGuide => 'Share this guide';
+
+  @override
+  String get editSchedule => 'Edit Schedule';
+
+  @override
+  String get cancelScheduleSetupTitle => 'Cancel Schedule Setup';
+
+  @override
+  String get cancelScheduleSetupMessage =>
+      'Going back without setting a schedule will delete this medication';
+
+  @override
+  String get inventoryUnitDoses => 'doses';
 }

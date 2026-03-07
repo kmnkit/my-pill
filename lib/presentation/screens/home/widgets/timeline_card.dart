@@ -12,7 +12,7 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_pill_icon.dart';
 
-class TimelineCard extends StatelessWidget {
+class TimelineCard extends StatefulWidget {
   const TimelineCard({
     super.key,
     required this.medicationName,
@@ -43,21 +43,64 @@ class TimelineCard extends StatelessWidget {
   final bool isCritical;
 
   @override
+  State<TimelineCard> createState() => _TimelineCardState();
+}
+
+class _TimelineCardState extends State<TimelineCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _checkController;
+  late final Animation<double> _checkScale;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450),
+    );
+    _checkScale = CurvedAnimation(
+      parent: _checkController,
+      curve: Curves.elasticOut,
+    );
+    if (widget.reminderStatus == ReminderStatus.taken) {
+      _checkController.value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(TimelineCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.reminderStatus == ReminderStatus.taken &&
+        oldWidget.reminderStatus != ReminderStatus.taken) {
+      _checkController.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _checkController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context)!;
 
     return Semantics(
-      label: '$medicationName, $time, $badgeLabel',
+      label: '${widget.medicationName}, ${widget.time}, ${widget.badgeLabel}',
       child: KdCard(
-        onTap: () => context.push('/medications/$medicationId'),
+        onTap: () => context.push('/medications/${widget.medicationId}'),
         child: Row(
           children: [
             // Pill icon
-            KdPillIcon(
-              shape: pillShape,
-              color: pillColor,
-              size: AppSpacing.iconLg,
+            Hero(
+              tag: 'medication-pill-${widget.medicationId}',
+              child: KdPillIcon(
+                shape: widget.pillShape,
+                color: widget.pillColor,
+                size: AppSpacing.iconLg,
+              ),
             ),
             const SizedBox(width: AppSpacing.md),
 
@@ -70,13 +113,13 @@ class TimelineCard extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          medicationName,
+                          widget.medicationName,
                           style: textTheme.titleSmall,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      if (isCritical) ...[
+                      if (widget.isCritical) ...[
                         const SizedBox(width: AppSpacing.xs),
                         Icon(
                           Icons.priority_high,
@@ -88,7 +131,7 @@ class TimelineCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    dosage,
+                    widget.dosage,
                     style: textTheme.bodySmall?.copyWith(
                       color: context.appColors.textMuted,
                     ),
@@ -104,22 +147,24 @@ class TimelineCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  dosageTimingLabel != null ? '$time $dosageTimingLabel' : time,
+                  widget.dosageTimingLabel != null
+                      ? '${widget.time} ${widget.dosageTimingLabel}'
+                      : widget.time,
                   style: textTheme.bodySmall,
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                KdBadge(label: badgeLabel, variant: badgeVariant),
+                KdBadge(label: widget.badgeLabel, variant: widget.badgeVariant),
               ],
             ),
 
             // Inline mark-as-taken button for pending reminders
-            if (reminderStatus == ReminderStatus.pending &&
-                onMarkTaken != null) ...[
+            if (widget.reminderStatus == ReminderStatus.pending &&
+                widget.onMarkTaken != null) ...[
               const SizedBox(width: AppSpacing.sm),
               IconButton(
                 onPressed: () {
-                  HapticFeedback.mediumImpact();
-                  onMarkTaken?.call();
+                  HapticFeedback.heavyImpact();
+                  widget.onMarkTaken?.call();
                 },
                 icon: const Icon(Icons.check_circle_outline),
                 color: AppColors.primary,
@@ -127,9 +172,12 @@ class TimelineCard extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
               ),
-            ] else if (reminderStatus == ReminderStatus.taken) ...[
+            ] else if (widget.reminderStatus == ReminderStatus.taken) ...[
               const SizedBox(width: AppSpacing.sm),
-              Icon(Icons.check_circle, color: AppColors.success, size: 24),
+              ScaleTransition(
+                scale: _checkScale,
+                child: Icon(Icons.check_circle, color: AppColors.success, size: 24),
+              ),
             ],
           ],
         ),

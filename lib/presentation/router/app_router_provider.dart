@@ -262,7 +262,9 @@ Raw<GoRouter> appRouter(Ref ref) {
         name: RouteNames.setSchedule,
         builder: (context, state) {
           final id = state.pathParameters['id'] ?? '';
-          return ScheduleScreen(medicationId: id);
+          final extra = state.extra as Map<String, dynamic>?;
+          final isInitialSetup = extra?['isInitialSetup'] as bool? ?? false;
+          return ScheduleScreen(medicationId: id, isInitialSetup: isInitialSetup);
         },
       ),
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class InventoryEditor extends StatelessWidget {
   const InventoryEditor({
@@ -13,9 +15,46 @@ class InventoryEditor extends StatelessWidget {
   final int count;
   final ValueChanged<int> onCountChanged;
 
+  Future<void> _showNumberInput(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController(text: count.toString());
+    final result = await showDialog<int>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          textAlign: TextAlign.center,
+          style: Theme.of(ctx).textTheme.headlineMedium?.copyWith(
+            color: AppColors.primary,
+          ),
+          decoration: InputDecoration(suffix: Text(l10n.inventoryUnitDoses)),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              final value = int.tryParse(controller.text);
+              Navigator.of(ctx).pop(value);
+            },
+            child: Text(l10n.confirm),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    if (result != null) onCountChanged(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -33,10 +72,24 @@ class InventoryEditor extends StatelessWidget {
             onPressed: count > 0 ? () => onCountChanged(count - 1) : null,
           ),
           const SizedBox(width: AppSpacing.xl),
-          Text(
-            count.toString(),
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: AppColors.primary,
+          GestureDetector(
+            onTap: () => _showNumberInput(context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  count.toString(),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+                Text(
+                  l10n.inventoryUnitDoses,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: context.appColors.textMuted,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: AppSpacing.xl),

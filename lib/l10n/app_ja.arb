@@ -166,6 +166,22 @@
   "fair": "まあまあ",
   "poor": "要改善",
   "keepItUp": "素晴らしいです！この調子で続けましょう。",
+  "streakDays": "{count}日連続",
+  "@streakDays": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "nextDoseAt": "次の服薬: {time}",
+  "@nextDoseAt": {
+    "placeholders": {"time": {"type": "String"}}
+  },
+  "allDoneForToday": "今日の服薬が完了しました！",
+  "allDoneCelebration": "今日の服薬をすべて完了しました。この調子で頑張りましょう！",
+  "weeklyTrendImproved": "先週比 +{delta}%",
+  "@weeklyTrendImproved": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendDeclined": "先週比 -{delta}%",
+  "@weeklyTrendDeclined": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendSame": "先週と同じ",
+
   "medicationBreakdown": "お薬別の詳細",
   "recentHistory": "最近の履歴",
 
@@ -653,5 +669,10 @@
   "connectStep1": "患者のスマホにくすりどきをインストール",
   "connectStep2": "患者のアプリで 設定 → ご家族とサポーター → QRコードを生成",
   "connectStep3": "右上の「患者を追加」ボタンでQRをスキャン",
-  "shareConnectGuide": "この手順を共有する"
+  "shareConnectGuide": "この手順を共有する",
+
+  "editSchedule": "スケジュール編集",
+  "cancelScheduleSetupTitle": "スケジュール設定をキャンセル",
+  "cancelScheduleSetupMessage": "スケジュールを設定せずに戻ると、お薬が削除されます",
+  "inventoryUnitDoses": "回分"
 }

@@ -233,7 +233,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
               ),
               const SizedBox(height: AppSpacing.xxl),
               KdButton(
-                label: _isSaving ? l10n.saving : l10n.saveMedication,
+                label: _isSaving ? l10n.saving : l10n.continueButton,
                 onPressed: _isSaving ? null : _saveMedication,
               ),
             ],
@@ -298,6 +298,7 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
       if (mounted) {
         context.pushReplacement(
           '/medications/${medication.id}/schedule',
+          extra: {'isInitialSetup': true},
         );
       }
     } catch (e, st) {
