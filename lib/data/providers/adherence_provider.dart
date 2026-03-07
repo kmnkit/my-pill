@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/data/services/adherence_service.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
-import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/models/adherence_record.dart';
 
 part 'adherence_provider.g.dart';
@@ -37,8 +36,8 @@ Future<List<({String id, String name, double? percentage})>>
 medicationBreakdown(Ref ref) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
-  final medicationsAsync = await ref.watch(medicationListProvider.future);
-  return service.getMedicationBreakdown(medicationsAsync);
+  final medications = await storage.getAllMedications();
+  return service.getMedicationBreakdown(medications);
 }
 
 @riverpod

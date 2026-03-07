@@ -17,14 +17,20 @@ class CaregiverLinks extends _$CaregiverLinks {
     final storage = ref.read(storageServiceProvider);
     await storage.saveCaregiverLink(link);
     if (!ref.mounted) return;
-    ref.invalidateSelf();
+    await _refreshState();
   }
 
   Future<void> removeLink(String id) async {
     final storage = ref.read(storageServiceProvider);
     await storage.deleteCaregiverLink(id);
     if (!ref.mounted) return;
-    ref.invalidateSelf();
+    await _refreshState();
+  }
+
+  Future<void> _refreshState() async {
+    state = AsyncData(
+      await ref.read(storageServiceProvider).getAllCaregiverLinks(),
+    );
   }
 }
 

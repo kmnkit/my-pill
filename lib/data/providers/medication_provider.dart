@@ -45,10 +45,7 @@ class MedicationList extends _$MedicationList {
     ref.invalidate(scheduleListProvider);
   }
 
-  // Update state directly instead of invalidateSelf() to avoid triggering
-  // runOnDispose on the .future proxy subscription held by downstream
-  // providers (e.g. medicationBreakdownProvider), which causes a Riverpod
-  // internal pause-count assertion (pausedActiveSubscriptionCount mismatch).
+  // Update state directly to avoid Riverpod pause-count assertion.
   Future<void> _refreshState() async {
     state = AsyncData(await ref.read(storageServiceProvider).getAllMedications());
   }
