@@ -1,6 +1,8 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
@@ -68,6 +70,7 @@ RouterRefreshNotifier routerRefreshNotifier(Ref ref) {
   ref.listen(authStateProvider, (previous, next) {
     next.whenData((user) {
       notifier.updateAuth(user != null);
+      AnalyticsService.setUserId(user?.uid);
     });
   });
 
@@ -102,7 +105,10 @@ Raw<GoRouter> appRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: Listenable.merge([refreshNotifier, inviteNotifier]),
-    observers: [SentryNavigatorObserver()],
+    observers: [
+      SentryNavigatorObserver(),
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
     onException: (_, state, router) {
       // Handle unknown routes gracefully:
       // - Firebase Auth OAuth callback URLs (Google/Apple sign-in redirects)
