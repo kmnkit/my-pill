@@ -6,6 +6,7 @@ import 'package:kusuridoki/data/providers/adherence_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/repositories/medication_repository.dart';
 import 'package:kusuridoki/data/services/reminder_service.dart';
 import 'package:kusuridoki/data/services/notification_service.dart';
 import 'package:kusuridoki/data/services/review_service.dart';
@@ -26,7 +27,16 @@ class TodayReminders extends _$TodayReminders {
       final reminderService = ReminderService(storage);
 
       // Use ReminderService to mark as taken (creates adherence record)
-      await reminderService.markAsTaken(reminderId);
+      final reminder = await reminderService.markAsTaken(reminderId);
+
+      // Deduct inventory (non-blocking — failure must not undo the taken record)
+      try {
+        await MedicationRepository(storage).deductInventory(reminder.medicationId);
+        ref.invalidate(medicationListProvider);
+        ref.invalidate(medicationProvider(reminder.medicationId));
+      } catch (e) {
+        debugPrint('Inventory deduction skipped: $e');
+      }
 
       // Cancel the notification
       await NotificationService().cancelReminder(reminderId);

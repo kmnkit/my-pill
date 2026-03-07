@@ -116,13 +116,10 @@ class MedicationDetailScreen extends ConsumerWidget {
                           ),
                         )
                       else
-                        Hero(
-                          tag: 'medication-pill-$medicationId',
-                          child: KdPillIcon(
-                            shape: medication.shape,
-                            color: medication.color,
-                            size: 64,
-                          ),
+                        KdPillIcon(
+                          shape: medication.shape,
+                          color: medication.color,
+                          size: 64,
                         ),
                       const SizedBox(height: AppSpacing.lg),
                       Text(
