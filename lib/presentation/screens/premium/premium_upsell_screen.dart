@@ -105,8 +105,10 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
             _buildFeaturesList(l10n),
             if (!isPremium) ...[
               _buildPlanToggle(l10n),
+              _buildFreeTrialBadge(l10n),
               _buildPurchaseButton(l10n, subscriptionService),
               _buildSubscriptionTerms(l10n),
+              _buildAdPrivacyNotice(l10n),
               _buildRestoreButton(l10n, subscriptionService),
             ] else ...[
               _buildPremiumStatus(l10n, status),
@@ -405,6 +407,40 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     );
   }
 
+  Widget _buildFreeTrialBadge(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.sm,
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.success.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.star, size: 16, color: AppColors.success),
+            const SizedBox(width: AppSpacing.xs),
+            Text(
+              l10n.freeTrial,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: AppColors.success,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildSubscriptionTerms(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -414,6 +450,35 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
           context,
         ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
         textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildAdPrivacyNotice(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.xs,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.shield_outlined,
+            size: 14,
+            color: context.appColors.textMuted,
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          Flexible(
+            child: Text(
+              l10n.adPrivacyNotice,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: context.appColors.textMuted,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }

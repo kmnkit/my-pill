@@ -603,6 +603,10 @@
 
   "subscriptionTerms": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.",
 
+  "freeTrial": "7-Day Free Trial",
+  "freeTrialDescription": "Try all premium features free for 7 days, then subscribe.",
+  "adPrivacyNotice": "Your medication data is never used for ad targeting.",
+
   "selectDosageTiming": "When do you take it?",
   "adjustTimes": "Adjust Times",
   "timeRangeHint": "{timing}: {min}:00 ~ {max}:59",

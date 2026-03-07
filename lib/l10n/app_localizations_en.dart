@@ -1566,6 +1566,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.';
 
   @override
+  String get freeTrial => '7-Day Free Trial';
+
+  @override
+  String get freeTrialDescription =>
+      'Try all premium features free for 7 days, then subscribe.';
+
+  @override
+  String get adPrivacyNotice =>
+      'Your medication data is never used for ad targeting.';
+
+  @override
   String get selectDosageTiming => 'When do you take it?';
 
   @override
