@@ -4,7 +4,7 @@
 # widgets — Settings Screen Widgets
 
 ## Purpose
-Feature-specific widgets for the settings screen including language selection, notification preferences, display options, account management, and ad removal.
+Feature-specific widgets for the settings screen including language selection, notification preferences, display options, and account management.
 
 ## Key Files
 
@@ -14,15 +14,14 @@ Feature-specific widgets for the settings screen including language selection, n
 | `notification_settings.dart` | `NotificationSettings` — notification preferences (snooze duration, critical alerts) |
 | `display_settings.dart` | `DisplaySettings` — high contrast toggle, text size adjustment |
 | `account_section.dart` | `AccountSection` — sign in/out, account deletion, email linking |
-| `remove_ads_banner.dart` | `RemoveAdsBanner` — IAP purchase prompt for ad removal |
 
 ## For AI Agents
 
 ### Working In This Directory
 - Language change triggers full app locale switch via `settingsProvider`
 - Account section adapts based on auth state (anonymous shows sign-in, authenticated shows sign-out/delete)
-- Remove ads banner hidden when user has already purchased
 - High contrast mode affects app-wide theme
+- No one-time "remove ads" IAP — ad removal is a subscription benefit only
 
 ## Dependencies
 

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SubscriptionStatus {
 
- bool get isPremium; String? get productId; DateTime? get expiresAt; SubscriptionPlatform get platform;
+ bool get isPremium; bool get isOnTrial; String? get productId; DateTime? get expiresAt; DateTime? get trialEndsAt; SubscriptionPlatform get platform;
 /// Create a copy of SubscriptionStatus
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SubscriptionStatusCopyWith<SubscriptionStatus> get copyWith => _$SubscriptionSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubscriptionStatus&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.platform, platform) || other.platform == platform));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubscriptionStatus&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.isOnTrial, isOnTrial) || other.isOnTrial == isOnTrial)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.trialEndsAt, trialEndsAt) || other.trialEndsAt == trialEndsAt)&&(identical(other.platform, platform) || other.platform == platform));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,isPremium,productId,expiresAt,platform);
+int get hashCode => Object.hash(runtimeType,isPremium,isOnTrial,productId,expiresAt,trialEndsAt,platform);
 
 @override
 String toString() {
-  return 'SubscriptionStatus(isPremium: $isPremium, productId: $productId, expiresAt: $expiresAt, platform: $platform)';
+  return 'SubscriptionStatus(isPremium: $isPremium, isOnTrial: $isOnTrial, productId: $productId, expiresAt: $expiresAt, trialEndsAt: $trialEndsAt, platform: $platform)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SubscriptionStatusCopyWith<$Res>  {
   factory $SubscriptionStatusCopyWith(SubscriptionStatus value, $Res Function(SubscriptionStatus) _then) = _$SubscriptionStatusCopyWithImpl;
 @useResult
 $Res call({
- bool isPremium, String? productId, DateTime? expiresAt, SubscriptionPlatform platform
+ bool isPremium, bool isOnTrial, String? productId, DateTime? expiresAt, DateTime? trialEndsAt, SubscriptionPlatform platform
 });
 
 
@@ -65,11 +65,13 @@ class _$SubscriptionStatusCopyWithImpl<$Res>
 
 /// Create a copy of SubscriptionStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isPremium = null,Object? productId = freezed,Object? expiresAt = freezed,Object? platform = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isPremium = null,Object? isOnTrial = null,Object? productId = freezed,Object? expiresAt = freezed,Object? trialEndsAt = freezed,Object? platform = null,}) {
   return _then(_self.copyWith(
 isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
+as bool,isOnTrial: null == isOnTrial ? _self.isOnTrial : isOnTrial // ignore: cast_nullable_to_non_nullable
 as bool,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String?,expiresAt: freezed == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,trialEndsAt: freezed == trialEndsAt ? _self.trialEndsAt : trialEndsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as SubscriptionPlatform,
   ));
@@ -156,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isPremium,  String? productId,  DateTime? expiresAt,  SubscriptionPlatform platform)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isPremium,  bool isOnTrial,  String? productId,  DateTime? expiresAt,  DateTime? trialEndsAt,  SubscriptionPlatform platform)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SubscriptionStatus() when $default != null:
-return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);case _:
+return $default(_that.isPremium,_that.isOnTrial,_that.productId,_that.expiresAt,_that.trialEndsAt,_that.platform);case _:
   return orElse();
 
 }
@@ -177,10 +179,10 @@ return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isPremium,  String? productId,  DateTime? expiresAt,  SubscriptionPlatform platform)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isPremium,  bool isOnTrial,  String? productId,  DateTime? expiresAt,  DateTime? trialEndsAt,  SubscriptionPlatform platform)  $default,) {final _that = this;
 switch (_that) {
 case _SubscriptionStatus():
-return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);case _:
+return $default(_that.isPremium,_that.isOnTrial,_that.productId,_that.expiresAt,_that.trialEndsAt,_that.platform);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +199,10 @@ return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isPremium,  String? productId,  DateTime? expiresAt,  SubscriptionPlatform platform)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isPremium,  bool isOnTrial,  String? productId,  DateTime? expiresAt,  DateTime? trialEndsAt,  SubscriptionPlatform platform)?  $default,) {final _that = this;
 switch (_that) {
 case _SubscriptionStatus() when $default != null:
-return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);case _:
+return $default(_that.isPremium,_that.isOnTrial,_that.productId,_that.expiresAt,_that.trialEndsAt,_that.platform);case _:
   return null;
 
 }
@@ -212,12 +214,14 @@ return $default(_that.isPremium,_that.productId,_that.expiresAt,_that.platform);
 @JsonSerializable()
 
 class _SubscriptionStatus implements SubscriptionStatus {
-  const _SubscriptionStatus({this.isPremium = false, this.productId, this.expiresAt, this.platform = SubscriptionPlatform.none});
+  const _SubscriptionStatus({this.isPremium = false, this.isOnTrial = false, this.productId, this.expiresAt, this.trialEndsAt, this.platform = SubscriptionPlatform.none});
   factory _SubscriptionStatus.fromJson(Map<String, dynamic> json) => _$SubscriptionStatusFromJson(json);
 
 @override@JsonKey() final  bool isPremium;
+@override@JsonKey() final  bool isOnTrial;
 @override final  String? productId;
 @override final  DateTime? expiresAt;
+@override final  DateTime? trialEndsAt;
 @override@JsonKey() final  SubscriptionPlatform platform;
 
 /// Create a copy of SubscriptionStatus
@@ -233,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubscriptionStatus&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.platform, platform) || other.platform == platform));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubscriptionStatus&&(identical(other.isPremium, isPremium) || other.isPremium == isPremium)&&(identical(other.isOnTrial, isOnTrial) || other.isOnTrial == isOnTrial)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.trialEndsAt, trialEndsAt) || other.trialEndsAt == trialEndsAt)&&(identical(other.platform, platform) || other.platform == platform));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,isPremium,productId,expiresAt,platform);
+int get hashCode => Object.hash(runtimeType,isPremium,isOnTrial,productId,expiresAt,trialEndsAt,platform);
 
 @override
 String toString() {
-  return 'SubscriptionStatus(isPremium: $isPremium, productId: $productId, expiresAt: $expiresAt, platform: $platform)';
+  return 'SubscriptionStatus(isPremium: $isPremium, isOnTrial: $isOnTrial, productId: $productId, expiresAt: $expiresAt, trialEndsAt: $trialEndsAt, platform: $platform)';
 }
 
 
@@ -253,7 +257,7 @@ abstract mixin class _$SubscriptionStatusCopyWith<$Res> implements $Subscription
   factory _$SubscriptionStatusCopyWith(_SubscriptionStatus value, $Res Function(_SubscriptionStatus) _then) = __$SubscriptionStatusCopyWithImpl;
 @override @useResult
 $Res call({
- bool isPremium, String? productId, DateTime? expiresAt, SubscriptionPlatform platform
+ bool isPremium, bool isOnTrial, String? productId, DateTime? expiresAt, DateTime? trialEndsAt, SubscriptionPlatform platform
 });
 
 
@@ -270,11 +274,13 @@ class __$SubscriptionStatusCopyWithImpl<$Res>
 
 /// Create a copy of SubscriptionStatus
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isPremium = null,Object? productId = freezed,Object? expiresAt = freezed,Object? platform = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isPremium = null,Object? isOnTrial = null,Object? productId = freezed,Object? expiresAt = freezed,Object? trialEndsAt = freezed,Object? platform = null,}) {
   return _then(_SubscriptionStatus(
 isPremium: null == isPremium ? _self.isPremium : isPremium // ignore: cast_nullable_to_non_nullable
+as bool,isOnTrial: null == isOnTrial ? _self.isOnTrial : isOnTrial // ignore: cast_nullable_to_non_nullable
 as bool,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String?,expiresAt: freezed == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,trialEndsAt: freezed == trialEndsAt ? _self.trialEndsAt : trialEndsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as SubscriptionPlatform,
   ));

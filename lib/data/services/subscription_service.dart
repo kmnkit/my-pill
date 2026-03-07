@@ -7,6 +7,10 @@ class SubscriptionService {
   static const String monthlyProductId = 'premium_monthly';
   static const String yearlyProductId = 'premium_yearly';
 
+  /// Free trial duration offered before subscription billing begins.
+  /// Configured in RevenueCat during Phase 2 activation.
+  static const int kTrialDays = 7;
+
   final _statusController = StreamController<SubscriptionStatus>.broadcast();
   Stream<SubscriptionStatus> get statusStream => _statusController.stream;
 

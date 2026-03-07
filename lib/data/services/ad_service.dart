@@ -53,7 +53,7 @@ class AdService {
     _homeBannerAd ??= BannerAd(
       adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
-      request: const AdRequest(),
+      request: const AdRequest(nonPersonalizedAds: true),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
           debugPrint('Home banner failed: $error');
@@ -71,7 +71,7 @@ class AdService {
     _medicationsBannerAd ??= BannerAd(
       adUnitId: _bannerAdUnitId,
       size: AdSize.banner,
-      request: const AdRequest(),
+      request: const AdRequest(nonPersonalizedAds: true),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, error) {
           debugPrint('Medications banner failed: $error');
