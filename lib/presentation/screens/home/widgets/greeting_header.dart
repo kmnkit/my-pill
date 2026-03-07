@@ -155,7 +155,7 @@ class _StreakChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.15),
+        color: AppColors.accent.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppSpacing.sm),
       ),
       child: Row(
@@ -166,7 +166,7 @@ class _StreakChip extends StatelessWidget {
           Text(
             l10n.streakDays(days),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.warning,
+              color: AppColors.accent,
               fontWeight: FontWeight.w600,
             ),
           ),

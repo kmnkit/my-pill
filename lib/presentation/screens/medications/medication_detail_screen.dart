@@ -57,6 +57,7 @@ class MedicationDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
     final medicationAsync = ref.watch(medicationProvider(medicationId));
     final adherenceAsync = ref.watch(medicationAdherenceProvider(medicationId));
     final schedulesAsync = ref.watch(medicationSchedulesProvider(medicationId));
@@ -115,10 +116,13 @@ class MedicationDetailScreen extends ConsumerWidget {
                           ),
                         )
                       else
-                        KdPillIcon(
-                          shape: medication.shape,
-                          color: medication.color,
-                          size: 64,
+                        Hero(
+                          tag: 'medication-pill-$medicationId',
+                          child: KdPillIcon(
+                            shape: medication.shape,
+                            color: medication.color,
+                            size: 64,
+                          ),
                         ),
                       const SizedBox(height: AppSpacing.lg),
                       Text(
@@ -128,7 +132,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
+                        '${_formatDosage(medication.dosage)}${medication.dosageUnit.localizedName(l10n)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: context.appColors.textMuted,
                         ),
@@ -291,9 +295,7 @@ class MedicationDetailScreen extends ConsumerWidget {
                       children: records.map((record) {
                         return HistoryListItem(
                           date: DateFormat('MMM d, yyyy').format(record.date),
-                          time: DateFormat(
-                            'h:mm a',
-                          ).format(record.scheduledTime),
+                          time: DateFormat.jm(locale).format(record.scheduledTime),
                           wasTaken: record.status == ReminderStatus.taken,
                         );
                       }).toList(),
@@ -371,6 +373,12 @@ class _InfoRow extends StatelessWidget {
       ],
     );
   }
+}
+
+String _formatDosage(double dosage) {
+  return dosage == dosage.truncateToDouble()
+      ? dosage.toInt().toString()
+      : dosage.toString();
 }
 
 String _formatDays(List<int> days, AppLocalizations l10n) {
