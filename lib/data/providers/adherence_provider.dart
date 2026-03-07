@@ -49,6 +49,16 @@ Future<int> adherenceStreak(Ref ref) async {
 }
 
 @riverpod
+Future<int?> weeklyTrend(Ref ref) async {
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  final current = await service.getOverallAdherence(days: 7);
+  final previous = await service.getPreviousWeekAdherence();
+  if (current == null || previous == null) return null;
+  return (current - previous).round();
+}
+
+@riverpod
 String adherenceRating(Ref ref, double percentage) {
   if (percentage >= 95) return 'Excellent';
   if (percentage >= 80) return 'Good';

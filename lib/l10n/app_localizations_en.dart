@@ -409,6 +409,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'You took all your medications today. Keep it up!';
 
   @override
+  String weeklyTrendImproved(int delta) {
+    return '+$delta% vs last week';
+  }
+
+  @override
+  String weeklyTrendDeclined(int delta) {
+    return '-$delta% vs last week';
+  }
+
+  @override
+  String get weeklyTrendSame => 'Same as last week';
+
+  @override
   String get medicationBreakdown => 'Medication Breakdown';
 
   @override
