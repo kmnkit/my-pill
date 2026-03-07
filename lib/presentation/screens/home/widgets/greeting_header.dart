@@ -149,6 +149,8 @@ class _StreakChip extends StatelessWidget {
 
   final int days;
 
+  bool get _isMilestone => days == 7 || days == 30 || days == 100;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -157,11 +159,14 @@ class _StreakChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.accent.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppSpacing.sm),
+        border: _isMilestone
+            ? Border.all(color: AppColors.accent, width: 1.5)
+            : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('🔥', style: TextStyle(fontSize: 13)),
+          Text(_isMilestone ? '⭐' : '🔥', style: const TextStyle(fontSize: 13)),
           const SizedBox(width: 3),
           Text(
             l10n.streakDays(days),

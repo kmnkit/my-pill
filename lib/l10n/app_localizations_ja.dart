@@ -396,6 +396,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get allDoneForToday => '今日の服薬が完了しました！';
 
   @override
+  String get allDoneCelebration => '今日の服薬をすべて完了しました。この調子で頑張りましょう！';
+
+  @override
   String get medicationBreakdown => 'お薬別の詳細';
 
   @override

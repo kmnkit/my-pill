@@ -143,8 +143,20 @@ class MedicationTimeline extends ConsumerWidget {
                                 );
                                 switch (action) {
                                   case ReminderAction.take:
+                                    final allOthersDone = reminders
+                                        .where((r) => r.id != reminder.id)
+                                        .every(
+                                          (r) =>
+                                              r.status ==
+                                                  ReminderStatus.taken ||
+                                              r.status ==
+                                                  ReminderStatus.skipped,
+                                        );
                                     await notifier.markAsTaken(reminder.id);
                                     if (context.mounted) {
+                                      if (allOthersDone) {
+                                        _showAllDoneCelebration(context, l10n);
+                                      }
                                       ScaffoldMessenger.of(
                                         context,
                                       ).showSnackBar(
@@ -225,4 +237,22 @@ class MedicationTimeline extends ConsumerWidget {
       ),
     );
   }
+}
+
+void _showAllDoneCelebration(BuildContext context, AppLocalizations l10n) {
+  showDialog<void>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      icon: Icon(Icons.check_circle, color: AppColors.success, size: 48),
+      title: Text(l10n.allDoneForToday, textAlign: TextAlign.center),
+      content: Text(l10n.allDoneCelebration, textAlign: TextAlign.center),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(),
+          child: Text(l10n.close),
+        ),
+      ],
+    ),
+  );
 }
