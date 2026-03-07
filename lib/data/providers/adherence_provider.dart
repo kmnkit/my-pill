@@ -42,6 +42,13 @@ medicationBreakdown(Ref ref) async {
 }
 
 @riverpod
+Future<int> adherenceStreak(Ref ref) async {
+  final storage = ref.watch(storageServiceProvider);
+  final service = AdherenceService(storage);
+  return service.getCurrentStreak();
+}
+
+@riverpod
 String adherenceRating(Ref ref, double percentage) {
   if (percentage >= 95) return 'Excellent';
   if (percentage >= 80) return 'Good';

@@ -166,6 +166,16 @@
   "fair": "Fair",
   "poor": "Poor",
   "keepItUp": "Keep up the great work!",
+  "streakDays": "{count}-day streak",
+  "@streakDays": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "nextDoseAt": "Next: {time}",
+  "@nextDoseAt": {
+    "placeholders": {"time": {"type": "String"}}
+  },
+  "allDoneForToday": "All done for today!",
+
   "medicationBreakdown": "Medication Breakdown",
   "recentHistory": "Recent History",
 

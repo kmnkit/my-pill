@@ -129,6 +129,24 @@ class AdherenceService {
     return result;
   }
 
+  /// Calculate current consecutive-day streak.
+  /// Counts backwards from yesterday; today is excluded because the day isn't
+  /// over yet. Returns 0 if no streak exists.
+  Future<int> getCurrentStreak() async {
+    int streak = 0;
+    final today = DateTime.now();
+    for (int i = 1; i <= 365; i++) {
+      final date = today.subtract(Duration(days: i));
+      final adherence = await getDailyAdherence(date);
+      if (adherence != null && adherence > 0) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
   /// Rating system based on adherence percentage
   String getAdherenceRating(double percentage) {
     if (percentage >= 95) return 'Excellent';
