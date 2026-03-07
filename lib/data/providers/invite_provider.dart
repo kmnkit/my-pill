@@ -1,5 +1,8 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 
 part 'invite_provider.g.dart';
@@ -29,6 +32,7 @@ class InviteLink extends _$InviteLink {
       final cfService = ref.read(cloudFunctionsServiceProvider);
       final result = await cfService.generateInviteLink();
       state = AsyncValue.data(result);
+      unawaited(AnalyticsService.logCaregiverInviteGenerated());
       return result;
     } catch (e, st) {
       debugPrint('Failed to generate invite link: $e');
