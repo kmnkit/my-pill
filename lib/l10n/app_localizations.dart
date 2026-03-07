@@ -842,6 +842,24 @@ abstract class AppLocalizations {
   /// **'You took all your medications today. Keep it up!'**
   String get allDoneCelebration;
 
+  /// No description provided for @weeklyTrendImproved.
+  ///
+  /// In en, this message translates to:
+  /// **'+{delta}% vs last week'**
+  String weeklyTrendImproved(int delta);
+
+  /// No description provided for @weeklyTrendDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'-{delta}% vs last week'**
+  String weeklyTrendDeclined(int delta);
+
+  /// No description provided for @weeklyTrendSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as last week'**
+  String get weeklyTrendSame;
+
   /// No description provided for @medicationBreakdown.
   ///
   /// In en, this message translates to:

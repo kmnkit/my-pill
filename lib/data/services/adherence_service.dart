@@ -129,6 +129,25 @@ class AdherenceService {
     return result;
   }
 
+  /// Adherence for the week prior to the current week (days 8–14 ago).
+  Future<double?> getPreviousWeekAdherence() async {
+    final today = DateTime.now();
+    final endDate = DateTime(today.year, today.month, today.day)
+        .subtract(const Duration(days: 7));
+    final startDate = endDate.subtract(const Duration(days: 7));
+    final records = await _storage.getAdherenceRecords(
+      startDate: startDate,
+      endDate: endDate,
+    );
+    final taken =
+        records.where((r) => r.status == ReminderStatus.taken).length;
+    final missed =
+        records.where((r) => r.status == ReminderStatus.missed).length;
+    final total = taken + missed;
+    if (total == 0) return null;
+    return (taken / total) * 100;
+  }
+
   /// Calculate current consecutive-day streak.
   /// Counts backwards from yesterday; today is excluded because the day isn't
   /// over yet. Returns 0 if no streak exists.

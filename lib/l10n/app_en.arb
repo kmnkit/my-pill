@@ -176,6 +176,11 @@
   },
   "allDoneForToday": "All done for today!",
   "allDoneCelebration": "You took all your medications today. Keep it up!",
+  "weeklyTrendImproved": "+{delta}% vs last week",
+  "@weeklyTrendImproved": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendDeclined": "-{delta}% vs last week",
+  "@weeklyTrendDeclined": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendSame": "Same as last week",
 
   "medicationBreakdown": "Medication Breakdown",
   "recentHistory": "Recent History",

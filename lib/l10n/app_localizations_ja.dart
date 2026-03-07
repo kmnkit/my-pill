@@ -399,6 +399,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get allDoneCelebration => '今日の服薬をすべて完了しました。この調子で頑張りましょう！';
 
   @override
+  String weeklyTrendImproved(int delta) {
+    return '先週比 +$delta%';
+  }
+
+  @override
+  String weeklyTrendDeclined(int delta) {
+    return '先週比 -$delta%';
+  }
+
+  @override
+  String get weeklyTrendSame => '先週と同じ';
+
+  @override
   String get medicationBreakdown => 'お薬別の詳細';
 
   @override

@@ -229,6 +229,39 @@ final class AdherenceStreakProvider
 
 String _$adherenceStreakHash() => r'b5f3a112ffbad84028cff3fdcc79027afd5355c9';
 
+@ProviderFor(weeklyTrend)
+final weeklyTrendProvider = WeeklyTrendProvider._();
+
+final class WeeklyTrendProvider
+    extends $FunctionalProvider<AsyncValue<int?>, int?, FutureOr<int?>>
+    with $FutureModifier<int?>, $FutureProvider<int?> {
+  WeeklyTrendProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'weeklyTrendProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$weeklyTrendHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<int?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int?> create(Ref ref) {
+    return weeklyTrend(ref);
+  }
+}
+
+String _$weeklyTrendHash() => r'1e8b0a49eaf98c8a16cb2583bf4e3b0ebbc417b6';
+
 @ProviderFor(adherenceRating)
 final adherenceRatingProvider = AdherenceRatingFamily._();
 
