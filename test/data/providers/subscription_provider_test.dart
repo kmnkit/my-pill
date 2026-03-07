@@ -181,6 +181,60 @@ void main() {
     });
   });
 
+  group('Feature flag regression — kPremiumEnabled = false', () {
+    // REG-MONET-001: When kPremiumEnabled is false, isPremiumProvider must
+    // return true (all users treated as premium). This guards against the
+    // critical regression where toggling the flag to false accidentally locks
+    // paying users out of features.
+    test(
+      'REG-MONET-001: isPremiumProvider returns true when kPremiumEnabled = false',
+      () {
+        // kPremiumEnabled = false
+        final container = ProviderContainer(
+          overrides: [
+            subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        expect(container.read(isPremiumProvider), isTrue);
+      },
+    );
+
+    // REG-MONET-002: When kPremiumEnabled is false, unlimited caregiver and
+    // patient limits apply (999). This guards against accidental limit
+    // enforcement when the flag is false.
+    test(
+      'REG-MONET-002: maxCaregiversProvider returns 999 when kPremiumEnabled = false',
+      () {
+        // kPremiumEnabled = false
+        final container = ProviderContainer(
+          overrides: [
+            subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        expect(container.read(maxCaregiversProvider), 999);
+      },
+    );
+
+    test(
+      'REG-MONET-002: maxPatientsProvider returns 999 when kPremiumEnabled = false',
+      () {
+        // kPremiumEnabled = false
+        final container = ProviderContainer(
+          overrides: [
+            subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        expect(container.read(maxPatientsProvider), 999);
+      },
+    );
+  });
+
   group('SubscriptionService properties', () {
     test('new service has isPremium false', () {
       final service = SubscriptionService();
