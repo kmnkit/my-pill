@@ -1,4 +1,6 @@
+import 'dart:async' show unawaited;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
@@ -113,6 +115,7 @@ class UserSettings extends _$UserSettings {
     final current = await future;
     final updated = current.copyWith(notificationsEnabled: enabled);
     await updateProfile(updated);
+    unawaited(AnalyticsService.logNotificationToggled(enabled: enabled));
   }
 
   Future<void> updateDefaultIppoka(bool value) async {
