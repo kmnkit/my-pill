@@ -1680,4 +1680,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareConnectGuide => 'Share this guide';
+
+  @override
+  String get editSchedule => 'Edit Schedule';
+
+  @override
+  String get cancelScheduleSetupTitle => 'Cancel Schedule Setup';
+
+  @override
+  String get cancelScheduleSetupMessage =>
+      'Going back without setting a schedule will delete this medication';
+
+  @override
+  String get inventoryUnitDoses => 'doses';
 }

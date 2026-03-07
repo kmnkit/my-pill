@@ -1626,4 +1626,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get shareConnectGuide => 'この手順を共有する';
+
+  @override
+  String get editSchedule => 'スケジュール編集';
+
+  @override
+  String get cancelScheduleSetupTitle => 'スケジュール設定をキャンセル';
+
+  @override
+  String get cancelScheduleSetupMessage => 'スケジュールを設定せずに戻ると、お薬が削除されます';
+
+  @override
+  String get inventoryUnitDoses => '回分';
 }

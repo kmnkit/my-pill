@@ -7,7 +7,8 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 
 class MedicationBreakdown extends StatelessWidget {
   /// List of medications with their adherence percentage (null if no data).
-  final List<({String id, String name, double? percentage})> medications;
+  final List<({String id, String name, double? percentage, bool hasSchedule})>
+  medications;
 
   const MedicationBreakdown({super.key, required this.medications});
 
@@ -51,13 +52,32 @@ class MedicationBreakdown extends StatelessWidget {
 class _MedicationRow extends StatelessWidget {
   const _MedicationRow({required this.medication});
 
-  final ({String id, String name, double? percentage}) medication;
+  final ({String id, String name, double? percentage, bool hasSchedule})
+  medication;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final percentage = medication.percentage?.round();
     final hasData = percentage != null;
+
+    String label;
+    Color labelColor;
+
+    if (!medication.hasSchedule) {
+      label = l10n.noScheduleConfigured;
+      labelColor = context.appColors.textMuted;
+    } else if (!hasData) {
+      label = l10n.noData;
+      labelColor = context.appColors.textMuted;
+    } else {
+      label = '$percentage%';
+      labelColor = percentage >= 80
+          ? AppColors.success
+          : percentage >= 60
+          ? AppColors.warning
+          : AppColors.error;
+    }
 
     return Row(
       children: [
@@ -74,16 +94,10 @@ class _MedicationRow extends StatelessWidget {
           ),
         ),
         Text(
-          hasData ? '$percentage%' : l10n.noData,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: !hasData
-                ? context.appColors.textMuted
-                : percentage >= 80
-                ? AppColors.success
-                : percentage >= 60
-                ? AppColors.warning
-                : AppColors.error,
-          ),
+          label,
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(color: labelColor),
         ),
       ],
     );

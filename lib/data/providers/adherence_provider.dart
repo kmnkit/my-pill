@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/data/services/adherence_service.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
+import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/models/adherence_record.dart';
 
 part 'adherence_provider.g.dart';
@@ -33,12 +34,25 @@ Future<Map<String, double?>> weeklyAdherence(Ref ref) async {
 }
 
 @riverpod
-Future<List<({String id, String name, double? percentage})>>
+Future<List<({String id, String name, double? percentage, bool hasSchedule})>>
 medicationBreakdown(Ref ref) async {
   final storage = ref.watch(storageServiceProvider);
   final service = AdherenceService(storage);
-  final medicationsAsync = await ref.watch(medicationListProvider.future);
-  return service.getMedicationBreakdown(medicationsAsync);
+  final medications = await ref.watch(medicationListProvider.future);
+  final schedules = await ref.watch(scheduleListProvider.future);
+  final medicationIdsWithSchedule =
+      schedules.map((s) => s.medicationId).toSet();
+  final breakdown = await service.getMedicationBreakdown(medications);
+  return breakdown
+      .map(
+        (item) => (
+          id: item.id,
+          name: item.name,
+          percentage: item.percentage,
+          hasSchedule: medicationIdsWithSchedule.contains(item.id),
+        ),
+      )
+      .toList();
 }
 
 @riverpod

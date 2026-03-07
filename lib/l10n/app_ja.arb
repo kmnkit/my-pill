@@ -669,5 +669,10 @@
   "connectStep1": "患者のスマホにくすりどきをインストール",
   "connectStep2": "患者のアプリで 設定 → ご家族とサポーター → QRコードを生成",
   "connectStep3": "右上の「患者を追加」ボタンでQRをスキャン",
-  "shareConnectGuide": "この手順を共有する"
+  "shareConnectGuide": "この手順を共有する",
+
+  "editSchedule": "スケジュール編集",
+  "cancelScheduleSetupTitle": "スケジュール設定をキャンセル",
+  "cancelScheduleSetupMessage": "スケジュールを設定せずに戻ると、お薬が削除されます",
+  "inventoryUnitDoses": "回分"
 }

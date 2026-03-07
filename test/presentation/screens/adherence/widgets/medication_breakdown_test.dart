@@ -30,7 +30,9 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [(id: 'med-1', name: 'Aspirin', percentage: 85.0)],
+            medications: [
+              (id: 'med-1', name: 'Aspirin', percentage: 85.0, hasSchedule: true),
+            ],
           ),
         ),
       );
@@ -45,7 +47,9 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [(id: 'med-1', name: 'Aspirin', percentage: 85.0)],
+            medications: [
+              (id: 'med-1', name: 'Aspirin', percentage: 85.0, hasSchedule: true),
+            ],
           ),
         ),
       );
@@ -54,11 +58,15 @@ void main() {
       expect(find.text('85%'), findsOneWidget);
     });
 
-    testWidgets('shows "No Data" when percentage is null', (tester) async {
+    testWidgets('shows "No Data" when percentage is null but has schedule', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [(id: 'med-1', name: 'Metformin', percentage: null)],
+            medications: [
+              (id: 'med-1', name: 'Metformin', percentage: null, hasSchedule: true),
+            ],
           ),
         ),
       );
@@ -67,14 +75,37 @@ void main() {
       expect(find.text('No Data'), findsOneWidget);
     });
 
+    testWidgets('shows "No schedule configured" when hasSchedule is false', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestableWidget(
+          const MedicationBreakdown(
+            medications: [
+              (
+                id: 'med-1',
+                name: 'Metformin',
+                percentage: null,
+                hasSchedule: false,
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('No schedule configured'), findsOneWidget);
+      expect(find.text('No Data'), findsNothing);
+    });
+
     testWidgets('shows multiple medication rows', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
             medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 90.0),
-              (id: 'med-2', name: 'Metformin', percentage: 70.0),
-              (id: 'med-3', name: 'Lisinopril', percentage: 50.0),
+              (id: 'med-1', name: 'Aspirin', percentage: 90.0, hasSchedule: true),
+              (id: 'med-2', name: 'Metformin', percentage: 70.0, hasSchedule: true),
+              (id: 'med-3', name: 'Lisinopril', percentage: 50.0, hasSchedule: true),
             ],
           ),
         ),
@@ -93,9 +124,9 @@ void main() {
         createTestableWidget(
           const MedicationBreakdown(
             medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 90.0),
-              (id: 'med-2', name: 'Metformin', percentage: 65.0),
-              (id: 'med-3', name: 'Lisinopril', percentage: 40.0),
+              (id: 'med-1', name: 'Aspirin', percentage: 90.0, hasSchedule: true),
+              (id: 'med-2', name: 'Metformin', percentage: 65.0, hasSchedule: true),
+              (id: 'med-3', name: 'Lisinopril', percentage: 40.0, hasSchedule: true),
             ],
           ),
         ),
@@ -112,8 +143,8 @@ void main() {
         createTestableWidget(
           const MedicationBreakdown(
             medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 80.0),
-              (id: 'med-2', name: 'Metformin', percentage: 60.0),
+              (id: 'med-1', name: 'Aspirin', percentage: 80.0, hasSchedule: true),
+              (id: 'med-2', name: 'Metformin', percentage: 60.0, hasSchedule: true),
             ],
           ),
         ),
@@ -127,7 +158,9 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [(id: 'med-1', name: 'Aspirin', percentage: 84.6)],
+            medications: [
+              (id: 'med-1', name: 'Aspirin', percentage: 84.6, hasSchedule: true),
+            ],
           ),
         ),
       );
@@ -143,7 +176,9 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const MedicationBreakdown(
-            medications: [(id: 'med-1', name: 'Aspirin', percentage: 80.0)],
+            medications: [
+              (id: 'med-1', name: 'Aspirin', percentage: 80.0, hasSchedule: true),
+            ],
           ),
         ),
       );
@@ -159,8 +194,8 @@ void main() {
         createTestableWidget(
           const MedicationBreakdown(
             medications: [
-              (id: 'med-1', name: 'Aspirin', percentage: 75.0),
-              (id: 'med-2', name: 'Metformin', percentage: null),
+              (id: 'med-1', name: 'Aspirin', percentage: 75.0, hasSchedule: true),
+              (id: 'med-2', name: 'Metformin', percentage: null, hasSchedule: true),
             ],
           ),
         ),
