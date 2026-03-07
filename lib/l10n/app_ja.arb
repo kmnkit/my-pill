@@ -166,6 +166,16 @@
   "fair": "まあまあ",
   "poor": "要改善",
   "keepItUp": "素晴らしいです！この調子で続けましょう。",
+  "streakDays": "{count}日連続",
+  "@streakDays": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "nextDoseAt": "次の服薬: {time}",
+  "@nextDoseAt": {
+    "placeholders": {"time": {"type": "String"}}
+  },
+  "allDoneForToday": "今日の服薬が完了しました！",
+
   "medicationBreakdown": "お薬別の詳細",
   "recentHistory": "最近の履歴",
 

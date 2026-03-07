@@ -392,6 +392,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keepItUp => 'Keep up the great work!';
 
   @override
+  String streakDays(int count) {
+    return '$count-day streak';
+  }
+
+  @override
+  String nextDoseAt(String time) {
+    return 'Next: $time';
+  }
+
+  @override
+  String get allDoneForToday => 'All done for today!';
+
+  @override
   String get medicationBreakdown => 'Medication Breakdown';
 
   @override

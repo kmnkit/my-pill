@@ -383,6 +383,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get keepItUp => '素晴らしいです！この調子で続けましょう。';
 
   @override
+  String streakDays(int count) {
+    return '$count日連続';
+  }
+
+  @override
+  String nextDoseAt(String time) {
+    return '次の服薬: $time';
+  }
+
+  @override
+  String get allDoneForToday => '今日の服薬が完了しました！';
+
+  @override
   String get medicationBreakdown => 'お薬別の詳細';
 
   @override

@@ -818,6 +818,24 @@ abstract class AppLocalizations {
   /// **'Keep up the great work!'**
   String get keepItUp;
 
+  /// No description provided for @streakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}-day streak'**
+  String streakDays(int count);
+
+  /// No description provided for @nextDoseAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {time}'**
+  String nextDoseAt(String time);
+
+  /// No description provided for @allDoneForToday.
+  ///
+  /// In en, this message translates to:
+  /// **'All done for today!'**
+  String get allDoneForToday;
+
   /// No description provided for @medicationBreakdown.
   ///
   /// In en, this message translates to:

@@ -196,6 +196,39 @@ final class MedicationBreakdownProvider
 String _$medicationBreakdownHash() =>
     r'cf90388f5b3fce3acd09ea7286a06d175c0cb361';
 
+@ProviderFor(adherenceStreak)
+final adherenceStreakProvider = AdherenceStreakProvider._();
+
+final class AdherenceStreakProvider
+    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
+    with $FutureModifier<int>, $FutureProvider<int> {
+  AdherenceStreakProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'adherenceStreakProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$adherenceStreakHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int> create(Ref ref) {
+    return adherenceStreak(ref);
+  }
+}
+
+String _$adherenceStreakHash() => r'b5f3a112ffbad84028cff3fdcc79027afd5355c9';
+
 @ProviderFor(adherenceRating)
 final adherenceRatingProvider = AdherenceRatingFamily._();
 

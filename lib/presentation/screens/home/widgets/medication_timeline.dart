@@ -18,6 +18,13 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 class MedicationTimeline extends ConsumerWidget {
   const MedicationTimeline({super.key});
 
+  // Format dosage without redundant decimal: 100.0 → "100", 1.5 → "1.5"
+  static String _formatDosage(double dosage) {
+    return dosage == dosage.truncateToDouble()
+        ? dosage.toInt().toString()
+        : dosage.toString();
+  }
+
   MpBadgeVariant _getBadgeVariant(ReminderStatus status) {
     switch (status) {
       case ReminderStatus.taken:
@@ -50,6 +57,7 @@ class MedicationTimeline extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
     final remindersAsync = ref.watch(todayRemindersProvider);
 
     return remindersAsync.when(
@@ -109,10 +117,8 @@ class MedicationTimeline extends ConsumerWidget {
                       return TimelineCard(
                         medicationName: medication.name,
                         dosage:
-                            '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
-                        time: DateFormat(
-                          'h:mm a',
-                        ).format(reminder.scheduledTime),
+                            '${_formatDosage(medication.dosage)}${medication.dosageUnit.localizedName(l10n)}',
+                        time: DateFormat.jm(locale).format(reminder.scheduledTime),
                         badgeVariant: _getBadgeVariant(reminder.status),
                         badgeLabel: _getBadgeLabel(reminder.status, l10n),
                         pillShape: medication.shape,
@@ -124,11 +130,11 @@ class MedicationTimeline extends ConsumerWidget {
                                 if (!context.mounted) return;
                                 final action = await KdReminderDialog.show(
                                   context,
-                                  time: DateFormat('h:mm a')
+                                  time: DateFormat.jm(locale)
                                       .format(reminder.scheduledTime),
                                   medicationName: medication.name,
                                   dosage:
-                                      '${medication.dosage}${medication.dosageUnit.localizedName(l10n)}',
+                                      '${_formatDosage(medication.dosage)}${medication.dosageUnit.localizedName(l10n)}',
                                 );
                                 if (action == null) return;
                                 if (!context.mounted) return;
