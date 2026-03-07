@@ -3038,6 +3038,24 @@ abstract class AppLocalizations {
   /// **'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.'**
   String get subscriptionTerms;
 
+  /// No description provided for @freeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'7-Day Free Trial'**
+  String get freeTrial;
+
+  /// No description provided for @freeTrialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Try all premium features free for 7 days, then subscribe.'**
+  String get freeTrialDescription;
+
+  /// No description provided for @adPrivacyNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your medication data is never used for ad targeting.'**
+  String get adPrivacyNotice;
+
   /// No description provided for @selectDosageTiming.
   ///
   /// In en, this message translates to:

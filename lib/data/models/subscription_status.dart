@@ -9,8 +9,10 @@ enum SubscriptionPlatform { none, appStore, playStore }
 abstract class SubscriptionStatus with _$SubscriptionStatus {
   const factory SubscriptionStatus({
     @Default(false) bool isPremium,
+    @Default(false) bool isOnTrial,
     String? productId,
     DateTime? expiresAt,
+    DateTime? trialEndsAt,
     @Default(SubscriptionPlatform.none) SubscriptionPlatform platform,
   }) = _SubscriptionStatus;
 

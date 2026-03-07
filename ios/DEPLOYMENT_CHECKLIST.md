@@ -82,9 +82,10 @@ static const String _prodInterstitialAdUnitIdIOS = 'ca-app-pub-YOUR_APP_ID/INTER
 3. Add In-App Purchases:
    | Product ID | Type | Price |
    |------------|------|-------|
-   | `remove_ads` | Non-Consumable | $2.99 |
-   | `premium_monthly` | Auto-Renewable | $4.99/mo |
-   | `premium_yearly` | Auto-Renewable | $39.99/yr |
+   | `premium_monthly` | Auto-Renewable | ¥480/月 |
+   | `premium_yearly` | Auto-Renewable | ¥3,800/年 |
+
+   Note: No one-time "remove_ads" purchase — subscriptions only (avoids cannibalization).
 
 ---
 
