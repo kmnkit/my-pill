@@ -1,4 +1,7 @@
+import 'dart:async' show unawaited;
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/data/models/medication.dart';
 import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
@@ -18,6 +21,7 @@ class MedicationList extends _$MedicationList {
   Future<void> addMedication(Medication medication) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveMedication(medication);
+    unawaited(AnalyticsService.logMedicationAdded());
     if (!ref.mounted) return;
     await _refreshState();
   }
@@ -25,6 +29,7 @@ class MedicationList extends _$MedicationList {
   Future<void> updateMedication(Medication medication) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveMedication(medication);
+    unawaited(AnalyticsService.logMedicationEdited());
     if (!ref.mounted) return;
     await _refreshState();
   }
@@ -33,6 +38,7 @@ class MedicationList extends _$MedicationList {
     final storage = ref.read(storageServiceProvider);
     final repository = MedicationRepository(storage);
     await repository.deleteMedication(id);
+    unawaited(AnalyticsService.logMedicationDeleted());
     if (!ref.mounted) return;
     await _refreshState();
     ref.invalidate(todayRemindersProvider);
