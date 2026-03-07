@@ -86,6 +86,7 @@ void main() {
             overrides: [
               todayRemindersProvider.overrideWith(() => spyReminders),
               scheduleListProvider.overrideWith(() => fakeSchedules),
+              medicationSchedulesProvider('med-1').overrideWith((ref) async => []),
             ],
             child: MaterialApp.router(
               routerConfig: router,
@@ -153,6 +154,7 @@ void main() {
             overrides: [
               todayRemindersProvider.overrideWith(() => failingReminders),
               scheduleListProvider.overrideWith(() => fakeSchedules),
+              medicationSchedulesProvider('med-1').overrideWith((ref) async => []),
             ],
             child: MaterialApp.router(
               routerConfig: router,
@@ -223,6 +225,7 @@ void main() {
             overrides: [
               todayRemindersProvider.overrideWith(() => spyReminders),
               scheduleListProvider.overrideWith(() => failingSchedules),
+              medicationSchedulesProvider('med-1').overrideWith((ref) async => []),
             ],
             child: MaterialApp.router(
               routerConfig: router,

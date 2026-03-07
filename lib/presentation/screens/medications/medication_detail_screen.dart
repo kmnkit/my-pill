@@ -207,9 +207,22 @@ class MedicationDetailScreen extends ConsumerWidget {
                       schedulesAsync.when(
                         data: (schedules) {
                           if (schedules.isEmpty) {
-                            return _InfoRow(
-                              label: l10n.status,
-                              value: l10n.noScheduleConfigured,
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                _InfoRow(
+                                  label: l10n.status,
+                                  value: l10n.noScheduleConfigured,
+                                ),
+                                const SizedBox(height: AppSpacing.md),
+                                KdButton(
+                                  label: l10n.setSchedule,
+                                  variant: MpButtonVariant.secondary,
+                                  onPressed: () => context.push(
+                                    '/medications/$medicationId/schedule',
+                                  ),
+                                ),
+                              ],
                             );
                           }
                           final schedule = schedules.first;
@@ -258,6 +271,14 @@ class MedicationDetailScreen extends ConsumerWidget {
                                 value: DateFormat(
                                   'MMM d, yyyy',
                                 ).format(medication.createdAt),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              KdButton(
+                                label: l10n.editSchedule,
+                                variant: MpButtonVariant.secondary,
+                                onPressed: () => context.push(
+                                  '/medications/$medicationId/schedule',
+                                ),
                               ),
                             ],
                           );

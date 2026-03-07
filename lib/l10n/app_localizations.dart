@@ -3181,6 +3181,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share this guide'**
   String get shareConnectGuide;
+
+  /// No description provided for @editSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Schedule'**
+  String get editSchedule;
+
+  /// No description provided for @cancelScheduleSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Schedule Setup'**
+  String get cancelScheduleSetupTitle;
+
+  /// No description provided for @cancelScheduleSetupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Going back without setting a schedule will delete this medication'**
+  String get cancelScheduleSetupMessage;
+
+  /// No description provided for @inventoryUnitDoses.
+  ///
+  /// In en, this message translates to:
+  /// **'doses'**
+  String get inventoryUnitDoses;
 }
 
 class _AppLocalizationsDelegate

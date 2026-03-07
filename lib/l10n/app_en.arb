@@ -669,5 +669,10 @@
   "connectStep1": "Install くすりどき on the patient's phone",
   "connectStep2": "On the patient's app: Settings → Family & Supporters → Generate QR Code",
   "connectStep3": "Tap \"Add Patient\" (top right) and scan the QR code",
-  "shareConnectGuide": "Share this guide"
+  "shareConnectGuide": "Share this guide",
+
+  "editSchedule": "Edit Schedule",
+  "cancelScheduleSetupTitle": "Cancel Schedule Setup",
+  "cancelScheduleSetupMessage": "Going back without setting a schedule will delete this medication",
+  "inventoryUnitDoses": "doses"
 }
