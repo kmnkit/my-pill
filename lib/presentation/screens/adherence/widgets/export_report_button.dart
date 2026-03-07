@@ -1,3 +1,4 @@
+import 'dart:async' show unawaited;
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:go_router/go_router.dart';
@@ -112,6 +114,9 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
 
       if (mounted) {
         await reportService.shareReport(file, reportType);
+        unawaited(AnalyticsService.logPdfExported(
+          period: period == ReportPeriod.weekly ? 'weekly' : 'monthly',
+        ));
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
