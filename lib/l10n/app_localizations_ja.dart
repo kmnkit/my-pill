@@ -1546,6 +1546,15 @@ class AppLocalizationsJa extends AppLocalizations {
       'お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。';
 
   @override
+  String get freeTrial => '7日間無料体験';
+
+  @override
+  String get freeTrialDescription => 'すべてのプレミアム機能を7日間無料でお試しいただけます。';
+
+  @override
+  String get adPrivacyNotice => 'お薬データは広告ターゲティングに使用しません。';
+
+  @override
   String get selectDosageTiming => 'いつ服用しますか？';
 
   @override
