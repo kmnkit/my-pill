@@ -68,6 +68,7 @@ functions/node_modules/
 # Environment and secrets
 .env
 .env.*
+!ios/fastlane/.env.example
 
 # Development tools and local configuration
 .omc/
