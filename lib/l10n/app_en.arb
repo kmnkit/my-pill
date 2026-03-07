@@ -166,6 +166,22 @@
   "fair": "Fair",
   "poor": "Poor",
   "keepItUp": "Keep up the great work!",
+  "streakDays": "{count}-day streak",
+  "@streakDays": {
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "nextDoseAt": "Next: {time}",
+  "@nextDoseAt": {
+    "placeholders": {"time": {"type": "String"}}
+  },
+  "allDoneForToday": "All done for today!",
+  "allDoneCelebration": "You took all your medications today. Keep it up!",
+  "weeklyTrendImproved": "+{delta}% vs last week",
+  "@weeklyTrendImproved": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendDeclined": "-{delta}% vs last week",
+  "@weeklyTrendDeclined": {"placeholders": {"delta": {"type": "int"}}},
+  "weeklyTrendSame": "Same as last week",
+
   "medicationBreakdown": "Medication Breakdown",
   "recentHistory": "Recent History",
 
@@ -653,5 +669,10 @@
   "connectStep1": "Install くすりどき on the patient's phone",
   "connectStep2": "On the patient's app: Settings → Family & Supporters → Generate QR Code",
   "connectStep3": "Tap \"Add Patient\" (top right) and scan the QR code",
-  "shareConnectGuide": "Share this guide"
+  "shareConnectGuide": "Share this guide",
+
+  "editSchedule": "Edit Schedule",
+  "cancelScheduleSetupTitle": "Cancel Schedule Setup",
+  "cancelScheduleSetupMessage": "Going back without setting a schedule will delete this medication",
+  "inventoryUnitDoses": "doses"
 }

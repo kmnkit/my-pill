@@ -383,6 +383,35 @@ class AppLocalizationsJa extends AppLocalizations {
   String get keepItUp => '素晴らしいです！この調子で続けましょう。';
 
   @override
+  String streakDays(int count) {
+    return '$count日連続';
+  }
+
+  @override
+  String nextDoseAt(String time) {
+    return '次の服薬: $time';
+  }
+
+  @override
+  String get allDoneForToday => '今日の服薬が完了しました！';
+
+  @override
+  String get allDoneCelebration => '今日の服薬をすべて完了しました。この調子で頑張りましょう！';
+
+  @override
+  String weeklyTrendImproved(int delta) {
+    return '先週比 +$delta%';
+  }
+
+  @override
+  String weeklyTrendDeclined(int delta) {
+    return '先週比 -$delta%';
+  }
+
+  @override
+  String get weeklyTrendSame => '先週と同じ';
+
+  @override
   String get medicationBreakdown => 'お薬別の詳細';
 
   @override
@@ -1597,4 +1626,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get shareConnectGuide => 'この手順を共有する';
+
+  @override
+  String get editSchedule => 'スケジュール編集';
+
+  @override
+  String get cancelScheduleSetupTitle => 'スケジュール設定をキャンセル';
+
+  @override
+  String get cancelScheduleSetupMessage => 'スケジュールを設定せずに戻ると、お薬が削除されます';
+
+  @override
+  String get inventoryUnitDoses => '回分';
 }

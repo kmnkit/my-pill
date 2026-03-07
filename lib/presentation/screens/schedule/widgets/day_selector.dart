@@ -4,16 +4,23 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class DaySelector extends StatefulWidget {
-  const DaySelector({super.key, this.onDaysChanged});
+  const DaySelector({super.key, this.onDaysChanged, this.initialDays = const []});
 
   final ValueChanged<List<int>>? onDaysChanged;
+  final List<int> initialDays;
 
   @override
   State<DaySelector> createState() => _DaySelectorState();
 }
 
 class _DaySelectorState extends State<DaySelector> {
-  final Set<int> _selectedDays = {};
+  late final Set<int> _selectedDays;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDays = Set.from(widget.initialDays);
+  }
 
   void _notifyParent() {
     widget.onDaysChanged?.call(_selectedDays.toList()..sort());

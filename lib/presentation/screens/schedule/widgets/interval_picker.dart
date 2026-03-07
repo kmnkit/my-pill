@@ -4,17 +4,18 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 class IntervalPicker extends StatefulWidget {
-  const IntervalPicker({super.key, this.onIntervalChanged});
+  const IntervalPicker({super.key, this.onIntervalChanged, this.initialHours = 8});
 
   final ValueChanged<int>? onIntervalChanged;
+  final int initialHours;
 
   @override
   State<IntervalPicker> createState() => _IntervalPickerState();
 }
 
 class _IntervalPickerState extends State<IntervalPicker> {
-  int _interval = 8;
-  String _unit = 'hours';
+  late int _interval;
+  late String _unit;
   late final TextEditingController _controller;
 
   void _notifyParent() {
@@ -25,6 +26,13 @@ class _IntervalPickerState extends State<IntervalPicker> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialHours % 24 == 0 && widget.initialHours >= 24) {
+      _unit = 'days';
+      _interval = widget.initialHours ~/ 24;
+    } else {
+      _unit = 'hours';
+      _interval = widget.initialHours;
+    }
     _controller = TextEditingController(text: _interval.toString());
     WidgetsBinding.instance.addPostFrameCallback((_) => _notifyParent());
   }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
+import 'package:kusuridoki/data/providers/adherence_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
@@ -30,8 +31,11 @@ class TodayReminders extends _$TodayReminders {
       // Cancel the notification
       await NotificationService().cancelReminder(reminderId);
 
-      // Update state directly to refresh UI
+      // Update state directly to refresh UI, then invalidate adherence providers
       await _refreshState();
+      ref.invalidate(overallAdherenceProvider);
+      ref.invalidate(weeklyAdherenceProvider);
+      ref.invalidate(medicationBreakdownProvider);
 
       // Check if eligible for in-app review (non-blocking)
       ReviewService(storage).requestReviewIfEligible();
@@ -52,8 +56,11 @@ class TodayReminders extends _$TodayReminders {
       // Cancel the notification
       await NotificationService().cancelReminder(reminderId);
 
-      // Update state directly to refresh UI
+      // Update state directly to refresh UI, then invalidate adherence providers
       await _refreshState();
+      ref.invalidate(overallAdherenceProvider);
+      ref.invalidate(weeklyAdherenceProvider);
+      ref.invalidate(medicationBreakdownProvider);
     } catch (e) {
       debugPrint('Failed to mark reminder as skipped: $e');
       rethrow;
@@ -89,8 +96,11 @@ class TodayReminders extends _$TodayReminders {
         );
       }
 
-      // Update state directly to refresh UI
+      // Update state directly to refresh UI, then invalidate adherence providers
       await _refreshState();
+      ref.invalidate(overallAdherenceProvider);
+      ref.invalidate(weeklyAdherenceProvider);
+      ref.invalidate(medicationBreakdownProvider);
     } catch (e) {
       debugPrint('Failed to snooze reminder: $e');
       rethrow;

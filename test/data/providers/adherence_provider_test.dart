@@ -368,6 +368,7 @@ void main() {
         ];
         // First call: medicationListProvider build
         when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
+        when(mockStorage.getAllSchedules()).thenAnswer((_) async => []);
 
         // Per-medication adherence calls
         when(
@@ -394,6 +395,7 @@ void main() {
       () async {
         final meds = [_makeMedication('med-1', 'Aspirin')];
         when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
+        when(mockStorage.getAllSchedules()).thenAnswer((_) async => []);
         when(
           mockStorage.getAdherenceRecords(
             medicationId: anyNamed('medicationId'),
@@ -412,6 +414,7 @@ void main() {
 
     test('returns empty list when no medications exist', () async {
       when(mockStorage.getAllMedications()).thenAnswer((_) async => []);
+      when(mockStorage.getAllSchedules()).thenAnswer((_) async => []);
 
       final container = makeContainer();
       final result = await container.read(medicationBreakdownProvider.future);
@@ -426,6 +429,7 @@ void main() {
         _makeMedication('med-3', 'NoData'),
       ];
       when(mockStorage.getAllMedications()).thenAnswer((_) async => meds);
+      when(mockStorage.getAllSchedules()).thenAnswer((_) async => []);
 
       // Return different records per medication
       when(

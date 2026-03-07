@@ -818,6 +818,48 @@ abstract class AppLocalizations {
   /// **'Keep up the great work!'**
   String get keepItUp;
 
+  /// No description provided for @streakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}-day streak'**
+  String streakDays(int count);
+
+  /// No description provided for @nextDoseAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {time}'**
+  String nextDoseAt(String time);
+
+  /// No description provided for @allDoneForToday.
+  ///
+  /// In en, this message translates to:
+  /// **'All done for today!'**
+  String get allDoneForToday;
+
+  /// No description provided for @allDoneCelebration.
+  ///
+  /// In en, this message translates to:
+  /// **'You took all your medications today. Keep it up!'**
+  String get allDoneCelebration;
+
+  /// No description provided for @weeklyTrendImproved.
+  ///
+  /// In en, this message translates to:
+  /// **'+{delta}% vs last week'**
+  String weeklyTrendImproved(int delta);
+
+  /// No description provided for @weeklyTrendDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'-{delta}% vs last week'**
+  String weeklyTrendDeclined(int delta);
+
+  /// No description provided for @weeklyTrendSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as last week'**
+  String get weeklyTrendSame;
+
   /// No description provided for @medicationBreakdown.
   ///
   /// In en, this message translates to:
@@ -3139,6 +3181,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share this guide'**
   String get shareConnectGuide;
+
+  /// No description provided for @editSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Schedule'**
+  String get editSchedule;
+
+  /// No description provided for @cancelScheduleSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Schedule Setup'**
+  String get cancelScheduleSetupTitle;
+
+  /// No description provided for @cancelScheduleSetupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Going back without setting a schedule will delete this medication'**
+  String get cancelScheduleSetupMessage;
+
+  /// No description provided for @inventoryUnitDoses.
+  ///
+  /// In en, this message translates to:
+  /// **'doses'**
+  String get inventoryUnitDoses;
 }
 
 class _AppLocalizationsDelegate
