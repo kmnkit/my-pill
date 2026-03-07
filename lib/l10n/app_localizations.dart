@@ -836,6 +836,12 @@ abstract class AppLocalizations {
   /// **'All done for today!'**
   String get allDoneForToday;
 
+  /// No description provided for @allDoneCelebration.
+  ///
+  /// In en, this message translates to:
+  /// **'You took all your medications today. Keep it up!'**
+  String get allDoneCelebration;
+
   /// No description provided for @medicationBreakdown.
   ///
   /// In en, this message translates to:

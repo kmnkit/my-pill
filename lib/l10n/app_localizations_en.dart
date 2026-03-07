@@ -405,6 +405,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allDoneForToday => 'All done for today!';
 
   @override
+  String get allDoneCelebration =>
+      'You took all your medications today. Keep it up!';
+
+  @override
   String get medicationBreakdown => 'Medication Breakdown';
 
   @override
