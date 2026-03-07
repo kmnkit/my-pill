@@ -28,6 +28,7 @@ abstract final class AppColors {
   static const Color successBright = Color(0xFF22C55E);
   static const Color warning = Color(0xFFF59E0B);
   static const Color warningDark = Color(0xFFF97316);
+  static const Color accent = Color(0xFFD97706); // Warm gold (amber-600) — achievements, streaks
   static const Color info = Color(0xFF4A6580);
 
   // Pill Colors (for color picker)

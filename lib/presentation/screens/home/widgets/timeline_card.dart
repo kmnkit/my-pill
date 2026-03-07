@@ -94,10 +94,13 @@ class _TimelineCardState extends State<TimelineCard>
         child: Row(
           children: [
             // Pill icon
-            KdPillIcon(
-              shape: widget.pillShape,
-              color: widget.pillColor,
-              size: AppSpacing.iconLg,
+            Hero(
+              tag: 'medication-pill-${widget.medicationId}',
+              child: KdPillIcon(
+                shape: widget.pillShape,
+                color: widget.pillColor,
+                size: AppSpacing.iconLg,
+              ),
             ),
             const SizedBox(width: AppSpacing.md),
 
