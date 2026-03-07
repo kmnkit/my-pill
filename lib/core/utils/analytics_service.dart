@@ -4,32 +4,36 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 abstract final class AnalyticsService {
   static FirebaseAnalytics get _analytics => FirebaseAnalytics.instance;
 
-  static Future<void> logMedicationAdded() =>
-      _analytics.logEvent(name: 'medication_added');
+  // Analytics errors are non-critical. Silently ignore if Firebase is
+  // unavailable (e.g., in unit tests or when SDK is not initialized).
+  static Future<void> _log(
+    String name, [
+    Map<String, Object>? parameters,
+  ]) async {
+    try {
+      await _analytics.logEvent(name: name, parameters: parameters);
+    } catch (_) {}
+  }
 
-  static Future<void> logMedicationEdited() =>
-      _analytics.logEvent(name: 'medication_edited');
+  static Future<void> logMedicationAdded() => _log('medication_added');
 
-  static Future<void> logMedicationDeleted() =>
-      _analytics.logEvent(name: 'medication_deleted');
+  static Future<void> logMedicationEdited() => _log('medication_edited');
+
+  static Future<void> logMedicationDeleted() => _log('medication_deleted');
 
   static Future<void> logNotificationToggled({required bool enabled}) =>
-      _analytics.logEvent(
-        name: 'notification_toggled',
-        parameters: {'enabled': enabled},
-      );
+      _log('notification_toggled', {'enabled': enabled});
 
   static Future<void> logPdfExported({required String period}) =>
-      _analytics.logEvent(
-        name: 'pdf_exported',
-        parameters: {'period': period},
-      );
+      _log('pdf_exported', {'period': period});
 
   static Future<void> logCaregiverInviteGenerated() =>
-      _analytics.logEvent(name: 'caregiver_invite_generated');
+      _log('caregiver_invite_generated');
 
   static Future<void> setUserId(String? uid) async {
-    await _analytics.setUserId(id: uid);
+    try {
+      await _analytics.setUserId(id: uid);
+    } catch (_) {}
     Sentry.configureScope(
       (scope) => scope.setUser(uid != null ? SentryUser(id: uid) : null),
     );

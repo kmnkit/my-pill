@@ -7,6 +7,7 @@ import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
 // Reuse the MockStorageService generated for settings_provider_test
 import 'settings_provider_test.mocks.dart';
+import '../../mock_firebase.dart';
 
 const _baseProfile = UserProfile(
   id: 'local',
@@ -25,6 +26,7 @@ void main() {
   late MockStorageService mockStorage;
 
   setUp(() {
+    setupFirebaseAuthMocks();
     mockStorage = MockStorageService();
   });
 

@@ -12,6 +12,7 @@ import 'package:kusuridoki/data/services/storage_service.dart';
 
 @GenerateMocks([StorageService])
 import 'medication_provider_test.mocks.dart';
+import '../../mock_firebase.dart';
 
 Medication _makeMedication(String id, String name) => Medication(
   id: id,
@@ -27,6 +28,7 @@ void main() {
   late MockStorageService mockStorage;
 
   setUp(() {
+    setupFirebaseAuthMocks();
     mockStorage = MockStorageService();
   });
 
