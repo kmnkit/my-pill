@@ -234,7 +234,7 @@ packages:
     source: hosted
     version: "6.0.6"
   cloud_functions_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: cloud_functions_platform_interface
       sha256: "4685216f16eb88fddc0ec74e52cbb827c887102598ac28b831711d9555a792d9"
@@ -1292,6 +1292,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.3"
+  screenshot:
+    dependency: "direct dev"
+    description:
+      name: screenshot
+      sha256: "63817697a7835e6ce82add4228e15d233b74d42975c143ad8cfe07009fab866b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sentry:
     dependency: transitive
     description:

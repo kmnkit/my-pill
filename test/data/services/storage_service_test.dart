@@ -202,6 +202,34 @@ void main() {
     });
   });
 
+  group('StorageService — initializeEncryption (SEC-STORAGE-001)', () {
+    // FlutterSecureStorage is a static const field on StorageService and cannot
+    // be injected. In a unit-test environment the platform channel required by
+    // FlutterSecureStorage.read() is unavailable, so the read() call throws a
+    // MissingPluginException. StorageService.initializeEncryption() catches ALL
+    // exceptions from the secure-storage path and rethrows as StateError with
+    // the message "Failed to initialize secure storage".
+
+    test(
+      'SEC-STORAGE-001: initializeEncryption throws StateError with '
+      '"Failed to initialize secure storage" when FlutterSecureStorage '
+      'is unavailable',
+      () async {
+        final service = StorageService();
+        await expectLater(
+          service.initializeEncryption(),
+          throwsA(
+            isA<StateError>().having(
+              (e) => e.message,
+              'message',
+              contains('Failed to initialize secure storage'),
+            ),
+          ),
+        );
+      },
+    );
+  });
+
   group('StorageService — Hive limitation documentation', () {
     // This test acts as living documentation for why full CRUD unit tests are
     // absent. If the project ever switches to an injectable Hive interface or

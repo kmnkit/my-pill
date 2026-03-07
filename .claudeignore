@@ -69,6 +69,13 @@ android/app/google-services.json
 .env
 .env.*
 
+# === Marketing & store assets ===
+assets/marketing/
+assets/fonts/google_fonts/
+
+# === Test screenshots ===
+test/screenshots/
+
 # === Binary / media files ===
 **/*.png
 **/*.jpg

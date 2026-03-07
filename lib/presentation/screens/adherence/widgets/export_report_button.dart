@@ -114,9 +114,7 @@ class _ExportReportButtonState extends ConsumerState<ExportReportButton> {
 
       if (mounted) {
         await reportService.shareReport(file, reportType);
-        unawaited(AnalyticsService.logPdfExported(
-          period: period == ReportPeriod.weekly ? 'weekly' : 'monthly',
-        ));
+        unawaited(AnalyticsService.logPdfExported(period: period.name));
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
