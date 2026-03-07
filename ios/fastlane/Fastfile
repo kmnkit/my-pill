@@ -1,3 +1,5 @@
+require 'base64'
+
 default_platform(:ios)
 
 APP_IDENTIFIER = "com.hobbylabo.kusuridoki"
@@ -41,6 +43,7 @@ platform :ios do
     # This sed is a safety net for that case.
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
+    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -53,6 +56,7 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
+      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
     )
 
     # Restore GeneratedPluginRegistrant.m (with #ifdef DEBUG guards)
@@ -109,6 +113,22 @@ platform :ios do
     )
   end
 
+  desc "Generate marketing store screenshots from raw captures (Python + Pillow)"
+  lane :generate_store_screenshots do
+    sh("cd ../.. && python3 scripts/generate_store_screenshots.py")
+    sh("mkdir -p ./screenshots/ja")
+    # Remove any non-store files to avoid mixing raw and marketing screenshots
+    sh("find ./screenshots/ja -name '*.png' ! -name '*_store.png' -delete")
+    sh("cp ../../assets/marketing/store/*.png ./screenshots/ja/")
+    puts "Marketing screenshots copied to ios/fastlane/screenshots/ja/"
+  end
+
+  desc "Full pipeline: capture raw screenshots → generate marketing images → copy to fastlane"
+  lane :store_screenshots do
+    screenshots
+    generate_store_screenshots
+  end
+
   desc "Build and upload to App Store without Match (uses local certificate + downloads profile)"
   lane :release_local do
     # Download App Store provisioning profile via API key
@@ -136,6 +156,7 @@ platform :ios do
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
     # Build using downloaded profile
+    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -150,6 +171,7 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
+      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
     )
 
     # Restore GeneratedPluginRegistrant.m for development use
