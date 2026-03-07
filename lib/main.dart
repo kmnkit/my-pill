@@ -24,6 +24,9 @@ Future<void> main() async {
       options.environment = kDebugMode ? 'debug' : 'production';
       options.enableAutoPerformanceTracing = false;
       options.beforeSend = scrubPhiFromEvent;
+      options.attachScreenshot = false;
+      // ignore: experimental_member_use
+      options.attachViewHierarchy = false;
     },
     appRunner: _initializeApp,
   );
