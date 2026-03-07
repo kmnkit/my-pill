@@ -10,10 +10,13 @@ part 'home_widget_provider.g.dart';
 
 @riverpod
 Future<void> homeWidgetUpdater(Ref ref) async {
-  // Watch both providers - this will re-run whenever either changes
-  final reminders = await ref.watch(todayRemindersProvider.future);
-  final medications = await ref.watch(medicationListProvider.future);
-  final userProfile = await ref.watch(userSettingsProvider.future);
+  // Watch providers directly (no .future) to avoid proxy subscription assertion
+  final reminders = ref.watch(todayRemindersProvider).asData?.value;
+  final medications = ref.watch(medicationListProvider).asData?.value;
+  final userProfile = ref.watch(userSettingsProvider).asData?.value;
+
+  // Wait until all data is available
+  if (reminders == null || medications == null || userProfile == null) return;
 
   // Convert medications list to map keyed by id
   final medicationMap = {for (final med in medications) med.id: med};

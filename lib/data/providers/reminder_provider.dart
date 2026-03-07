@@ -30,8 +30,8 @@ class TodayReminders extends _$TodayReminders {
       // Cancel the notification
       await NotificationService().cancelReminder(reminderId);
 
-      // Invalidate to refresh UI
-      ref.invalidateSelf();
+      // Update state directly to refresh UI
+      await _refreshState();
 
       // Check if eligible for in-app review (non-blocking)
       ReviewService(storage).requestReviewIfEligible();
@@ -52,8 +52,8 @@ class TodayReminders extends _$TodayReminders {
       // Cancel the notification
       await NotificationService().cancelReminder(reminderId);
 
-      // Invalidate to refresh UI
-      ref.invalidateSelf();
+      // Update state directly to refresh UI
+      await _refreshState();
     } catch (e) {
       debugPrint('Failed to mark reminder as skipped: $e');
       rethrow;
@@ -89,8 +89,8 @@ class TodayReminders extends _$TodayReminders {
         );
       }
 
-      // Invalidate to refresh UI
-      ref.invalidateSelf();
+      // Update state directly to refresh UI
+      await _refreshState();
     } catch (e) {
       debugPrint('Failed to snooze reminder: $e');
       rethrow;
@@ -161,13 +161,21 @@ class TodayReminders extends _$TodayReminders {
       );
       if (!ref.mounted) return reminders;
 
-      // Invalidate to refresh UI
-      ref.invalidateSelf();
+      // Update state directly to refresh UI
+      await _refreshState();
 
       return reminders;
     } catch (e) {
       debugPrint('Failed to generate and schedule reminders: $e');
       rethrow;
     }
+  }
+
+  Future<void> _refreshState() async {
+    state = AsyncData(
+      await ref
+          .read(storageServiceProvider)
+          .getRemindersForDate(DateTime.now()),
+    );
   }
 }
