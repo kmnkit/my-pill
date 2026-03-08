@@ -12,6 +12,11 @@ class NotificationService {
   factory NotificationService() => _instance;
   NotificationService._();
 
+  static String _language = 'ja';
+  static void setLanguage(String language) => _language = language;
+
+  _NotificationL10n get _l10n => _NotificationL10n._(_language);
+
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -36,7 +41,6 @@ class NotificationService {
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
-      requestCriticalPermission: true, // T5.3: Critical alerts
     );
 
     await _localNotifications.initialize(
@@ -94,7 +98,6 @@ class NotificationService {
         alert: true,
         badge: true,
         sound: true,
-        critical: true,
       );
       return granted ?? false;
     }
@@ -166,13 +169,14 @@ class NotificationService {
     }
 
     // T5.2: Notification actions
-    const takeAction = AndroidNotificationAction(
+    final l10n = _l10n;
+    final takeAction = AndroidNotificationAction(
       'take',
-      'Take Now',
+      l10n.actionTake,
       showsUserInterface: true,
     );
-    const snoozeAction = AndroidNotificationAction('snooze', 'Snooze 15min');
-    const skipAction = AndroidNotificationAction('skip', 'Skip');
+    final snoozeAction = AndroidNotificationAction('snooze', l10n.actionSnooze);
+    final skipAction = AndroidNotificationAction('skip', l10n.actionSkip);
 
     final androidDetails = AndroidNotificationDetails(
       'medication_reminders',
@@ -180,7 +184,7 @@ class NotificationService {
       channelDescription: 'Reminders to take your medication',
       importance: Importance.high,
       priority: Priority.high,
-      actions: const [takeAction, snoozeAction, skipAction],
+      actions: [takeAction, snoozeAction, skipAction],
     );
 
     const iosDetails = DarwinNotificationDetails(
@@ -200,10 +204,8 @@ class NotificationService {
 
     await _localNotifications.zonedSchedule(
       id: notificationId,
-      title: 'Time to take $medicationName',
-      body: dosageTimingLabel != null
-          ? '$dosage ($dosageTimingLabel) - Tap to respond'
-          : '$dosage - Tap to respond',
+      title: l10n.reminderTitle(medicationName),
+      body: l10n.reminderBody(dosage, timingLabel: dosageTimingLabel),
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -221,16 +223,17 @@ class NotificationService {
     final scheduledTime = reminder.scheduledTime;
     if (scheduledTime.isBefore(DateTime.now())) return;
 
+    final l10n = _l10n;
     final androidDetails = AndroidNotificationDetails(
       'critical_medication',
       'Critical Medication Alerts',
       channelDescription: 'Critical medication alerts',
       importance: Importance.max,
       priority: Priority.max,
-      actions: const [
-        AndroidNotificationAction('take', 'Take Now', showsUserInterface: true),
-        AndroidNotificationAction('snooze', 'Snooze 15min'),
-        AndroidNotificationAction('skip', 'Skip'),
+      actions: [
+        AndroidNotificationAction('take', l10n.actionTake, showsUserInterface: true),
+        AndroidNotificationAction('snooze', l10n.actionSnooze),
+        AndroidNotificationAction('skip', l10n.actionSkip),
       ],
     );
 
@@ -238,7 +241,7 @@ class NotificationService {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      interruptionLevel: InterruptionLevel.critical,
+      interruptionLevel: InterruptionLevel.timeSensitive,
     );
 
     final details = NotificationDetails(
@@ -248,10 +251,8 @@ class NotificationService {
 
     await _localNotifications.zonedSchedule(
       id: _stableId(reminder.id),
-      title: 'CRITICAL: Take $medicationName',
-      body: dosageTimingLabel != null
-          ? '$dosage ($dosageTimingLabel) - This medication is marked as critical'
-          : '$dosage - This medication is marked as critical',
+      title: l10n.criticalTitle(medicationName),
+      body: l10n.criticalBody(dosage, timingLabel: dosageTimingLabel),
       scheduledDate: _convertToTZDateTime(scheduledTime),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -282,20 +283,24 @@ class NotificationService {
       final info = medicationInfo[reminder.medicationId];
       if (info == null) continue;
 
-      if (info.isCritical) {
-        await scheduleCriticalReminder(
-          reminder,
-          info.name,
-          info.dosage,
-          dosageTimingLabel: info.dosageTimingLabel,
-        );
-      } else {
-        await scheduleReminder(
-          reminder,
-          info.name,
-          info.dosage,
-          dosageTimingLabel: info.dosageTimingLabel,
-        );
+      try {
+        if (info.isCritical) {
+          await scheduleCriticalReminder(
+            reminder,
+            info.name,
+            info.dosage,
+            dosageTimingLabel: info.dosageTimingLabel,
+          );
+        } else {
+          await scheduleReminder(
+            reminder,
+            info.name,
+            info.dosage,
+            dosageTimingLabel: info.dosageTimingLabel,
+          );
+        }
+      } catch (e) {
+        debugPrint('Failed to schedule reminder ${reminder.id}: $e');
       }
     }
   }
@@ -327,10 +332,11 @@ class NotificationService {
     // Use a unique ID based on medication name to avoid duplicate notifications
     final notificationId = _stableId('low_stock_$medicationName');
 
+    final l10n = _l10n;
     await _localNotifications.show(
       id: notificationId,
-      title: 'Low Stock Alert: $medicationName',
-      body: 'Only $remaining doses remaining. Time to refill!',
+      title: l10n.lowStockTitle(medicationName),
+      body: l10n.lowStockBody(remaining),
       notificationDetails: details,
     );
   }
@@ -366,4 +372,52 @@ class NotificationService {
     }
     return hash & 0x7FFFFFFF; // ensure positive
   }
+}
+
+/// Notification string lookup for supported languages.
+/// Kept inline because this service runs without BuildContext.
+class _NotificationL10n {
+  const _NotificationL10n._(this._lang);
+  final String _lang;
+
+  bool get _isJa => _lang == 'ja';
+
+  String reminderTitle(String name) =>
+      _isJa ? '$nameの服薬時間です' : 'Time to take $name';
+
+  String reminderBody(String dosage, {String? timingLabel}) {
+    if (_isJa) {
+      return timingLabel != null
+          ? '$dosage（$timingLabel）- タップして記録'
+          : '$dosage - タップして記録';
+    }
+    return timingLabel != null
+        ? '$dosage ($timingLabel) - Tap to respond'
+        : '$dosage - Tap to respond';
+  }
+
+  String criticalTitle(String name) =>
+      _isJa ? '重要：$nameの服薬時間' : 'CRITICAL: Take $name';
+
+  String criticalBody(String dosage, {String? timingLabel}) {
+    if (_isJa) {
+      return timingLabel != null
+          ? '$dosage（$timingLabel）- 重要なお薬です'
+          : '$dosage - 重要なお薬です';
+    }
+    return timingLabel != null
+        ? '$dosage ($timingLabel) - This medication is marked as critical'
+        : '$dosage - This medication is marked as critical';
+  }
+
+  String lowStockTitle(String name) =>
+      _isJa ? '在庫不足：$name' : 'Low Stock Alert: $name';
+
+  String lowStockBody(int remaining) => _isJa
+      ? '残り$remaining回分です。補充をお忘れなく'
+      : 'Only $remaining doses remaining. Time to refill!';
+
+  String get actionTake => _isJa ? '飲んだ' : 'Take Now';
+  String get actionSnooze => _isJa ? '15分後' : 'Snooze 15min';
+  String get actionSkip => _isJa ? 'スキップ' : 'Skip';
 }
