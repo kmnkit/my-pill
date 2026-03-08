@@ -32,11 +32,11 @@ void main() {
       ]);
     });
 
-    test('caregiver config has caregiverPatientsOverride', () {
+    test('caregiver config wraps screen in ProviderScope for mock data', () {
       final caregiverConfig = ScreenshotGalleryScreen.screenConfigs.firstWhere(
         (c) => c.filenameBase == '04_caregiver',
       );
-      expect(caregiverConfig.overrides, isNotEmpty);
+      expect(caregiverConfig.screen, isA<ProviderScope>());
     });
   });
 }
