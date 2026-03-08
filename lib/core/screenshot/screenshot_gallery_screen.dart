@@ -15,7 +15,7 @@ import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
 import 'package:kusuridoki/presentation/screens/medications/medications_list_screen.dart';
 import 'package:kusuridoki/presentation/screens/travel/travel_mode_screen.dart';
 
-typedef _ScreenConfig = ({
+typedef ScreenConfig = ({
   String filenameBase,
   String jaCaption,
   String enCaption,
@@ -23,7 +23,7 @@ typedef _ScreenConfig = ({
   List<dynamic> overrides,
 });
 
-final _configs = <_ScreenConfig>[
+final _configs = <ScreenConfig>[
   (
     filenameBase: '01_home',
     jaCaption: '今日のお薬、ひと目でわかる',
@@ -65,7 +65,7 @@ class ScreenshotGalleryScreen extends ConsumerStatefulWidget {
   const ScreenshotGalleryScreen({super.key});
 
   /// Exposed so tests can verify config count and filenames without rendering.
-  static List<_ScreenConfig> get screenConfigs => _configs;
+  static List<ScreenConfig> get screenConfigs => _configs;
 
   @override
   ConsumerState<ScreenshotGalleryScreen> createState() =>
