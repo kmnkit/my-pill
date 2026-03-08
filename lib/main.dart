@@ -5,8 +5,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:kusuridoki/app.dart';
+import 'package:kusuridoki/core/utils/ad_consent_service.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/utils/sentry_scrubber.dart';
+import 'package:kusuridoki/data/services/ad_service.dart';
 import 'package:kusuridoki/data/services/notification_service.dart';
 import 'package:kusuridoki/data/services/home_widget_service.dart';
 
@@ -58,6 +60,15 @@ Future<void> _initializeApp() async {
   } catch (e, stackTrace) {
     ErrorHandler.captureException(e, stackTrace, 'HomeWidgetService.init');
   }
+
+  // UMP consent must complete before MobileAds.instance.initialize()
+  try {
+    await AdConsentService().initialize();
+    await AdConsentService().showFormIfRequired();
+  } catch (e, stackTrace) {
+    ErrorHandler.captureException(e, stackTrace, 'AdConsentService.init');
+  }
+  await AdService().initialize();
 
   runApp(const ProviderScope(child: KusuridokiApp()));
 }
