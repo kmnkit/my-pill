@@ -417,9 +417,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(
-        find.byType(SingleChildScrollView),
-        const Offset(0, -1200),
+      await tester.scrollUntilVisible(
+        find.text('Delete Account'),
+        500.0,
+        scrollable: find.byType(Scrollable),
       );
       await tester.pumpAndSettle();
 
@@ -452,9 +453,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.drag(
-        find.byType(SingleChildScrollView),
-        const Offset(0, -1200),
+      await tester.scrollUntilVisible(
+        find.text('Delete Account'),
+        500.0,
+        scrollable: find.byType(Scrollable),
       );
       await tester.pumpAndSettle();
 

@@ -42,6 +42,13 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final userSettingsAsync = ref.watch(userSettingsProvider);
 
+    bool isAnonymous;
+    try {
+      isAnonymous = FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
+    } catch (_) {
+      isAnonymous = false;
+    }
+
     return GradientScaffold(
       appBar: KdAppBar(title: l10n.settingsTitle),
       body: userSettingsAsync.when(
@@ -172,6 +179,13 @@ class SettingsScreen extends ConsumerWidget {
               KdSectionHeader(title: l10n.advanced),
               _buildListTile(
                 context,
+                l10n.changeName,
+                Icons.edit,
+                () => _showChangeNameDialog(context, ref),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _buildListTile(
+                context,
                 l10n.deactivateAccount,
                 Icons.logout,
                 () async {
@@ -215,81 +229,68 @@ class SettingsScreen extends ConsumerWidget {
                 },
                 textColor: AppColors.error,
               ),
-              const SizedBox(height: AppSpacing.sm),
-              _buildListTile(
-                context,
-                l10n.deleteAccount,
-                Icons.delete_forever,
-                () async {
-                  // First confirmation
-                  final firstConfirm = await KdConfirmDialog.show(
-                    context,
-                    title: l10n.deleteAccountTitle,
-                    message: l10n.deleteAccountMessage,
-                    confirmLabel: l10n.continueButton,
-                    isDestructive: true,
-                  );
+              if (!isAnonymous) ...[
+                const SizedBox(height: AppSpacing.sm),
+                _buildListTile(
+                  context,
+                  l10n.deleteAccount,
+                  Icons.delete_forever,
+                  () async {
+                    // First confirmation
+                    final firstConfirm = await KdConfirmDialog.show(
+                      context,
+                      title: l10n.deleteAccountTitle,
+                      message: l10n.deleteAccountMessage,
+                      confirmLabel: l10n.continueButton,
+                      isDestructive: true,
+                    );
 
-                  if (firstConfirm != true || !context.mounted) return;
+                    if (firstConfirm != true || !context.mounted) return;
 
-                  // Second confirmation
-                  final secondConfirm = await KdConfirmDialog.show(
-                    context,
-                    title: l10n.deleteAccountConfirmTitle,
-                    message: l10n.deleteAccountConfirmMessage,
-                    confirmLabel: l10n.deleteEverything,
-                    isDestructive: true,
-                  );
+                    // Second confirmation
+                    final secondConfirm = await KdConfirmDialog.show(
+                      context,
+                      title: l10n.deleteAccountConfirmTitle,
+                      message: l10n.deleteAccountConfirmMessage,
+                      confirmLabel: l10n.deleteEverything,
+                      isDestructive: true,
+                    );
 
-                  if (secondConfirm == true && context.mounted) {
-                    try {
-                      if (FirebaseAuth.instance.currentUser?.isAnonymous ==
-                          true) {
-                        // Anonymous path: no server data, delete auth account directly
-                        // 1. Clear local data first (while widget is still mounted)
-                        await StorageService().clearAll();
-                        // 2. Invalidate providers first (before auth deletion triggers redirect)
-                        _invalidateUserProviders(ref);
-                        // 3. Delete auth account — triggers auth stream null → router auto-redirects
-                        try {
-                          await FirebaseAuth.instance.currentUser?.delete();
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'requires-recent-login') {
-                            // Refresh anonymous token and retry
-                            await FirebaseAuth.instance.signInAnonymously();
-                            await FirebaseAuth.instance.currentUser?.delete();
-                          } else {
-                            rethrow;
-                          }
+                    if (secondConfirm == true && context.mounted) {
+                      try {
+                        final currentUser = FirebaseAuth.instance.currentUser;
+                        if (currentUser == null || currentUser.isAnonymous) {
+                          // Null/anonymous path: local data only, sign out
+                          await StorageService().clearUserData();
+                          _invalidateUserProviders(ref);
+                          await ref.read(authServiceProvider).signOut();
+                        } else {
+                          // Authenticated path: delete server data, then sign out
+                          final authService = ref.read(authServiceProvider);
+                          // 1. Server-side deletion of all user data + auth account
+                          await CloudFunctionsService().deleteAccount();
+                          // 2. Clear local data first (while widget is still mounted)
+                          await StorageService().clearUserData();
+                          // 3. Invalidate all providers (before signOut triggers redirect)
+                          _invalidateUserProviders(ref);
+                          // 4. Sign out last — router redirect handles navigation
+                          await authService.signOut();
                         }
-                      } else {
-                        // Authenticated path: re-authenticate, delete server data, then sign out
-                        final authService = ref.read(authServiceProvider);
-                        final reauthed = await authService.reauthenticate();
-                        if (!reauthed) return; // User cancelled
-                        // 1. Server-side deletion of all user data + auth account
-                        await CloudFunctionsService().deleteAccount();
-                        // 2. Clear local data first (while widget is still mounted)
-                        await StorageService().clearAll();
-                        // 3. Invalidate all providers (before signOut triggers redirect)
-                        _invalidateUserProviders(ref);
-                        // 4. Sign out last — router redirect handles navigation
-                        await authService.signOut();
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.errorOccurred),
-                            backgroundColor: AppColors.error,
-                          ),
-                        );
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l10n.errorOccurred),
+                              backgroundColor: AppColors.error,
+                            ),
+                          );
+                        }
                       }
                     }
-                  }
-                },
-                textColor: AppColors.error,
-              ),
+                  },
+                  textColor: AppColors.error,
+                ),
+              ],
               const SizedBox(height: AppSpacing.xl),
               Center(
                 child: TextButton(
@@ -327,6 +328,50 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showChangeNameDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.changeNameTitle),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: l10n.changeNameHint),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+    final newName = controller.text.trim();
+    if (newName.isEmpty) return;
+
+    await ref.read(userSettingsProvider.notifier).updateName(newName);
+    // Fire-and-forget for authenticated users
+    FirebaseAuth.instance.currentUser?.updateDisplayName(newName);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.nameSaved)),
+      );
+    }
   }
 
   void _invalidateUserProviders(WidgetRef ref) {

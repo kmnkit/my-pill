@@ -60,10 +60,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
       final l10n = AppLocalizations.of(context)!;
       final message = _errorMessage(e, l10n);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: AppColors.error,
-        ),
+        SnackBar(content: Text(message), backgroundColor: AppColors.error),
       );
     }
   }
@@ -75,7 +72,8 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
           return l10n.inviteNotFound;
         case 'failed-precondition':
           final details = e.message ?? '';
-          if (details.toLowerCase().contains('expir')) return l10n.inviteExpired;
+          if (details.toLowerCase().contains('expir'))
+            return l10n.inviteExpired;
           return l10n.inviteAlreadyUsed;
         case 'invalid-argument':
           return l10n.inviteSelfError;
@@ -144,7 +142,7 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
                     ),
                     const SizedBox(height: AppSpacing.xxl),
                     if (_isProcessing)
-                      const CircularProgressIndicator()
+                      const CircularProgressIndicator.adaptive()
                     else ...[
                       KdButton(
                         label: l10n.acceptInvitation,

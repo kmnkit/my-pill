@@ -19,6 +19,24 @@ void main() {
       await expectLater(TimezoneService.initialize(), completes);
     });
 
+    // ── detectDeviceTimezone ────────────────────────────────────────────────
+
+    test('detectDeviceTimezone completes without throwing', () async {
+      // In unit tests the platform plugin is unavailable; the method must
+      // gracefully fall back to tz.local.name instead of propagating.
+      await expectLater(service.detectDeviceTimezone(), completes);
+    });
+
+    test(
+      'detectDeviceTimezone returns tz.local.name when plugin is unavailable',
+      () async {
+        // Plugin throws MissingPluginException in unit test environment;
+        // detectDeviceTimezone falls back to the current tz.local.name.
+        final result = await service.detectDeviceTimezone();
+        expect(result, equals(tz.local.name));
+      },
+    );
+
     // ── getTimeDifference ───────────────────────────────────────────────────
 
     test('getTimeDifference returns correct offset Tokyo vs New York', () {

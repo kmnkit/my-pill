@@ -281,10 +281,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Scroll to advanced section
-      await tester.drag(
-        find.byType(SingleChildScrollView),
-        const Offset(0, -1200),
+      await tester.scrollUntilVisible(
+        find.text('Delete Account'),
+        500.0,
+        scrollable: find.byType(Scrollable),
       );
       await tester.pumpAndSettle();
 
@@ -652,14 +652,15 @@ void main() {
     });
 
     // -----------------------------------------------------------------------
-    // Delete account: second confirm — reauthenticate returns false (line 171)
-    // This covers the "user cancelled reauthentication" early-return path.
+    // Delete account: second confirm — settings screen stays visible
+    // reauthenticate() is NOT called; CloudFunctions handles server-side auth.
+    // In tests, CloudFunctions throws (no Firebase setup) → catch branch runs.
     // -----------------------------------------------------------------------
 
     testWidgets(
-      'delete account second confirm with reauth cancelled returns early',
+      'delete account second confirm keeps settings screen visible',
       (tester) async {
-        final mockAuth = _MockAuthService(reauthResult: false);
+        final mockAuth = _MockAuthService();
         await tester.pumpWidget(
           createTestableWidget(
             const SettingsScreen(),
@@ -671,10 +672,10 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Scroll to Advanced section
-        await tester.drag(
-          find.byType(SingleChildScrollView),
-          const Offset(0, -1200),
+        await tester.scrollUntilVisible(
+          find.text('Delete Account'),
+          500.0,
+          scrollable: find.byType(Scrollable),
         );
         await tester.pumpAndSettle();
 
@@ -691,21 +692,21 @@ void main() {
         await tester.tap(find.text('Delete Everything'));
         await tester.pumpAndSettle();
 
-        // reauthenticate() returns false → early return, no snackbar, no crash
-        // Settings screen still visible (no navigation or error)
+        // Settings screen still visible (no navigation occurred)
         expect(find.text('Settings'), findsOneWidget);
       },
     );
 
     // -----------------------------------------------------------------------
-    // Delete account: second confirm — reauthenticate throws (lines 181-184)
-    // This covers the catch → ScaffoldMessenger.showSnackBar error path.
+    // Delete account: second confirm — error path (CloudFunctions unavailable)
+    // In tests, FirebaseAuth/CloudFunctions are not initialized, so the
+    // catch block runs → ScaffoldMessenger.showSnackBar shows error.
     // -----------------------------------------------------------------------
 
     testWidgets(
-      'delete account second confirm with reauth throwing shows error snackbar',
+      'delete account second confirm shows error snackbar when deleteAccount fails',
       (tester) async {
-        final mockAuth = _MockAuthService(reauthThrows: true);
+        final mockAuth = _MockAuthService();
         await tester.pumpWidget(
           createTestableWidget(
             const SettingsScreen(),
@@ -717,10 +718,10 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // Scroll to Advanced section
-        await tester.drag(
-          find.byType(SingleChildScrollView),
-          const Offset(0, -1200),
+        await tester.scrollUntilVisible(
+          find.text('Delete Account'),
+          500.0,
+          scrollable: find.byType(Scrollable),
         );
         await tester.pumpAndSettle();
 
@@ -737,7 +738,7 @@ void main() {
         await tester.tap(find.text('Delete Everything'));
         await tester.pumpAndSettle();
 
-        // reauthenticate() throws → catch → snackbar "An error occurred"
+        // CloudFunctions unavailable in tests → catch → snackbar "An error occurred"
         expect(find.text('An error occurred'), findsOneWidget);
       },
     );

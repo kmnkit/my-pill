@@ -682,5 +682,10 @@
   "editSchedule": "Edit Schedule",
   "cancelScheduleSetupTitle": "Cancel Schedule Setup",
   "cancelScheduleSetupMessage": "Going back without setting a schedule will delete this medication",
-  "inventoryUnitDoses": "doses"
+  "inventoryUnitDoses": "doses",
+
+  "changeName": "Change Name",
+  "changeNameTitle": "Change Name",
+  "changeNameHint": "Enter your name",
+  "nameSaved": "Name saved"
 }

@@ -78,6 +78,13 @@ class TimezoneSettings extends _$TimezoneSettings {
     );
   }
 
+  Future<void> refreshDeviceTimezone() async {
+    final detected = await TimezoneService().detectDeviceTimezone();
+    if (detected != state.currentTimezone) {
+      setCurrentTimezone(detected);
+    }
+  }
+
   void setCurrentTimezone(String timezone) {
     final current = state;
     state = (

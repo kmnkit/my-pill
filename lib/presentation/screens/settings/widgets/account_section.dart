@@ -1,20 +1,16 @@
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
-import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
+import 'package:kusuridoki/data/services/storage_service.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_avatar.dart';
-import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
-import 'package:kusuridoki/data/services/auth_service.dart';
-import 'package:kusuridoki/core/utils/apple_auth_error_messages.dart';
 
 class AccountSection extends ConsumerWidget {
   const AccountSection({super.key});
@@ -82,53 +78,34 @@ class AccountSection extends ConsumerWidget {
         final initials = _getInitials(displayName);
 
         if (isAnonymous) {
-          // Anonymous user - show prompt to sign in
+          // Anonymous user — tap to go to login screen
           return KdCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            onTap: () => _navigateToLogin(context, ref),
+            child: Row(
               children: [
-                Row(
-                  children: [
-                    KdAvatar(initials: initials, size: 56.0),
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            displayName,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          Text(
-                            l10n.signInToSync,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: context.appColors.textMuted),
-                          ),
-                        ],
+                KdAvatar(initials: initials, size: 56.0),
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        displayName,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.md),
-                KdButton(
-                  label: l10n.linkWithGoogle,
-                  onPressed: () => _linkWithGoogle(context, ref),
-                  variant: MpButtonVariant.secondary,
-                  iconWidget: Image.asset(
-                    'assets/icons/google-logo.png',
-                    width: 20,
-                    height: 20,
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        l10n.signInToSync,
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: context.appColors.textMuted),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
-                if (Platform.isIOS)
-                  KdButton(
-                    label: l10n.linkWithApple,
-                    onPressed: () => _linkWithApple(context, ref),
-                    variant: MpButtonVariant.secondary,
-                    icon: Icons.apple,
-                  ),
+                Icon(
+                  Icons.chevron_right,
+                  color: context.appColors.textMuted,
+                ),
               ],
             ),
           );
@@ -169,11 +146,6 @@ class AccountSection extends ConsumerWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.chevron_right,
-                size: AppSpacing.iconMd,
-                color: context.appColors.textMuted,
-              ),
             ],
           ),
         );
@@ -181,68 +153,19 @@ class AccountSection extends ConsumerWidget {
     );
   }
 
-  Future<void> _linkWithGoogle(BuildContext context, WidgetRef ref) async {
+  Future<void> _navigateToLogin(BuildContext context, WidgetRef ref) async {
     try {
-      final authService = ref.read(authServiceProvider);
-      final result = await authService.linkWithGoogle();
-      if (result == null) return; // cancelled
+      await StorageService().clearUserData();
+      await ref.read(authServiceProvider).signOut();
+      // Router will redirect to /login automatically via auth state change
+    } catch (e) {
       if (context.mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.accountLinked),
-            backgroundColor: AppColors.primary,
-          ),
-        );
-        ref.invalidate(authStateProvider);
-      }
-    } on FirebaseAuthException catch (e, st) {
-      ErrorHandler.debugLog(e, st, 'linkWithGoogle');
-      if (context.mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        final message = e.code == 'credential-already-in-use'
-            ? l10n.accountAlreadyLinked
-            : l10n.linkFailed;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message), backgroundColor: AppColors.error),
-        );
-      }
-    }
-  }
-
-  Future<void> _linkWithApple(BuildContext context, WidgetRef ref) async {
-    try {
-      final authService = ref.read(authServiceProvider);
-      final result = await authService.linkWithApple();
-      if (result == null) return; // User cancelled
-      if (context.mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.accountLinked),
-            backgroundColor: AppColors.primary,
-          ),
-        );
-        ref.invalidate(authStateProvider);
-      }
-    } on AppleSignInException catch (e) {
-      if (context.mounted && e.error.shouldShowSnackbar) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.error.getLocalizedMessage(context)),
+            content: Text(l10n.errorOccurred),
             backgroundColor: AppColors.error,
           ),
-        );
-      }
-    } on FirebaseAuthException catch (e, st) {
-      ErrorHandler.debugLog(e, st, 'linkWithApple');
-      if (context.mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        final message = e.code == 'credential-already-in-use'
-            ? l10n.accountAlreadyLinked
-            : l10n.linkFailed;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message), backgroundColor: AppColors.error),
         );
       }
     }

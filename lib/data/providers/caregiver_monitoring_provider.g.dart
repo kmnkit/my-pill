@@ -210,8 +210,8 @@ final class PatientRemindersFamily extends $Family
 final patientDailyAdherenceProvider = PatientDailyAdherenceFamily._();
 
 final class PatientDailyAdherenceProvider
-    extends $FunctionalProvider<AsyncValue<double>, double, FutureOr<double>>
-    with $FutureModifier<double>, $FutureProvider<double> {
+    extends $FunctionalProvider<AsyncValue<double?>, double?, FutureOr<double?>>
+    with $FutureModifier<double?>, $FutureProvider<double?> {
   PatientDailyAdherenceProvider._({
     required PatientDailyAdherenceFamily super.from,
     required String super.argument,
@@ -235,11 +235,11 @@ final class PatientDailyAdherenceProvider
 
   @$internal
   @override
-  $FutureProviderElement<double> $createElement($ProviderPointer pointer) =>
+  $FutureProviderElement<double?> $createElement($ProviderPointer pointer) =>
       $FutureProviderElement(pointer);
 
   @override
-  FutureOr<double> create(Ref ref) {
+  FutureOr<double?> create(Ref ref) {
     final argument = this.argument as String;
     return patientDailyAdherence(ref, argument);
   }
@@ -256,10 +256,10 @@ final class PatientDailyAdherenceProvider
 }
 
 String _$patientDailyAdherenceHash() =>
-    r'f271c0fa782921d4e11da7ac37d138d556a3ed4e';
+    r'af0642eb720fab954ff0045aae766587b4ed59a1';
 
 final class PatientDailyAdherenceFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<double>, String> {
+    with $FunctionalFamilyOverride<FutureOr<double?>, String> {
   PatientDailyAdherenceFamily._()
     : super(
         retry: null,
@@ -325,7 +325,7 @@ final class CaregiverPatientsProvider
   }
 }
 
-String _$caregiverPatientsHash() => r'946ca6731ab713ac6d2f86c6748d7400cd0f6e99';
+String _$caregiverPatientsHash() => r'9a21019810e5375f7d3d6dbd49980d94d99b754b';
 
 @ProviderFor(patientMedicationStatus)
 final patientMedicationStatusProvider = PatientMedicationStatusFamily._();

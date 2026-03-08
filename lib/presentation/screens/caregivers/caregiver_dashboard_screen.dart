@@ -6,7 +6,9 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
@@ -29,44 +31,52 @@ class _CaregiverDashboardScreenState
       MaterialPageRoute(builder: (context) => const QrScannerScreen()),
     );
 
-    if (code != null && mounted) {
+    if (code == null || !mounted) return;
+
+    // Show modal loading indicator while processing
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator.adaptive()),
+    );
+
+    try {
+      final cfService = ref.read(cloudFunctionsServiceProvider);
+      await cfService.acceptInvite(code);
+
+      ref.invalidate(caregiverLinksProvider);
+      ref.invalidate(caregiverPatientsProvider);
+      await ref.read(userSettingsProvider.notifier).updateUserRole('caregiver');
+
+      if (!mounted) return;
+      Navigator.of(context).pop(); // close loading
+
+      final l10n = AppLocalizations.of(context)!;
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          content: Text(l10n.inviteAccepted),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text(l10n.close),
+            ),
+          ],
+        ),
+      );
+    } catch (e, st) {
+      ErrorHandler.debugLog(e, st, 'acceptInviteQr');
+      if (!mounted) return;
+      Navigator.of(context).pop(); // close loading
+
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.processingInvite),
-          duration: const Duration(seconds: 2),
+          content: Text(l10n.failedToAcceptInvite),
+          backgroundColor: AppColors.error,
+          duration: const Duration(seconds: 3),
         ),
       );
-
-      try {
-        final cfService = ref.read(cloudFunctionsServiceProvider);
-        await cfService.acceptInvite(code);
-
-        ref.invalidate(caregiverPatientsProvider);
-
-        if (mounted) {
-          final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.inviteAccepted),
-              backgroundColor: AppColors.success,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      } catch (e, st) {
-        ErrorHandler.debugLog(e, st, 'acceptInviteQr');
-        if (mounted) {
-          final l10n = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(l10n.failedToAcceptInvite),
-              backgroundColor: AppColors.error,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      }
     }
   }
 
@@ -74,10 +84,9 @@ class _CaregiverDashboardScreenState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final patientsAsync = ref.watch(caregiverPatientsProvider);
-    final canAdd = ref.watch(canAddPatientProvider).maybeWhen(
-      data: (v) => v,
-      orElse: () => true,
-    );
+    final canAdd = ref
+        .watch(canAddPatientProvider)
+        .maybeWhen(data: (v) => v, orElse: () => true);
 
     return GradientScaffold(
       body: SafeArea(
@@ -233,18 +242,15 @@ class _StepItem extends StatelessWidget {
           child: Center(
             child: Text(
               '$step',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textOnPrimary,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: AppColors.textOnPrimary),
             ),
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
     );

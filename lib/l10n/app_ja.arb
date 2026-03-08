@@ -243,7 +243,7 @@
   "privacyNotice1": "サポーターは服薬状況とスケジュールのみ閲覧できます",
   "privacyNotice2": "個人的なメモやその他の健康データはあなただけに表示されます",
 
-  "caregiverDashboard": "担当患者",
+  "caregiverDashboard": "見守り相手",
   "dailyAdherence": "本日の服薬状況",
   "takenCount": "{taken}/{total} 服用済み",
   "@takenCount": {
@@ -485,7 +485,7 @@
   "remainingMustBeZeroOrGreater": "残りは0以上にしてください",
   "totalMustBeGreaterThanZero": "合計は0より大きくしてください",
   "remainingCannotExceedTotal": "残りは合計を超えられません",
-  "myPatients": "担当患者",
+  "myPatients": "見守り相手",
   "noPatientsLinked": "連携された患者がいません",
   "noPatientsLinkedDesc": "患者に招待コードを共有してもらいましょう",
   "alertTypes": "アラートの種類",
@@ -682,5 +682,10 @@
   "editSchedule": "スケジュール編集",
   "cancelScheduleSetupTitle": "スケジュール設定をキャンセル",
   "cancelScheduleSetupMessage": "スケジュールを設定せずに戻ると、お薬が削除されます",
-  "inventoryUnitDoses": "回分"
+  "inventoryUnitDoses": "回分",
+
+  "changeName": "名前を変更",
+  "changeNameTitle": "名前の変更",
+  "changeNameHint": "名前を入力",
+  "nameSaved": "名前を保存しました"
 }

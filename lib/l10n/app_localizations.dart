@@ -3247,6 +3247,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'doses'**
   String get inventoryUnitDoses;
+
+  /// No description provided for @changeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Name'**
+  String get changeName;
+
+  /// No description provided for @changeNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Name'**
+  String get changeNameTitle;
+
+  /// No description provided for @changeNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get changeNameHint;
+
+  /// No description provided for @nameSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Name saved'**
+  String get nameSaved;
 }
 
 class _AppLocalizationsDelegate

@@ -33,6 +33,87 @@ import 'package:flutter/material.dart';
 
 part 'app_router_provider.g.dart';
 
+/// Pure redirect decision logic — extracted for testability.
+///
+/// Returns the redirect destination path, or null to allow the current route.
+/// All side effects (e.g. consuming invite codes) are performed via the
+/// optional [consumePendingInviteCode] callback.
+String? computeRedirect({
+  required String matchedLocation,
+  required bool isAuthenticated,
+  required UserProfile? currentSettings,
+  required Map<String, String> queryParameters,
+  String? Function()? consumePendingInviteCode,
+}) {
+  final isOnboardingRoute = matchedLocation == '/onboarding';
+  final isLoginRoute = matchedLocation == '/login';
+  final isInviteRoute = matchedLocation.startsWith('/invite/');
+
+  // Splash always passes through — it handles its own navigation.
+  if (matchedLocation == '/splash') return null;
+
+  // Invite deep links require authentication.
+  if (isInviteRoute) {
+    if (!isAuthenticated) {
+      return '/login?redirect=$matchedLocation';
+    }
+    // Consume any pending code so it doesn't cause a redundant redirect later.
+    consumePendingInviteCode?.call();
+    return null;
+  }
+
+  // Settings not yet loaded — allow onboarding/login through, redirect others.
+  if (currentSettings == null) {
+    if (isOnboardingRoute || isLoginRoute) return null;
+    return '/onboarding';
+  }
+
+  final onboardingComplete = currentSettings.onboardingComplete;
+  final userRole = currentSettings.userRole;
+
+  // Not completed onboarding → redirect to onboarding.
+  if (!onboardingComplete && !isOnboardingRoute) {
+    return '/onboarding';
+  }
+
+  // Completed onboarding but on onboarding screen → go to login.
+  if (onboardingComplete && isOnboardingRoute) {
+    return '/login';
+  }
+
+  // Not authenticated → redirect to login.
+  // This covers all post-sign-out / post-delete scenarios.
+  if (!isAuthenticated && !isLoginRoute && onboardingComplete) {
+    return '/login';
+  }
+
+  // Authenticated but on login screen → redirect to appropriate home.
+  if (isAuthenticated && isLoginRoute) {
+    // 1. Honor redirect query param (set when deep link arrived pre-auth).
+    final redirectPath = queryParameters['redirect'];
+    if (redirectPath != null && redirectPath.isNotEmpty) {
+      return redirectPath;
+    }
+    // 2. Consume pending invite code from cold-start deep link.
+    final pendingCode = consumePendingInviteCode?.call();
+    if (pendingCode != null) {
+      return '/invite/$pendingCode';
+    }
+    return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
+  }
+
+  // Authenticated users already past /login also need pending invite consumed
+  // (e.g. cold-start Universal Link while already signed in).
+  if (isAuthenticated && onboardingComplete) {
+    final pendingCode = consumePendingInviteCode?.call();
+    if (pendingCode != null) {
+      return '/invite/$pendingCode';
+    }
+  }
+
+  return null;
+}
+
 /// A ChangeNotifier that listens to user settings and auth state changes
 class RouterRefreshNotifier extends ChangeNotifier {
   UserProfile? _settings;
@@ -120,81 +201,14 @@ Raw<GoRouter> appRouter(Ref ref) {
       });
     },
     redirect: (context, state) {
-      final isSplashRoute = state.matchedLocation == '/splash';
-      final isOnboardingRoute = state.matchedLocation == '/onboarding';
-      final isLoginRoute = state.matchedLocation == '/login';
-      final isInviteRoute = state.matchedLocation.startsWith('/invite/');
-
-      // Allow splash to pass through
-      if (isSplashRoute) return null;
-
-      // Invite deep links require authentication
-      if (isInviteRoute) {
-        final isAuthenticated = FirebaseAuth.instance.currentUser != null;
-        if (!isAuthenticated) {
-          // Preserve invite code in query param for post-auth handling
-          final invitePath = state.matchedLocation;
-          return '/login?redirect=$invitePath';
-        }
-        // Consume any pending code so it doesn't cause a redundant redirect later
-        ref.read(deepLinkServiceProvider).consumePendingInviteCode();
-        return null;
-      }
-
-      final isAuthenticated = FirebaseAuth.instance.currentUser != null;
-
-      // If we don't have settings yet, allow onboarding/login
-      if (currentSettings == null) {
-        if (isOnboardingRoute || isLoginRoute) return null;
-        return '/onboarding';
-      }
-
-      final onboardingComplete = currentSettings!.onboardingComplete;
-      final userRole = currentSettings!.userRole;
-
-      // Not completed onboarding -> redirect to onboarding
-      if (!onboardingComplete && !isOnboardingRoute) {
-        return '/onboarding';
-      }
-
-      // Completed onboarding but on onboarding screen -> go to login
-      if (onboardingComplete && isOnboardingRoute) {
-        return '/login';
-      }
-
-      // Not authenticated -> redirect to login (check BEFORE home redirect)
-      if (!isAuthenticated && !isLoginRoute && onboardingComplete) {
-        return '/login';
-      }
-
-      // Authenticated but on login screen -> redirect to appropriate home
-      if (isAuthenticated && isLoginRoute) {
-        // 1. Honor redirect query param (set when deep link arrived pre-auth)
-        final redirectPath = state.uri.queryParameters['redirect'];
-        if (redirectPath != null && redirectPath.isNotEmpty) {
-          return redirectPath;
-        }
-        // 2. Consume pending invite code from cold-start deep link
-        final pendingCode =
-            ref.read(deepLinkServiceProvider).consumePendingInviteCode();
-        if (pendingCode != null) {
-          return '/invite/$pendingCode';
-        }
-        return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
-      }
-
-      // Authenticated users who skip /login (already logged in) also need
-      // their pending invite code consumed — e.g. cold-start Universal Link
-      // while the user was already signed in with onboarding complete.
-      if (isAuthenticated && onboardingComplete) {
-        final pendingCode =
-            ref.read(deepLinkServiceProvider).consumePendingInviteCode();
-        if (pendingCode != null) {
-          return '/invite/$pendingCode';
-        }
-      }
-
-      return null;
+      return computeRedirect(
+        matchedLocation: state.matchedLocation,
+        isAuthenticated: FirebaseAuth.instance.currentUser != null,
+        currentSettings: currentSettings,
+        queryParameters: state.uri.queryParameters,
+        consumePendingInviteCode: () =>
+            ref.read(deepLinkServiceProvider).consumePendingInviteCode(),
+      );
     },
     routes: [
       // Standalone route: Splash

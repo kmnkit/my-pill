@@ -103,7 +103,7 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
     final scaffold = Scaffold(
       appBar: KdAppBar(title: l10n.setSchedule, showBack: true),
       body: _isLoadingSchedule
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator.adaptive())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
@@ -243,8 +243,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
           type: _selectedType,
           dosageSlots: _dosageSlots,
           specificDays: _selectedDays,
-          intervalHours:
-              _selectedType == ScheduleType.interval ? _intervalHours : null,
+          intervalHours: _selectedType == ScheduleType.interval
+              ? _intervalHours
+              : null,
           timezoneMode: TimezoneMode.fixedInterval,
           isActive: true,
         );
@@ -258,8 +259,9 @@ class _ScheduleScreenState extends ConsumerState<ScheduleScreen> {
           type: _selectedType,
           dosageSlots: _dosageSlots,
           specificDays: _selectedDays,
-          intervalHours:
-              _selectedType == ScheduleType.interval ? _intervalHours : null,
+          intervalHours: _selectedType == ScheduleType.interval
+              ? _intervalHours
+              : null,
           timezoneMode: TimezoneMode.fixedInterval,
           isActive: true,
         );

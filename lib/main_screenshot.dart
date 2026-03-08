@@ -7,6 +7,7 @@ import 'package:kusuridoki/core/screenshot/screenshot_gallery_screen.dart';
 import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
 import 'package:kusuridoki/data/services/notification_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/core/theme/app_theme.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Screenshot entry point: seeds sample data with ads hidden.
@@ -39,6 +40,8 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       child: MaterialApp(
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

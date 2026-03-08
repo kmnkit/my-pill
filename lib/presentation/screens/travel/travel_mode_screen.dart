@@ -12,11 +12,24 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_toggle_switch.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
-class TravelModeScreen extends ConsumerWidget {
+class TravelModeScreen extends ConsumerStatefulWidget {
   const TravelModeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TravelModeScreen> createState() => _TravelModeScreenState();
+}
+
+class _TravelModeScreenState extends ConsumerState<TravelModeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(timezoneSettingsProvider.notifier).refreshDeviceTimezone();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final timezoneState = ref.watch(timezoneSettingsProvider);
 

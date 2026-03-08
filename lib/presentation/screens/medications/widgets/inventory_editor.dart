@@ -15,8 +15,7 @@ class InventoryEditor extends StatelessWidget {
   final int count;
   final ValueChanged<int> onCountChanged;
 
-  Future<void> _showNumberInput(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+  Future<void> _showNumberInput(BuildContext context, AppLocalizations l10n) async {
     final controller = TextEditingController(text: count.toString());
     final result = await showDialog<int>(
       context: context,
@@ -73,7 +72,7 @@ class InventoryEditor extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.xl),
           GestureDetector(
-            onTap: () => _showNumberInput(context),
+            onTap: () => _showNumberInput(context, l10n),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

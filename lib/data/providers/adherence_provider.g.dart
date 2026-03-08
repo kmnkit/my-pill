@@ -211,7 +211,7 @@ final class MedicationBreakdownProvider
 }
 
 String _$medicationBreakdownHash() =>
-    r'a9e63fa8859a9be624bcfce1e0735b23772441e1';
+    r'b6e28247bc4db40ecfdef7c0144b7b2c3c7acb8d';
 
 @ProviderFor(adherenceStreak)
 final adherenceStreakProvider = AdherenceStreakProvider._();

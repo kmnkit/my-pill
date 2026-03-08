@@ -1719,4 +1719,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inventoryUnitDoses => 'doses';
+
+  @override
+  String get changeName => 'Change Name';
+
+  @override
+  String get changeNameTitle => 'Change Name';
+
+  @override
+  String get changeNameHint => 'Enter your name';
+
+  @override
+  String get nameSaved => 'Name saved';
 }

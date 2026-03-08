@@ -38,7 +38,7 @@ class PatientDataCard extends ConsumerWidget {
     final adherenceText = adherenceAsync.when(
       loading: () => l10n.loading,
       error: (_, _) => 'N/A',
-      data: (value) => '${value.toStringAsFixed(0)}%',
+      data: (value) => value == null ? '--' : '${value.toStringAsFixed(0)}%',
     );
 
     final medications = medicationsAsync.when(

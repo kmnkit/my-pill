@@ -55,7 +55,7 @@ final class RouterRefreshNotifierProvider
 }
 
 String _$routerRefreshNotifierHash() =>
-    r'ab22e17a4382934453586c365dc3f060e953be02';
+    r'72bd0a7c64713f0dfde9b9a89e9c22861a7dd881';
 
 /// Notifier that fires when a warm-start invite code arrives via deep link.
 
@@ -149,4 +149,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'a2bc8c6a5d040dc28a742070571704b6141b65dd';
+String _$appRouterHash() => r'cd679614f8705274243ad0c422833b338b7cc934';

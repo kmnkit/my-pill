@@ -82,16 +82,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final extractedName = _extractDisplayName(result);
 
-      // Persist name to Firebase for future logins (best-effort)
+      await _completeAndNavigate(credentialDisplayName: extractedName);
+
+      // Persist name to Firebase for future logins (best-effort, fire-and-forget)
       if (extractedName != null && result.user?.displayName == null) {
-        try {
-          await result.user?.updateDisplayName(extractedName);
-        } catch (_) {
-          // Non-blocking: name is still passed locally below
+        final user = result.user;
+        if (user != null) {
+          user.updateDisplayName(extractedName).catchError((_) {});
         }
       }
-
-      await _completeAndNavigate(credentialDisplayName: extractedName);
     } on AppleSignInException catch (e) {
       if (mounted && e.error.shouldShowSnackbar) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -236,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               // Sign-in buttons
               if (_isLoading)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator.adaptive())
               else ...[
                 if (Platform.isIOS) ...[
                   KdButton(

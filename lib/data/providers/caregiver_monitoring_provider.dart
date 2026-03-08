@@ -33,9 +33,10 @@ Stream<List<Reminder>> patientReminders(Ref ref, String patientId) {
   return firestore.watchPatientReminders(patientId);
 }
 
-// Computed: patient daily adherence from reminders
+// Computed: patient daily adherence from reminders.
+// Returns null when there are no reminders today (no medications registered).
 @riverpod
-Future<double> patientDailyAdherence(Ref ref, String patientId) async {
+Future<double?> patientDailyAdherence(Ref ref, String patientId) async {
   final reminders = await ref.watch(patientRemindersProvider(patientId).future);
   final today = DateTime.now();
   final todayReminders = reminders.where((r) {
@@ -44,10 +45,12 @@ Future<double> patientDailyAdherence(Ref ref, String patientId) async {
         r.scheduledTime.day == today.day;
   }).toList();
 
-  if (todayReminders.isEmpty) return 100.0;
+  if (todayReminders.isEmpty) return null;
 
   final taken = todayReminders.where((r) => r.status.name == 'taken').length;
-  final total = todayReminders.length;
+  final missed = todayReminders.where((r) => r.status.name == 'missed').length;
+  final total = taken + missed;
+  if (total == 0) return null;
   return (taken / total) * 100;
 }
 

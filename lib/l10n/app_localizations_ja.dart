@@ -570,7 +570,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacyNotice2 => '個人的なメモやその他の健康データはあなただけに表示されます';
 
   @override
-  String get caregiverDashboard => '担当患者';
+  String get caregiverDashboard => '見守り相手';
 
   @override
   String get dailyAdherence => '本日の服薬状況';
@@ -1236,7 +1236,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get remainingCannotExceedTotal => '残りは合計を超えられません';
 
   @override
-  String get myPatients => '担当患者';
+  String get myPatients => '見守り相手';
 
   @override
   String get noPatientsLinked => '連携された患者がいません';
@@ -1661,4 +1661,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get inventoryUnitDoses => '回分';
+
+  @override
+  String get changeName => '名前を変更';
+
+  @override
+  String get changeNameTitle => '名前の変更';
+
+  @override
+  String get changeNameHint => '名前を入力';
+
+  @override
+  String get nameSaved => '名前を保存しました';
 }

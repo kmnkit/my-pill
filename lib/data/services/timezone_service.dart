@@ -21,6 +21,20 @@ class TimezoneService {
     }
   }
 
+  // Detect current device timezone and update tz.local.
+  // Returns the IANA timezone string (e.g. 'Asia/Tokyo').
+  // Falls back to tz.local.name if the platform plugin fails.
+  Future<String> detectDeviceTimezone() async {
+    try {
+      final tzInfo = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(tzInfo.identifier));
+      return tzInfo.identifier;
+    } catch (e) {
+      debugPrint('TimezoneService: failed to detect device timezone: $e');
+      return tz.local.name;
+    }
+  }
+
   // Get current device timezone
   tz.Location get currentLocation => tz.local;
 

@@ -95,6 +95,46 @@ void main() {
       expect(state.homeTimezone, 'America/New_York');
     });
 
+    test('refreshDeviceTimezone completes without throwing', () async {
+      await expectLater(
+        container.read(timezoneSettingsProvider.notifier).refreshDeviceTimezone(),
+        completes,
+      );
+    });
+
+    test(
+      'refreshDeviceTimezone updates currentTimezone when tz.local differs',
+      () async {
+        // Container was built with tz.local = America/New_York.
+        // Change tz.local to Asia/Tokyo AFTER container creation.
+        // detectDeviceTimezone() will fail to call the plugin and fall back to
+        // tz.local.name ('Asia/Tokyo'), which differs from the stored state.
+        tz_lib.setLocalLocation(tz_lib.getLocation('Asia/Tokyo'));
+
+        await container
+            .read(timezoneSettingsProvider.notifier)
+            .refreshDeviceTimezone();
+
+        final state = container.read(timezoneSettingsProvider);
+        expect(state.currentTimezone, 'Asia/Tokyo');
+      },
+    );
+
+    test(
+      'refreshDeviceTimezone does not change state when timezone is unchanged',
+      () async {
+        // tz.local is America/New_York (set in setUp), matching the initial state.
+        final before = container.read(timezoneSettingsProvider);
+
+        await container
+            .read(timezoneSettingsProvider.notifier)
+            .refreshDeviceTimezone();
+
+        final after = container.read(timezoneSettingsProvider);
+        expect(after.currentTimezone, equals(before.currentTimezone));
+      },
+    );
+
     test('multiple updates accumulate correctly', () {
       final notifier = container.read(timezoneSettingsProvider.notifier);
       notifier.toggleEnabled();

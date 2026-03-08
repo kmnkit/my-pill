@@ -150,9 +150,7 @@ class AppFinders {
   /// Find a text field by its hint
   static Finder textFieldByHint(String hint) {
     return find.byWidgetPredicate(
-      (widget) =>
-          widget is TextField &&
-          widget.decoration?.hintText == hint,
+      (widget) => widget is TextField && widget.decoration?.hintText == hint,
     );
   }
 
@@ -163,10 +161,7 @@ class AppFinders {
 
   /// Find a card containing specific text
   static Finder cardWithText(String text) {
-    return find.ancestor(
-      of: find.text(text),
-      matching: find.byType(Card),
-    );
+    return find.ancestor(of: find.text(text), matching: find.byType(Card));
   }
 
   /// Find a bottom navigation bar item by its label
@@ -287,7 +282,9 @@ class _SwitchStateMatcher extends Matcher {
 
   @override
   Description describe(Description description) {
-    return description.add(_expectedState ? 'is switched on' : 'is switched off');
+    return description.add(
+      _expectedState ? 'is switched on' : 'is switched off',
+    );
   }
 }
 
@@ -304,7 +301,13 @@ class TestTime {
   /// Get a DateTime for yesterday at the specified time
   static DateTime yesterdayAt(int hour, [int minute = 0]) {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
-    return DateTime(yesterday.year, yesterday.month, yesterday.day, hour, minute);
+    return DateTime(
+      yesterday.year,
+      yesterday.month,
+      yesterday.day,
+      hour,
+      minute,
+    );
   }
 
   /// Get a DateTime for tomorrow at the specified time
@@ -336,7 +339,8 @@ class ScreenshotHelper {
   /// Take a screenshot with an auto-generated name
   Future<void> take(String name) async {
     _screenshotCount++;
-    final screenshotName = '${_screenshotCount.toString().padLeft(3, '0')}_$name';
+    final screenshotName =
+        '${_screenshotCount.toString().padLeft(3, '0')}_$name';
     await binding.takeScreenshot(screenshotName);
   }
 

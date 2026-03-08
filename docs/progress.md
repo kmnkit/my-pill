@@ -8,8 +8,9 @@
 - Interstitial 광고 제거 완료
 - QA 3 Phase 버그 수정 완료
 - App Store 메타데이터 및 iOS 다국어 설정 완료
-- 테스트: 1396 passed / 19 failed (settings 관련 테스트 일부 실패)
-- `flutter analyze`: 64 issues (대부분 테스트 파일 deprecated API 경고)
+- App Store / Play Store 정책 위반 7개 수정 완료 (2026-03-08)
+- 테스트: 1720 passed / 19 skipped / 0 failed
+- `flutter analyze`: 0 errors
 
 ---
 
@@ -102,6 +103,66 @@
 - ✅ iOS 프로젝트 설정 업데이트
 - ✅ 소비자 패널 리뷰 문서 추가
 
+## Phase 13: App Store / Play Store 정책 준수 (2026-03-08)
+
+> 계획 문서: `docs/plans/2026-03-08-app-store-policy-compliance.md`
+
+### 코드 수정 완료 (8 commits on main)
+
+| 커밋 | 내용 |
+|------|------|
+| `fa94d6d` | `kPremiumEnabled=false`일 때 프리미엄 구매 UI 비노출 — "準備中" 화면 표시 |
+| `fdd4d12` | `qr_invite_section` premium 진입 경로 플래그 가드 추가 |
+| `3b02719` | iOS `Info.plist`에 `NSUserTrackingUsageDescription` 추가 |
+| `25c5e92` | `AdConsentService` (UMP 동의 플로우) 신규 추가 — `lib/core/utils/ad_consent_service.dart` |
+| `32279d8` | `main.dart`: UMP consent → `AdService.initialize()` 순서 보장 |
+| `b604b41` | Android `AndroidManifest.xml`에 `AD_ID` 퍼미션 선언 |
+| `2d3e85f` | 구독 약관 iOS/Android 플랫폼 분기 (`subscriptionTermsAndroid` l10n 키 추가) |
+| `4360717` | 온보딩 welcome 스텝 하단에 의료 면책 문구 추가 (`medicalDisclaimer` l10n 키) |
+
+**검증 결과:**
+- `flutter analyze`: 0 errors
+- `flutter test`: 1720 passed, 19 skipped, 0 failed
+- `grep NSUserTrackingUsageDescription ios/Runner/Info.plist`: ✅ 확인
+- `grep AD_ID android/app/src/main/AndroidManifest.xml`: ✅ 확인
+
+---
+
+### ⏳ 스토어 콘솔 수동 작업 (미완료)
+
+#### ⚠️ 카테고리 전략 주의사항
+
+이 앱은 **생산성(Productivity) 앱**으로 심사 제출 예정. 약 이름·복용 스케줄은 "의료 기록"이 아니라 **사용자가 직접 입력한 리마인더 텍스트**(User Content)로 분류한다. "Health & Fitness" 카테고리를 쓰면 Apple/Google이 의료 앱으로 재분류할 수 있으므로 사용하지 않는다.
+
+#### Google Play Console — Data Safety 섹션
+
+Play Console → 앱 콘텐츠 → 데이터 보안에서 아래 항목 직접 입력:
+
+| 수집 항목 | 카테고리 | 목적 | 공유 여부 |
+|-----------|---------|------|-----------|
+| 이메일 주소 | Contact Info | 계정 관리 | Firebase (처리자, 공유 아님) |
+| 사용자 입력 리마인더 텍스트 (알림 이름·시간) | User Content | 앱 기능 | Firestore (처리자), 보호자 기능 이용 시 선택적 공유 |
+| 앱 사용 이벤트 | App activity | 분석 | Firebase Analytics |
+| 오류 리포트 + User ID | App info and performance | 앱 안정성 | Sentry |
+| 광고 ID | Device or other IDs | 광고 (비개인화) | Google AdMob |
+
+#### App Store Connect — Privacy Nutrition Labels
+
+App Store Connect → 앱 → App Privacy에서 아래 항목 직접 입력:
+
+| 카테고리 | 항목 | 추적 여부 | 비고 |
+|----------|------|-----------|------|
+| Contact Info | Email Address | No | 인증용, 제3자 판매 없음 |
+| User Content | Other User Content (리마인더 텍스트) | No | 사용자 입력 알림 데이터 |
+| Identifiers | User ID | No | — |
+| Diagnostics | Crash Data | No | Sentry |
+| Usage Data | Product Interaction | No | Firebase Analytics |
+| Identifiers | Device ID | Yes | AdMob 비개인화 광고 — ATT 동의 필요 (NSUserTrackingUsageDescription 추가 완료) |
+
+> **Health & Fitness 카테고리는 사용하지 않는다.** 약 이름/스케줄은 사용자가 직접 입력한 텍스트 콘텐츠(할 일 목록, 캘린더 항목과 동일 성격)이며 의료 기록·건강 수치가 아님.
+
+---
+
 ## Phase 12: 대규모 테스트 추가 (2026-02-25)
 - ✅ core (constants, extensions, theme, utils) 테스트 추가
 - ✅ data 레이어 (enums, models, providers, repositories, services) 테스트 추가
@@ -110,14 +171,15 @@
 
 ---
 
-## Overall Test Results (2026-02-25)
+## Overall Test Results (2026-03-08)
 
 | 항목 | 수치 |
 |------|------|
-| **총 테스트** | **1,415** |
-| **Passed** | **1,396** |
-| **Failed** | **19** (settings 관련 테스트 일부) |
-| **flutter analyze** | 64 issues (대부분 테스트 파일 deprecated API 경고) |
+| **총 테스트** | **1,739** |
+| **Passed** | **1,720** |
+| **Skipped** | **19** (kPremiumEnabled=false 관련) |
+| **Failed** | **0** |
+| **flutter analyze** | 0 errors |
 
 ---
 

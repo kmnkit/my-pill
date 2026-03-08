@@ -92,7 +92,7 @@ final class InviteLinkProvider
   InviteLink create() => InviteLink();
 }
 
-String _$inviteLinkHash() => r'9b20e55e8408d7442f7389da3bb08efc5a4c4205';
+String _$inviteLinkHash() => r'9a229e60e5eb86588ca9377e230f3202b89d9ceb';
 
 /// Provider for managing caregiver invite link state
 /// Handles generation, acceptance, and state management of invite links

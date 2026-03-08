@@ -192,7 +192,9 @@ class _OnboardingNotificationStepState
                 _isRequesting
                     ? const SizedBox(
                         height: 48,
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
                       )
                     : KdButton(
                         label: l10n.onboardingNotificationEnable,

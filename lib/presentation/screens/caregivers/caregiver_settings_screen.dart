@@ -261,17 +261,14 @@ class _CaregiverSettingsScreenState
 
                 if (secondConfirm == true && context.mounted) {
                   try {
-                    // 1. Re-authenticate before deletion
+                    // 1. Server-side deletion
                     final authService = ref.read(authServiceProvider);
-                    final reauthed = await authService.reauthenticate();
-                    if (!reauthed) return; // User cancelled
-                    // 2. Server-side deletion
                     await CloudFunctionsService().deleteAccount();
-                    // 3. Clear local data (while widget is still mounted)
-                    await StorageService().clearAll();
-                    // 4. Invalidate providers (before signOut triggers redirect)
+                    // 2. Clear local data (while widget is still mounted)
+                    await StorageService().clearUserData();
+                    // 3. Invalidate providers (before signOut triggers redirect)
                     _invalidateAllProviders();
-                    // 5. Sign out last — router redirect handles navigation
+                    // 4. Sign out last — router redirect handles navigation
                     await authService.signOut();
                   } catch (e) {
                     if (context.mounted) {

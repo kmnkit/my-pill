@@ -43,8 +43,21 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   bool _isCritical = false;
   bool _isIppoka = false;
   bool _isSaving = false;
-  bool _defaultsApplied = false;
   String? _photoPath;
+
+  @override
+  void initState() {
+    super.initState();
+    // Apply smart default from user settings (direct assignment is safe before first build)
+    ref.read(userSettingsProvider).whenData((settings) {
+      if (settings.defaultIppoka) {
+        _isIppoka = true;
+        _selectedShape = PillShape.packet;
+        _dosageUnit = DosageUnit.packs;
+        _dosageController.text = '1';
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -56,20 +69,6 @@ class _AddMedicationScreenState extends ConsumerState<AddMedicationScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
-    // Apply smart default from user settings (once)
-    if (!_defaultsApplied) {
-      final settingsAsync = ref.read(userSettingsProvider);
-      settingsAsync.whenData((settings) {
-        if (settings.defaultIppoka) {
-          _isIppoka = true;
-          _selectedShape = PillShape.packet;
-          _dosageUnit = DosageUnit.packs;
-          _dosageController.text = '1';
-        }
-        _defaultsApplied = true;
-      });
-    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

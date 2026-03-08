@@ -37,10 +37,10 @@ Reminder _makeReminder(
 
 void main() {
   // ---------------------------------------------------------------------------
-  // SC-CAR-003: patientDailyAdherence returns 100.0 when no reminders today
+  // SC-CAR-003: patientDailyAdherence returns null when no reminders today
   // ---------------------------------------------------------------------------
   group('patientDailyAdherenceProvider — SC-CAR-003', () {
-    test('returns 100.0 when today has no reminders', () async {
+    test('returns null when today has no reminders', () async {
       final container = ProviderContainer(
         overrides: [
           patientRemindersProvider(
@@ -55,7 +55,7 @@ void main() {
       final result = await container.read(
         patientDailyAdherenceProvider('patient-1').future,
       );
-      expect(result, equals(100.0));
+      expect(result, isNull);
     });
   });
 

@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/account_section.dart';
 
-import '../../../../data/providers/auth_provider_test.mocks.dart';
 import '../../../../helpers/widget_test_helpers.dart';
 
 // ---------------------------------------------------------------------------
@@ -120,18 +118,6 @@ class _LoadingUserSettings extends UserSettings {
     // Never completes — keeps provider in loading state (no timer)
     return Completer<UserProfile>().future;
   }
-}
-
-// ---------------------------------------------------------------------------
-// Minimal UserCredential stub for success path
-// ---------------------------------------------------------------------------
-class MockUserCredential extends Mock implements UserCredential {
-  @override
-  User? get user => null;
-  @override
-  AdditionalUserInfo? get additionalUserInfo => null;
-  @override
-  AuthCredential? get credential => null;
 }
 
 // ---------------------------------------------------------------------------
@@ -249,8 +235,10 @@ void main() {
       // displayName comes from profile name 'Alice Smith' (default profile)
       expect(find.text('Alice Smith'), findsOneWidget);
       expect(find.text('Sign in to sync data'), findsOneWidget);
-      // Should show Link with Google button
-      expect(find.text('Link with Google'), findsOneWidget);
+      // Link buttons removed — login flow is via card tap
+      expect(find.text('Link with Google'), findsNothing);
+      // Should show chevron to indicate tappable
+      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
       // Avatar initials from 'Alice Smith'
       expect(find.text('AS'), findsOneWidget);
     });
@@ -278,8 +266,6 @@ void main() {
       expect(find.text('bob@example.com'), findsOneWidget);
       // Initials: BJ
       expect(find.text('BJ'), findsOneWidget);
-      // Chevron icon
-      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
     });
 
     // =========================================================================
@@ -498,12 +484,9 @@ void main() {
     });
 
     // =========================================================================
-    // Anonymous user — Link with Google button triggers _linkWithGoogle
-    // (AuthService not wired; verifying UI tap does not crash)
+    // Anonymous user — chevron_right icon visible (card is tappable)
     // =========================================================================
-    testWidgets('anonymous user Link with Google button is visible', (
-      tester,
-    ) async {
+    testWidgets('anonymous user shows chevron_right icon', (tester) async {
       final anonUser = _FakeUser(isAnonymous: true);
       await tester.pumpWidget(
         createTestableWidget(
@@ -513,8 +496,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Link with Google'), findsOneWidget);
-      // Tapping requires authServiceProvider (Firebase) — covered in integration tests.
+      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
     });
 
     // =========================================================================
@@ -584,9 +566,9 @@ void main() {
     });
 
     // =========================================================================
-    // Authenticated user — chevron_right icon shown
+    // Authenticated user — no chevron_right icon (removed: no onTap)
     // =========================================================================
-    testWidgets('authenticated user shows chevron_right icon', (tester) async {
+    testWidgets('authenticated user does not show chevron_right icon', (tester) async {
       final user = _FakeUser(
         displayName: 'Alice Smith',
         email: 'alice@example.com',
@@ -599,7 +581,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+      expect(find.byIcon(Icons.chevron_right), findsNothing);
     });
 
     // =========================================================================
@@ -657,145 +639,6 @@ void main() {
       },
     );
 
-    // =========================================================================
-    // _linkWithGoogle — success shows "Account linked" snackbar
-    // =========================================================================
-    testWidgets(
-      'tapping Link with Google on success shows account linked snackbar',
-      (tester) async {
-        final anonUser = _FakeUser(isAnonymous: true);
-
-        final mockService = MockAuthService();
-        when(
-          mockService.linkWithGoogle(),
-        ).thenAnswer((_) async => MockUserCredential());
-
-        await tester.pumpWidget(
-          createTestableWidget(
-            const AccountSection(),
-            overrides: [
-              userSettingsProvider.overrideWith(
-                () => _FakeUserSettings(_defaultProfile),
-              ),
-              authStateProvider.overrideWith((ref) => Stream.value(anonUser)),
-              authServiceProvider.overrideWithValue(mockService),
-            ],
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text('Link with Google'));
-        await tester.pumpAndSettle();
-
-        expect(find.text('Account linked successfully'), findsOneWidget);
-      },
-    );
-
-    // =========================================================================
-    // _linkWithGoogle — credential-already-in-use shows specific snackbar
-    // =========================================================================
-    testWidgets(
-      'tapping Link with Google on credential-already-in-use shows specific error',
-      (tester) async {
-        final anonUser = _FakeUser(isAnonymous: true);
-
-        final mockService = MockAuthService();
-        when(
-          mockService.linkWithGoogle(),
-        ).thenThrow(FirebaseAuthException(code: 'credential-already-in-use'));
-
-        await tester.pumpWidget(
-          createTestableWidget(
-            const AccountSection(),
-            overrides: [
-              userSettingsProvider.overrideWith(
-                () => _FakeUserSettings(_defaultProfile),
-              ),
-              authStateProvider.overrideWith((ref) => Stream.value(anonUser)),
-              authServiceProvider.overrideWithValue(mockService),
-            ],
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text('Link with Google'));
-        await tester.pumpAndSettle();
-
-        expect(
-          find.text('This account is already linked to another user'),
-          findsOneWidget,
-        );
-      },
-    );
-
-    // =========================================================================
-    // _linkWithGoogle — generic FirebaseAuthException shows "link failed"
-    // =========================================================================
-    testWidgets(
-      'tapping Link with Google on generic error shows link failed snackbar',
-      (tester) async {
-        final anonUser = _FakeUser(isAnonymous: true);
-
-        final mockService = MockAuthService();
-        when(
-          mockService.linkWithGoogle(),
-        ).thenThrow(FirebaseAuthException(code: 'network-request-failed'));
-
-        await tester.pumpWidget(
-          createTestableWidget(
-            const AccountSection(),
-            overrides: [
-              userSettingsProvider.overrideWith(
-                () => _FakeUserSettings(_defaultProfile),
-              ),
-              authStateProvider.overrideWith((ref) => Stream.value(anonUser)),
-              authServiceProvider.overrideWithValue(mockService),
-            ],
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text('Link with Google'));
-        await tester.pumpAndSettle();
-
-        expect(
-          find.text('Failed to link account. Please try again.'),
-          findsOneWidget,
-        );
-      },
-    );
-
-    // =========================================================================
-    // _linkWithGoogle — cancelled (returns null) shows no snackbar
-    // =========================================================================
-    testWidgets('tapping Link with Google when cancelled shows no snackbar', (
-      tester,
-    ) async {
-      final anonUser = _FakeUser(isAnonymous: true);
-
-      final mockService = MockAuthService();
-      when(mockService.linkWithGoogle()).thenAnswer((_) async => null);
-
-      await tester.pumpWidget(
-        createTestableWidget(
-          const AccountSection(),
-          overrides: [
-            userSettingsProvider.overrideWith(
-              () => _FakeUserSettings(_defaultProfile),
-            ),
-            authStateProvider.overrideWith((ref) => Stream.value(anonUser)),
-            authServiceProvider.overrideWithValue(mockService),
-          ],
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Link with Google'));
-      await tester.pumpAndSettle();
-
-      // No snackbar — cancelled silently
-      expect(find.byType(SnackBar), findsNothing);
-    });
 
     // =========================================================================
     // Authenticated user — KdCard wraps the content (display name from profile)
