@@ -1,4 +1,7 @@
+import 'dart:async' show unawaited;
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/data/models/schedule.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 
@@ -15,6 +18,7 @@ class ScheduleList extends _$ScheduleList {
   Future<void> addSchedule(Schedule schedule) async {
     final storage = ref.read(storageServiceProvider);
     await storage.saveSchedule(schedule);
+    unawaited(AnalyticsService.logReminderSet());
     if (!ref.mounted) return;
     ref.invalidateSelf();
   }
