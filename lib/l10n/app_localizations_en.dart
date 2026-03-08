@@ -37,6 +37,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Without an account, your data is stored only on this device.';
 
   @override
+  String get medicalDisclaimer =>
+      'This app is a reminder tool and is not intended as medical advice. Always follow your doctor\'s instructions.';
+
+  @override
   String get onboardingWelcomeTitle => 'Welcome to Kusuridoki';
 
   @override
@@ -1601,6 +1605,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get subscriptionTerms =>
       'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.';
+
+  @override
+  String get subscriptionTermsAndroid =>
+      'Payment will be charged to your Google Play account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in Google Play.';
 
   @override
   String get freeTrial => '7-Day Free Trial';

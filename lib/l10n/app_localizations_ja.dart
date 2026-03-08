@@ -36,6 +36,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get localDataOnlyNotice => 'アカウントなしの場合、データはこの端末にのみ保存されます。';
 
   @override
+  String get medicalDisclaimer =>
+      '本アプリは服薬リマインダーツールであり、医療アドバイスを目的としたものではありません。必ず医師の指示に従ってください。';
+
+  @override
   String get onboardingWelcomeTitle => 'くすりどきへようこそ';
 
   @override
@@ -1550,6 +1554,10 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get subscriptionTerms =>
       'お支払いは購入確認時にApple IDアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Apple IDアカウント設定でサブスクリプションの管理・キャンセルができます。';
+
+  @override
+  String get subscriptionTermsAndroid =>
+      'お支払いは購入確認時にGoogle Playアカウントに請求されます。現在の期間終了の24時間前までにキャンセルしない限り、サブスクリプションは自動的に更新されます。Google Playでサブスクリプションの管理・キャンセルができます。';
 
   @override
   String get freeTrial => '7日間無料体験';

@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'Without an account, your data is stored only on this device.'**
   String get localDataOnlyNotice;
 
+  /// No description provided for @medicalDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is a reminder tool and is not intended as medical advice. Always follow your doctor\'s instructions.'**
+  String get medicalDisclaimer;
+
   /// No description provided for @onboardingWelcomeTitle.
   ///
   /// In en, this message translates to:
@@ -3049,6 +3055,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in your Apple ID account settings.'**
   String get subscriptionTerms;
+
+  /// No description provided for @subscriptionTermsAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment will be charged to your Google Play account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel subscriptions in Google Play.'**
+  String get subscriptionTermsAndroid;
 
   /// No description provided for @freeTrial.
   ///

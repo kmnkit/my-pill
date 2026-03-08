@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -486,10 +487,11 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
   }
 
   Widget _buildSubscriptionTerms(AppLocalizations l10n) {
+    final terms = Platform.isIOS ? l10n.subscriptionTerms : l10n.subscriptionTermsAndroid;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Text(
-        l10n.subscriptionTerms,
+        terms,
         style: Theme.of(
           context,
         ).textTheme.bodySmall?.copyWith(color: context.appColors.textMuted),
