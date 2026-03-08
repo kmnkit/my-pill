@@ -88,6 +88,9 @@ android/key.properties
 findings.md
 task_plan.md
 
+# Generated screenshots
+screenshots/
+
 # Privacy policy site build output
 site/build/
 site/node_modules/
