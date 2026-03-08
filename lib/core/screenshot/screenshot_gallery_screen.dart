@@ -89,11 +89,15 @@ class _ScreenshotGalleryScreenState
 
     if (mounted) {
       setState(() => _capturing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$count screenshots saved to Documents/screenshots/'),
-        ),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$count screenshots saved to Documents/screenshots/'),
+            ),
+          );
+        }
+      });
     }
   }
 

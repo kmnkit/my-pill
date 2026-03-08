@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kusuridoki/core/screenshot/screenshot_gallery_screen.dart';
 import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
+import 'package:kusuridoki/data/services/notification_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
@@ -20,6 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
+  await NotificationService.initializeTimezone();
 
   try {
     await Firebase.initializeApp();
