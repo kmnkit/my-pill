@@ -713,6 +713,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premium => 'プレミアム';
 
   @override
+  String get premiumComingSoon => '準備中';
+
+  @override
+  String get premiumComingSoonMessage => 'プレミアム機能を準備中です。お楽しみに！';
+
+  @override
   String get premiumMonthly => '月額プラン';
 
   @override

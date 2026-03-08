@@ -734,6 +734,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premium => 'Premium';
 
   @override
+  String get premiumComingSoon => 'Coming Soon';
+
+  @override
+  String get premiumComingSoonMessage =>
+      'We\'re working on Premium. Stay tuned!';
+
+  @override
   String get premiumMonthly => 'Monthly Plan';
 
   @override

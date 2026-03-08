@@ -299,6 +299,8 @@
   "emailAddressInfo": "メールアドレス",
   "weeklySummary": "週間サマリー",
   "premium": "プレミアム",
+  "premiumComingSoon": "準備中",
+  "premiumComingSoonMessage": "プレミアム機能を準備中です。お楽しみに！",
   "premiumMonthly": "月額プラン",
   "premiumYearly": "年額プラン",
   "premiumMonthlyPrice": "¥480/月",

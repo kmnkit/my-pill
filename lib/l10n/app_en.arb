@@ -299,6 +299,8 @@
   "emailAddressInfo": "Email address",
   "weeklySummary": "Weekly Summary",
   "premium": "Premium",
+  "premiumComingSoon": "Coming Soon",
+  "premiumComingSoonMessage": "We're working on Premium. Stay tuned!",
   "premiumMonthly": "Monthly Plan",
   "premiumYearly": "Yearly Plan",
   "premiumMonthlyPrice": "¥480/mo",

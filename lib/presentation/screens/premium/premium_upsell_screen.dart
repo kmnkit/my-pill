@@ -11,6 +11,7 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
 class PremiumUpsellScreen extends ConsumerStatefulWidget {
@@ -86,6 +87,49 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    if (!kPremiumEnabled) {
+      return GradientScaffold(
+        appBar: AppBar(
+          title: Text(l10n.premium),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.xxl),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.diamond_outlined,
+                  size: 80,
+                  color: AppColors.primary,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Text(
+                  l10n.premiumComingSoon,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  l10n.premiumComingSoonMessage,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     final subscriptionService = ref.watch(subscriptionServiceProvider);
     final isPremium = ref.watch(isPremiumProvider);
     final status = ref.watch(subscriptionStatusProvider);

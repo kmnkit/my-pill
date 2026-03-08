@@ -1442,6 +1442,18 @@ abstract class AppLocalizations {
   /// **'Premium'**
   String get premium;
 
+  /// No description provided for @premiumComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get premiumComingSoon;
+
+  /// No description provided for @premiumComingSoonMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re working on Premium. Stay tuned!'**
+  String get premiumComingSoonMessage;
+
   /// No description provided for @premiumMonthly.
   ///
   /// In en, this message translates to:
