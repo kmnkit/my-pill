@@ -66,6 +66,10 @@ class _KusuridokiAppState extends ConsumerState<KusuridokiApp>
       final storage = ref.read(storageServiceProvider);
       await storage.deleteRemindersBeforeDate(DateTime.now());
 
+      // Sync notification language with user preference before scheduling
+      final profile = await storage.getUserProfile();
+      NotificationService.setLanguage(profile?.language ?? 'ja');
+
       // Use the provider method to generate and schedule
       await ref
           .read(todayRemindersProvider.notifier)
@@ -79,6 +83,10 @@ class _KusuridokiAppState extends ConsumerState<KusuridokiApp>
     try {
       final storage = ref.read(storageServiceProvider);
       final reminderService = ReminderService(storage);
+
+      // Sync notification language on resume (handles mid-session language changes)
+      final profile = await storage.getUserProfile();
+      NotificationService.setLanguage(profile?.language ?? 'ja');
 
       // Clean up old reminders before processing today's
       await storage.deleteRemindersBeforeDate(DateTime.now());

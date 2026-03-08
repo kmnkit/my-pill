@@ -30,6 +30,12 @@ abstract final class AnalyticsService {
   static Future<void> logCaregiverInviteGenerated() =>
       _log('caregiver_invite_generated');
 
+  // --- Ads conversion events (Google Ads / Firebase Ads tracking) ---
+
+  static Future<void> logDoseTaken() => _log('dose_taken');
+
+  static Future<void> logReminderSet() => _log('reminder_set');
+
   static Future<void> setUserId(String? uid) async {
     try {
       await _analytics.setUserId(id: uid);
