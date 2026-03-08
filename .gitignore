@@ -53,6 +53,7 @@ android/app/google-services.json
 lib/firebase_options.dart
 firebase.json
 *-sa.json
+ios/AuthKey_*.p8
 
 # Firebase cache
 .firebase/
