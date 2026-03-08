@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:kusuridoki/app.dart';
+import 'package:kusuridoki/core/screenshot/screenshot_gallery_screen.dart';
 import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/l10n/app_localizations.dart';
 
 /// Screenshot entry point: seeds sample data with ads hidden.
 ///
@@ -32,5 +34,19 @@ Future<void> main() async {
   await ScreenshotDataSeeder(storage).seed();
   debugPrint('[Screenshot Mode] Sample data seeded successfully');
 
-  runApp(const ProviderScope(child: KusuridokiApp()));
+  runApp(
+    ProviderScope(
+      child: MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        debugShowCheckedModeBanner: false,
+        home: const ScreenshotGalleryScreen(),
+      ),
+    ),
+  );
 }
