@@ -1,5 +1,8 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:kusuridoki/core/utils/analytics_service.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/data/providers/adherence_provider.dart';
@@ -28,6 +31,7 @@ class TodayReminders extends _$TodayReminders {
 
       // Use ReminderService to mark as taken (creates adherence record)
       final reminder = await reminderService.markAsTaken(reminderId);
+      unawaited(AnalyticsService.logDoseTaken());
 
       // Deduct inventory (non-blocking — failure must not undo the taken record)
       try {
