@@ -63,6 +63,8 @@ dependencies:
   printing: ^5.14.2
   # Shimmer Loading
   shimmer: ^3.0.0
+  # Screenshot capture (used by lib/core/screenshot/)
+  screenshot: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +81,6 @@ dev_dependencies:
   firebase_core_platform_interface: ^6.0.2
   cloud_functions_platform_interface: any
   flutter_launcher_icons: ^0.14.4
-  screenshot: ^3.0.0
 
 flutter_launcher_icons:
   android: true
