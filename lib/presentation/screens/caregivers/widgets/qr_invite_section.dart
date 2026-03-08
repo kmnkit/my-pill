@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
@@ -127,10 +128,12 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             child: Text(l10n.cancel),
           ),
           FilledButton.icon(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.push(RouteNames.premium);
-            },
+            onPressed: kPremiumEnabled
+                ? () {
+                    Navigator.of(context).pop();
+                    context.push(RouteNames.premium);
+                  }
+                : null,
             icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
             label: Text(l10n.tryPremium),
             style: FilledButton.styleFrom(backgroundColor: AppColors.warning),
