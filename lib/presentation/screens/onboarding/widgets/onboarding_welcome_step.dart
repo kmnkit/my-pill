@@ -83,6 +83,14 @@ class OnboardingWelcomeStep extends ConsumerWidget {
             onPressed: onNext,
             variant: MpButtonVariant.primary,
           ),
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            l10n.medicalDisclaimer,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: context.appColors.textMuted,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
