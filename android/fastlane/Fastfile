@@ -18,10 +18,14 @@ platform :android do
       aab: AAB_PATH,
       json_key: JSON_KEY_FILE,
       release_status: "completed",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
     )
   end
 
-  desc "Build and upload to Play Store beta track"
+  desc "Build and upload to Play Store beta track (closed testing)"
   lane :beta do
     build
     upload_to_play_store(
@@ -29,6 +33,10 @@ platform :android do
       aab: AAB_PATH,
       json_key: JSON_KEY_FILE,
       release_status: "completed",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
     )
   end
 
@@ -41,6 +49,10 @@ platform :android do
       json_key: JSON_KEY_FILE,
       rollout: "0.1",
       release_status: "inProgress",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
     )
   end
 end
