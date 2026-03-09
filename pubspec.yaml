@@ -29,7 +29,7 @@ dependencies:
   # Deep Linking (replaces dead firebase_dynamic_links)
   app_links: ^7.0.0
   # Notifications
-  flutter_local_notifications: ^21.0.0-dev.2
+  flutter_local_notifications: ^21.0.0
   # UI
   google_fonts: ^8.0.2
   fl_chart: ^1.1.1
