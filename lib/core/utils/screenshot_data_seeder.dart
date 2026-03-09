@@ -43,7 +43,7 @@ class ScreenshotDataSeeder {
       id: 'screenshot-user',
       name: 'Yuki',
       email: 'yuki@example.com',
-      language: 'ja',
+      language: 'en',
       highContrast: false,
       textSize: 'normal',
       notificationsEnabled: true,

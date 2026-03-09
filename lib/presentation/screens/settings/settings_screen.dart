@@ -18,6 +18,7 @@ import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
 import 'package:kusuridoki/core/utils/screenshot_seeder.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/account_section.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/backup_sync_dialog.dart';
@@ -132,7 +133,7 @@ class SettingsScreen extends ConsumerWidget {
                 KdSectionHeader(title: 'Debug Tools'),
                 _buildListTile(
                   context,
-                  'Seed Screenshot Data',
+                  'Seed Screenshot Data (日本語)',
                   Icons.photo_library_outlined,
                   () async {
                     final seeder = ScreenshotSeeder(StorageService());
@@ -141,7 +142,26 @@ class SettingsScreen extends ConsumerWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Screenshot data seeded!'),
+                          content: Text('Screenshot data seeded (ja)!'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                _buildListTile(
+                  context,
+                  'Seed Screenshot Data (English)',
+                  Icons.photo_library_outlined,
+                  () async {
+                    final storage = StorageService();
+                    await storage.clearAll();
+                    await ScreenshotDataSeeder(storage).seed();
+                    _invalidateUserProviders(ref);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Screenshot data seeded (en)!'),
                         ),
                       );
                     }
