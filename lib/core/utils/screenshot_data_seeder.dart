@@ -41,15 +41,16 @@ class ScreenshotDataSeeder {
   Future<void> _seedUserProfile() async {
     const profile = UserProfile(
       id: 'screenshot-user',
-      name: 'Yuki',
+      name: 'ゆき',
       email: 'yuki@example.com',
-      language: 'en',
+      language: 'ja',
       highContrast: false,
       textSize: 'normal',
       notificationsEnabled: true,
       criticalAlerts: true,
       snoozeDuration: 15,
       travelModeEnabled: false,
+      homeTimezone: 'Asia/Tokyo',
       removeAds: true,
       onboardingComplete: true,
       userRole: 'patient',
@@ -63,7 +64,7 @@ class ScreenshotDataSeeder {
     final medications = [
       Medication(
         id: _medAmlodipine,
-        name: 'Amlodipine',
+        name: 'アムロジピン錠',
         dosage: 5,
         dosageUnit: DosageUnit.mg,
         shape: PillShape.round,
@@ -76,7 +77,7 @@ class ScreenshotDataSeeder {
       ),
       Medication(
         id: _medMetformin,
-        name: 'Metformin',
+        name: 'メトホルミン錠',
         dosage: 500,
         dosageUnit: DosageUnit.mg,
         shape: PillShape.oval,
@@ -89,7 +90,7 @@ class ScreenshotDataSeeder {
       ),
       Medication(
         id: _medVitaminD,
-        name: 'Vitamin D3',
+        name: 'ビタミンD3',
         dosage: 2000,
         dosageUnit: DosageUnit.units,
         shape: PillShape.capsule,
@@ -102,7 +103,7 @@ class ScreenshotDataSeeder {
       ),
       Medication(
         id: _medOmeprazole,
-        name: 'Omeprazole',
+        name: 'オメプラゾール',
         dosage: 20,
         dosageUnit: DosageUnit.mg,
         shape: PillShape.capsule,
@@ -115,7 +116,7 @@ class ScreenshotDataSeeder {
       ),
       Medication(
         id: _medIronSupplement,
-        name: 'Iron Supplement',
+        name: 'クエン酸鉄錠',
         dosage: 65,
         dosageUnit: DosageUnit.mg,
         shape: PillShape.round,
@@ -128,7 +129,7 @@ class ScreenshotDataSeeder {
       ),
       Medication(
         id: _medAllergy,
-        name: 'Cetirizine',
+        name: 'セチリジン錠',
         dosage: 10,
         dosageUnit: DosageUnit.mg,
         shape: PillShape.oval,

@@ -50,7 +50,7 @@ Future<void> main() async {
         ],
         supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
-        home: const ScreenshotGalleryScreen(),
+        home: const ScreenshotGalleryScreen(autoCapture: true),
       ),
     ),
   );

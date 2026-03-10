@@ -47,7 +47,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>8</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8394008055710959~6717172611</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -60,8 +60,6 @@
 	<string>Kusuridoki saves medication photos to your library for your records.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Kusuridoki uses advertising identifiers to serve non-personalized ads and measure ad performance.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

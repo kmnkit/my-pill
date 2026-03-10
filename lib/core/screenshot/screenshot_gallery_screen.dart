@@ -8,40 +8,107 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'package:kusuridoki/core/screenshot/screenshot_caregiver_override.dart';
+import 'package:kusuridoki/core/screenshot/screenshot_timezone_override.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/adherence/weekly_summary_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/caregiver_dashboard_screen.dart';
 import 'package:kusuridoki/presentation/screens/home/home_screen.dart';
 import 'package:kusuridoki/presentation/screens/medications/medications_list_screen.dart';
 import 'package:kusuridoki/presentation/screens/travel/travel_mode_screen.dart';
+import 'package:kusuridoki/presentation/shared/widgets/kd_bottom_nav_bar.dart';
 
 typedef ScreenConfig = ({
   String filenameBase,
   Widget screen,
 });
 
+/// Wraps [child] in a Scaffold with a static [KdBottomNavBar] so screenshots
+/// include the navigation bar that normally comes from GoRouter's shell route.
+class _ScreenshotShell extends StatelessWidget {
+  const _ScreenshotShell({
+    required this.child,
+    required this.selectedIndex,
+    this.mode = KdNavMode.patient,
+  });
+
+  final Widget child;
+  final int selectedIndex;
+  final KdNavMode mode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.transparent,
+      body: child,
+      bottomNavigationBar: KdBottomNavBar(
+        currentIndex: selectedIndex,
+        onTap: (_) {}, // no-op in screenshot context
+        mode: mode,
+      ),
+    );
+  }
+}
+
 final _configs = <ScreenConfig>[
-  (filenameBase: '01_home', screen: const HomeScreen()),
+  // Patient tabs: 0=Home, 1=Adherence, 2=Medications, 3=Settings
+  (
+    filenameBase: '01_home',
+    screen: const _ScreenshotShell(
+      selectedIndex: 0,
+      child: HomeScreen(),
+    ),
+  ),
   (
     filenameBase: '02_medications_list',
-    screen: const MedicationsListScreen(),
+    screen: const _ScreenshotShell(
+      selectedIndex: 2,
+      child: MedicationsListScreen(),
+    ),
   ),
+  // Pushed screen — has its own AppBar with back button, no bottom nav
   (
     filenameBase: '03_weekly_summary',
-    screen: const WeeklySummaryScreen(),
+    screen: const _ScreenshotShell(
+      selectedIndex: 1,
+      child: WeeklySummaryScreen(),
+    ),
   ),
+  // Caregiver tabs: 0=Patients, 1=Notifications, 2=Alerts, 3=Settings
   (
     filenameBase: '04_caregiver',
     screen: ProviderScope(
-      overrides: [caregiverPatientsOverride],
-      child: const CaregiverDashboardScreen(),
+      key: const ValueKey('caregiver-scope'),
+      overrides: [
+        caregiverPatientsOverride,
+        caregiverAdherenceOverride,
+        caregiverMedicationStatusOverride,
+        caregiverAdherenceOverride2,
+        caregiverMedicationStatusOverride2,
+      ],
+      child: const _ScreenshotShell(
+        selectedIndex: 0,
+        mode: KdNavMode.caregiver,
+        child: CaregiverDashboardScreen(),
+      ),
     ),
   ),
-  (filenameBase: '05_travel_mode', screen: const TravelModeScreen()),
+  // Pushed screen — has its own AppBar with back button, no bottom nav
+  (
+    filenameBase: '05_travel_mode',
+    screen: ProviderScope(
+      key: const ValueKey('travel-scope'),
+      overrides: [timezoneSettingsOverride],
+      child: const TravelModeScreen(),
+    ),
+  ),
 ];
 
 class ScreenshotGalleryScreen extends ConsumerStatefulWidget {
-  const ScreenshotGalleryScreen({super.key});
+  const ScreenshotGalleryScreen({super.key, this.autoCapture = false});
+
+  /// When true, capture starts automatically after the first frame.
+  final bool autoCapture;
 
   /// Exposed so tests can verify config count and filenames without rendering.
   static List<ScreenConfig> get screenConfigs => _configs;
@@ -57,6 +124,14 @@ class _ScreenshotGalleryScreenState
   bool _capturing = false;
   int _currentIndex = 0;
   String _currentLang = 'ja';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoCapture) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _captureAll());
+    }
+  }
 
   Future<void> _captureAll() async {
     setState(() => _capturing = true);
