@@ -25,6 +25,7 @@ platform :ios do
 
   desc "Build the iOS app with proper code signing"
   lane :build do
+    sh("cd ../.. && flutter pub get")
     sync_certs
 
     # Auto-increment build number based on latest TestFlight build

@@ -1,0 +1,4 @@
+• You can now set your display name in Settings
+• Timezone is now automatically detected for accurate reminder timing
+• Improved account screen for guest users
+• Added medical disclaimer to onboarding
