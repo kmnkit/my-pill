@@ -53,6 +53,7 @@ List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
     // Subscription: free tier
     isPremiumProvider.overrideWith((ref) => false),
     subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -64,6 +65,7 @@ List<dynamic> _buildPremiumOverrides({
     authStateProvider.overrideWith((ref) => Stream.value(null)),
     isPremiumProvider.overrideWith((ref) => true),
     subscriptionStatusProvider.overrideWith((ref) => status),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -104,7 +106,7 @@ void main() {
 
       expect(find.text('About'), findsOneWidget);
       // l10n: version('1.0.0') -> 'Version 1.0.0'
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('shows loading indicator while settings load', (tester) async {
@@ -475,7 +477,7 @@ void main() {
       // App Version tile text exists
       expect(find.text('App Version'), findsOneWidget);
       // Version value text exists
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('shows loading spinner before async settings resolve', (

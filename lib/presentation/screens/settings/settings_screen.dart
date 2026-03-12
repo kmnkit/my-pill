@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
@@ -35,6 +36,12 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
+@visibleForTesting
+final appVersionProvider = FutureProvider<String>((ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return info.version;
+});
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -42,6 +49,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final userSettingsAsync = ref.watch(userSettingsProvider);
+    final appVersionAsync = ref.watch(appVersionProvider);
 
     bool isAnonymous;
     try {
@@ -122,7 +130,11 @@ class SettingsScreen extends ConsumerWidget {
                 Icons.info_outline,
                 null,
                 trailing: Text(
-                  l10n.version('1.0.0'),
+                  appVersionAsync.when(
+                    data: (v) => l10n.version(v),
+                    loading: () => l10n.version('...'),
+                    error: (e, s) => l10n.version('—'),
+                  ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: context.appColors.textMuted,
                   ),

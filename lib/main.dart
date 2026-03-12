@@ -24,11 +24,21 @@ Future<void> main() async {
     (options) {
       options.dsn = _sentryDsn;
       options.environment = kDebugMode ? 'debug' : 'production';
-      options.enableAutoPerformanceTracing = false;
-      options.beforeSend = scrubPhiFromEvent;
-      options.attachScreenshot = false;
+      options.sendDefaultPii = true;
+      options.tracesSampleRate = kDebugMode ? 1.0 : 0.2;
       // ignore: experimental_member_use
-      options.attachViewHierarchy = false;
+      options.profilesSampleRate = 1.0; // iOS only, alpha
+      // ignore: experimental_member_use
+      options.enableLogs = true;
+      options.attachScreenshot = true;
+      // ignore: experimental_member_use
+      options.attachViewHierarchy = true;
+      // Session Replay — all text/images masked by default (PHI safety)
+      // ignore: experimental_member_use
+      options.replay.sessionSampleRate = kDebugMode ? 1.0 : 0.1;
+      // ignore: experimental_member_use
+      options.replay.onErrorSampleRate = 1.0;
+      options.beforeSend = scrubPhiFromEvent;
     },
     appRunner: _initializeApp,
   );
@@ -70,5 +80,5 @@ Future<void> _initializeApp() async {
   }
   await AdService().initialize();
 
-  runApp(const ProviderScope(child: KusuridokiApp()));
+  runApp(SentryWidget(child: const ProviderScope(child: KusuridokiApp())));
 }

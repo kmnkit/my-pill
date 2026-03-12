@@ -39,6 +39,7 @@ List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
     authStateProvider.overrideWith((ref) => Stream.value(null)),
     isPremiumProvider.overrideWith((ref) => false),
     subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -150,7 +151,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('App Version'), findsOneWidget);
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('all section headers visible on scroll', (tester) async {

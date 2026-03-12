@@ -127,6 +127,7 @@ List<dynamic> _buildOverrides({
     authStateProvider.overrideWith((ref) => Stream.value(null)),
     isPremiumProvider.overrideWith((ref) => isPremium),
     subscriptionStatusProvider.overrideWith((ref) => status ?? _freeStatus),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -191,7 +192,7 @@ void main() {
 
       expect(find.text('App Version'), findsOneWidget);
       // The trailing widget is a Text, not a chevron — version string present
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('backup and sync tile has chevron icon', (tester) async {
@@ -244,10 +245,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Scroll to advanced section
-      await tester.drag(
-        find.byType(SingleChildScrollView),
-        const Offset(0, -1200),
+      // Scroll to Log Out tile
+      await tester.scrollUntilVisible(
+        find.text('Log Out'),
+        200,
+        scrollable: find.byType(Scrollable).first,
       );
       await tester.pumpAndSettle();
 
@@ -603,7 +605,7 @@ void main() {
 
       // Both "App Version" label and "Version 1.0.0" trailing text should exist
       expect(find.text('App Version'), findsOneWidget);
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     // -----------------------------------------------------------------------
