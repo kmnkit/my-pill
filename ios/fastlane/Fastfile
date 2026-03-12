@@ -44,7 +44,10 @@ platform :ios do
     # This sed is a safety net for that case.
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
-    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
+    dart_defines = [
+      Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
+      Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
+    ].join(",")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -160,7 +163,10 @@ platform :ios do
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
     # Build using downloaded profile
-    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
+    dart_defines = [
+      Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
+      Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
+    ].join(",")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",

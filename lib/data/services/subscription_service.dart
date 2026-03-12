@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show PlatformException;
@@ -42,11 +41,9 @@ class SubscriptionService {
         await Purchases.setLogLevel(LogLevel.debug);
       }
 
-      final apiKey = Platform.isIOS
-          ? RevenueCatConfig.iosApiKey
-          : RevenueCatConfig.androidApiKey;
-
-      await Purchases.configure(PurchasesConfiguration(apiKey));
+      await Purchases.configure(
+        PurchasesConfiguration(RevenueCatConfig.apiKey),
+      );
 
       Purchases.addCustomerInfoUpdateListener((customerInfo) {
         _updateStatus(customerInfo);
