@@ -7,7 +7,8 @@ JSON_KEY_FILE = ENV["GOOGLE_PLAY_JSON_KEY_FILE"]
 platform :android do
   desc "Build release AAB"
   lane :build do
-    sh("cd .. && flutter build appbundle --release")
+    sh("cd .. && flutter build appbundle --release --dart-define=SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''} --obfuscate --split-debug-info=build/debug-info")
+    sh("cd .. && dart run sentry_dart_plugin")
   end
 
   desc "Build and upload to Play Store internal test track"
