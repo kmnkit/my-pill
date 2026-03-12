@@ -16,9 +16,12 @@ void main() {
 
     final patients = await container.read(caregiverPatientsProvider.future);
 
-    expect(patients.length, 1);
-    expect(patients.first.patientId, 'demo-patient');
-    expect(patients.first.patientName, 'さくら');
-    expect(patients.first.linkedAt, isNull);
+    expect(patients.length, 2);
+    expect(patients[0].patientId, 'demo-patient-sakura');
+    expect(patients[0].patientName, 'さくら');
+    expect(patients[0].linkedAt, isNull);
+    expect(patients[1].patientId, 'demo-patient-haruki');
+    expect(patients[1].patientName, 'はるき');
+    expect(patients[1].linkedAt, isNull);
   });
 }
