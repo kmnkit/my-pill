@@ -560,7 +560,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('PremiumBanner visible for premium user after scroll', (
       tester,
@@ -580,7 +580,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     // -----------------------------------------------------------------------
     // Version trailing text (no chevron path in _buildListTile)

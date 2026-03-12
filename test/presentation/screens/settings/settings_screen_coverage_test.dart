@@ -72,7 +72,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows already premium banner for premium user', (
       tester,
@@ -92,7 +92,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows error state with errorLoadingSettings message', (
       tester,

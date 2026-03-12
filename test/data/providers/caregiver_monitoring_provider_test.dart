@@ -82,9 +82,9 @@ void main() {
       expect(canAdd, isTrue);
     });
 
-    test('returns true when kPremiumEnabled=false (default 999 max)', () async {
-      // kPremiumEnabled = false → maxPatientsProvider returns 999
-      // so canAddPatient is always true regardless of patient count
+    test('returns false when stub service limits to 1 patient', () async {
+      // kPremiumEnabled = true → maxPatientsProvider returns 1 (stub)
+      // 2 patients already linked → canAddPatient is false
       final container = ProviderContainer(
         overrides: [
           caregiverPatientsProvider.overrideWith(
@@ -93,7 +93,7 @@ void main() {
               (patientId: 'p2', patientName: 'P2', linkedAt: null),
             ]),
           ),
-          // Use real maxPatientsProvider (kPremiumEnabled=false → 999)
+          // Use real maxPatientsProvider (kPremiumEnabled=true → 1)
         ],
       );
       addTearDown(container.dispose);
@@ -101,7 +101,7 @@ void main() {
       container.listen(caregiverPatientsProvider, (_, __) {});
 
       final canAdd = await container.read(canAddPatientProvider.future);
-      expect(canAdd, isTrue);
+      expect(canAdd, isFalse);
     });
   });
 

@@ -18,6 +18,8 @@ import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/theme/app_theme.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/subscription_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/adherence/weekly_summary_screen.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/family_screen.dart';
@@ -63,6 +65,7 @@ Widget _buildScreenApp({
     overrides: [
       storageServiceProvider.overrideWithValue(storage),
       authServiceProvider.overrideWithValue(MockAuthService()),
+      subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
     ],
     child: MaterialApp.router(
       locale: const Locale('ja'),
