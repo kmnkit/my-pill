@@ -47,7 +47,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>10</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8394008055710959~6717172611</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -56,8 +56,6 @@
 	<string>Kusuridoki uses your camera to take photos of your medications for easy identification.</string>
 	<key>NSNotificationUsageDescription</key>
 	<string>Get reminders when it's time to take your medication.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Kusuridoki saves medication photos to your library for your records.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
 	<key>SKAdNetworkItems</key>

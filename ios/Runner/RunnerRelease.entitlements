@@ -18,12 +18,6 @@
 		<string>group.com.hobbylabo.kusuridoki</string>
 	</array>
 
-	<!-- In-App Purchase -->
-	<key>com.apple.developer.in-app-payments</key>
-	<array>
-		<string>merchant.com.hobbylabo.kusuridoki</string>
-	</array>
-
 	<!-- Universal Links -->
 	<key>com.apple.developer.associated-domains</key>
 	<array>
