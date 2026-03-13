@@ -67,6 +67,33 @@ class _TravelModeScreenState extends ConsumerState<TravelModeScreen> {
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.notifications_active,
+                      size: AppSpacing.iconMd,
+                      color: AppColors.info,
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Text(
+                        l10n.travelModeNotificationNote,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: context.appColors.textMuted,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.info.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                ),
+                child: Row(
                   children: [
                     Icon(
                       Icons.info,

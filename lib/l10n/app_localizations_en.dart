@@ -468,6 +468,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Consult your doctor for 3+ hour time differences';
 
   @override
+  String get travelModeNotificationNote =>
+      'Notification times are automatically adjusted when Travel Mode is enabled. Changes take effect immediately.';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
