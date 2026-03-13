@@ -68,7 +68,7 @@ void main() {
 
       // The inner Container has the specified size
       final containers = tester.widgetList<Container>(find.byType(Container));
-      final sizedContainer = containers.firstWhere(
+      containers.firstWhere(
         (c) => c.constraints == null &&
             (c.decoration is BoxDecoration),
         orElse: () => containers.first,

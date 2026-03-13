@@ -21,14 +21,12 @@ import '../../../helpers/widget_test_helpers.dart';
 // ---------------------------------------------------------------------------
 
 class _MockAuthService extends AuthService {
-  final bool reauthResult;
+  final bool reauthResult = true;
   final bool signOutThrows;
-  final bool reauthThrows;
+  final bool reauthThrows = false;
 
   _MockAuthService({
-    this.reauthResult = true,
     this.signOutThrows = false,
-    this.reauthThrows = false,
   });
 
   @override
