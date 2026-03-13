@@ -147,7 +147,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('2026-12-31'), findsOneWidget);
+      expect(find.textContaining('12/31/2026'), findsOneWidget);
     });
 
     testWidgets('does not show upgrade message for premium user', (

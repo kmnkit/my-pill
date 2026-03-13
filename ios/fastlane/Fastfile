@@ -4,6 +4,13 @@ default_platform(:ios)
 
 APP_IDENTIFIER = "com.hobbylabo.kusuridoki"
 
+def build_dart_defines
+  [
+    Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
+    Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
+  ].join(",")
+end
+
 platform :ios do
   before_all do
     @api_key = app_store_connect_api_key(
@@ -44,10 +51,6 @@ platform :ios do
     # This sed is a safety net for that case.
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
-    dart_defines = [
-      Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
-      Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
-    ].join(",")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -60,7 +63,7 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
-      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
+      xcargs: "DART_DEFINES=\"#{build_dart_defines}\"",
     )
 
     # Upload dSYMs and source maps to Sentry
@@ -163,10 +166,6 @@ platform :ios do
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
     # Build using downloaded profile
-    dart_defines = [
-      Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
-      Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
-    ].join(",")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -181,7 +180,7 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
-      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
+      xcargs: "DART_DEFINES=\"#{build_dart_defines}\"",
     )
 
     # Restore GeneratedPluginRegistrant.m for development use

@@ -13,6 +13,11 @@ abstract final class TimezoneUtils {
     return '$localFmt $localLabel / $homeFmt $homeLabel';
   }
 
+  // Format date for display: locale-aware (ja: "2026/03/13", en: "3/13/2026")
+  static String formatDate(DateTime date, String locale) {
+    return DateFormat.yMd(locale).format(date);
+  }
+
   // Format timezone offset: "+14 hours"
   static String formatOffset(int hours) {
     final sign = hours >= 0 ? '+' : '';

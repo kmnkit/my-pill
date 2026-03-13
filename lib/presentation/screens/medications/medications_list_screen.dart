@@ -7,7 +7,8 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
-import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/data/providers/ad_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_badge.dart';
@@ -39,7 +40,7 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
 
   void _loadBannerAd() {
     try {
-      _bannerAd = AdService().getMedicationsBannerAd();
+      _bannerAd = ref.read(adServiceProvider).getMedicationsBannerAd();
       if (_bannerAd != null) {
         setState(() {});
       }
@@ -60,6 +61,12 @@ class _MedicationsListScreenState extends ConsumerState<MedicationsListScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final medicationsAsync = ref.watch(medicationListProvider);
+
+    ref.listen<bool>(isPremiumProvider, (previous, isPremium) {
+      if (isPremium && _bannerAd != null) {
+        setState(() => _bannerAd = null);
+      }
+    });
 
     return GradientScaffold(
       appBar: KdAppBar(

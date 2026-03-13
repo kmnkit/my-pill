@@ -750,12 +750,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pdfReports => 'PDFレポート出力';
 
   @override
-  String get customSounds => 'カスタム通知音';
-
-  @override
-  String get premiumThemes => 'プレミアムテーマ';
-
-  @override
   String get restorePurchases => '購入を復元';
 
   @override
@@ -934,12 +928,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get pdfReportsDescription => '詳細な服薬レポートを出力';
-
-  @override
-  String get customSoundsDescription => '通知音をカスタマイズ';
-
-  @override
-  String get premiumThemesDescription => '限定テーマにアクセス';
 
   @override
   String get purchaseFailed => '購入に失敗しました。もう一度お試しください。';

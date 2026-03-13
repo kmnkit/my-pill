@@ -9,6 +9,7 @@ import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/caregiver_list_tile.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/privacy_notice.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_invite_section.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_empty_state.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
@@ -136,13 +137,12 @@ class FamilyScreen extends ConsumerWidget {
                                   ),
                                 );
                               }
-                            } catch (e) {
+                            } catch (e, stackTrace) {
+                              ErrorHandler.captureException(e, stackTrace, 'FamilyScreen.revokeAccess');
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(
-                                      l10n.failedToRevokeAccess(e.toString()),
-                                    ),
+                                    content: Text(l10n.genericError),
                                   ),
                                 );
                               }
@@ -158,10 +158,13 @@ class FamilyScreen extends ConsumerWidget {
                 padding: EdgeInsets.all(AppSpacing.lg),
                 child: KdListShimmer(itemCount: 2),
               ),
-              error: (error, stack) => Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                child: Text(l10n.errorLoadingCaregivers(error.toString())),
-              ),
+              error: (error, stack) {
+                ErrorHandler.captureException(error, stack, 'FamilyScreen.loadCaregivers');
+                return Padding(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  child: Text(l10n.genericError),
+                );
+              },
             ),
             const SizedBox(height: AppSpacing.xl),
             const QrInviteSection(),

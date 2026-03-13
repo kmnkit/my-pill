@@ -1514,18 +1514,6 @@ abstract class AppLocalizations {
   /// **'PDF Reports'**
   String get pdfReports;
 
-  /// No description provided for @customSounds.
-  ///
-  /// In en, this message translates to:
-  /// **'Custom Notification Sounds'**
-  String get customSounds;
-
-  /// No description provided for @premiumThemes.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium Themes'**
-  String get premiumThemes;
-
   /// No description provided for @restorePurchases.
   ///
   /// In en, this message translates to:
@@ -1879,18 +1867,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export detailed medication reports'**
   String get pdfReportsDescription;
-
-  /// No description provided for @customSoundsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Personalize notification sounds'**
-  String get customSoundsDescription;
-
-  /// No description provided for @premiumThemesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Access exclusive themes'**
-  String get premiumThemesDescription;
 
   /// No description provided for @purchaseFailed.
   ///

@@ -17,8 +17,8 @@ import 'package:kusuridoki/data/providers/schedule_provider.dart';
 
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
-import 'package:kusuridoki/data/services/cloud_functions_service.dart';
-import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
 import 'package:kusuridoki/core/utils/screenshot_seeder.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/account_section.dart';
@@ -148,7 +148,7 @@ class SettingsScreen extends ConsumerWidget {
                   'Seed Screenshot Data (日本語)',
                   Icons.photo_library_outlined,
                   () async {
-                    final seeder = ScreenshotSeeder(StorageService());
+                    final seeder = ScreenshotSeeder(ref.read(storageServiceProvider));
                     await seeder.clearAndSeed();
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
@@ -166,7 +166,7 @@ class SettingsScreen extends ConsumerWidget {
                   'Seed Screenshot Data (English)',
                   Icons.photo_library_outlined,
                   () async {
-                    final storage = StorageService();
+                    final storage = ref.read(storageServiceProvider);
                     await storage.clearAll();
                     await ScreenshotDataSeeder(storage).seed();
                     _invalidateUserProviders(ref);
@@ -194,7 +194,7 @@ class SettingsScreen extends ConsumerWidget {
                     );
                     if (confirmed != true) return;
 
-                    await StorageService().clearUserData();
+                    await ref.read(storageServiceProvider).clearUserData();
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -242,7 +242,7 @@ class SettingsScreen extends ConsumerWidget {
                   if (confirmed == true && context.mounted) {
                     try {
                       // 1. Clear user data first (while widget is still mounted)
-                      await StorageService().clearUserData();
+                      await ref.read(storageServiceProvider).clearUserData();
                       // 2. Invalidate all user-data providers (before signOut triggers redirect)
                       _invalidateUserProviders(ref);
                       // 3. Sign out last — router redirect handles navigation to /login
@@ -293,16 +293,16 @@ class SettingsScreen extends ConsumerWidget {
                         final currentUser = FirebaseAuth.instance.currentUser;
                         if (currentUser == null || currentUser.isAnonymous) {
                           // Null/anonymous path: local data only, sign out
-                          await StorageService().clearUserData();
+                          await ref.read(storageServiceProvider).clearUserData();
                           _invalidateUserProviders(ref);
                           await ref.read(authServiceProvider).signOut();
                         } else {
                           // Authenticated path: delete server data, then sign out
                           final authService = ref.read(authServiceProvider);
                           // 1. Server-side deletion of all user data + auth account
-                          await CloudFunctionsService().deleteAccount();
+                          await ref.read(cloudFunctionsServiceProvider).deleteAccount();
                           // 2. Clear local data first (while widget is still mounted)
-                          await StorageService().clearUserData();
+                          await ref.read(storageServiceProvider).clearUserData();
                           // 3. Invalidate all providers (before signOut triggers redirect)
                           _invalidateUserProviders(ref);
                           // 4. Sign out last — router redirect handles navigation

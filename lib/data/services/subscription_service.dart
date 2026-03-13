@@ -34,6 +34,7 @@ class SubscriptionService {
   int get maxPatients => isPremium ? 999 : 1;
 
   Offerings? _offerings;
+  String? _lastUserId;
 
   Future<void> initialize() async {
     try {
@@ -49,17 +50,19 @@ class SubscriptionService {
         _updateStatus(customerInfo);
       });
 
-      final customerInfo = await Purchases.getCustomerInfo();
-      _updateStatus(customerInfo);
-
-      _offerings = await Purchases.getOfferings();
+      final results = await Future.wait([
+        Purchases.getCustomerInfo(),
+        Purchases.getOfferings(),
+      ]);
+      _updateStatus(results[0] as CustomerInfo);
+      _offerings = results[1] as Offerings;
+      _productsLoaded = true;
+      _productsController.add(null);
     } catch (e, stackTrace) {
       debugPrint('SubscriptionService: initialize failed — $e');
       debugPrintStack(stackTrace: stackTrace);
+      _productsController.add(null);
     }
-
-    _productsLoaded = true;
-    _productsController.add(null);
   }
 
   void _updateStatus(CustomerInfo customerInfo) {
@@ -83,6 +86,7 @@ class SubscriptionService {
       );
     }
 
+    if (newStatus == _status) return;
     _status = newStatus;
     _statusController.add(_status);
     onStatusChanged?.call(_status);
@@ -123,16 +127,18 @@ class SubscriptionService {
       if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
         onPurchaseError?.call('canceled');
       } else {
-        onPurchaseError?.call(e.message ?? e.toString());
+        onPurchaseError?.call('purchase_failed');
       }
       return false;
     } catch (e) {
-      onPurchaseError?.call(e.toString());
+      onPurchaseError?.call('purchase_failed');
       return false;
     }
   }
 
   Future<void> setUserId(String? userId) async {
+    if (userId == _lastUserId) return;
+    _lastUserId = userId;
     try {
       if (userId != null) {
         final result = await Purchases.logIn(userId);
@@ -153,9 +159,10 @@ class SubscriptionService {
       _updateStatus(customerInfo);
     } on PlatformException catch (e) {
       debugPrint('SubscriptionService: restorePurchases failed — $e');
-      onPurchaseError?.call(e.message ?? e.toString());
+      onPurchaseError?.call(e.message ?? 'restore_failed');
     } catch (e) {
       debugPrint('SubscriptionService: restorePurchases failed — $e');
+      onPurchaseError?.call('restore_failed');
     }
   }
 

@@ -13,8 +13,8 @@ import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 
-import 'package:kusuridoki/data/services/cloud_functions_service.dart';
-import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/presentation/shared/dialogs/kd_confirm_dialog.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
@@ -140,7 +140,7 @@ class _CaregiverSettingsScreenState
                 );
                 if (confirmed == true && context.mounted) {
                   // 1. Clear user data first (while widget is still mounted)
-                  await StorageService().clearUserData();
+                  await ref.read(storageServiceProvider).clearUserData();
                   // 2. Invalidate providers (before signOut triggers redirect)
                   _invalidateAllProviders();
                   // 3. Sign out last — router redirect handles navigation to /login
@@ -192,7 +192,7 @@ class _CaregiverSettingsScreenState
                     final links = ref.read(caregiverLinksProvider).value ?? [];
                     for (final link in links) {
                       try {
-                        await CloudFunctionsService().revokeAccess(
+                        await ref.read(cloudFunctionsServiceProvider).revokeAccess(
                           caregiverId: link.caregiverId,
                           linkId: link.id,
                         );
@@ -201,7 +201,7 @@ class _CaregiverSettingsScreenState
                       }
                     }
                     // 2. Clear user data (while widget is still mounted)
-                    await StorageService().clearUserData();
+                    await ref.read(storageServiceProvider).clearUserData();
                     // 3. Invalidate providers (before signOut triggers redirect)
                     _invalidateAllProviders();
                     // 4. Sign out last — router redirect handles navigation
@@ -263,9 +263,9 @@ class _CaregiverSettingsScreenState
                   try {
                     // 1. Server-side deletion
                     final authService = ref.read(authServiceProvider);
-                    await CloudFunctionsService().deleteAccount();
+                    await ref.read(cloudFunctionsServiceProvider).deleteAccount();
                     // 2. Clear local data (while widget is still mounted)
-                    await StorageService().clearUserData();
+                    await ref.read(storageServiceProvider).clearUserData();
                     // 3. Invalidate providers (before signOut triggers redirect)
                     _invalidateAllProviders();
                     // 4. Sign out last — router redirect handles navigation

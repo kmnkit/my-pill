@@ -10,6 +10,7 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/utils/apple_auth_error_messages.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
@@ -100,12 +101,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'LoginScreen.signInWithApple');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.appleSignInFailed(e.toString())),
+            content: Text(l10n.genericError),
             backgroundColor: AppColors.error,
           ),
         );
@@ -127,12 +129,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await _completeAndNavigate(
         credentialDisplayName: _extractDisplayName(result),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'LoginScreen.signInWithGoogle');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.googleSignInFailed(e.toString())),
+            content: Text(l10n.genericError),
             backgroundColor: AppColors.error,
           ),
         );
@@ -148,12 +151,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final authService = ref.read(authServiceProvider);
       await authService.signInAnonymously();
       await _completeAndNavigate();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'LoginScreen.continueAnonymously');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.failedToStart(e.toString())),
+            content: Text(l10n.genericError),
             backgroundColor: AppColors.error,
           ),
         );

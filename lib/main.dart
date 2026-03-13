@@ -24,16 +24,21 @@ Future<void> main() async {
     (options) {
       options.dsn = _sentryDsn;
       options.environment = kDebugMode ? 'debug' : 'production';
-      options.sendDefaultPii = true;
+      options.sendDefaultPii = false;
       options.tracesSampleRate = kDebugMode ? 1.0 : 0.2;
       // ignore: experimental_member_use
       options.profilesSampleRate = 1.0; // iOS only, alpha
       // ignore: experimental_member_use
       options.enableLogs = true;
-      options.attachScreenshot = true;
+      options.attachScreenshot = false;
       // ignore: experimental_member_use
-      options.attachViewHierarchy = true;
-      // Session Replay — all text/images masked by default (PHI safety)
+      options.attachViewHierarchy = false;
+      // Session Replay — explicitly enforce masking for PHI safety
+      // (defaults are true, but set explicitly as defense-in-depth)
+      // ignore: experimental_member_use
+      options.privacy.maskAllText = true;
+      // ignore: experimental_member_use
+      options.privacy.maskAllImages = true;
       // ignore: experimental_member_use
       options.replay.sessionSampleRate = kDebugMode ? 1.0 : 0.1;
       // ignore: experimental_member_use
@@ -53,8 +58,8 @@ Future<void> _initializeApp() async {
   // Initialize Firebase (graceful failure if not configured)
   try {
     await Firebase.initializeApp();
-  } catch (e) {
-    debugPrint('Firebase not configured yet: $e');
+  } catch (e, stackTrace) {
+    ErrorHandler.captureException(e, stackTrace, 'Firebase.initializeApp');
   }
 
   // Initialize notification service

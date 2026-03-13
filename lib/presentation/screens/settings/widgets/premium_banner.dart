@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/utils/timezone_utils.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
@@ -112,7 +113,7 @@ class PremiumBanner extends ConsumerWidget {
                       const SizedBox(height: AppSpacing.xs),
                       Text(
                         l10n.premiumExpiresAt(
-                          '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
+                          TimezoneUtils.formatDate(status.expiresAt!, Localizations.localeOf(context).languageCode),
                         ),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: context.appColors.textMuted,
