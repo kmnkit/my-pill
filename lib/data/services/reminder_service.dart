@@ -4,19 +4,34 @@ import 'package:kusuridoki/data/models/adherence_record.dart';
 import 'package:kusuridoki/data/enums/reminder_status.dart';
 import 'package:kusuridoki/data/enums/schedule_type.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/services/timezone_service.dart';
+import 'package:kusuridoki/data/enums/timezone_mode.dart';
 import 'package:uuid/uuid.dart';
 
 class ReminderService {
   final StorageService _storage;
+  final TimezoneService? _timezoneService;
 
-  ReminderService(this._storage);
+  ReminderService(this._storage, {TimezoneService? timezoneService})
+      : _timezoneService = timezoneService;
 
   /// Generate today's reminders from active schedules
   /// Checks existing reminders to avoid duplicates
+  ///
+  /// When [homeTimezone] and [currentTimezone] are both provided and differ,
+  /// adjusts scheduled times using [TimezoneService.adjustMedicationTime].
   Future<List<Reminder>> generateRemindersForDate(
     List<Schedule> activeSchedules,
-    DateTime date,
-  ) async {
+    DateTime date, {
+    String? homeTimezone,
+    String? currentTimezone,
+    TimezoneMode timezoneMode = TimezoneMode.fixedInterval,
+  }) async {
+    final shouldAdjustTimezone = _timezoneService != null &&
+        homeTimezone != null &&
+        currentTimezone != null &&
+        homeTimezone != currentTimezone;
+
     final existing = await _storage.getRemindersForDate(date);
     final newReminders = <Reminder>[];
 
@@ -28,7 +43,17 @@ class ReminderService {
 
       // Parse schedule.times (List<String> like ["08:00", "12:00"])
       for (final timeString in schedule.times) {
-        final scheduledTime = _parseTimeForDate(timeString, date);
+        var scheduledTime = _parseTimeForDate(timeString, date);
+
+        // Adjust for timezone if travel mode is active
+        if (shouldAdjustTimezone) {
+          scheduledTime = _timezoneService!.adjustMedicationTime(
+            scheduledTime,
+            homeTimezone!,
+            currentTimezone!,
+            timezoneMode,
+          );
+        }
 
         // Check if reminder already exists for this medicationId + hour + minute
         // Using hour/minute comparison instead of isAtSameMomentAs to avoid
