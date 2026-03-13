@@ -83,9 +83,9 @@ void main() {
     testWidgets(
       'AD-04: Export report button display',
       (tester) async {
-        // kPremiumEnabled is false — skip until premium feature flag is enabled
+        // TODO(marco 2026-03): implement export report button test
       },
-      skip: true, // kPremiumEnabled is false
+      skip: true, // test body not yet implemented
     );
   });
 }

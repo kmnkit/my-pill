@@ -63,7 +63,7 @@ class _WeeklySummaryScreenState extends ConsumerState<WeeklySummaryScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return GradientScaffold(
-      appBar: KdAppBar(title: l10n.weeklySummary, showBack: true),
+      appBar: KdAppBar(title: l10n.weeklySummary, showBack: false),
       body: Builder(
         builder: (context) {
           final bottomPadding = MediaQuery.of(context).padding.bottom;

@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/data/services/subscription_service.dart';
-import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/data/providers/ad_provider.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
+import 'package:kusuridoki/core/utils/timezone_utils.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
@@ -65,7 +67,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
     _statusSubscription = service.statusStream.listen((status) {
       if (!mounted || !_awaitingPurchaseResult || !status.isPremium) return;
       _awaitingPurchaseResult = false;
-      AdService().setAdsRemoved(true);
+      ref.read(adServiceProvider).setAdsRemoved(true);
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -238,16 +240,6 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         icon: Icons.picture_as_pdf,
         title: l10n.pdfReports,
         description: l10n.pdfReportsDescription,
-      ),
-      _FeatureItem(
-        icon: Icons.notifications_active,
-        title: l10n.customSounds,
-        description: l10n.customSoundsDescription,
-      ),
-      _FeatureItem(
-        icon: Icons.palette,
-        title: l10n.premiumThemes,
-        description: l10n.premiumThemesDescription,
       ),
     ];
 
@@ -576,7 +568,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 l10n.premiumExpiresAt(
-                  '${status.expiresAt!.year}-${status.expiresAt!.month.toString().padLeft(2, '0')}-${status.expiresAt!.day.toString().padLeft(2, '0')}',
+                  TimezoneUtils.formatDate(status.expiresAt!, Localizations.localeOf(context).languageCode),
                 ),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: context.appColors.textMuted,
@@ -614,7 +606,8 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       // Purchase sheet shown — wait for stream result via callbacks.
       // _awaitingPurchaseResult = true tells the listeners to react.
       if (mounted) setState(() => _awaitingPurchaseResult = true);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'PremiumUpsellScreen.purchase');
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -622,9 +615,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.errorWithMessage(e.toString()),
-            ),
+            content: Text(AppLocalizations.of(context)!.purchaseFailed),
             backgroundColor: AppColors.error,
           ),
         );
@@ -648,7 +639,7 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
       setState(() => _isLoading = false);
 
       if (service.isPremium) {
-        AdService().setAdsRemoved(true);
+        ref.read(adServiceProvider).setAdsRemoved(true);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.purchasesRestored),
@@ -661,14 +652,13 @@ class _PremiumUpsellScreenState extends ConsumerState<PremiumUpsellScreen> {
           context,
         ).showSnackBar(SnackBar(content: Text(l10n.noPurchasesFound)));
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'PremiumUpsellScreen.restore');
       if (mounted) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.errorWithMessage(e.toString()),
-            ),
+            content: Text(AppLocalizations.of(context)!.genericError),
             backgroundColor: AppColors.error,
           ),
         );

@@ -55,7 +55,7 @@ final class SubscriptionServiceProvider
 }
 
 String _$subscriptionServiceHash() =>
-    r'5aa344e0004e8953d2aadc0af850a78c666d4900';
+    r'b690ec9be8feb718c2901624b91e29107f74bc39';
 
 @ProviderFor(isPremium)
 final isPremiumProvider = IsPremiumProvider._();

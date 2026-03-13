@@ -41,7 +41,7 @@ final class TimezoneSettingsProvider
   }
 }
 
-String _$timezoneSettingsHash() => r'4d3c20666d6e5e52753802351799bb643dd31ff4';
+String _$timezoneSettingsHash() => r'de73b921f76c1820bd0c8dc3a84d6669fb263b8b';
 
 abstract class _$TimezoneSettings extends $Notifier<TimezoneState> {
   TimezoneState build();

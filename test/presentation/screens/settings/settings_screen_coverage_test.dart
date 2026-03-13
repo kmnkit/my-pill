@@ -49,6 +49,7 @@ List<dynamic> _buildOverrides({
     authStateProvider.overrideWith((ref) => Stream.value(null)),
     isPremiumProvider.overrideWith((ref) => isPremium),
     subscriptionStatusProvider.overrideWith((ref) => status ?? _freeStatus),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -71,7 +72,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows already premium banner for premium user', (
       tester,
@@ -91,7 +92,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("You're a Premium member"), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows error state with errorLoadingSettings message', (
       tester,
@@ -183,7 +184,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tile = find.text('Data Sharing Preferences');
+      final tile = find.text('Caregiver Data Sharing');
       expect(tile, findsOneWidget);
 
       await tester.tap(tile);
@@ -236,7 +237,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
       expect(find.text('Backup & Sync'), findsOneWidget);
       expect(find.text('Privacy Policy'), findsOneWidget);
       expect(find.text('Terms of Service'), findsOneWidget);
@@ -381,9 +382,10 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await tester.drag(
-          find.byType(SingleChildScrollView),
-          const Offset(0, -1200),
+        await tester.scrollUntilVisible(
+          find.text('Log Out'),
+          200,
+          scrollable: find.byType(Scrollable).first,
         );
         await tester.pumpAndSettle();
 
@@ -569,7 +571,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('App Version'), findsOneWidget);
-      expect(find.text('Version 1.0.0'), findsOneWidget);
+      expect(find.text('Version 1.1.1'), findsOneWidget);
     });
 
     // =========================================================================

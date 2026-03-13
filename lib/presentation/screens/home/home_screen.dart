@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
-import 'package:kusuridoki/data/services/ad_service.dart';
+import 'package:kusuridoki/data/providers/ad_provider.dart';
+import 'package:kusuridoki/data/providers/subscription_provider.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/greeting_header.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/low_stock_banner.dart';
 import 'package:kusuridoki/presentation/screens/home/widgets/medication_timeline.dart';
@@ -27,7 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _loadBannerAd() {
     try {
-      _bannerAd = AdService().getHomeBannerAd();
+      _bannerAd = ref.read(adServiceProvider).getHomeBannerAd();
       if (_bannerAd != null) {
         setState(() {});
       }
@@ -45,6 +46,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(isPremiumProvider, (previous, isPremium) {
+      if (isPremium && _bannerAd != null) {
+        setState(() => _bannerAd = null);
+      }
+    });
+
     return GradientScaffold(
       body: SafeArea(
         child: SingleChildScrollView(

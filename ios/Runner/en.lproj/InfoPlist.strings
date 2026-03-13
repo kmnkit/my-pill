@@ -2,5 +2,4 @@
 
 "NSCameraUsageDescription" = "Kusuridoki uses your camera to take photos of your medications for easy identification.";
 "NSNotificationUsageDescription" = "Get reminders when it's time to take your medication.";
-"NSPhotoLibraryAddUsageDescription" = "Kusuridoki saves medication photos to your library for your records.";
 "NSPhotoLibraryUsageDescription" = "Kusuridoki accesses your photo library to let you choose medication photos.";

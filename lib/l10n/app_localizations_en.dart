@@ -776,12 +776,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pdfReports => 'PDF Reports';
 
   @override
-  String get customSounds => 'Custom Notification Sounds';
-
-  @override
-  String get premiumThemes => 'Premium Themes';
-
-  @override
   String get restorePurchases => 'Restore Purchases';
 
   @override
@@ -937,7 +931,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get areYouSureSignOut => 'Are you sure you want to sign out?';
 
   @override
-  String get dataSharingPreferences => 'Data Sharing Preferences';
+  String get dataSharingPreferences => 'Caregiver Data Sharing';
 
   @override
   String get dataSharingSubtitle =>
@@ -964,12 +958,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pdfReportsDescription => 'Export detailed medication reports';
-
-  @override
-  String get customSoundsDescription => 'Personalize notification sounds';
-
-  @override
-  String get premiumThemesDescription => 'Access exclusive themes';
 
   @override
   String get purchaseFailed => 'Purchase failed. Please try again.';

@@ -7,6 +7,7 @@ import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/services/firestore_service.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 
@@ -68,7 +69,8 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
           duration: const Duration(seconds: 2),
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      ErrorHandler.captureException(e, stackTrace, 'BackupSyncDialog.syncNow');
       if (!mounted) return;
 
       setState(() {
@@ -77,7 +79,7 @@ class _BackupSyncDialogState extends ConsumerState<BackupSyncDialog> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.syncFailed(e.toString())),
+          content: Text(l10n.genericError),
           backgroundColor: AppColors.error,
           duration: const Duration(seconds: 3),
         ),

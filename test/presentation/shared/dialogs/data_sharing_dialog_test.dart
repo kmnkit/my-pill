@@ -131,7 +131,7 @@ void main() {
     testWidgets('renders dialog title', (tester) async {
       await _pumpDialog(tester, overrides: _overrides());
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('renders subtitle text', (tester) async {
@@ -253,7 +253,7 @@ void main() {
       // Only one frame — title is always rendered (outside AsyncValue.when).
       await tester.pump();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows data after loading completes', (tester) async {
@@ -266,7 +266,7 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows SizedBox.shrink on error state', (tester) async {
@@ -280,7 +280,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsNothing);
+      expect(find.text('Caregiver Data Sharing'), findsNothing);
       expect(find.byType(SwitchListTile), findsNothing);
       expect(find.text('Close'), findsNothing);
     });
@@ -446,12 +446,12 @@ void main() {
     ) async {
       await _pumpViaShow(tester, overrides: _overrides());
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
 
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsNothing);
+      expect(find.text('Caregiver Data Sharing'), findsNothing);
     });
 
     testWidgets('close button dismisses dialog and returns to trigger button', (
@@ -473,7 +473,7 @@ void main() {
     testWidgets('show() opens dialog with all content', (tester) async {
       await _pumpViaShow(tester, overrides: _overrides());
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
       expect(find.byType(SwitchListTile), findsNWidgets(3));
       expect(find.text('Close'), findsOneWidget);
     });

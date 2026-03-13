@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/data/services/subscription_service.dart';
 import 'package:kusuridoki/data/providers/ad_provider.dart';
+import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
 
 part 'subscription_provider.g.dart';
@@ -23,6 +24,11 @@ SubscriptionService subscriptionService(Ref ref) {
   };
 
   service.initialize();
+
+  ref.listen(authStateProvider, (_, next) {
+    next.whenData((user) => service.setUserId(user?.uid));
+  });
+
   ref.onDispose(() => service.dispose());
   return service;
 }

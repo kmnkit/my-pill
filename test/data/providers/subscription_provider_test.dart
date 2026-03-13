@@ -28,15 +28,15 @@ void main() {
       expect(isPremiumProvider.name, 'isPremiumProvider');
     });
 
-    test('returns true when kPremiumEnabled is false (feature flag)', () {
+    test('returns false for stub service (no IAP)', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
         overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
-      // kPremiumEnabled = false → always true (all features unlocked)
-      expect(container.read(isPremiumProvider), isTrue);
+      // kPremiumEnabled = true → reads from SubscriptionService (stub → false)
+      expect(container.read(isPremiumProvider), isFalse);
     });
 
     test('can be overridden directly with true', () {
@@ -63,15 +63,15 @@ void main() {
       expect(maxCaregiversProvider.name, 'maxCaregiversProvider');
     });
 
-    test('returns 999 when kPremiumEnabled is false (feature flag)', () {
+    test('returns 1 for stub service (free tier)', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
         overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
-      // kPremiumEnabled = false → unlimited caregivers
-      expect(container.read(maxCaregiversProvider), 999);
+      // kPremiumEnabled = true → reads from SubscriptionService (stub → 1)
+      expect(container.read(maxCaregiversProvider), 1);
     });
 
     test('can be overridden directly with premium value', () {
@@ -89,15 +89,15 @@ void main() {
       expect(maxPatientsProvider.name, 'maxPatientsProvider');
     });
 
-    test('returns 999 when kPremiumEnabled is false (feature flag)', () {
+    test('returns 1 for stub service (free tier)', () {
       final service = SubscriptionService();
       final container = ProviderContainer(
         overrides: [subscriptionServiceProvider.overrideWithValue(service)],
       );
       addTearDown(container.dispose);
 
-      // kPremiumEnabled = false → unlimited patients
-      expect(container.read(maxPatientsProvider), 999);
+      // kPremiumEnabled = true → reads from SubscriptionService (stub → 1)
+      expect(container.read(maxPatientsProvider), 1);
     });
 
     test('can be overridden directly with premium value', () {
@@ -181,15 +181,12 @@ void main() {
     });
   });
 
-  group('Feature flag regression — kPremiumEnabled = false', () {
-    // REG-MONET-001: When kPremiumEnabled is false, isPremiumProvider must
-    // return true (all users treated as premium). This guards against the
-    // critical regression where toggling the flag to false accidentally locks
-    // paying users out of features.
+  group('Feature flag regression — kPremiumEnabled = true', () {
+    // REG-MONET-001: When kPremiumEnabled is true, isPremiumProvider reads
+    // from SubscriptionService. Stub service returns false (free tier).
     test(
-      'REG-MONET-001: isPremiumProvider returns true when kPremiumEnabled = false',
+      'REG-MONET-001: isPremiumProvider returns false for stub service',
       () {
-        // kPremiumEnabled = false
         final container = ProviderContainer(
           overrides: [
             subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
@@ -197,17 +194,15 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        expect(container.read(isPremiumProvider), isTrue);
+        expect(container.read(isPremiumProvider), isFalse);
       },
     );
 
-    // REG-MONET-002: When kPremiumEnabled is false, unlimited caregiver and
-    // patient limits apply (999). This guards against accidental limit
-    // enforcement when the flag is false.
+    // REG-MONET-002: When kPremiumEnabled is true, caregiver and patient
+    // limits come from SubscriptionService. Stub returns free-tier limits (1).
     test(
-      'REG-MONET-002: maxCaregiversProvider returns 999 when kPremiumEnabled = false',
+      'REG-MONET-002: maxCaregiversProvider returns 1 for stub service',
       () {
-        // kPremiumEnabled = false
         final container = ProviderContainer(
           overrides: [
             subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
@@ -215,14 +210,13 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        expect(container.read(maxCaregiversProvider), 999);
+        expect(container.read(maxCaregiversProvider), 1);
       },
     );
 
     test(
-      'REG-MONET-002: maxPatientsProvider returns 999 when kPremiumEnabled = false',
+      'REG-MONET-002: maxPatientsProvider returns 1 for stub service',
       () {
-        // kPremiumEnabled = false
         final container = ProviderContainer(
           overrides: [
             subscriptionServiceProvider.overrideWithValue(SubscriptionService()),
@@ -230,7 +224,7 @@ void main() {
         );
         addTearDown(container.dispose);
 
-        expect(container.read(maxPatientsProvider), 999);
+        expect(container.read(maxPatientsProvider), 1);
       },
     );
   });

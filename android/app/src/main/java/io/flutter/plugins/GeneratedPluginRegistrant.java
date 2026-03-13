@@ -126,6 +126,11 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin printing, net.nfet.flutter.printing.PrintingPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new com.revenuecat.purchases_flutter.PurchasesFlutterPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin purchases_flutter, com.revenuecat.purchases_flutter.PurchasesFlutterPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new io.sentry.flutter.SentryFlutterPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin sentry_flutter, io.sentry.flutter.SentryFlutterPlugin", e);

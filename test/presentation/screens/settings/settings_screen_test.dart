@@ -53,6 +53,7 @@ List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
     // Subscription: free tier
     isPremiumProvider.overrideWith((ref) => false),
     subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -64,6 +65,7 @@ List<dynamic> _buildPremiumOverrides({
     authStateProvider.overrideWith((ref) => Stream.value(null)),
     isPremiumProvider.overrideWith((ref) => true),
     subscriptionStatusProvider.overrideWith((ref) => status),
+    appVersionProvider.overrideWith((ref) async => '1.1.1'),
   ];
 }
 
@@ -104,7 +106,7 @@ void main() {
 
       expect(find.text('About'), findsOneWidget);
       // l10n: version('1.0.0') -> 'Version 1.0.0'
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('shows loading indicator while settings load', (tester) async {
@@ -194,7 +196,7 @@ void main() {
       expect(find.text('Delete Account'), findsOneWidget);
     });
 
-    testWidgets('shows Data Sharing Preferences tile', (tester) async {
+    testWidgets('shows Caregiver Data Sharing tile', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -203,7 +205,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows Backup & Sync tile', (tester) async {
@@ -277,7 +279,7 @@ void main() {
 
       // l10n: unlockPremium -> "Upgrade to Premium"
       expect(find.text('Upgrade to Premium'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows premium status banner for premium user', (tester) async {
       await tester.pumpWidget(
@@ -292,7 +294,7 @@ void main() {
       expect(find.text("You're a Premium member"), findsOneWidget);
       // l10n: manageSubscription -> "Manage Subscription"
       expect(find.text('Manage Subscription'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows premium expiry date when subscription has expiry', (
       tester,
@@ -307,7 +309,7 @@ void main() {
 
       // l10n: premiumExpiresAt('2030-12-31') contains the date
       expect(find.textContaining('2030'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('shows current plan text when premium has no expiry date', (
       tester,
@@ -323,7 +325,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Current Plan'), findsOneWidget);
-    }, skip: true); // kPremiumEnabled is false
+    });
 
     testWidgets('retry button in error state invalidates provider', (
       tester,
@@ -475,7 +477,7 @@ void main() {
       // App Version tile text exists
       expect(find.text('App Version'), findsOneWidget);
       // Version value text exists
-      expect(find.textContaining('1.0.0'), findsAtLeastNWidgets(1));
+      expect(find.textContaining('1.1.1'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('shows loading spinner before async settings resolve', (

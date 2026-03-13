@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """App Store marketing screenshot generator for くすりどき.
 
-Composites pre-framed screenshots (RGBA, with iPhone frame) onto a teal
-gradient background and adds a Japanese caption.
-Output: 1290×2796 RGB PNG (App Store 6.7-inch).
+Takes raw simulator screenshots and composites them onto a teal gradient
+background with a Japanese caption, producing App Store 6.7-inch images.
+
+Input:  assets/marketing/screenshots/ja/*.png  (1290×2796, RGB)
+Output: assets/marketing/store/*_store.png      (1290×2796, RGB)
 
 Usage:
     python3 scripts/generate_store_screenshots.py
@@ -12,76 +14,73 @@ Usage:
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, __version__ as PIL_VERSION
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, __version__ as PIL_VERSION
 
 # --- Version guard ---
 _major, _minor = (int(v) for v in PIL_VERSION.split(".")[:2])
 if (_major, _minor) < (10, 1):
-    sys.exit(f"ERROR: Pillow 10.1+ required for Variable Font support (have {PIL_VERSION})")
+    sys.exit(f"ERROR: Pillow 10.1+ required (have {PIL_VERSION})")
 
 # --- Paths ---
-ROOT = Path(__file__).parent.parent
-SRC_DIR = ROOT / "assets" / "marketing" / "screenshots" / "frame_added"
+ROOT    = Path(__file__).parent.parent
+SRC_DIR = ROOT / "assets" / "marketing" / "screenshots" / "ja"
 OUT_DIR = ROOT / "assets" / "marketing" / "store"
 FONT_PATH = ROOT / "assets" / "fonts" / "NotoSansJP-Regular.ttf"
 
-# --- Canvas ---
+# --- Canvas (App Store 6.7-inch) ---
 W, H = 1290, 2796
 
 # --- Colors ---
-GRAD_TOP = (13, 148, 136)    # #0D9488 teal
-GRAD_BOT = (20, 184, 166)    # #14B8A6 teal lighter
-CAPTION_CLR = (255, 255, 255) # #FFFFFF white (primary)
-ACCENT_CLR  = (245, 158, 11)  # #F59E0B amber (accent bar)
+GRAD_TOP    = (13, 148, 136)    # #0D9488 teal
+GRAD_BOT    = (5,  100,  95)    # darker teal at bottom
+CAPTION_CLR = (255, 255, 255)   # white
+ACCENT_CLR  = (245, 158,  11)   # amber
 
 # --- Layout ---
-CAPTION_ZONE = 280   # px reserved at top for caption text
-CAPTION_Y = 88       # distance from top canvas edge to text top
-FONT_SIZE = 62
-MAX_TEXT_W = 1170    # W - 2*60 side padding
-BOTTOM_MARGIN = 60   # px below phone frame
+CAPTION_ZONE   = 300    # px at top reserved for text
+CAPTION_Y      = 90     # distance from top to text baseline start
+FONT_SIZE      = 66
+MAX_TEXT_W     = 1150   # W - 2*70 padding
+SCREEN_PADDING = 40     # horizontal padding each side for the screenshot
+BOTTOM_MARGIN  = 80     # gap between screen bottom and canvas bottom
+CORNER_RADIUS  = 52     # rounded corners on the screenshot (matches iPhone 15)
+SHADOW_BLUR    = 18     # drop shadow blur radius
 
-# --- Screenshot sequence (6 frames) ---
-# caption_parts: list of (text, color) — white primary, amber accent on key phrase
-W_CLR = CAPTION_CLR   # alias for readability
+W_CLR = CAPTION_CLR
 A_CLR = ACCENT_CLR
 
+# --- Screenshot definitions ---
 SCREENSHOTS = [
     {
-        "src": "01_home-portrait.png",
+        "src": "01_home.png",
         "out": "01_home_store.png",
         "caption_parts": [("今日のお薬、", W_CLR), ("これだけ見ればOK。", A_CLR)],
     },
     {
-        "src": "07_medications_list-portrait.png",
+        "src": "02_medications_list.png",
         "out": "02_medications_store.png",
         "caption_parts": [("お薬をまとめて管理。", W_CLR), ("在庫もひと目で。", A_CLR)],
     },
     {
-        "src": "04_family-portrait.png",
-        "out": "03_family_store.png",
-        "caption_parts": [("離れた家族の服薬を", W_CLR), ("見守り。", A_CLR)],
-    },
-    {
-        "src": "03_weekly_report-portrait.png",
-        "out": "04_weekly_report_store.png",
+        "src": "03_weekly_summary.png",
+        "out": "03_weekly_store.png",
         "caption_parts": [("週間レポートで", W_CLR), ("服薬率を確認。", A_CLR)],
     },
     {
-        "src": "06_travel-portrait.png",
-        "out": "05_travel_store.png",
-        "caption_parts": [("海外旅行中も", W_CLR), ("時差に自動対応。", A_CLR)],
+        "src": "04_caregiver.png",
+        "out": "04_family_store.png",
+        "caption_parts": [("離れた家族の服薬を", W_CLR), ("見守り。", A_CLR)],
     },
     {
-        "src": "08_settings-portrait.png",
-        "out": "06_settings_store.png",
-        "caption_parts": [("通知もフォントも、", W_CLR), ("あなた好みに。", A_CLR)],
+        "src": "05_travel_mode.png",
+        "out": "05_travel_store.png",
+        "caption_parts": [("海外旅行中も", W_CLR), ("時差に自動対応。", A_CLR)],
     },
 ]
 
 
 def make_gradient() -> Image.Image:
-    """Vertical teal gradient: GRAD_TOP → GRAD_BOT."""
+    """Vertical teal gradient."""
     strip = Image.new("RGB", (1, H))
     px = strip.load()
     for y in range(H):
@@ -90,24 +89,44 @@ def make_gradient() -> Image.Image:
     return strip.resize((W, H), Image.NEAREST)
 
 
+def rounded_mask(w: int, h: int, radius: int) -> Image.Image:
+    """RGBA mask with rounded corners (anti-aliased via 4× supersample)."""
+    scale = 4
+    big = Image.new("L", (w * scale, h * scale), 0)
+    draw = ImageDraw.Draw(big)
+    draw.rounded_rectangle([0, 0, w * scale - 1, h * scale - 1],
+                           radius=radius * scale, fill=255)
+    return big.resize((w, h), Image.LANCZOS)
+
+
+def add_shadow(img: Image.Image, blur: int, offset: tuple[int, int] = (0, 12)) -> Image.Image:
+    """Return a new RGBA image with a soft drop shadow beneath img."""
+    ox, oy = offset
+    pad = blur * 2
+    out_w = img.width  + pad * 2
+    out_h = img.height + pad * 2
+    shadow = Image.new("RGBA", (out_w, out_h), (0, 0, 0, 0))
+    # Shadow shape (black, semi-transparent)
+    silhouette = Image.new("RGBA", img.size, (0, 0, 0, 160))
+    shadow.paste(silhouette, (pad + ox, pad + oy))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(blur))
+    # Paste actual image on top
+    shadow.paste(img, (pad, pad), mask=img if img.mode == "RGBA" else None)
+    return shadow
+
+
 def load_font(size: int) -> ImageFont.FreeTypeFont:
-    """Load NotoSansJP with Bold variation when available."""
     font = ImageFont.truetype(str(FONT_PATH), size)
     try:
         font.set_variation_by_name("Bold")
     except (OSError, AttributeError):
-        pass  # not a variable font – use as-is
+        pass
     return font
 
 
 def draw_caption(draw: ImageDraw.ImageDraw, parts: list) -> None:
-    """Render multi-colored caption centered horizontally.
-
-    parts: list of (text, color) tuples drawn left-to-right on one line.
-    Shrinks font size uniformly if total width overflows MAX_TEXT_W.
-    """
+    """Render two-part colored caption, centered. Auto-shrinks if too wide."""
     full_text = "".join(t for t, _ in parts)
-
     size = FONT_SIZE
     while size >= 24:
         font = load_font(size)
@@ -120,7 +139,6 @@ def draw_caption(draw: ImageDraw.ImageDraw, parts: list) -> None:
     x0 = (W - (bbox[2] - bbox[0])) // 2 - bbox[0]
     y  = CAPTION_Y - bbox[1]
 
-    # Draw each part; advance x by measuring prefix width for accuracy
     prefix = ""
     for text, color in parts:
         if prefix:
@@ -137,44 +155,54 @@ def generate(entry: dict) -> bool:
     out = OUT_DIR / entry["out"]
 
     if not src.exists():
-        print(f"  SKIP: {src.name} not found")
+        print(f"  SKIP  {src.name} — not found")
         return False
 
-    # 1. Gradient background
+    raw = Image.open(src).convert("RGB")
+
+    # --- Scale screenshot to fit within canvas minus padding ---
+    avail_w = W - SCREEN_PADDING * 2
+    avail_h = H - CAPTION_ZONE - BOTTOM_MARGIN
+    scale   = min(avail_w / raw.width, avail_h / raw.height)
+    sw = round(raw.width  * scale)
+    sh = round(raw.height * scale)
+    screen = raw.resize((sw, sh), Image.LANCZOS)
+
+    # --- Apply rounded corners ---
+    mask = rounded_mask(sw, sh, CORNER_RADIUS)
+    screen_rgba = screen.convert("RGBA")
+    screen_rgba.putalpha(mask)
+
+    # --- Drop shadow ---
+    shadowed = add_shadow(screen_rgba, blur=SHADOW_BLUR)
+    shadow_w, shadow_h = shadowed.size
+    pad = SHADOW_BLUR * 2
+
+    # --- Gradient background ---
     canvas = make_gradient()
 
-    # 2. Scale framed image (RGBA) to fit in available area below caption zone
-    framed = Image.open(src).convert("RGBA")
-    avail_h = H - CAPTION_ZONE - BOTTOM_MARGIN
-    scale = min(W / framed.width, avail_h / framed.height)
-    fw = round(framed.width * scale)
-    fh = round(framed.height * scale)
-    framed = framed.resize((fw, fh), Image.LANCZOS)
+    # --- Center screenshot horizontally, align top of screen to caption zone ---
+    sx = (W - sw) // 2 - pad
+    sy = CAPTION_ZONE - pad
+    canvas.paste(shadowed, (sx, sy), mask=shadowed.split()[3])
 
-    fx = (W - fw) // 2
-    fy = CAPTION_ZONE + (avail_h - fh) // 2
-
-    # 3. Composite pre-framed image onto gradient using its alpha channel
-    canvas.paste(framed, (fx, fy), mask=framed.split()[3])
-
-    # 4. Caption text (white + amber accent)
+    # --- Caption ---
     draw_caption(ImageDraw.Draw(canvas), entry["caption_parts"])
 
-    # 5. Save as RGB PNG (App Store requires RGB, not RGBA)
-    assert canvas.size == (W, H), f"Size mismatch: {canvas.size}"
-    assert canvas.mode == "RGB", f"Mode mismatch: {canvas.mode}"
+    # --- Save ---
+    assert canvas.size == (W, H)
+    assert canvas.mode == "RGB"
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     canvas.save(str(out), "PNG")
-    print(f"  OK  {out.name}  ({W}x{H} {canvas.mode})")
+    print(f"  OK    {out.name}  ({W}×{H})")
     return True
 
 
 def main() -> None:
-    print(f"Pillow {PIL_VERSION} | canvas {W}x{H}")
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-
+    print(f"Pillow {PIL_VERSION} | canvas {W}×{H}")
+    print(f"Source: {SRC_DIR}")
     ok = sum(generate(e) for e in SCREENSHOTS)
-    print(f"\n{ok}/{len(SCREENSHOTS)} screenshots generated")
-    print(f"Output: {OUT_DIR}")
+    print(f"\n{ok}/{len(SCREENSHOTS)} generated → {OUT_DIR}")
 
 
 if __name__ == "__main__":

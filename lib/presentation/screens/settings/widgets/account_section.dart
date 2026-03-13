@@ -6,7 +6,7 @@ import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/services/auth_service.dart';
-import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_avatar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
@@ -155,7 +155,7 @@ class AccountSection extends ConsumerWidget {
 
   Future<void> _navigateToLogin(BuildContext context, WidgetRef ref) async {
     try {
-      await StorageService().clearUserData();
+      await ref.read(storageServiceProvider).clearUserData();
       await ref.read(authServiceProvider).signOut();
       // Router will redirect to /login automatically via auth state change
     } catch (e) {

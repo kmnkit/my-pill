@@ -67,3 +67,8 @@ jobs:
         working-directory: android
         env:
           GOOGLE_PLAY_JSON_KEY_FILE: /tmp/play-store-key.json
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          REVENUECAT_API_KEY: ${{ secrets.REVENUECAT_API_KEY }}

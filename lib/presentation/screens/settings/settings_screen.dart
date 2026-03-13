@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
@@ -16,8 +17,9 @@ import 'package:kusuridoki/data/providers/schedule_provider.dart';
 
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
-import 'package:kusuridoki/data/services/cloud_functions_service.dart';
-import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
+import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/core/utils/screenshot_data_seeder.dart';
 import 'package:kusuridoki/core/utils/screenshot_seeder.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/account_section.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/backup_sync_dialog.dart';
@@ -34,6 +36,12 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
 
+@visibleForTesting
+final appVersionProvider = FutureProvider<String>((ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return info.version;
+});
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -41,6 +49,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final userSettingsAsync = ref.watch(userSettingsProvider);
+    final appVersionAsync = ref.watch(appVersionProvider);
 
     bool isAnonymous;
     try {
@@ -121,7 +130,11 @@ class SettingsScreen extends ConsumerWidget {
                 Icons.info_outline,
                 null,
                 trailing: Text(
-                  l10n.version('1.0.0'),
+                  appVersionAsync.when(
+                    data: (v) => l10n.version(v),
+                    loading: () => l10n.version('...'),
+                    error: (e, s) => l10n.version('—'),
+                  ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: context.appColors.textMuted,
                   ),
@@ -132,16 +145,35 @@ class SettingsScreen extends ConsumerWidget {
                 KdSectionHeader(title: 'Debug Tools'),
                 _buildListTile(
                   context,
-                  'Seed Screenshot Data',
+                  'Seed Screenshot Data (日本語)',
                   Icons.photo_library_outlined,
                   () async {
-                    final seeder = ScreenshotSeeder(StorageService());
+                    final seeder = ScreenshotSeeder(ref.read(storageServiceProvider));
                     await seeder.clearAndSeed();
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Screenshot data seeded!'),
+                          content: Text('Screenshot data seeded (ja)!'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                _buildListTile(
+                  context,
+                  'Seed Screenshot Data (English)',
+                  Icons.photo_library_outlined,
+                  () async {
+                    final storage = ref.read(storageServiceProvider);
+                    await storage.clearAll();
+                    await ScreenshotDataSeeder(storage).seed();
+                    _invalidateUserProviders(ref);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Screenshot data seeded (en)!'),
                         ),
                       );
                     }
@@ -162,7 +194,7 @@ class SettingsScreen extends ConsumerWidget {
                     );
                     if (confirmed != true) return;
 
-                    await StorageService().clearUserData();
+                    await ref.read(storageServiceProvider).clearUserData();
                     _invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -210,7 +242,7 @@ class SettingsScreen extends ConsumerWidget {
                   if (confirmed == true && context.mounted) {
                     try {
                       // 1. Clear user data first (while widget is still mounted)
-                      await StorageService().clearUserData();
+                      await ref.read(storageServiceProvider).clearUserData();
                       // 2. Invalidate all user-data providers (before signOut triggers redirect)
                       _invalidateUserProviders(ref);
                       // 3. Sign out last — router redirect handles navigation to /login
@@ -261,16 +293,16 @@ class SettingsScreen extends ConsumerWidget {
                         final currentUser = FirebaseAuth.instance.currentUser;
                         if (currentUser == null || currentUser.isAnonymous) {
                           // Null/anonymous path: local data only, sign out
-                          await StorageService().clearUserData();
+                          await ref.read(storageServiceProvider).clearUserData();
                           _invalidateUserProviders(ref);
                           await ref.read(authServiceProvider).signOut();
                         } else {
                           // Authenticated path: delete server data, then sign out
                           final authService = ref.read(authServiceProvider);
                           // 1. Server-side deletion of all user data + auth account
-                          await CloudFunctionsService().deleteAccount();
+                          await ref.read(cloudFunctionsServiceProvider).deleteAccount();
                           // 2. Clear local data first (while widget is still mounted)
-                          await StorageService().clearUserData();
+                          await ref.read(storageServiceProvider).clearUserData();
                           // 3. Invalidate all providers (before signOut triggers redirect)
                           _invalidateUserProviders(ref);
                           // 4. Sign out last — router redirect handles navigation

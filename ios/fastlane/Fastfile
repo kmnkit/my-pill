@@ -4,6 +4,13 @@ default_platform(:ios)
 
 APP_IDENTIFIER = "com.hobbylabo.kusuridoki"
 
+def build_dart_defines
+  [
+    Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}"),
+    Base64.strict_encode64("REVENUECAT_API_KEY=#{ENV['REVENUECAT_API_KEY'] || ''}"),
+  ].join(",")
+end
+
 platform :ios do
   before_all do
     @api_key = app_store_connect_api_key(
@@ -25,6 +32,7 @@ platform :ios do
 
   desc "Build the iOS app with proper code signing"
   lane :build do
+    sh("cd ../.. && flutter pub get")
     sync_certs
 
     # Auto-increment build number based on latest TestFlight build
@@ -43,7 +51,6 @@ platform :ios do
     # This sed is a safety net for that case.
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
-    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -56,8 +63,11 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
-      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
+      xcargs: "DART_DEFINES=\"#{build_dart_defines}\"",
     )
+
+    # Upload dSYMs and source maps to Sentry
+    sh("cd ../.. && dart run sentry_dart_plugin")
 
     # Restore GeneratedPluginRegistrant.m (with #ifdef DEBUG guards)
     sh("git checkout ../Runner/GeneratedPluginRegistrant.m 2>/dev/null || true")
@@ -156,7 +166,6 @@ platform :ios do
     sh("sed -i '' '/#if __has_include.*integration_test/,/#endif/d; /IntegrationTestPlugin registerWithRegistrar/d' ../Runner/GeneratedPluginRegistrant.m")
 
     # Build using downloaded profile
-    dart_defines = Base64.strict_encode64("SENTRY_DSN=#{ENV['SENTRY_DSN'] || ''}")
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
@@ -171,7 +180,7 @@ platform :ios do
       },
       clean: true,
       output_name: "Kusuridoki.ipa",
-      xcargs: "DART_DEFINES=\"#{dart_defines}\"",
+      xcargs: "DART_DEFINES=\"#{build_dart_defines}\"",
     )
 
     # Restore GeneratedPluginRegistrant.m for development use
@@ -180,6 +189,8 @@ platform :ios do
     upload_to_app_store(
       api_key: @api_key,
       submit_for_review: false,
+      skip_screenshots: true,
+      skip_metadata: true,
       force: true,
       run_precheck_before_submit: false,
     )

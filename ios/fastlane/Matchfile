@@ -1,4 +1,4 @@
-git_url("https://github.com/kmnkit/fastlane-certs")  # TODO: Update after creating Phase 0.2 repo
+git_url("https://github.com/kmnkit/certificates")
 storage_mode("git")
 type("appstore")
 app_identifier(["com.hobbylabo.kusuridoki"])

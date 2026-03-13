@@ -16,7 +16,6 @@ import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_card.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
-import 'package:kusuridoki/presentation/router/route_names.dart';
 
 class QrInviteSection extends ConsumerStatefulWidget {
   const QrInviteSection({super.key});
@@ -131,7 +130,7 @@ class _QrInviteSectionState extends ConsumerState<QrInviteSection> {
             onPressed: kPremiumEnabled
                 ? () {
                     Navigator.of(context).pop();
-                    context.push(RouteNames.premium);
+                    context.push('/premium');
                   }
                 : null,
             icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
