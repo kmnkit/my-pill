@@ -14,14 +14,20 @@ class UserSettings extends _$UserSettings {
     final profile = await storage.getUserProfile();
 
     if (profile != null) {
+      var migrated = profile;
       // Migration: existing users (who have a saved profile) should be
       // considered as having completed onboarding
-      if (!profile.onboardingComplete) {
-        final migrated = profile.copyWith(onboardingComplete: true);
-        await storage.saveUserProfile(migrated);
-        return migrated;
+      if (!migrated.onboardingComplete) {
+        migrated = migrated.copyWith(onboardingComplete: true);
       }
-      return profile;
+      // Migration: userRole == 'caregiver' → isCaregiver = true
+      if (migrated.userRole == 'caregiver' && !migrated.isCaregiver) {
+        migrated = migrated.copyWith(isCaregiver: true);
+      }
+      if (migrated != profile) {
+        await storage.saveUserProfile(migrated);
+      }
+      return migrated;
     }
 
     // New user - onboardingComplete defaults to false
@@ -101,7 +107,16 @@ class UserSettings extends _$UserSettings {
 
   Future<void> updateUserRole(String role) async {
     final current = await future;
-    final updated = current.copyWith(userRole: role);
+    final updated = current.copyWith(
+      userRole: role,
+      isCaregiver: role == 'caregiver' ? true : current.isCaregiver,
+    );
+    await updateProfile(updated);
+  }
+
+  Future<void> updateIsCaregiver(bool value) async {
+    final current = await future;
+    final updated = current.copyWith(isCaregiver: value);
     await updateProfile(updated);
   }
 

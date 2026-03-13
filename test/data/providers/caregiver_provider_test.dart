@@ -1,12 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:kusuridoki/data/models/caregiver_link.dart';
 import 'package:kusuridoki/data/providers/caregiver_provider.dart';
-import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
-
-import 'settings_provider_test.mocks.dart';
 
 void main() {
   CaregiverLink makeLink(String id) => CaregiverLink(
@@ -18,88 +16,48 @@ void main() {
     linkedAt: DateTime(2024, 1, 1),
   );
 
-  group('CaregiverLinks notifier', () {
-    late MockStorageService mockStorage;
+  /// Creates a stream that stays open (unlike Stream.value which closes
+  /// immediately and causes "disposed during loading state" errors).
+  Stream<List<CaregiverLink>> openStream(List<CaregiverLink> links) {
+    final controller = StreamController<List<CaregiverLink>>();
+    controller.add(links);
+    // Don't close — keeps the stream alive for Riverpod StreamProvider
+    return controller.stream;
+  }
 
-    setUp(() {
-      mockStorage = MockStorageService();
-    });
-
-    test('build() returns list from storage', () async {
+  group('caregiverLinks stream provider', () {
+    test('emits list from overridden stream', () async {
       final links = [makeLink('1'), makeLink('2')];
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => links);
-
       final container = ProviderContainer(
-        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
+        overrides: [
+          caregiverLinksProvider.overrideWith(
+            (ref) => openStream(links),
+          ),
+        ],
       );
       addTearDown(container.dispose);
+
+      // Keep provider alive with a persistent listener before reading future
+      container.listen(caregiverLinksProvider, (prev, next) {});
 
       final result = await container.read(caregiverLinksProvider.future);
       expect(result, hasLength(2));
       expect(result[0].id, '1');
       expect(result[1].id, '2');
-      verify(mockStorage.getAllCaregiverLinks()).called(1);
     });
 
-    test('build() returns empty list when storage is empty', () async {
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => []);
-
+    test('emits empty list when no links', () async {
       final container = ProviderContainer(
-        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
+        overrides: [
+          caregiverLinksProvider.overrideWith(
+            (ref) => openStream(<CaregiverLink>[]),
+          ),
+        ],
       );
       addTearDown(container.dispose);
 
-      final result = await container.read(caregiverLinksProvider.future);
-      expect(result, isEmpty);
-    });
+      container.listen(caregiverLinksProvider, (prev, next) {});
 
-    test('addLink saves to storage and invalidates', () async {
-      final link = makeLink('new');
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => []);
-      when(mockStorage.saveCaregiverLink(any)).thenAnswer((_) async {});
-
-      final container = ProviderContainer(
-        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
-      );
-      addTearDown(container.dispose);
-
-      // Initial build
-      await container.read(caregiverLinksProvider.future);
-
-      // After addLink, storage should return the new link
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => [link]);
-
-      await container.read(caregiverLinksProvider.notifier).addLink(link);
-
-      verify(mockStorage.saveCaregiverLink(link)).called(1);
-
-      // After invalidation, should re-fetch
-      final result = await container.read(caregiverLinksProvider.future);
-      expect(result, hasLength(1));
-      expect(result[0].id, 'new');
-    });
-
-    test('removeLink deletes from storage and invalidates', () async {
-      final link = makeLink('1');
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => [link]);
-      when(mockStorage.deleteCaregiverLink(any)).thenAnswer((_) async {});
-
-      final container = ProviderContainer(
-        overrides: [storageServiceProvider.overrideWithValue(mockStorage)],
-      );
-      addTearDown(container.dispose);
-
-      // Initial build
-      await container.read(caregiverLinksProvider.future);
-
-      // After removeLink, storage should return empty
-      when(mockStorage.getAllCaregiverLinks()).thenAnswer((_) async => []);
-
-      await container.read(caregiverLinksProvider.notifier).removeLink('1');
-
-      verify(mockStorage.deleteCaregiverLink('1')).called(1);
-
-      // After invalidation, should re-fetch
       final result = await container.read(caregiverLinksProvider.future);
       expect(result, isEmpty);
     });
@@ -109,11 +67,15 @@ void main() {
     test('returns true when no caregivers and max is 1', () async {
       final container = ProviderContainer(
         overrides: [
-          caregiverLinksProvider.overrideWith(() => _FakeCaregiverLinks([])),
+          caregiverLinksProvider.overrideWith(
+            (ref) => openStream(<CaregiverLink>[]),
+          ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(canAddCaregiverProvider, (prev, next) {});
 
       final result = await container.read(canAddCaregiverProvider.future);
       expect(result, isTrue);
@@ -123,12 +85,14 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-            () => _FakeCaregiverLinks([makeLink('1')]),
+            (ref) => openStream([makeLink('1')]),
           ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(canAddCaregiverProvider, (prev, next) {});
 
       final result = await container.read(canAddCaregiverProvider.future);
       expect(result, isFalse);
@@ -138,12 +102,14 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+            (ref) => openStream([makeLink('1'), makeLink('2')]),
           ),
           maxCaregiversProvider.overrideWithValue(999),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(canAddCaregiverProvider, (prev, next) {});
 
       final result = await container.read(canAddCaregiverProvider.future);
       expect(result, isTrue);
@@ -154,11 +120,15 @@ void main() {
     test('returns max when no caregivers', () async {
       final container = ProviderContainer(
         overrides: [
-          caregiverLinksProvider.overrideWith(() => _FakeCaregiverLinks([])),
+          caregiverLinksProvider.overrideWith(
+            (ref) => openStream(<CaregiverLink>[]),
+          ),
           maxCaregiversProvider.overrideWithValue(5),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(remainingCaregiverSlotsProvider, (prev, next) {});
 
       final result = await container.read(
         remainingCaregiverSlotsProvider.future,
@@ -170,12 +140,14 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-            () => _FakeCaregiverLinks([makeLink('1')]),
+            (ref) => openStream([makeLink('1')]),
           ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(remainingCaregiverSlotsProvider, (prev, next) {});
 
       final result = await container.read(
         remainingCaregiverSlotsProvider.future,
@@ -187,12 +159,14 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+            (ref) => openStream([makeLink('1'), makeLink('2')]),
           ),
           maxCaregiversProvider.overrideWithValue(1),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(remainingCaregiverSlotsProvider, (prev, next) {});
 
       final result = await container.read(
         remainingCaregiverSlotsProvider.future,
@@ -204,12 +178,14 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           caregiverLinksProvider.overrideWith(
-            () => _FakeCaregiverLinks([makeLink('1'), makeLink('2')]),
+            (ref) => openStream([makeLink('1'), makeLink('2')]),
           ),
           maxCaregiversProvider.overrideWithValue(5),
         ],
       );
       addTearDown(container.dispose);
+
+      container.listen(remainingCaregiverSlotsProvider, (prev, next) {});
 
       final result = await container.read(
         remainingCaregiverSlotsProvider.future,
@@ -217,12 +193,4 @@ void main() {
       expect(result, 3);
     });
   });
-}
-
-class _FakeCaregiverLinks extends CaregiverLinks {
-  final List<CaregiverLink> _links;
-  _FakeCaregiverLinks(this._links);
-
-  @override
-  Future<List<CaregiverLink>> build() async => _links;
 }

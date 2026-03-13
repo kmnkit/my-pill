@@ -70,17 +70,53 @@ exports.acceptInvite = onCall(async (request) => {
     throw new HttpsError('invalid-argument', 'Cannot accept your own invite');
   }
 
-  // Read patient profile to get name for caregiver dashboard
+  // Check for duplicate link
+  const existingLink = await db.collection('caregiverAccess')
+    .doc(caregiverId).collection('patients').doc(patientId).get();
+  if (existingLink.exists) {
+    throw new HttpsError('already-exists', 'Already linked to this patient');
+  }
+
+  // Check patient's caregiver count
+  const patientCaregivers = await db.collection('users')
+    .doc(patientId).collection('caregiverLinks').get();
+  // Check caregiver's patient count
+  const caregiverPatients = await db.collection('caregiverAccess')
+    .doc(caregiverId).collection('patients').get();
+
+  // Determine subscription tiers
   const patientDoc = await db.collection('users').doc(patientId).get();
   const patientData = patientDoc.exists ? patientDoc.data() : {};
+  const caregiverDoc = await db.collection('users').doc(caregiverId).get();
+  const caregiverData = caregiverDoc.exists ? caregiverDoc.data() : {};
+
+  const patientIsPremium = patientData.premiumPending === true;
+  const caregiverIsPremium = caregiverData.premiumPending === true;
+
+  const patientMaxCaregivers = patientIsPremium ? 999 : 1;
+  const caregiverMaxPatients = caregiverIsPremium ? 999 : 1;
+
+  if (patientCaregivers.size >= patientMaxCaregivers) {
+    throw new HttpsError('resource-exhausted', 'Patient has reached caregiver limit');
+  }
+  if (caregiverPatients.size >= caregiverMaxPatients) {
+    throw new HttpsError('resource-exhausted', 'Caregiver has reached patient limit');
+  }
+
   const patientName = patientData?.profile?.name || 'Patient';
 
   const batch = db.batch();
 
-  // Create caregiver access (with patient name for dashboard display)
+  // Read patient's privacy settings
+  const shareMedications = patientData?.profile?.shareMedicationList !== false;
+  const shareAdherence = patientData?.profile?.shareAdherenceData !== false;
+
+  // Create caregiver access (with patient name and privacy settings)
   batch.set(db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId), {
     patientId,
     patientName,
+    shareMedications,
+    shareAdherence,
     linkedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
@@ -207,6 +243,35 @@ exports.cleanupExpiredInvites = onSchedule('every 24 hours', async () => {
   await batch.commit();
 
   console.log(`Cleaned up ${expired.size} expired invites`);
+});
+
+// Update caregiver permissions when patient toggles privacy settings
+exports.updateCaregiverPermissions = onCall(async (request) => {
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Must be signed in');
+
+  await checkRateLimit(request.auth.uid, 'updateCaregiverPermissions', 10);
+
+  const patientId = request.auth.uid;
+  const { shareMedications, shareAdherence } = request.data;
+
+  if (typeof shareMedications !== 'boolean' || typeof shareAdherence !== 'boolean') {
+    throw new HttpsError('invalid-argument', 'shareMedications and shareAdherence must be booleans');
+  }
+
+  // Find all caregivers linked to this patient
+  const caregiverLinks = await db.collection('users').doc(patientId).collection('caregiverLinks').get();
+
+  if (caregiverLinks.empty) return { success: true, updated: 0 };
+
+  const batch = db.batch();
+  for (const linkDoc of caregiverLinks.docs) {
+    const { caregiverId } = linkDoc.data();
+    const accessRef = db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId);
+    batch.update(accessRef, { shareMedications, shareAdherence });
+  }
+  await batch.commit();
+
+  return { success: true, updated: caregiverLinks.size };
 });
 
 // Verify IAP receipt and store subscription status server-side

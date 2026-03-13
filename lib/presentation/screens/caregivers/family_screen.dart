@@ -123,10 +123,7 @@ class FamilyScreen extends ConsumerWidget {
                                 caregiverId: link.caregiverId,
                                 linkId: link.id,
                               );
-                              // Remove local record
-                              await ref
-                                  .read(caregiverLinksProvider.notifier)
-                                  .removeLink(link.id);
+                              // Firestore stream auto-updates; no local removal needed.
 
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(

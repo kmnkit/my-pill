@@ -8,27 +8,31 @@ service cloud.firestore {
       // Subcollections
       match /medications/{medicationId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
-        // Allow caregivers read access
+        // Allow caregivers read access if shareMedications is true (default true for backward compat)
         allow read: if request.auth != null &&
-          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId));
+          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)) &&
+          get(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)).data.get('shareMedications', true) == true;
       }
 
       match /schedules/{scheduleId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
         allow read: if request.auth != null &&
-          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId));
+          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)) &&
+          get(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)).data.get('shareMedications', true) == true;
       }
 
       match /reminders/{reminderId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
         allow read: if request.auth != null &&
-          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId));
+          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)) &&
+          get(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)).data.get('shareAdherence', true) == true;
       }
 
       match /adherenceRecords/{recordId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
         allow read: if request.auth != null &&
-          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId));
+          exists(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)) &&
+          get(/databases/$(database)/documents/caregiverAccess/$(request.auth.uid)/patients/$(userId)).data.get('shareAdherence', true) == true;
       }
 
       match /caregiverLinks/{linkId} {

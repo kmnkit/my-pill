@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/services/cloud_functions_service.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/data_sharing_dialog.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 
@@ -39,6 +41,14 @@ class _TrackingUserSettings extends UserSettings {
 class _FakeErrorUserSettings extends UserSettings {
   @override
   Future<UserProfile> build() async => throw Exception('settings error');
+}
+
+class _FakeCloudFunctionsService extends Fake implements CloudFunctionsService {
+  @override
+  Future<void> updateCaregiverPermissions({
+    required bool shareMedications,
+    required bool shareAdherence,
+  }) async {}
 }
 
 // ---------------------------------------------------------------------------
@@ -80,6 +90,8 @@ const _allOffProfile = UserProfile(
 
 List<dynamic> _overrides({UserProfile profile = _allOnProfile}) => [
   userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
+  cloudFunctionsServiceProvider
+      .overrideWithValue(_FakeCloudFunctionsService()),
 ];
 
 // ---------------------------------------------------------------------------
@@ -297,7 +309,11 @@ void main() {
         await tester.pumpWidget(
           createTestableWidget(
             const DataSharingDialog(),
-            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+            overrides: [
+              userSettingsProvider.overrideWith(() => notifier),
+              cloudFunctionsServiceProvider
+                  .overrideWithValue(_FakeCloudFunctionsService()),
+            ],
           ),
         );
         await tester.pumpAndSettle();
@@ -319,7 +335,11 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          overrides: [
+            userSettingsProvider.overrideWith(() => notifier),
+            cloudFunctionsServiceProvider
+                .overrideWithValue(_FakeCloudFunctionsService()),
+          ],
         ),
       );
       await tester.pumpAndSettle();
@@ -338,7 +358,11 @@ void main() {
         await tester.pumpWidget(
           createTestableWidget(
             const DataSharingDialog(),
-            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+            overrides: [
+              userSettingsProvider.overrideWith(() => notifier),
+              cloudFunctionsServiceProvider
+                  .overrideWithValue(_FakeCloudFunctionsService()),
+            ],
           ),
         );
         await tester.pumpAndSettle();
@@ -360,7 +384,11 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          overrides: [
+            userSettingsProvider.overrideWith(() => notifier),
+            cloudFunctionsServiceProvider
+                .overrideWithValue(_FakeCloudFunctionsService()),
+          ],
         ),
       );
       await tester.pumpAndSettle();
@@ -379,7 +407,11 @@ void main() {
         await tester.pumpWidget(
           createTestableWidget(
             const DataSharingDialog(),
-            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+            overrides: [
+              userSettingsProvider.overrideWith(() => notifier),
+              cloudFunctionsServiceProvider
+                  .overrideWithValue(_FakeCloudFunctionsService()),
+            ],
           ),
         );
         await tester.pumpAndSettle();
@@ -401,7 +433,11 @@ void main() {
         await tester.pumpWidget(
           createTestableWidget(
             const DataSharingDialog(),
-            overrides: [userSettingsProvider.overrideWith(() => notifier)],
+            overrides: [
+              userSettingsProvider.overrideWith(() => notifier),
+              cloudFunctionsServiceProvider
+                  .overrideWithValue(_FakeCloudFunctionsService()),
+            ],
           ),
         );
         await tester.pumpAndSettle();
@@ -419,7 +455,11 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const DataSharingDialog(),
-          overrides: [userSettingsProvider.overrideWith(() => notifier)],
+          overrides: [
+            userSettingsProvider.overrideWith(() => notifier),
+            cloudFunctionsServiceProvider
+                .overrideWithValue(_FakeCloudFunctionsService()),
+          ],
         ),
       );
       await tester.pumpAndSettle();

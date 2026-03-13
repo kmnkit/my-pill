@@ -69,7 +69,7 @@ String? computeRedirect({
   }
 
   final onboardingComplete = currentSettings.onboardingComplete;
-  final userRole = currentSettings.userRole;
+  final isCaregiver = currentSettings.isCaregiver;
 
   // Not completed onboarding → redirect to onboarding.
   if (!onboardingComplete && !isOnboardingRoute) {
@@ -99,7 +99,7 @@ String? computeRedirect({
     if (pendingCode != null) {
       return '/invite/$pendingCode';
     }
-    return userRole == 'caregiver' ? '/caregiver/patients' : '/home';
+    return isCaregiver ? '/caregiver/patients' : '/home';
   }
 
   // Authenticated users already past /login also need pending invite consumed
@@ -121,7 +121,7 @@ class RouterRefreshNotifier extends ChangeNotifier {
 
   void update(UserProfile? settings) {
     if (_settings?.onboardingComplete != settings?.onboardingComplete ||
-        _settings?.userRole != settings?.userRole) {
+        _settings?.isCaregiver != settings?.isCaregiver) {
       _settings = settings;
       notifyListeners();
     }

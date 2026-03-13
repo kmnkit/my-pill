@@ -654,6 +654,14 @@ class MockCloudFunctionsService implements CloudFunctionsService {
   }
 
   @override
+  Future<void> updateCaregiverPermissions({
+    required bool shareMedications,
+    required bool shareAdherence,
+  }) async {
+    _checkFailure();
+  }
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => null;
 }
 

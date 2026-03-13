@@ -1,37 +1,17 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/data/models/caregiver_link.dart';
-import 'package:kusuridoki/data/providers/storage_service_provider.dart';
+import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
 
 part 'caregiver_provider.g.dart';
 
+/// Real-time stream of caregiver links from Firestore.
+/// Replaces the previous Hive-backed AsyncNotifierProvider so that
+/// links created by Cloud Functions are reflected immediately.
 @riverpod
-class CaregiverLinks extends _$CaregiverLinks {
-  @override
-  Future<List<CaregiverLink>> build() async {
-    final storage = ref.watch(storageServiceProvider);
-    return storage.getAllCaregiverLinks();
-  }
-
-  Future<void> addLink(CaregiverLink link) async {
-    final storage = ref.read(storageServiceProvider);
-    await storage.saveCaregiverLink(link);
-    if (!ref.mounted) return;
-    await _refreshState();
-  }
-
-  Future<void> removeLink(String id) async {
-    final storage = ref.read(storageServiceProvider);
-    await storage.deleteCaregiverLink(id);
-    if (!ref.mounted) return;
-    await _refreshState();
-  }
-
-  Future<void> _refreshState() async {
-    state = AsyncData(
-      await ref.read(storageServiceProvider).getAllCaregiverLinks(),
-    );
-  }
+Stream<List<CaregiverLink>> caregiverLinks(Ref ref) {
+  final firestore = ref.watch(firestoreServiceProvider);
+  return firestore.watchCaregiverLinks();
 }
 
 /// Check if user can add another caregiver based on subscription tier

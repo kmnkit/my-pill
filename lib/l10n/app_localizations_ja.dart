@@ -1313,6 +1313,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cannotAddMoreCaregivers => 'これ以上介護者を追加できません';
 
   @override
+  String get alreadyLinked => 'すでにこの患者と連携されています。';
+
+  @override
+  String get connectionLimitReached => '連携上限に達しました。プレミアムで無制限に。';
+
+  @override
+  String get patientLimitReached => '無料プランでは患者は1名までです';
+
+  @override
   String get generateInviteLink => '招待リンクを生成';
 
   @override

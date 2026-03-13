@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
-import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
+import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/patient_data_card.dart';
 import 'package:kusuridoki/presentation/screens/caregivers/widgets/qr_scanner_screen.dart';
@@ -27,6 +30,15 @@ class CaregiverDashboardScreen extends ConsumerStatefulWidget {
 class _CaregiverDashboardScreenState
     extends ConsumerState<CaregiverDashboardScreen> {
   Future<void> _scanQrCode() async {
+    // Client-side patient limit pre-check
+    if (kPremiumEnabled) {
+      final canAdd = await ref.read(canAddPatientProvider.future);
+      if (!canAdd) {
+        if (mounted) _showPatientLimitDialog();
+        return;
+      }
+    }
+
     final code = await Navigator.of(context).push<String>(
       MaterialPageRoute(builder: (context) => const QrScannerScreen()),
     );
@@ -44,9 +56,8 @@ class _CaregiverDashboardScreenState
       final cfService = ref.read(cloudFunctionsServiceProvider);
       await cfService.acceptInvite(code);
 
-      ref.invalidate(caregiverLinksProvider);
-      ref.invalidate(caregiverPatientsProvider);
-      await ref.read(userSettingsProvider.notifier).updateUserRole('caregiver');
+      // Firestore streams auto-update; no manual invalidation needed.
+      await ref.read(userSettingsProvider.notifier).updateIsCaregiver(true);
 
       if (!mounted) return;
       Navigator.of(context).pop(); // close loading
@@ -78,6 +89,52 @@ class _CaregiverDashboardScreenState
         ),
       );
     }
+  }
+
+  void _showPatientLimitDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.workspace_premium,
+              color: AppColors.warning,
+              size: AppSpacing.iconLg,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(child: Text(l10n.patientLimitReached)),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.upgradeToPremium),
+            const SizedBox(height: AppSpacing.md),
+            PremiumInlineUpsell(message: l10n.unlimitedCaregivers),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton.icon(
+            onPressed: kPremiumEnabled
+                ? () {
+                    Navigator.of(context).pop();
+                    GoRouter.of(context).push(RouteNames.premium);
+                  }
+                : null,
+            icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
+            label: Text(l10n.tryPremium),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.warning),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
