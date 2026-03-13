@@ -58,6 +58,8 @@
 	<string>Get reminders when it's time to take your medication.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kusuridoki accesses your photo library to let you choose medication photos.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
