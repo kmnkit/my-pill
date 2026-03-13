@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
@@ -5,9 +6,19 @@ import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
+
+class _MockAuthService extends AuthService {
+  @override
+  Stream<User?> get authStateChanges => const Stream.empty();
+  @override
+  User? get currentUser => null;
+  @override
+  Future<void> signOut() async {}
+}
 
 class _FakeUserSettings extends UserSettings {
   final UserProfile _profile;
@@ -47,6 +58,7 @@ List<dynamic> _buildOverrides({
   return [
     userSettingsProvider.overrideWith(() => _FakeUserSettings(profile)),
     authStateProvider.overrideWith((ref) => Stream.value(null)),
+    authServiceProvider.overrideWithValue(_MockAuthService()),
     isPremiumProvider.overrideWith((ref) => isPremium),
     subscriptionStatusProvider.overrideWith((ref) => status ?? _freeStatus),
     appVersionProvider.overrideWith((ref) async => '1.1.1'),
@@ -103,6 +115,7 @@ void main() {
           overrides: [
             userSettingsProvider.overrideWith(() => _FakeErrorUserSettings()),
             authStateProvider.overrideWith((ref) => Stream.value(null)),
+            authServiceProvider.overrideWithValue(_MockAuthService()),
             isPremiumProvider.overrideWith((ref) => false),
             subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
           ],
@@ -120,6 +133,7 @@ void main() {
           overrides: [
             userSettingsProvider.overrideWith(() => _FakeErrorUserSettings()),
             authStateProvider.overrideWith((ref) => Stream.value(null)),
+            authServiceProvider.overrideWithValue(_MockAuthService()),
             isPremiumProvider.overrideWith((ref) => false),
             subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
           ],
@@ -210,11 +224,25 @@ void main() {
       expect(find.textContaining('Version'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('switch to caregiver view button is present', (tester) async {
+    testWidgets('switch to caregiver view button is present for caregiver role', (tester) async {
+      const caregiverProfile = UserProfile(
+        id: 'user-001',
+        name: 'Alice',
+        language: 'en',
+        highContrast: false,
+        textSize: 'normal',
+        notificationsEnabled: true,
+        criticalAlerts: false,
+        snoozeDuration: 15,
+        travelModeEnabled: false,
+        removeAds: false,
+        onboardingComplete: true,
+        userRole: 'caregiver',
+      );
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
-          overrides: _buildOverrides(),
+          overrides: _buildOverrides(profile: caregiverProfile),
         ),
       );
       await tester.pumpAndSettle();
@@ -491,6 +519,7 @@ void main() {
           overrides: [
             userSettingsProvider.overrideWith(() => _FakeErrorUserSettings()),
             authStateProvider.overrideWith((ref) => Stream.value(null)),
+            authServiceProvider.overrideWithValue(_MockAuthService()),
             isPremiumProvider.overrideWith((ref) => false),
             subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
           ],
@@ -535,10 +564,24 @@ void main() {
     testWidgets('tapping switch to caregiver view button does not throw', (
       tester,
     ) async {
+      const caregiverProfile = UserProfile(
+        id: 'user-001',
+        name: 'Alice',
+        language: 'en',
+        highContrast: false,
+        textSize: 'normal',
+        notificationsEnabled: true,
+        criticalAlerts: false,
+        snoozeDuration: 15,
+        travelModeEnabled: false,
+        removeAds: false,
+        onboardingComplete: true,
+        userRole: 'caregiver',
+      );
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
-          overrides: _buildOverrides(),
+          overrides: _buildOverrides(profile: caregiverProfile),
         ),
       );
       await tester.pumpAndSettle();

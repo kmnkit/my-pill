@@ -6,24 +6,30 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
+async function deleteDocs(docs) {
+  for (let i = 0; i < docs.length; i += 500) {
+    const batch = db.batch();
+    docs.slice(i, i + 500).forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  }
+}
+
 // Rate limiter: max N calls per minute per uid+action
 async function checkRateLimit(uid, action, maxPerMinute = 5) {
   const now = Date.now();
   const windowStart = now - 60000; // 1 minute window
   const rateLimitRef = db.collection('rateLimits').doc(`${uid}_${action}`);
 
-  const doc = await rateLimitRef.get();
-  if (doc.exists) {
-    const data = doc.data();
-    const recentCalls = (data.timestamps || []).filter(t => t > windowStart);
+  await db.runTransaction(async (transaction) => {
+    const doc = await transaction.get(rateLimitRef);
+    const timestamps = doc.exists ? (doc.data().timestamps || []) : [];
+    const recentCalls = timestamps.filter(t => t > windowStart);
     if (recentCalls.length >= maxPerMinute) {
       throw new HttpsError('resource-exhausted', 'Too many requests. Please try again later.');
     }
     recentCalls.push(now);
-    await rateLimitRef.set({ timestamps: recentCalls, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
-  } else {
-    await rateLimitRef.set({ timestamps: [now], updatedAt: admin.firestore.FieldValue.serverTimestamp() });
-  }
+    transaction.set(rateLimitRef, { timestamps: recentCalls, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+  });
 }
 
 // Generate invite link
@@ -75,6 +81,12 @@ exports.acceptInvite = onCall(async (request) => {
   const patientData = patientDoc.exists ? patientDoc.data() : {};
   const patientName = patientData?.profile?.name || 'Patient';
 
+  // Prevent duplicate caregiver-patient link
+  const existingLink = await db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId).get();
+  if (existingLink.exists) {
+    throw new HttpsError('already-exists', 'Already linked to this patient');
+  }
+
   const batch = db.batch();
 
   // Create caregiver access (with patient name for dashboard display)
@@ -116,6 +128,9 @@ exports.revokeAccess = onCall(async (request) => {
   if (!linkDoc.exists) {
     throw new HttpsError('not-found', 'Caregiver link not found');
   }
+  if (linkDoc.data().caregiverId !== caregiverId) {
+    throw new HttpsError('permission-denied', 'Caregiver ID mismatch');
+  }
 
   const batch = db.batch();
   batch.delete(db.collection('caregiverAccess').doc(caregiverId).collection('patients').doc(patientId));
@@ -137,18 +152,12 @@ exports.deleteUserAccount = onCall(async (request) => {
   const subcollections = ['medications', 'schedules', 'reminders', 'adherenceRecords', 'caregiverLinks'];
   for (const col of subcollections) {
     const snapshot = await db.collection('users').doc(uid).collection(col).get();
-    const batch = db.batch();
-    snapshot.docs.forEach(doc => batch.delete(doc.ref));
-    if (snapshot.docs.length > 0) await batch.commit();
+    await deleteDocs(snapshot.docs);
   }
 
   // Delete caregiverAccess docs where this user is a caregiver
   const caregiverPatientsSnapshot = await db.collection('caregiverAccess').doc(uid).collection('patients').get();
-  if (caregiverPatientsSnapshot.docs.length > 0) {
-    const batch = db.batch();
-    caregiverPatientsSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-    await batch.commit();
-  }
+  await deleteDocs(caregiverPatientsSnapshot.docs);
   // Also delete the caregiverAccess/{uid} parent doc if it exists
   await db.collection('caregiverAccess').doc(uid).delete().catch(() => {});
 
@@ -156,21 +165,13 @@ exports.deleteUserAccount = onCall(async (request) => {
   const patientLinksSnapshot = await db.collectionGroup('patients')
     .where('patientId', '==', uid)
     .get();
-  if (patientLinksSnapshot.docs.length > 0) {
-    const batch = db.batch();
-    patientLinksSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-    await batch.commit();
-  }
+  await deleteDocs(patientLinksSnapshot.docs);
 
   // Delete pending invites created by this user
   const pendingInvites = await db.collection('invites')
     .where('patientId', '==', uid)
     .get();
-  if (pendingInvites.docs.length > 0) {
-    const batch = db.batch();
-    pendingInvites.docs.forEach(doc => batch.delete(doc.ref));
-    await batch.commit();
-  }
+  await deleteDocs(pendingInvites.docs);
 
   // Delete rate limit documents for this user
   const rateLimitIds = [
@@ -202,9 +203,7 @@ exports.cleanupExpiredInvites = onSchedule('every 24 hours', async () => {
     .where('status', '==', 'pending')
     .get();
 
-  const batch = db.batch();
-  expired.docs.forEach(doc => batch.delete(doc.ref));
-  await batch.commit();
+  await deleteDocs(expired.docs);
 
   console.log(`Cleaned up ${expired.size} expired invites`);
 });
@@ -230,7 +229,11 @@ exports.verifyReceipt = onCall(async (request) => {
   const uid = request.auth.uid;
 
   // Store receipt data for server-side verification
-  await db.collection('users').doc(uid).collection('subscriptions').add({
+  const existingReceipt = await db.collection('users').doc(uid).collection('subscriptions').doc(purchaseToken).get();
+  if (existingReceipt.exists) {
+    return { success: true, status: existingReceipt.data().status };
+  }
+  await db.collection('users').doc(uid).collection('subscriptions').doc(purchaseToken).set({
     productId,
     purchaseToken,
     source,

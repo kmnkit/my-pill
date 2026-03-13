@@ -14,18 +14,9 @@ import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
 
-// Tracks whether reauthenticate() was called during the delete flow.
 class _TrackingAuthService extends AuthService {
-  bool reauthCalled = false;
-
   @override
   Stream<User?> get authStateChanges => const Stream.empty();
-
-  @override
-  Future<bool> reauthenticate() async {
-    reauthCalled = true;
-    return true;
-  }
 
   @override
   Future<void> signOut() async {}
@@ -92,8 +83,9 @@ void main() {
     // DEL-001: CloudFunctions.deleteAccount() uses server-side admin auth,
     // so the client does not need to re-authenticate the user first.
     // 2-step confirmation dialogs are sufficient for intent verification.
+    // Note: reauthenticate() was removed from AuthService (AUTH-M01).
     testWidgets(
-      'DEL-001: authenticated delete does NOT call reauthenticate()',
+      'DEL-001: authenticated delete completes 2-step confirmation flow',
       (tester) async {
         final mockAuth = _TrackingAuthService();
 
@@ -107,12 +99,9 @@ void main() {
 
         await _tapThroughBothConfirms(tester);
 
-        expect(
-          mockAuth.reauthCalled,
-          isFalse,
-          reason: 'reauthenticate() should not be called; '
-              'CloudFunctions uses server-side admin auth (context.auth.uid)',
-        );
+        // If we got here without exception, the flow completed successfully.
+        // CloudFunctions.deleteAccount() throws in test (no Firebase) but
+        // the error is caught and shown via SnackBar.
       },
     );
   });

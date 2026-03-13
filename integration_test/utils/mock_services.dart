@@ -160,12 +160,6 @@ class MockAuthService implements AuthService {
   }
 
   @override
-  Future<bool> reauthenticate() async {
-    _checkFailure();
-    return _currentUser != null;
-  }
-
-  @override
   Future<void> deleteAccount() async {
     _checkFailure();
     _currentUser = null;

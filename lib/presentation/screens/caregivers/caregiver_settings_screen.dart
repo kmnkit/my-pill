@@ -1,16 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
-import 'package:kusuridoki/data/providers/adherence_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/caregiver_provider.dart';
-import 'package:kusuridoki/data/providers/medication_provider.dart';
-import 'package:kusuridoki/data/providers/reminder_provider.dart';
-import 'package:kusuridoki/data/providers/schedule_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 
 import 'package:kusuridoki/data/providers/invite_provider.dart';
@@ -21,6 +16,7 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/screens/settings/widgets/language_selector.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/utils/provider_invalidation.dart';
 
 class CaregiverSettingsScreen extends ConsumerStatefulWidget {
   const CaregiverSettingsScreen({super.key});
@@ -32,16 +28,6 @@ class CaregiverSettingsScreen extends ConsumerStatefulWidget {
 
 class _CaregiverSettingsScreenState
     extends ConsumerState<CaregiverSettingsScreen> {
-  void _invalidateAllProviders() {
-    ref.invalidate(medicationListProvider);
-    ref.invalidate(scheduleListProvider);
-    ref.invalidate(todayRemindersProvider);
-    ref.invalidate(overallAdherenceProvider);
-    ref.invalidate(weeklyAdherenceProvider);
-    ref.invalidate(caregiverLinksProvider);
-    ref.invalidate(userSettingsProvider);
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -112,13 +98,7 @@ class _CaregiverSettingsScreenState
                 style: TextStyle(color: AppColors.error),
               ),
               onTap: () async {
-                bool isAnonymous;
-                try {
-                  isAnonymous =
-                      FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
-                } catch (_) {
-                  isAnonymous = false;
-                }
+                final isAnonymous = ref.read(authServiceProvider).currentUser?.isAnonymous ?? false;
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -142,7 +122,7 @@ class _CaregiverSettingsScreenState
                   // 1. Clear user data first (while widget is still mounted)
                   await ref.read(storageServiceProvider).clearUserData();
                   // 2. Invalidate providers (before signOut triggers redirect)
-                  _invalidateAllProviders();
+                  invalidateUserProviders(ref);
                   // 3. Sign out last — router redirect handles navigation to /login
                   await ref.read(authServiceProvider).signOut();
                 }
@@ -169,13 +149,7 @@ class _CaregiverSettingsScreenState
               ),
               contentPadding: EdgeInsets.zero,
               onTap: () async {
-                bool isAnon;
-                try {
-                  isAnon =
-                      FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
-                } catch (_) {
-                  isAnon = false;
-                }
+                final isAnon = ref.read(authServiceProvider).currentUser?.isAnonymous ?? false;
                 final confirmed = await KdConfirmDialog.show(
                   context,
                   title: l10n.deactivateAccountTitle,
@@ -203,7 +177,7 @@ class _CaregiverSettingsScreenState
                     // 2. Clear user data (while widget is still mounted)
                     await ref.read(storageServiceProvider).clearUserData();
                     // 3. Invalidate providers (before signOut triggers redirect)
-                    _invalidateAllProviders();
+                    invalidateUserProviders(ref);
                     // 4. Sign out last — router redirect handles navigation
                     await ref.read(authServiceProvider).signOut();
                   } catch (e) {
@@ -267,7 +241,7 @@ class _CaregiverSettingsScreenState
                     // 2. Clear local data (while widget is still mounted)
                     await ref.read(storageServiceProvider).clearUserData();
                     // 3. Invalidate providers (before signOut triggers redirect)
-                    _invalidateAllProviders();
+                    invalidateUserProviders(ref);
                     // 4. Sign out last — router redirect handles navigation
                     await authService.signOut();
                   } catch (e) {

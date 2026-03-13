@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -9,12 +8,6 @@ import 'package:kusuridoki/core/constants/app_constants.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:kusuridoki/data/providers/adherence_provider.dart';
-import 'package:kusuridoki/data/providers/caregiver_provider.dart';
-import 'package:kusuridoki/data/providers/medication_provider.dart';
-import 'package:kusuridoki/data/providers/reminder_provider.dart';
-import 'package:kusuridoki/data/providers/schedule_provider.dart';
-
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
@@ -35,6 +28,7 @@ import 'package:kusuridoki/presentation/shared/widgets/kd_section_header.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_shimmer.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/gradient_scaffold.dart';
+import 'package:kusuridoki/core/utils/provider_invalidation.dart';
 
 @visibleForTesting
 final appVersionProvider = FutureProvider<String>((ref) async {
@@ -53,7 +47,7 @@ class SettingsScreen extends ConsumerWidget {
 
     bool isAnonymous;
     try {
-      isAnonymous = FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
+      isAnonymous = ref.read(authServiceProvider).currentUser?.isAnonymous ?? false;
     } catch (_) {
       isAnonymous = false;
     }
@@ -150,7 +144,7 @@ class SettingsScreen extends ConsumerWidget {
                   () async {
                     final seeder = ScreenshotSeeder(ref.read(storageServiceProvider));
                     await seeder.clearAndSeed();
-                    _invalidateUserProviders(ref);
+                    invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -169,7 +163,7 @@ class SettingsScreen extends ConsumerWidget {
                     final storage = ref.read(storageServiceProvider);
                     await storage.clearAll();
                     await ScreenshotDataSeeder(storage).seed();
-                    _invalidateUserProviders(ref);
+                    invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -195,7 +189,7 @@ class SettingsScreen extends ConsumerWidget {
                     if (confirmed != true) return;
 
                     await ref.read(storageServiceProvider).clearUserData();
-                    _invalidateUserProviders(ref);
+                    invalidateUserProviders(ref);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('All data cleared!')),
@@ -221,18 +215,11 @@ class SettingsScreen extends ConsumerWidget {
                 l10n.deactivateAccount,
                 Icons.logout,
                 () async {
-                  bool isAnonymous;
-                  try {
-                    isAnonymous = FirebaseAuth
-                            .instance.currentUser?.isAnonymous ??
-                        false;
-                  } catch (_) {
-                    isAnonymous = false;
-                  }
+                  final isAnon = ref.read(authServiceProvider).currentUser?.isAnonymous ?? false;
                   final confirmed = await KdConfirmDialog.show(
                     context,
                     title: l10n.deactivateAccountTitle,
-                    message: isAnonymous
+                    message: isAnon
                         ? l10n.logOutMessageAnonymous
                         : l10n.logOutMessageAuthenticated,
                     confirmLabel: l10n.deactivate,
@@ -244,7 +231,7 @@ class SettingsScreen extends ConsumerWidget {
                       // 1. Clear user data first (while widget is still mounted)
                       await ref.read(storageServiceProvider).clearUserData();
                       // 2. Invalidate all user-data providers (before signOut triggers redirect)
-                      _invalidateUserProviders(ref);
+                      invalidateUserProviders(ref);
                       // 3. Sign out last — router redirect handles navigation to /login
                       await ref.read(authServiceProvider).signOut();
                     } catch (e) {
@@ -290,11 +277,11 @@ class SettingsScreen extends ConsumerWidget {
 
                     if (secondConfirm == true && context.mounted) {
                       try {
-                        final currentUser = FirebaseAuth.instance.currentUser;
-                        if (currentUser == null || currentUser.isAnonymous) {
+                        final deleteUser = ref.read(authServiceProvider).currentUser;
+                        if (deleteUser == null || deleteUser.isAnonymous) {
                           // Null/anonymous path: local data only, sign out
                           await ref.read(storageServiceProvider).clearUserData();
-                          _invalidateUserProviders(ref);
+                          invalidateUserProviders(ref);
                           await ref.read(authServiceProvider).signOut();
                         } else {
                           // Authenticated path: delete server data, then sign out
@@ -304,7 +291,7 @@ class SettingsScreen extends ConsumerWidget {
                           // 2. Clear local data first (while widget is still mounted)
                           await ref.read(storageServiceProvider).clearUserData();
                           // 3. Invalidate all providers (before signOut triggers redirect)
-                          _invalidateUserProviders(ref);
+                          invalidateUserProviders(ref);
                           // 4. Sign out last — router redirect handles navigation
                           await authService.signOut();
                         }
@@ -323,20 +310,22 @@ class SettingsScreen extends ConsumerWidget {
                   textColor: AppColors.error,
                 ),
               ],
-              const SizedBox(height: AppSpacing.xl),
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    context.go('/caregiver/patients');
-                  },
-                  child: Text(
-                    l10n.switchToCaregiverView,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelLarge?.copyWith(color: AppColors.primary),
+              if (userSettings.userRole == 'caregiver') ...[
+                const SizedBox(height: AppSpacing.xl),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      context.go('/caregiver/patients');
+                    },
+                    child: Text(
+                      l10n.switchToCaregiverView,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelLarge?.copyWith(color: AppColors.primary),
+                    ),
                   ),
                 ),
-              ),
+              ],
               const SizedBox(height: AppSpacing.xxxl),
             ],
           ),
@@ -377,6 +366,7 @@ class SettingsScreen extends ConsumerWidget {
           controller: controller,
           decoration: InputDecoration(hintText: l10n.changeNameHint),
           autofocus: true,
+          maxLength: 50,
         ),
         actions: [
           TextButton(
@@ -392,28 +382,22 @@ class SettingsScreen extends ConsumerWidget {
     );
 
     if (confirmed != true) return;
-    final newName = controller.text.trim();
+    // Sanitize: trim, collapse whitespace, strip control characters
+    final newName = controller.text
+        .trim()
+        .replaceAll(RegExp(r'[\x00-\x1F\x7F]'), '')
+        .replaceAll(RegExp(r'\s+'), ' ');
     if (newName.isEmpty) return;
 
     await ref.read(userSettingsProvider.notifier).updateName(newName);
     // Fire-and-forget for authenticated users
-    FirebaseAuth.instance.currentUser?.updateDisplayName(newName);
+    ref.read(authServiceProvider).currentUser?.updateDisplayName(newName);
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.nameSaved)),
       );
     }
-  }
-
-  void _invalidateUserProviders(WidgetRef ref) {
-    ref.invalidate(medicationListProvider);
-    ref.invalidate(scheduleListProvider);
-    ref.invalidate(todayRemindersProvider);
-    ref.invalidate(overallAdherenceProvider);
-    ref.invalidate(weeklyAdherenceProvider);
-    ref.invalidate(caregiverLinksProvider);
-    ref.invalidate(userSettingsProvider);
   }
 
   Widget _buildListTile(
