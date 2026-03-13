@@ -200,6 +200,10 @@
   "localTimeDesc": "Adjust to local timezone",
   "affectedMedications": "Affected Medications",
   "consultDoctor": "Consult your doctor for 3+ hour time differences",
+  "travelModeNotificationNote": "Notification times are automatically adjusted when Travel Mode is enabled. Changes take effect immediately.",
+  "@travelModeNotificationNote": {
+    "description": "Info message that notification scheduling is automatically adjusted in travel mode"
+  },
 
   "settingsTitle": "Settings",
   "account": "Account",

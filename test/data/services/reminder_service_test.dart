@@ -10,10 +10,11 @@ import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/models/schedule.dart';
 import 'package:kusuridoki/data/services/reminder_service.dart';
 import 'package:kusuridoki/data/services/storage_service.dart';
+import 'package:kusuridoki/data/services/timezone_service.dart';
 
 import 'reminder_service_test.mocks.dart';
 
-@GenerateMocks([StorageService])
+@GenerateMocks([StorageService, TimezoneService])
 void main() {
   late MockStorageService mockStorage;
   late ReminderService service;
@@ -982,6 +983,119 @@ void main() {
       // med-1 already exists, med-2 should be created
       expect(result.length, 2);
       verify(mockStorage.saveReminder(any)).called(1);
+    });
+  });
+
+  // ─── travel mode — timezone adjustment ──────────────────────────────────────
+
+  group('travel mode — fixedInterval', () {
+    test('adjusts scheduledTime via TimezoneService when home != current', () async {
+      final date = DateTime(2024, 3, 15);
+      final mockTimezoneService = MockTimezoneService();
+      final service = ReminderService(mockStorage, timezoneService: mockTimezoneService);
+
+      final schedule = makeSchedule(type: ScheduleType.daily, times: ['08:00']);
+
+      // fixedInterval: 08:00 in home timezone → converted time in current timezone
+      // Tokyo(+9) to New York(-5) = -14h → 08:00 - 14h = previous day 18:00
+      when(mockTimezoneService.adjustMedicationTime(
+        any, any, any, any,
+      )).thenReturn(DateTime(2024, 3, 14, 18, 0));
+
+      when(mockStorage.getRemindersForDate(date)).thenAnswer((_) async => []);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      final result = await service.generateRemindersForDate(
+        [schedule],
+        date,
+        homeTimezone: 'Asia/Tokyo',
+        currentTimezone: 'America/New_York',
+        timezoneMode: TimezoneMode.fixedInterval,
+      );
+
+      expect(result.length, 1);
+      expect(result.first.scheduledTime, DateTime(2024, 3, 14, 18, 0));
+      verify(mockTimezoneService.adjustMedicationTime(
+        DateTime(2024, 3, 15, 8, 0),
+        'Asia/Tokyo',
+        'America/New_York',
+        TimezoneMode.fixedInterval,
+      )).called(1);
+    });
+  });
+
+  group('travel mode — localTime', () {
+    test('keeps wall-clock time when mode is localTime', () async {
+      final date = DateTime(2024, 3, 15);
+      final mockTimezoneService = MockTimezoneService();
+      final service = ReminderService(mockStorage, timezoneService: mockTimezoneService);
+
+      final schedule = makeSchedule(type: ScheduleType.daily, times: ['08:00']);
+
+      // localTime mode: adjustMedicationTime returns same hour:minute
+      when(mockTimezoneService.adjustMedicationTime(
+        any, any, any, any,
+      )).thenReturn(DateTime(2024, 3, 15, 8, 0));
+
+      when(mockStorage.getRemindersForDate(date)).thenAnswer((_) async => []);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      final result = await service.generateRemindersForDate(
+        [schedule],
+        date,
+        homeTimezone: 'Asia/Tokyo',
+        currentTimezone: 'America/New_York',
+        timezoneMode: TimezoneMode.localTime,
+      );
+
+      expect(result.length, 1);
+      expect(result.first.scheduledTime.hour, 8);
+      expect(result.first.scheduledTime.minute, 0);
+    });
+  });
+
+  group('travel mode — same timezone', () {
+    test('no adjustment when home == current', () async {
+      final date = DateTime(2024, 3, 15);
+      final mockTimezoneService = MockTimezoneService();
+      final service = ReminderService(mockStorage, timezoneService: mockTimezoneService);
+
+      final schedule = makeSchedule(type: ScheduleType.daily, times: ['08:00']);
+
+      when(mockStorage.getRemindersForDate(date)).thenAnswer((_) async => []);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      final result = await service.generateRemindersForDate(
+        [schedule],
+        date,
+        homeTimezone: 'Asia/Tokyo',
+        currentTimezone: 'Asia/Tokyo',
+        timezoneMode: TimezoneMode.fixedInterval,
+      );
+
+      expect(result.length, 1);
+      expect(result.first.scheduledTime, DateTime(2024, 3, 15, 8, 0));
+      // adjustMedicationTime should NOT be called when timezones are the same
+      verifyNever(mockTimezoneService.adjustMedicationTime(any, any, any, any));
+    });
+  });
+
+  group('travel mode — not enabled (no params)', () {
+    test('maintains existing behavior when no timezone params provided', () async {
+      final date = DateTime(2024, 3, 15);
+      final schedule = makeSchedule(type: ScheduleType.daily, times: ['08:00']);
+
+      when(mockStorage.getRemindersForDate(date)).thenAnswer((_) async => []);
+      when(mockStorage.saveReminder(any)).thenAnswer((_) async {});
+
+      // Using the original service (no timezoneService)
+      final result = await service.generateRemindersForDate(
+        [schedule],
+        date,
+      );
+
+      expect(result.length, 1);
+      expect(result.first.scheduledTime, DateTime(2024, 3, 15, 8, 0));
     });
   });
 

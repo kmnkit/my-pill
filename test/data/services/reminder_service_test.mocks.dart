@@ -3,17 +3,21 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
-import 'dart:typed_data' as _i3;
+import 'dart:async' as _i5;
+import 'dart:typed_data' as _i4;
 
-import 'package:kusuridoki/data/models/adherence_record.dart' as _i8;
-import 'package:kusuridoki/data/models/caregiver_link.dart' as _i10;
-import 'package:kusuridoki/data/models/medication.dart' as _i5;
-import 'package:kusuridoki/data/models/reminder.dart' as _i7;
-import 'package:kusuridoki/data/models/schedule.dart' as _i6;
-import 'package:kusuridoki/data/models/user_profile.dart' as _i9;
-import 'package:kusuridoki/data/services/storage_service.dart' as _i2;
+import 'package:kusuridoki/data/enums/timezone_mode.dart' as _i14;
+import 'package:kusuridoki/data/models/adherence_record.dart' as _i9;
+import 'package:kusuridoki/data/models/caregiver_link.dart' as _i11;
+import 'package:kusuridoki/data/models/medication.dart' as _i6;
+import 'package:kusuridoki/data/models/reminder.dart' as _i8;
+import 'package:kusuridoki/data/models/schedule.dart' as _i7;
+import 'package:kusuridoki/data/models/user_profile.dart' as _i10;
+import 'package:kusuridoki/data/services/storage_service.dart' as _i3;
+import 'package:kusuridoki/data/services/timezone_service.dart' as _i12;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i13;
+import 'package:timezone/timezone.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -30,182 +34,192 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
+class _FakeLocation_0 extends _i1.SmartFake implements _i2.Location {
+  _FakeLocation_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDateTime_1 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [StorageService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockStorageService extends _i1.Mock implements _i2.StorageService {
+class MockStorageService extends _i1.Mock implements _i3.StorageService {
   MockStorageService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Uint8List get encryptionKeyBytes =>
+  _i4.Uint8List get encryptionKeyBytes =>
       (super.noSuchMethod(
             Invocation.getter(#encryptionKeyBytes),
-            returnValue: _i3.Uint8List(0),
+            returnValue: _i4.Uint8List(0),
           )
-          as _i3.Uint8List);
+          as _i4.Uint8List);
 
   @override
-  _i4.Future<void> initializeEncryption() =>
+  _i5.Future<void> initializeEncryption() =>
       (super.noSuchMethod(
             Invocation.method(#initializeEncryption, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> saveMedication(_i5.Medication? med) =>
+  _i5.Future<void> saveMedication(_i6.Medication? med) =>
       (super.noSuchMethod(
             Invocation.method(#saveMedication, [med]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<_i5.Medication?> getMedication(String? id) =>
+  _i5.Future<_i6.Medication?> getMedication(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getMedication, [id]),
-            returnValue: _i4.Future<_i5.Medication?>.value(),
+            returnValue: _i5.Future<_i6.Medication?>.value(),
           )
-          as _i4.Future<_i5.Medication?>);
+          as _i5.Future<_i6.Medication?>);
 
   @override
-  _i4.Future<List<_i5.Medication>> getAllMedications() =>
+  _i5.Future<List<_i6.Medication>> getAllMedications() =>
       (super.noSuchMethod(
             Invocation.method(#getAllMedications, []),
-            returnValue: _i4.Future<List<_i5.Medication>>.value(
-              <_i5.Medication>[],
+            returnValue: _i5.Future<List<_i6.Medication>>.value(
+              <_i6.Medication>[],
             ),
           )
-          as _i4.Future<List<_i5.Medication>>);
+          as _i5.Future<List<_i6.Medication>>);
 
   @override
-  _i4.Future<void> deleteMedication(String? id) =>
+  _i5.Future<void> deleteMedication(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteMedication, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> saveSchedule(_i6.Schedule? schedule) =>
+  _i5.Future<void> saveSchedule(_i7.Schedule? schedule) =>
       (super.noSuchMethod(
             Invocation.method(#saveSchedule, [schedule]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<_i6.Schedule?> getSchedule(String? id) =>
+  _i5.Future<_i7.Schedule?> getSchedule(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getSchedule, [id]),
-            returnValue: _i4.Future<_i6.Schedule?>.value(),
+            returnValue: _i5.Future<_i7.Schedule?>.value(),
           )
-          as _i4.Future<_i6.Schedule?>);
+          as _i5.Future<_i7.Schedule?>);
 
   @override
-  _i4.Future<List<_i6.Schedule>> getAllSchedules() =>
+  _i5.Future<List<_i7.Schedule>> getAllSchedules() =>
       (super.noSuchMethod(
             Invocation.method(#getAllSchedules, []),
-            returnValue: _i4.Future<List<_i6.Schedule>>.value(<_i6.Schedule>[]),
+            returnValue: _i5.Future<List<_i7.Schedule>>.value(<_i7.Schedule>[]),
           )
-          as _i4.Future<List<_i6.Schedule>>);
+          as _i5.Future<List<_i7.Schedule>>);
 
   @override
-  _i4.Future<List<_i6.Schedule>> getSchedulesForMedication(
+  _i5.Future<List<_i7.Schedule>> getSchedulesForMedication(
     String? medicationId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getSchedulesForMedication, [medicationId]),
-            returnValue: _i4.Future<List<_i6.Schedule>>.value(<_i6.Schedule>[]),
+            returnValue: _i5.Future<List<_i7.Schedule>>.value(<_i7.Schedule>[]),
           )
-          as _i4.Future<List<_i6.Schedule>>);
+          as _i5.Future<List<_i7.Schedule>>);
 
   @override
-  _i4.Future<void> deleteSchedule(String? id) =>
+  _i5.Future<void> deleteSchedule(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteSchedule, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> saveReminder(_i7.Reminder? reminder) =>
+  _i5.Future<void> saveReminder(_i8.Reminder? reminder) =>
       (super.noSuchMethod(
             Invocation.method(#saveReminder, [reminder]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<_i7.Reminder?> getReminder(String? id) =>
+  _i5.Future<_i8.Reminder?> getReminder(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getReminder, [id]),
-            returnValue: _i4.Future<_i7.Reminder?>.value(),
+            returnValue: _i5.Future<_i8.Reminder?>.value(),
           )
-          as _i4.Future<_i7.Reminder?>);
+          as _i5.Future<_i8.Reminder?>);
 
   @override
-  _i4.Future<List<_i7.Reminder>> getAllReminders() =>
+  _i5.Future<List<_i8.Reminder>> getAllReminders() =>
       (super.noSuchMethod(
             Invocation.method(#getAllReminders, []),
-            returnValue: _i4.Future<List<_i7.Reminder>>.value(<_i7.Reminder>[]),
+            returnValue: _i5.Future<List<_i8.Reminder>>.value(<_i8.Reminder>[]),
           )
-          as _i4.Future<List<_i7.Reminder>>);
+          as _i5.Future<List<_i8.Reminder>>);
 
   @override
-  _i4.Future<List<_i7.Reminder>> getRemindersForDate(DateTime? date) =>
+  _i5.Future<List<_i8.Reminder>> getRemindersForDate(DateTime? date) =>
       (super.noSuchMethod(
             Invocation.method(#getRemindersForDate, [date]),
-            returnValue: _i4.Future<List<_i7.Reminder>>.value(<_i7.Reminder>[]),
+            returnValue: _i5.Future<List<_i8.Reminder>>.value(<_i8.Reminder>[]),
           )
-          as _i4.Future<List<_i7.Reminder>>);
+          as _i5.Future<List<_i8.Reminder>>);
 
   @override
-  _i4.Future<void> deleteReminder(String? id) =>
+  _i5.Future<void> deleteReminder(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteReminder, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> deleteRemindersBeforeDate(DateTime? date) =>
+  _i5.Future<void> deleteRemindersBeforeDate(DateTime? date) =>
       (super.noSuchMethod(
             Invocation.method(#deleteRemindersBeforeDate, [date]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> deleteRemindersForMedication(String? medicationId) =>
+  _i5.Future<void> deleteRemindersForMedication(String? medicationId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteRemindersForMedication, [medicationId]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> saveAdherenceRecord(_i8.AdherenceRecord? record) =>
+  _i5.Future<void> saveAdherenceRecord(_i9.AdherenceRecord? record) =>
       (super.noSuchMethod(
             Invocation.method(#saveAdherenceRecord, [record]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<List<_i8.AdherenceRecord>> getAdherenceRecords({
+  _i5.Future<List<_i9.AdherenceRecord>> getAdherenceRecords({
     String? medicationId,
     DateTime? startDate,
     DateTime? endDate,
@@ -216,118 +230,266 @@ class MockStorageService extends _i1.Mock implements _i2.StorageService {
               #startDate: startDate,
               #endDate: endDate,
             }),
-            returnValue: _i4.Future<List<_i8.AdherenceRecord>>.value(
-              <_i8.AdherenceRecord>[],
+            returnValue: _i5.Future<List<_i9.AdherenceRecord>>.value(
+              <_i9.AdherenceRecord>[],
             ),
           )
-          as _i4.Future<List<_i8.AdherenceRecord>>);
+          as _i5.Future<List<_i9.AdherenceRecord>>);
 
   @override
-  _i4.Future<void> deleteAdherenceRecordsForMedication(String? medicationId) =>
+  _i5.Future<void> deleteAdherenceRecordsForMedication(String? medicationId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteAdherenceRecordsForMedication, [
               medicationId,
             ]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> saveUserProfile(_i9.UserProfile? profile) =>
+  _i5.Future<void> saveUserProfile(_i10.UserProfile? profile) =>
       (super.noSuchMethod(
             Invocation.method(#saveUserProfile, [profile]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<_i9.UserProfile?> getUserProfile() =>
+  _i5.Future<_i10.UserProfile?> getUserProfile() =>
       (super.noSuchMethod(
             Invocation.method(#getUserProfile, []),
-            returnValue: _i4.Future<_i9.UserProfile?>.value(),
+            returnValue: _i5.Future<_i10.UserProfile?>.value(),
           )
-          as _i4.Future<_i9.UserProfile?>);
+          as _i5.Future<_i10.UserProfile?>);
 
   @override
-  _i4.Future<void> saveCaregiverLink(_i10.CaregiverLink? link) =>
+  _i5.Future<void> saveCaregiverLink(_i11.CaregiverLink? link) =>
       (super.noSuchMethod(
             Invocation.method(#saveCaregiverLink, [link]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<List<_i10.CaregiverLink>> getAllCaregiverLinks() =>
+  _i5.Future<List<_i11.CaregiverLink>> getAllCaregiverLinks() =>
       (super.noSuchMethod(
             Invocation.method(#getAllCaregiverLinks, []),
-            returnValue: _i4.Future<List<_i10.CaregiverLink>>.value(
-              <_i10.CaregiverLink>[],
+            returnValue: _i5.Future<List<_i11.CaregiverLink>>.value(
+              <_i11.CaregiverLink>[],
             ),
           )
-          as _i4.Future<List<_i10.CaregiverLink>>);
+          as _i5.Future<List<_i11.CaregiverLink>>);
 
   @override
-  _i4.Future<void> deleteCaregiverLink(String? id) =>
+  _i5.Future<void> deleteCaregiverLink(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteCaregiverLink, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> deletePhotoFile(String? photoPath) =>
+  _i5.Future<void> deletePhotoFile(String? photoPath) =>
       (super.noSuchMethod(
             Invocation.method(#deletePhotoFile, [photoPath]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> migrateUnencryptedPhotos() =>
+  _i5.Future<void> migrateUnencryptedPhotos() =>
       (super.noSuchMethod(
             Invocation.method(#migrateUnencryptedPhotos, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<String?> getSetting(String? key) =>
+  _i5.Future<String?> getSetting(String? key) =>
       (super.noSuchMethod(
             Invocation.method(#getSetting, [key]),
-            returnValue: _i4.Future<String?>.value(),
+            returnValue: _i5.Future<String?>.value(),
           )
-          as _i4.Future<String?>);
+          as _i5.Future<String?>);
 
   @override
-  _i4.Future<void> saveSetting(String? key, String? value) =>
+  _i5.Future<void> saveSetting(String? key, String? value) =>
       (super.noSuchMethod(
             Invocation.method(#saveSetting, [key, value]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> clearAll() =>
+  _i5.Future<void> clearAll() =>
       (super.noSuchMethod(
             Invocation.method(#clearAll, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
 
   @override
-  _i4.Future<void> clearUserData() =>
+  _i5.Future<void> clearUserData() =>
       (super.noSuchMethod(
             Invocation.method(#clearUserData, []),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i5.Future<void>);
+}
+
+/// A class which mocks [TimezoneService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTimezoneService extends _i1.Mock implements _i12.TimezoneService {
+  MockTimezoneService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.Location get currentLocation =>
+      (super.noSuchMethod(
+            Invocation.getter(#currentLocation),
+            returnValue: _FakeLocation_0(
+              this,
+              Invocation.getter(#currentLocation),
+            ),
+          )
+          as _i2.Location);
+
+  @override
+  _i5.Future<String> detectDeviceTimezone() =>
+      (super.noSuchMethod(
+            Invocation.method(#detectDeviceTimezone, []),
+            returnValue: _i5.Future<String>.value(
+              _i13.dummyValue<String>(
+                this,
+                Invocation.method(#detectDeviceTimezone, []),
+              ),
+            ),
+          )
+          as _i5.Future<String>);
+
+  @override
+  _i2.Location getLocation(String? name) =>
+      (super.noSuchMethod(
+            Invocation.method(#getLocation, [name]),
+            returnValue: _FakeLocation_0(
+              this,
+              Invocation.method(#getLocation, [name]),
+            ),
+          )
+          as _i2.Location);
+
+  @override
+  double getTimeDifference(String? homeTimezone, String? currentTimezone) =>
+      (super.noSuchMethod(
+            Invocation.method(#getTimeDifference, [
+              homeTimezone,
+              currentTimezone,
+            ]),
+            returnValue: 0.0,
+          )
+          as double);
+
+  @override
+  DateTime convertTime(
+    DateTime? time,
+    String? fromTimezone,
+    String? toTimezone,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#convertTime, [time, fromTimezone, toTimezone]),
+            returnValue: _FakeDateTime_1(
+              this,
+              Invocation.method(#convertTime, [time, fromTimezone, toTimezone]),
+            ),
+          )
+          as DateTime);
+
+  @override
+  DateTime adjustMedicationTime(
+    DateTime? originalTime,
+    String? homeTimezone,
+    String? currentTimezone,
+    _i14.TimezoneMode? mode,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#adjustMedicationTime, [
+              originalTime,
+              homeTimezone,
+              currentTimezone,
+              mode,
+            ]),
+            returnValue: _FakeDateTime_1(
+              this,
+              Invocation.method(#adjustMedicationTime, [
+                originalTime,
+                homeTimezone,
+                currentTimezone,
+                mode,
+              ]),
+            ),
+          )
+          as DateTime);
+
+  @override
+  String formatTimezone(String? timezoneName) =>
+      (super.noSuchMethod(
+            Invocation.method(#formatTimezone, [timezoneName]),
+            returnValue: _i13.dummyValue<String>(
+              this,
+              Invocation.method(#formatTimezone, [timezoneName]),
+            ),
+          )
+          as String);
+
+  @override
+  List<
+    ({
+      String homeLabel,
+      DateTime homeTime,
+      String localLabel,
+      DateTime localTime,
+    })
+  >
+  getAffectedTimes(
+    List<DateTime>? originalTimes,
+    String? homeTimezone,
+    String? currentTimezone,
+    _i14.TimezoneMode? mode,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAffectedTimes, [
+              originalTimes,
+              homeTimezone,
+              currentTimezone,
+              mode,
+            ]),
+            returnValue:
+                <
+                  ({
+                    String homeLabel,
+                    DateTime homeTime,
+                    String localLabel,
+                    DateTime localTime,
+                  })
+                >[],
+          )
+          as List<
+            ({
+              String homeLabel,
+              DateTime homeTime,
+              String localLabel,
+              DateTime localTime,
+            })
+          >);
 }

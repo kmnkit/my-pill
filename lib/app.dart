@@ -11,6 +11,7 @@ import 'package:kusuridoki/data/providers/deep_link_provider.dart';
 import 'package:kusuridoki/data/providers/storage_service_provider.dart';
 import 'package:kusuridoki/data/providers/reminder_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
 
 class KusuridokiApp extends ConsumerStatefulWidget {
   const KusuridokiApp({super.key});
@@ -83,6 +84,11 @@ class _KusuridokiAppState extends ConsumerState<KusuridokiApp>
     try {
       final storage = ref.read(storageServiceProvider);
       final reminderService = ReminderService(storage);
+
+      // Re-detect device timezone (may have changed while app was backgrounded).
+      // If timezone changed, timezoneSettingsProvider updates → ref.listen in
+      // TodayReminders.build() triggers _rescheduleAll() automatically.
+      await ref.read(timezoneSettingsProvider.notifier).refreshDeviceTimezone();
 
       // Sync notification language on resume (handles mid-session language changes)
       final profile = await storage.getUserProfile();

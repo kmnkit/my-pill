@@ -13,6 +13,7 @@ import 'package:kusuridoki/data/repositories/medication_repository.dart';
 import 'package:kusuridoki/data/services/reminder_service.dart';
 import 'package:kusuridoki/data/services/notification_service.dart';
 import 'package:kusuridoki/data/services/review_service.dart';
+import 'package:kusuridoki/data/providers/timezone_provider.dart';
 
 part 'reminder_provider.g.dart';
 
@@ -21,6 +22,14 @@ class TodayReminders extends _$TodayReminders {
   @override
   Future<List<Reminder>> build() async {
     final storage = ref.watch(storageServiceProvider);
+
+    // Re-schedule reminders when timezone settings change
+    ref.listen(timezoneSettingsProvider, (prev, next) {
+      if (prev != next) {
+        _rescheduleAll();
+      }
+    });
+
     return storage.getRemindersForDate(DateTime.now());
   }
 
@@ -125,17 +134,27 @@ class TodayReminders extends _$TodayReminders {
   Future<List<Reminder>> generateAndScheduleToday() async {
     try {
       final storage = ref.read(storageServiceProvider);
-      final reminderService = ReminderService(storage);
+      final timezoneService = ref.read(timezoneServiceProvider);
+      final reminderService = ReminderService(
+        storage,
+        timezoneService: timezoneService,
+      );
 
       // Get all active schedules
       final schedules = await ref.read(scheduleListProvider.future);
       if (!ref.mounted) return [];
       final activeSchedules = schedules.where((s) => s.isActive).toList();
 
-      // Generate reminders for today
+      // Read timezone settings for travel mode adjustment
+      final tzSettings = ref.read(timezoneSettingsProvider);
+
+      // Generate reminders for today, with timezone adjustment if enabled
       final reminders = await reminderService.generateRemindersForDate(
         activeSchedules,
         DateTime.now(),
+        homeTimezone: tzSettings.enabled ? tzSettings.homeTimezone : null,
+        currentTimezone: tzSettings.enabled ? tzSettings.currentTimezone : null,
+        timezoneMode: tzSettings.mode,
       );
       if (!ref.mounted) return reminders;
 
@@ -192,6 +211,15 @@ class TodayReminders extends _$TodayReminders {
     } catch (e) {
       debugPrint('Failed to generate and schedule reminders: $e');
       rethrow;
+    }
+  }
+
+  Future<void> _rescheduleAll() async {
+    try {
+      await NotificationService().cancelAll();
+      await generateAndScheduleToday();
+    } catch (e) {
+      debugPrint('Failed to reschedule reminders after timezone change: $e');
     }
   }
 

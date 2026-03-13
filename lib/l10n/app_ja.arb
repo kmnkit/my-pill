@@ -200,6 +200,7 @@
   "localTimeDesc": "現地のタイムゾーンに調整",
   "affectedMedications": "影響を受けるお薬",
   "consultDoctor": "3時間以上の時差がある場合は、医師にご相談ください",
+  "travelModeNotificationNote": "トラベルモードが有効になると、通知時間が自動的に調整されます。変更はすぐに反映されます。",
 
   "settingsTitle": "設定",
   "account": "アカウント",

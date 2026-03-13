@@ -944,6 +944,12 @@ abstract class AppLocalizations {
   /// **'Consult your doctor for 3+ hour time differences'**
   String get consultDoctor;
 
+  /// Info message that notification scheduling is automatically adjusted in travel mode
+  ///
+  /// In en, this message translates to:
+  /// **'Notification times are automatically adjusted when Travel Mode is enabled. Changes take effect immediately.'**
+  String get travelModeNotificationNote;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:

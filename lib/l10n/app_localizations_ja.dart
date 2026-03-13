@@ -457,6 +457,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get consultDoctor => '3時間以上の時差がある場合は、医師にご相談ください';
 
   @override
+  String get travelModeNotificationNote =>
+      'トラベルモードが有効になると、通知時間が自動的に調整されます。変更はすぐに反映されます。';
+
+  @override
   String get settingsTitle => '設定';
 
   @override
