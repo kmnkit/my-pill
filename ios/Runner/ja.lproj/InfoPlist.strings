@@ -3,3 +3,4 @@
 "NSCameraUsageDescription" = "お薬を簡単に識別するために、カメラで写真を撮影します。";
 "NSNotificationUsageDescription" = "お薬の服用時間にリマインダーを受け取ります。";
 "NSPhotoLibraryUsageDescription" = "お薬の写真を選ぶためにフォトライブラリにアクセスします。";
+"NSUserTrackingUsageDescription" = "この識別子は、パーソナライズされた広告を表示するために使用されます。";

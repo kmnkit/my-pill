@@ -138,7 +138,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows app version text', (tester) async {

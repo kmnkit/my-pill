@@ -184,7 +184,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final tile = find.text('Data Sharing Preferences');
+      final tile = find.text('Caregiver Data Sharing');
       expect(tile, findsOneWidget);
 
       await tester.tap(tile);
@@ -237,7 +237,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
       expect(find.text('Backup & Sync'), findsOneWidget);
       expect(find.text('Privacy Policy'), findsOneWidget);
       expect(find.text('Terms of Service'), findsOneWidget);

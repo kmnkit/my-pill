@@ -196,7 +196,7 @@ void main() {
       expect(find.text('Delete Account'), findsOneWidget);
     });
 
-    testWidgets('shows Data Sharing Preferences tile', (tester) async {
+    testWidgets('shows Caregiver Data Sharing tile', (tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
@@ -205,7 +205,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows Backup & Sync tile', (tester) async {

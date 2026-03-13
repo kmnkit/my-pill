@@ -51,7 +51,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows subtitle text', (tester) async {
@@ -143,7 +143,7 @@ void main() {
       await tester.pump();
       // After settle data should be visible
       await tester.pumpAndSettle();
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
 
     testWidgets('shows nothing on error state', (tester) async {
@@ -158,7 +158,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Error branch returns SizedBox.shrink — no dialog content
-      expect(find.text('Data Sharing Preferences'), findsNothing);
+      expect(find.text('Caregiver Data Sharing'), findsNothing);
     });
 
     testWidgets('toggles are in correct initial state (all true)', (
@@ -229,7 +229,7 @@ void main() {
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Data Sharing Preferences'), findsOneWidget);
+      expect(find.text('Caregiver Data Sharing'), findsOneWidget);
     });
   });
 }
