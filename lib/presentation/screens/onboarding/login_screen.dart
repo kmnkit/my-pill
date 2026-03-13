@@ -89,7 +89,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (extractedName != null && result.user?.displayName == null) {
         final user = result.user;
         if (user != null) {
-          user.updateDisplayName(extractedName).catchError((_) {});
+          user.updateDisplayName(extractedName).catchError(
+            (e) => debugPrint('updateDisplayName failed: $e'),
+          );
         }
       }
     } on AppleSignInException catch (e) {

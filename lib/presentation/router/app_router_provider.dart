@@ -91,7 +91,9 @@ String? computeRedirect({
   if (isAuthenticated && isLoginRoute) {
     // 1. Honor redirect query param (set when deep link arrived pre-auth).
     final redirectPath = queryParameters['redirect'];
-    if (redirectPath != null && redirectPath.isNotEmpty) {
+    if (redirectPath != null &&
+        redirectPath.isNotEmpty &&
+        _isAllowedRedirect(redirectPath)) {
       return redirectPath;
     }
     // 2. Consume pending invite code from cold-start deep link.
@@ -112,6 +114,12 @@ String? computeRedirect({
   }
 
   return null;
+}
+
+/// Allowlist of redirect paths to prevent open redirect within the app.
+bool _isAllowedRedirect(String path) {
+  const allowedPrefixes = ['/home', '/caregiver/', '/invite/', '/settings', '/adherence', '/medications', '/premium'];
+  return allowedPrefixes.any((prefix) => path.startsWith(prefix));
 }
 
 /// A ChangeNotifier that listens to user settings and auth state changes
@@ -197,7 +205,8 @@ Raw<GoRouter> appRouter(Ref ref) {
       // - Any other unexpected deep links
       // Use addPostFrameCallback to avoid reentrant navigation during route processing.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        router.go('/home');
+        final destination = FirebaseAuth.instance.currentUser != null ? '/home' : '/login';
+        router.go(destination);
       });
     },
     redirect: (context, state) {

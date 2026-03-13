@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/subscription_status.dart';
@@ -5,9 +6,21 @@ import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/data/providers/subscription_provider.dart';
+import 'package:kusuridoki/data/services/auth_service.dart';
 import 'package:kusuridoki/presentation/screens/settings/settings_screen.dart';
 
 import '../../../helpers/widget_test_helpers.dart';
+
+class _MockAuthService extends AuthService {
+  @override
+  User? get currentUser => null;
+
+  @override
+  Stream<User?> get authStateChanges => const Stream.empty();
+
+  @override
+  Future<void> signOut() async {}
+}
 
 class _FakeUserSettings extends UserSettings {
   final UserProfile _profile;
@@ -31,6 +44,21 @@ const _testProfile = UserProfile(
   onboardingComplete: true,
 );
 
+const _caregiverProfile = UserProfile(
+  id: 'user-caregiver',
+  name: 'CareGiver',
+  language: 'en',
+  highContrast: false,
+  textSize: 'normal',
+  notificationsEnabled: true,
+  criticalAlerts: false,
+  snoozeDuration: 15,
+  travelModeEnabled: false,
+  removeAds: false,
+  onboardingComplete: true,
+  userRole: 'caregiver',
+);
+
 const _freeStatus = SubscriptionStatus(isPremium: false);
 
 List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
@@ -40,6 +68,7 @@ List<dynamic> _buildOverrides({UserProfile profile = _testProfile}) {
     isPremiumProvider.overrideWith((ref) => false),
     subscriptionStatusProvider.overrideWith((ref) => _freeStatus),
     appVersionProvider.overrideWith((ref) async => '1.1.1'),
+    authServiceProvider.overrideWithValue(_MockAuthService()),
   ];
 }
 
@@ -121,7 +150,7 @@ void main() {
       await tester.pumpWidget(
         createTestableWidget(
           const SettingsScreen(),
-          overrides: _buildOverrides(),
+          overrides: _buildOverrides(profile: _caregiverProfile),
         ),
       );
       await tester.pumpAndSettle();
