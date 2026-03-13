@@ -903,7 +903,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get areYouSureSignOut => 'サインアウトしてもよろしいですか？';
 
   @override
-  String get dataSharingPreferences => 'データ共有設定';
+  String get dataSharingPreferences => 'サポーターへのデータ共有';
 
   @override
   String get dataSharingSubtitle => 'サポーターと共有する情報を管理します';

@@ -366,7 +366,7 @@
   "lowStockAlertsSubtitle": "Get notified about low medication inventory",
   "switchToPatientView": "Switch to Patient View",
   "areYouSureSignOut": "Are you sure you want to sign out?",
-  "dataSharingPreferences": "Data Sharing Preferences",
+  "dataSharingPreferences": "Caregiver Data Sharing",
   "dataSharingSubtitle": "Control what information you share with your caregivers",
   "shareAdherenceData": "Share adherence data with caregivers",
   "shareMedicationList": "Share medication list with caregivers",

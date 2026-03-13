@@ -366,7 +366,7 @@
   "lowStockAlertsSubtitle": "薬の在庫が少ない時に通知を受け取る",
   "switchToPatientView": "患者ビューに切り替え",
   "areYouSureSignOut": "サインアウトしてもよろしいですか？",
-  "dataSharingPreferences": "データ共有設定",
+  "dataSharingPreferences": "サポーターへのデータ共有",
   "dataSharingSubtitle": "サポーターと共有する情報を管理します",
   "shareAdherenceData": "服薬データをサポーターと共有",
   "shareMedicationList": "お薬リストをサポーターと共有",

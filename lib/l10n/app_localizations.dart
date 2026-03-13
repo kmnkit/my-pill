@@ -1817,7 +1817,7 @@ abstract class AppLocalizations {
   /// No description provided for @dataSharingPreferences.
   ///
   /// In en, this message translates to:
-  /// **'Data Sharing Preferences'**
+  /// **'Caregiver Data Sharing'**
   String get dataSharingPreferences;
 
   /// No description provided for @dataSharingSubtitle.

@@ -927,7 +927,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get areYouSureSignOut => 'Are you sure you want to sign out?';
 
   @override
-  String get dataSharingPreferences => 'Data Sharing Preferences';
+  String get dataSharingPreferences => 'Caregiver Data Sharing';
 
   @override
   String get dataSharingSubtitle =>
