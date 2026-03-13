@@ -37,10 +37,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             displayName: credentialDisplayName ?? firebaseUser.displayName,
           );
     }
-    final role =
-        ref.read(userSettingsProvider).asData?.value.userRole ?? 'patient';
+    final isCaregiver =
+        ref.read(userSettingsProvider).asData?.value.isCaregiver ?? false;
     if (mounted) {
-      if (role == 'caregiver') {
+      if (isCaregiver) {
         context.go('/caregiver/patients');
       } else {
         context.go('/home');

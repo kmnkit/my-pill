@@ -171,6 +171,25 @@ class FirestoreService {
     await _caregiverLinksCol.doc(id).delete();
   }
 
+  /// Real-time stream of caregiver links for the current patient
+  Stream<List<CaregiverLink>> watchCaregiverLinks() {
+    final uid = _userId;
+    if (uid == null) return Stream.value([]);
+    return _db
+        .collection('users')
+        .doc(uid)
+        .collection('caregiverLinks')
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) =>
+                    CaregiverLink.fromJson(doc.data()),
+              )
+              .toList(),
+        );
+  }
+
   // --- Sync Logic ---
   // Sync local Hive data to Firestore (upload)
   Future<void> syncToCloud(

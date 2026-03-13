@@ -8,12 +8,30 @@ part of 'caregiver_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Real-time stream of caregiver links from Firestore.
+/// Replaces the previous Hive-backed AsyncNotifierProvider so that
+/// links created by Cloud Functions are reflected immediately.
 
-@ProviderFor(CaregiverLinks)
+@ProviderFor(caregiverLinks)
 final caregiverLinksProvider = CaregiverLinksProvider._();
 
+/// Real-time stream of caregiver links from Firestore.
+/// Replaces the previous Hive-backed AsyncNotifierProvider so that
+/// links created by Cloud Functions are reflected immediately.
+
 final class CaregiverLinksProvider
-    extends $AsyncNotifierProvider<CaregiverLinks, List<CaregiverLink>> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<CaregiverLink>>,
+          List<CaregiverLink>,
+          Stream<List<CaregiverLink>>
+        >
+    with
+        $FutureModifier<List<CaregiverLink>>,
+        $StreamProvider<List<CaregiverLink>> {
+  /// Real-time stream of caregiver links from Firestore.
+  /// Replaces the previous Hive-backed AsyncNotifierProvider so that
+  /// links created by Cloud Functions are reflected immediately.
   CaregiverLinksProvider._()
     : super(
         from: null,
@@ -30,29 +48,17 @@ final class CaregiverLinksProvider
 
   @$internal
   @override
-  CaregiverLinks create() => CaregiverLinks();
-}
+  $StreamProviderElement<List<CaregiverLink>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
 
-String _$caregiverLinksHash() => r'65284f7f6ebac47d2689b897802ecf24e8a25174';
-
-abstract class _$CaregiverLinks extends $AsyncNotifier<List<CaregiverLink>> {
-  FutureOr<List<CaregiverLink>> build();
-  @$mustCallSuper
   @override
-  void runBuild() {
-    final ref =
-        this.ref as $Ref<AsyncValue<List<CaregiverLink>>, List<CaregiverLink>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<CaregiverLink>>, List<CaregiverLink>>,
-              AsyncValue<List<CaregiverLink>>,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
+  Stream<List<CaregiverLink>> create(Ref ref) {
+    return caregiverLinks(ref);
   }
 }
+
+String _$caregiverLinksHash() => r'fec3d2b1d82e3e6921951f00739313be15caa96c';
 
 /// Check if user can add another caregiver based on subscription tier
 

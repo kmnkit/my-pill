@@ -59,6 +59,14 @@ class _FakeCloudFunctionsService implements CloudFunctionsService {
   Future<void> deleteAccount() async {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> updateCaregiverPermissions({
+    required bool shareMedications,
+    required bool shareAdherence,
+  }) async {
+    throw UnimplementedError();
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -139,6 +147,11 @@ class _NoOpUserSettings extends UserSettings {
   Future<void> updateUserRole(String role) async {
     // no-op — avoids HiveBox access in tests
   }
+
+  @override
+  Future<void> updateIsCaregiver(bool value) async {
+    // no-op — avoids HiveBox access in tests
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -161,7 +174,7 @@ void main() {
           overrides: [
             cloudFunctionsServiceProvider.overrideWithValue(fakeCF),
             caregiverLinksProvider.overrideWith(
-              () => throw UnimplementedError(),
+              (ref) => Stream.value(<CaregiverLink>[]),
             ),
             caregiverPatientsProvider.overrideWith(
               (ref) => Stream.value([]),
@@ -224,7 +237,7 @@ void main() {
             overrides: [
               cloudFunctionsServiceProvider.overrideWithValue(fakeCF),
               caregiverLinksProvider.overrideWith(
-                () => throw UnimplementedError(),
+                (ref) => Stream.value(<CaregiverLink>[]),
               ),
               caregiverPatientsProvider.overrideWith(
                 (ref) => Stream.value([]),
@@ -261,16 +274,10 @@ void main() {
     );
 
     testWidgets(
-      'caregiverLinksProvider and caregiverPatientsProvider are invalidated on success',
+      'navigates to /caregiver/patients on success (streams auto-update)',
       (tester) async {
         final fakeCF = _FakeCloudFunctionsService();
-        var linksBuildCount = 0;
-        var patientsBuildCount = 0;
 
-        // ProviderScope must be at the top level (not scoped to the /invite route)
-        // so that the /caregiver/patients destination Consumer shares the same
-        // provider instances. The Consumer on the destination route watches both
-        // providers, triggering a rebuild (factory call) after invalidation.
         final router = GoRouter(
           initialLocation: '/invite',
           routes: [
@@ -281,13 +288,8 @@ void main() {
             ),
             GoRoute(
               path: '/caregiver/patients',
-              builder: (context, state) => Consumer(
-                builder: (context, ref, _) {
-                  ref.watch(caregiverLinksProvider);
-                  ref.watch(caregiverPatientsProvider);
-                  return const Scaffold(body: Text('Caregiver Patients'));
-                },
-              ),
+              builder: (context, state) =>
+                  const Scaffold(body: Text('Caregiver Patients')),
             ),
             GoRoute(
               path: '/home',
@@ -301,14 +303,12 @@ void main() {
           ProviderScope(
             overrides: [
               cloudFunctionsServiceProvider.overrideWithValue(fakeCF),
-              caregiverLinksProvider.overrideWith(() {
-                linksBuildCount++;
-                return _StubCaregiverLinks();
-              }),
-              caregiverPatientsProvider.overrideWith((ref) {
-                patientsBuildCount++;
-                return Stream.value([]);
-              }),
+              caregiverLinksProvider.overrideWith(
+                (ref) => Stream.value(<CaregiverLink>[]),
+              ),
+              caregiverPatientsProvider.overrideWith(
+                (ref) => Stream.value([]),
+              ),
               _fakeUserSettingsOverride,
             ],
             child: MaterialApp.router(
@@ -326,31 +326,15 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final linksBeforeAccept = linksBuildCount;
-        final patientsBeforeAccept = patientsBuildCount;
-
         await tester.tap(find.text('Accept Invitation'));
         await tester.pumpAndSettle();
-        // GoRouter.go() is async internally; a second settle ensures the new
-        // route is fully built before we inspect provider state.
         await tester.pumpAndSettle();
 
-        // Verify navigation completed — Consumer on this route watches both
-        // providers, so the factory must have been called by this point.
+        // Verify navigation completed
         expect(
           find.text('Caregiver Patients'),
           findsOneWidget,
           reason: 'should have navigated to /caregiver/patients',
-        );
-        expect(
-          linksBuildCount > linksBeforeAccept,
-          isTrue,
-          reason: 'caregiverLinksProvider should be invalidated',
-        );
-        expect(
-          patientsBuildCount > patientsBeforeAccept,
-          isTrue,
-          reason: 'caregiverPatientsProvider should be invalidated',
         );
       },
     );
@@ -562,11 +546,3 @@ void main() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Stub notifier for caregiverLinksProvider (keeps build_runner happy)
-// ---------------------------------------------------------------------------
-
-class _StubCaregiverLinks extends CaregiverLinks {
-  @override
-  Future<List<CaregiverLink>> build() async => [];
-}

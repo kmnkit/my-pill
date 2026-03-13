@@ -2570,6 +2570,24 @@ abstract class AppLocalizations {
   /// **'Cannot add more caregivers'**
   String get cannotAddMoreCaregivers;
 
+  /// No description provided for @alreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'You are already linked to this patient.'**
+  String get alreadyLinked;
+
+  /// No description provided for @connectionLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection limit reached. Upgrade to Premium for unlimited.'**
+  String get connectionLimitReached;
+
+  /// No description provided for @patientLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan allows only 1 patient'**
+  String get patientLimitReached;
+
   /// No description provided for @generateInviteLink.
   ///
   /// In en, this message translates to:

@@ -70,6 +70,22 @@ class CloudFunctionsService {
     }
   }
 
+  /// Update caregiver permissions when patient toggles privacy settings.
+  /// Updates all caregiverAccess docs linked to the current patient.
+  Future<void> updateCaregiverPermissions({
+    required bool shareMedications,
+    required bool shareAdherence,
+  }) async {
+    final result = await _functions.httpsCallable('updateCaregiverPermissions').call({
+      'shareMedications': shareMedications,
+      'shareAdherence': shareAdherence,
+    });
+    final data = result.data as Map<String, dynamic>;
+    if (data['success'] != true) {
+      throw Exception('Failed to update caregiver permissions');
+    }
+  }
+
   /// Delete the current user's account and all associated data (server-side)
   /// Throws [FirebaseFunctionsException] on failure
   Future<void> deleteAccount() async {

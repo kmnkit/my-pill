@@ -73,6 +73,9 @@ class _FakeUserSettings extends UserSettings {
   Future<void> updateUserRole(String role) async {}
 
   @override
+  Future<void> updateIsCaregiver(bool value) async {}
+
+  @override
   Future<void> updateHomeTimezone(String timezone) async {}
 
   @override

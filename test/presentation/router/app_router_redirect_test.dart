@@ -19,6 +19,7 @@ const _caregiverOnboarded = UserProfile(
   name: 'Bob',
   onboardingComplete: true,
   userRole: 'caregiver',
+  isCaregiver: true,
 );
 
 const _notOnboarded = UserProfile(

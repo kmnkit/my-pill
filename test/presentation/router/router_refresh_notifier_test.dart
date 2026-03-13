@@ -86,12 +86,12 @@ void main() {
         id: 'u1',
         name: 'Test',
         onboardingComplete: true,
-        userRole: 'caregiver',
+        isCaregiver: true,
       );
       notifier.update(updated);
 
       expect(notifyCount, equals(1),
-          reason: 'should notify when userRole changes');
+          reason: 'should notify when isCaregiver changes');
     });
 
     test('does NOT notify when only name changes (irrelevant field)', () {

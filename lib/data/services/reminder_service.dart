@@ -47,10 +47,10 @@ class ReminderService {
 
         // Adjust for timezone if travel mode is active
         if (shouldAdjustTimezone) {
-          scheduledTime = _timezoneService!.adjustMedicationTime(
+          scheduledTime = _timezoneService.adjustMedicationTime(
             scheduledTime,
-            homeTimezone!,
-            currentTimezone!,
+            homeTimezone,
+            currentTimezone,
             timezoneMode,
           );
         }

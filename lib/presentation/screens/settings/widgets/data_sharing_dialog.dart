@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/core/utils/error_handler.dart';
+import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
@@ -14,6 +16,23 @@ class DataSharingDialog extends ConsumerWidget {
       context: context,
       builder: (_) => const DataSharingDialog(),
     );
+  }
+
+  /// Fire-and-forget sync of privacy permissions to caregiverAccess docs.
+  void _syncPermissionsToServer(
+    WidgetRef ref, {
+    required bool shareMedications,
+    required bool shareAdherence,
+  }) {
+    final cfService = ref.read(cloudFunctionsServiceProvider);
+    cfService
+        .updateCaregiverPermissions(
+          shareMedications: shareMedications,
+          shareAdherence: shareAdherence,
+        )
+        .catchError((e, st) {
+      ErrorHandler.debugLog(e, st, 'updateCaregiverPermissions');
+    });
   }
 
   @override
@@ -54,6 +73,11 @@ class DataSharingDialog extends ConsumerWidget {
                   ref
                       .read(userSettingsProvider.notifier)
                       .updateProfile(updated);
+                  _syncPermissionsToServer(
+                    ref,
+                    shareMedications: settings.shareMedicationList,
+                    shareAdherence: value,
+                  );
                 },
                 title: Text(l10n.shareAdherenceData),
                 contentPadding: EdgeInsets.zero,
@@ -66,6 +90,11 @@ class DataSharingDialog extends ConsumerWidget {
                   ref
                       .read(userSettingsProvider.notifier)
                       .updateProfile(updated);
+                  _syncPermissionsToServer(
+                    ref,
+                    shareMedications: value,
+                    shareAdherence: settings.shareAdherenceData,
+                  );
                 },
                 title: Text(l10n.shareMedicationList),
                 contentPadding: EdgeInsets.zero,

@@ -6,10 +6,12 @@ import 'package:kusuridoki/core/constants/app_colors.dart';
 import 'package:kusuridoki/core/utils/error_handler.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
+import 'package:kusuridoki/core/constants/feature_flags.dart';
 import 'package:kusuridoki/data/providers/caregiver_monitoring_provider.dart';
-import 'package:kusuridoki/data/providers/caregiver_provider.dart';
 import 'package:kusuridoki/data/providers/invite_provider.dart';
 import 'package:kusuridoki/data/providers/settings_provider.dart';
+import 'package:kusuridoki/presentation/shared/widgets/premium_gate.dart';
+import 'package:kusuridoki/presentation/router/route_names.dart';
 import 'package:kusuridoki/l10n/app_localizations.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_app_bar.dart';
 import 'package:kusuridoki/presentation/shared/widgets/kd_button.dart';
@@ -29,16 +31,23 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
   bool _isProcessing = false;
 
   Future<void> _acceptInvitation() async {
+    // Client-side patient limit pre-check
+    if (kPremiumEnabled) {
+      final canAdd = await ref.read(canAddPatientProvider.future);
+      if (!canAdd) {
+        if (mounted) _showPatientLimitDialog();
+        return;
+      }
+    }
+
     setState(() => _isProcessing = true);
 
     try {
       final cfService = ref.read(cloudFunctionsServiceProvider);
       await cfService.acceptInvite(widget.inviteCode);
 
-      // Refresh caregiver links and patients after successful accept
-      ref.invalidate(caregiverLinksProvider);
-      ref.invalidate(caregiverPatientsProvider);
-      await ref.read(userSettingsProvider.notifier).updateUserRole('caregiver');
+      // Firestore streams auto-update; no manual invalidation needed.
+      await ref.read(userSettingsProvider.notifier).updateIsCaregiver(true);
 
       if (!mounted) return;
 
@@ -77,11 +86,61 @@ class _InviteHandlerScreenState extends ConsumerState<InviteHandlerScreen> {
           return l10n.inviteAlreadyUsed;
         case 'invalid-argument':
           return l10n.inviteSelfError;
+        case 'already-exists':
+          return l10n.alreadyLinked;
+        case 'resource-exhausted':
+          return l10n.connectionLimitReached;
         default:
           return l10n.failedToAcceptInvite;
       }
     }
     return l10n.failedToAcceptInvite;
+  }
+
+  void _showPatientLimitDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.workspace_premium,
+              color: AppColors.warning,
+              size: AppSpacing.iconLg,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(child: Text(l10n.patientLimitReached)),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.upgradeToPremium),
+            const SizedBox(height: AppSpacing.md),
+            PremiumInlineUpsell(message: l10n.unlimitedCaregivers),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton.icon(
+            onPressed: kPremiumEnabled
+                ? () {
+                    Navigator.of(context).pop();
+                    GoRouter.of(context).push(RouteNames.premium);
+                  }
+                : null,
+            icon: const Icon(Icons.upgrade, size: AppSpacing.iconSm),
+            label: Text(l10n.tryPremium),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.warning),
+          ),
+        ],
+      ),
+    );
   }
 
   void _decline() {

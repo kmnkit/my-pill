@@ -56,7 +56,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
         if (!settings.onboardingComplete) {
           context.go('/onboarding');
-        } else if (settings.userRole == 'caregiver') {
+        } else if (settings.isCaregiver) {
           context.go('/caregiver/patients');
         } else {
           // Router redirect will handle auth check and send to /login if needed

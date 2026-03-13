@@ -20,7 +20,8 @@ abstract class UserProfile with _$UserProfile {
     @Default(false) bool removeAds,
     @Default(false) bool usesPrivateEmail,
     @Default(false) bool onboardingComplete,
-    @Default('patient') String userRole, // 'patient' or 'caregiver'
+    @Default('patient') String userRole, // deprecated — use isCaregiver
+    @Default(false) bool isCaregiver,
     @Default(true) bool shareAdherenceData,
     @Default(true) bool shareMedicationList,
     @Default(true) bool allowCaregiverNotifications,

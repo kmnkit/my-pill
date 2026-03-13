@@ -1349,6 +1349,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cannotAddMoreCaregivers => 'Cannot add more caregivers';
 
   @override
+  String get alreadyLinked => 'You are already linked to this patient.';
+
+  @override
+  String get connectionLimitReached =>
+      'Connection limit reached. Upgrade to Premium for unlimited.';
+
+  @override
+  String get patientLimitReached => 'Free plan allows only 1 patient';
+
+  @override
   String get generateInviteLink => 'Generate Invite Link';
 
   @override
