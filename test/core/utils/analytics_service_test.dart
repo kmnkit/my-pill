@@ -65,7 +65,7 @@ void main() {
     });
 
     test('setUserId does not throw when Firebase unavailable', () async {
-      // SEC-ANALYTICS-002: Sentry.configureScope is also called; both paths
+      // SEC-ANALYTICS-002: Crashlytics user ID is also set; both paths
       // must not raise even without initialisation.
       await expectLater(AnalyticsService.setUserId('user-abc-123'), completes);
     });
