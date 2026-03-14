@@ -69,7 +69,7 @@
 
       <!-- English -->
       <div id="en" class="section">
-        <p class="text-sm text-gray-400 mb-6">Last updated: March 13, 2026</p>
+        <p class="text-sm text-gray-400 mb-6">Last updated: March 14, 2026</p>
 
         <p class="text-gray-600 mb-6">Kusuridoki ("we", "our", "the app") is a medication management application. We are committed to protecting your privacy and handling your data responsibly.</p>
 
@@ -108,38 +108,35 @@
           <li><strong>Caregivers:</strong> Medication status is shared with caregivers you explicitly link</li>
           <li><strong>Google AdMob:</strong> Advertising identifiers for displaying ads (you can opt out via device settings)</li>
           <li><strong>Firebase Analytics:</strong> Usage data linked to your Firebase user ID for app improvement</li>
-          <li><strong>Sentry:</strong> Crash reports and performance data (health information is automatically removed before transmission — see Section 6)</li>
+          <li><strong>Firebase Crashlytics:</strong> Crash data and device information for app stability monitoring (see Section 6)</li>
           <li><strong>RevenueCat:</strong> Your Firebase user ID, subscription status, and purchase data for managing premium features (no health data is shared)</li>
         </ul>
 
         <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. Third-Party Services</h2>
         <p class="text-gray-600 mb-3">The app uses the following third-party services:</p>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
-          <li>Firebase Authentication, Firestore, Cloud Functions, Cloud Messaging (Google)</li>
+          <li>Firebase Authentication, Firestore, Cloud Functions, Cloud Messaging, Crashlytics (Google)</li>
           <li>Google AdMob (advertising)</li>
           <li>Apple Sign-In (authentication)</li>
-          <li>Sentry (crash reporting and performance monitoring)</li>
           <li>RevenueCat (subscription and in-app purchase management)</li>
         </ul>
-        <p class="text-gray-600 mb-4">Each service has its own privacy policy. Please refer to <a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Google's Privacy Policy</a>, <a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Apple's Privacy Policy</a>, <a href="https://sentry.io/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Sentry's Privacy Policy</a>, and <a href="https://www.revenuecat.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">RevenueCat's Privacy Policy</a>.</p>
+        <p class="text-gray-600 mb-4">Each service has its own privacy policy. Please refer to <a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Google's Privacy Policy</a>, <a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Apple's Privacy Policy</a>, and <a href="https://www.revenuecat.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">RevenueCat's Privacy Policy</a>.</p>
 
-        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. Crash Reporting &amp; Performance Monitoring</h2>
-        <p class="text-gray-600 mb-3">We use Sentry (provided by Functional Software, Inc.) to monitor app stability and performance. When an error or crash occurs, the following data may be collected and transmitted to Sentry's servers:</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. Crash Reporting</h2>
+        <p class="text-gray-600 mb-3">We use Firebase Crashlytics (provided by Google LLC) to monitor app stability. When a crash or error occurs, the following data may be collected:</p>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>Crash reports:</strong> Stack traces, error messages, and app state at the time of the error</li>
           <li><strong>Device information:</strong> Device model, operating system version, app version, and locale</li>
-          <li><strong>Performance data:</strong> App startup time, screen load duration, and transaction traces (sampled at 20%)</li>
-          <li><strong>Session replays:</strong> Anonymized screen recordings captured on 10% of all sessions and 100% of error sessions, with all text and images masked by default</li>
           <li><strong>User identifier:</strong> Your anonymous Firebase user ID only (no name or email)</li>
         </ul>
-        <p class="text-gray-600 mb-3"><strong>What is NOT sent to Sentry:</strong> Medication names, dosages, pill colors, pill shapes, photos, or any other health-related information are automatically removed before transmission. We also strip personal information such as your name and email address.</p>
-        <p class="text-gray-600 mb-4">Data is processed on Sentry's servers located in the United States. You cannot opt out of crash reporting separately, but you may stop all data collection by deleting your account and uninstalling the app.</p>
+        <p class="text-gray-600 mb-3"><strong>What Crashlytics does NOT collect:</strong> Crashlytics does not capture screenshots, screen recordings, or UI content. Medication names, dosages, photos, and other health-related information are not included in crash reports.</p>
+        <p class="text-gray-600 mb-4">Data is processed on Google Cloud infrastructure. You cannot opt out of crash reporting separately, but you may stop all data collection by deleting your account and uninstalling the app.</p>
 
         <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. Data Retention</h2>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>Local data:</strong> Stored on your device until you delete the app or clear app data. Encrypted with AES-256.</li>
           <li><strong>Cloud data (if signed in):</strong> Stored in Firebase until you delete your account. Upon account deletion, all server-side data (medications, schedules, caregiver links) is permanently removed within 30 days.</li>
-          <li><strong>Crash reports:</strong> Retained by Sentry for 90 days, then automatically deleted.</li>
+          <li><strong>Crash reports:</strong> Retained by Firebase Crashlytics for 90 days, then automatically deleted.</li>
           <li><strong>Analytics data:</strong> Retained by Firebase Analytics for 14 months in aggregated form, then automatically deleted.</li>
           <li><strong>Ad consent preferences:</strong> Stored locally and reset upon app reinstallation.</li>
         </ul>
@@ -188,7 +185,7 @@
 
       <!-- Japanese -->
       <div id="ja" class="section hidden">
-        <p class="text-sm text-gray-400 mb-6">最終更新日: 2026年3月13日</p>
+        <p class="text-sm text-gray-400 mb-6">最終更新日: 2026年3月14日</p>
 
         <p class="text-gray-600 mb-6">くすりどき（以下「当アプリ」）は、お薬管理アプリケーションです。お客様のプライバシーを保護し、データを適切に取り扱うことに努めています。</p>
 
@@ -227,38 +224,35 @@
           <li><strong>見守り者：</strong>お客様が明示的にリンクした見守り者に服薬状況を共有</li>
           <li><strong>Google AdMob：</strong>広告表示のための広告識別子（デバイス設定でオプトアウト可能）</li>
           <li><strong>Firebase Analytics：</strong>Firebase ユーザーIDに紐づけられたアプリ改善のための利用データ</li>
-          <li><strong>Sentry：</strong>クラッシュレポートとパフォーマンスデータ（健康情報は送信前に自動除去 — 第6条参照）</li>
+          <li><strong>Firebase Crashlytics：</strong>アプリの安定性監視のためのクラッシュデータおよびデバイス情報（第6条参照）</li>
           <li><strong>RevenueCat：</strong>Firebase ユーザーID、プレミアム機能管理のためのサブスクリプション状況・購入データ（健康データは共有されません）</li>
         </ul>
 
         <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">5. 第三者サービス</h2>
         <p class="text-gray-600 mb-3">当アプリは以下の第三者サービスを利用しています：</p>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
-          <li>Firebase Authentication、Firestore、Cloud Functions、Cloud Messaging（Google）</li>
+          <li>Firebase Authentication、Firestore、Cloud Functions、Cloud Messaging、Crashlytics（Google）</li>
           <li>Google AdMob（広告）</li>
           <li>Appleサインイン（認証）</li>
-          <li>Sentry（クラッシュレポートおよびパフォーマンス監視）</li>
           <li>RevenueCat（サブスクリプションおよびアプリ内課金管理）</li>
         </ul>
-        <p class="text-gray-600 mb-4">各サービスには独自のプライバシーポリシーがあります。<a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Googleのプライバシーポリシー</a>、<a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Appleのプライバシーポリシー</a>、<a href="https://sentry.io/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Sentryのプライバシーポリシー</a>、および<a href="https://www.revenuecat.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">RevenueCatのプライバシーポリシー</a>をご参照ください。</p>
+        <p class="text-gray-600 mb-4">各サービスには独自のプライバシーポリシーがあります。<a href="https://policies.google.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">Googleのプライバシーポリシー</a>、<a href="https://www.apple.com/legal/privacy/" class="text-brand-500 hover:text-brand-700 transition-colors">Appleのプライバシーポリシー</a>、および<a href="https://www.revenuecat.com/privacy" class="text-brand-500 hover:text-brand-700 transition-colors">RevenueCatのプライバシーポリシー</a>をご参照ください。</p>
 
-        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. クラッシュレポートとパフォーマンス監視</h2>
-        <p class="text-gray-600 mb-3">当アプリでは、アプリの安定性とパフォーマンスを監視するためにSentry（Functional Software, Inc.提供）を使用しています。エラーやクラッシュが発生した際、以下のデータが収集され、Sentryのサーバーに送信される場合があります：</p>
+        <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">6. クラッシュレポート</h2>
+        <p class="text-gray-600 mb-3">当アプリでは、アプリの安定性を監視するためにFirebase Crashlytics（Google LLC提供）を使用しています。クラッシュやエラーが発生した際、以下のデータが収集される場合があります：</p>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>クラッシュレポート：</strong>スタックトレース、エラーメッセージ、エラー発生時のアプリ状態</li>
           <li><strong>デバイス情報：</strong>デバイスモデル、OSバージョン、アプリバージョン、ロケール</li>
-          <li><strong>パフォーマンスデータ：</strong>アプリ起動時間、画面読み込み時間、トランザクショントレース（20%サンプリング）</li>
-          <li><strong>セッションリプレイ：</strong>全セッションの10%およびエラーセッションの100%で取得される匿名化された画面録画（すべてのテキストと画像はデフォルトでマスク処理）</li>
           <li><strong>ユーザー識別子：</strong>匿名のFirebaseユーザーIDのみ（氏名やメールアドレスは含みません）</li>
         </ul>
-        <p class="text-gray-600 mb-3"><strong>Sentryに送信されないデータ：</strong>薬の名前、用量、薬の色、薬の形状、写真、その他の健康関連情報は、送信前に自動的に除去されます。また、氏名やメールアドレスなどの個人情報も除去されます。</p>
-        <p class="text-gray-600 mb-4">データは米国にあるSentryのサーバーで処理されます。クラッシュレポートのみを個別にオプトアウトすることはできませんが、アカウントを削除しアプリをアンインストールすることで、すべてのデータ収集を停止できます。</p>
+        <p class="text-gray-600 mb-3"><strong>Crashlyticsが収集しないデータ：</strong>Crashlyticsはスクリーンショット、画面録画、UIコンテンツをキャプチャしません。薬の名前、用量、写真、その他の健康関連情報はクラッシュレポートに含まれません。</p>
+        <p class="text-gray-600 mb-4">データはGoogle Cloudインフラストラクチャで処理されます。クラッシュレポートのみを個別にオプトアウトすることはできませんが、アカウントを削除しアプリをアンインストールすることで、すべてのデータ収集を停止できます。</p>
 
         <h2 class="text-lg font-bold text-brand-500 mt-8 mb-3">7. データ保持期間</h2>
         <ul class="list-disc pl-5 text-gray-600 space-y-2 mb-4">
           <li><strong>ローカルデータ：</strong>アプリを削除するかアプリデータを消去するまで、デバイスに保存されます。AES-256で暗号化されています。</li>
           <li><strong>クラウドデータ（ログイン時）：</strong>アカウントを削除するまでFirebaseに保存されます。アカウント削除後、すべてのサーバー側データ（薬、スケジュール、見守りリンク）は30日以内に完全に削除されます。</li>
-          <li><strong>クラッシュレポート：</strong>Sentryに90日間保持された後、自動的に削除されます。</li>
+          <li><strong>クラッシュレポート：</strong>Firebase Crashlyticsに90日間保持された後、自動的に削除されます。</li>
           <li><strong>分析データ：</strong>Firebase Analyticsに集計形式で14か月間保持された後、自動的に削除されます。</li>
           <li><strong>広告同意設定：</strong>ローカルに保存され、アプリの再インストール時にリセットされます。</li>
         </ul>
