@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 abstract final class AnalyticsService {
   static FirebaseAnalytics get _analytics => FirebaseAnalytics.instance;
@@ -40,8 +40,8 @@ abstract final class AnalyticsService {
     try {
       await _analytics.setUserId(id: uid);
     } catch (_) {}
-    Sentry.configureScope(
-      (scope) => scope.setUser(uid != null ? SentryUser(id: uid) : null),
-    );
+    try {
+      await FirebaseCrashlytics.instance.setUserIdentifier(uid ?? '');
+    } catch (_) {}
   }
 }

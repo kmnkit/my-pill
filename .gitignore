@@ -70,6 +70,7 @@ functions/node_modules/
 # Environment and secrets
 .env
 .env.*
+!.env.example
 !ios/fastlane/.env.example
 
 # Development tools and local configuration

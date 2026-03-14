@@ -37,6 +37,16 @@ class SubscriptionService {
   String? _lastUserId;
 
   Future<void> initialize() async {
+    if (RevenueCatConfig.apiKey.isEmpty) {
+      debugPrint(
+        'SubscriptionService: REVENUECAT_API_KEY is empty. '
+        'Skipping initialization. '
+        'Run with --dart-define-from-file=dart_defines.json',
+      );
+      _productsController.add(null);
+      return;
+    }
+
     try {
       if (kDebugMode) {
         await Purchases.setLogLevel(LogLevel.debug);

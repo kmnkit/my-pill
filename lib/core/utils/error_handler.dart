@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 enum ErrorCode {
   network,
@@ -20,7 +20,7 @@ abstract final class ErrorHandler {
     }
   }
 
-  /// Report error to Sentry in release mode, or log in debug mode.
+  /// Report error to Crashlytics in release mode, or log in debug mode.
   ///
   /// Errors classified as [ErrorCode.permissionDenied] are not reported
   /// (user-initiated action, not a bug).
@@ -35,12 +35,10 @@ abstract final class ErrorHandler {
 
     if (getErrorCode(error) == ErrorCode.permissionDenied) return;
 
-    Sentry.captureException(
+    FirebaseCrashlytics.instance.recordError(
       error,
-      stackTrace: stackTrace,
-      withScope: (scope) {
-        scope.setTag('context', context);
-      },
+      stackTrace,
+      reason: context,
     );
   }
 

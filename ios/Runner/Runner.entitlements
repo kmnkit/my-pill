@@ -23,5 +23,9 @@
 	<array>
 		<string>applinks:kusuridoki.app</string>
 	</array>
+
+	<!-- In-App Purchase -->
+	<key>com.apple.developer.in-app-purchases</key>
+	<true/>
 </dict>
 </plist>

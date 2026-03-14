@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:kusuridoki/core/utils/analytics_service.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
 import 'package:kusuridoki/data/providers/auth_provider.dart';
 import 'package:kusuridoki/data/providers/deep_link_provider.dart';
@@ -195,7 +194,6 @@ Raw<GoRouter> appRouter(Ref ref) {
     initialLocation: '/splash',
     refreshListenable: Listenable.merge([refreshNotifier, inviteNotifier]),
     observers: [
-      SentryNavigatorObserver(),
       FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
     ],
     onException: (_, state, router) {

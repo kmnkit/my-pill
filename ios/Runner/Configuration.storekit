@@ -1,0 +1,107 @@
+{
+  "identifier" : "5B8D9F2A-1234-4ABC-8DEF-0123456789AB",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6740891373",
+    "_developerTeamID" : "7P584LMV8Q",
+    "_lastSynchronizedDate" : 765072000
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "kusuridoki_premium",
+      "localizations" : [
+
+      ],
+      "name" : "kusuridoki_premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "A1B2C3D4-0001-4000-8000-000000000001",
+          "introductoryOffer" : {
+            "displayPrice" : "0",
+            "internalID" : "F1E2D3C4-0001-4000-8000-000000000001",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Monthly premium subscription",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "月額プレミアムサブスクリプション",
+              "displayName" : "プレミアム（月額）",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "premium_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "kusuridoki_premium",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "A1B2C3D4-0002-4000-8000-000000000002",
+          "introductoryOffer" : {
+            "displayPrice" : "0",
+            "internalID" : "F1E2D3C4-0002-4000-8000-000000000002",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Yearly premium subscription",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "年額プレミアムサブスクリプション",
+              "displayName" : "プレミアム（年額）",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "premium_yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Yearly",
+          "subscriptionGroupID" : "kusuridoki_premium",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

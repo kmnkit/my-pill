@@ -390,15 +390,15 @@ class MockTimezoneService extends _i1.Mock implements _i12.TimezoneService {
           as _i2.Location);
 
   @override
-  double getTimeDifference(String? homeTimezone, String? currentTimezone) =>
+  int getTimeDifference(String? homeTimezone, String? currentTimezone) =>
       (super.noSuchMethod(
             Invocation.method(#getTimeDifference, [
               homeTimezone,
               currentTimezone,
             ]),
-            returnValue: 0.0,
+            returnValue: 0,
           )
-          as double);
+          as int);
 
   @override
   DateTime convertTime(
