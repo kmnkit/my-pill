@@ -41,7 +41,7 @@ class SubscriptionService {
       debugPrint(
         'SubscriptionService: REVENUECAT_API_KEY is empty. '
         'Skipping initialization. '
-        'Run with --dart-define-from-file=dart_defines.json',
+        'Set keys in .env and run build_runner.',
       );
       _productsController.add(null);
       return;

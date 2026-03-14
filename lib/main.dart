@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +21,7 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp();
   } catch (e, stackTrace) {
-    debugPrint('[ERROR] Firebase.initializeApp: $e');
-    debugPrintStack(stackTrace: stackTrace);
+    ErrorHandler.debugLog(e, stackTrace, 'Firebase.initializeApp');
     // Firebase failed — skip Crashlytics setup, just run the app
     _runApp();
     return;
