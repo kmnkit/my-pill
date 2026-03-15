@@ -70,6 +70,8 @@ class PatientCard extends StatelessWidget {
                     child: Text(
                       med['name'] as String,
                       style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   KdBadge(

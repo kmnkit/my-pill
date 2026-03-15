@@ -83,14 +83,15 @@ class GreetingHeader extends ConsumerWidget {
           data: (reminderList) {
             if (reminderList.isEmpty) return const SizedBox.shrink();
             final now = DateTime.now();
-            final pending = reminderList
-                .where(
-                  (r) =>
-                      r.status == ReminderStatus.pending &&
-                      r.scheduledTime.isAfter(now),
-                )
-                .toList()
-              ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
+            final pending =
+                reminderList
+                    .where(
+                      (r) =>
+                          r.status == ReminderStatus.pending &&
+                          r.scheduledTime.isAfter(now),
+                    )
+                    .toList()
+                  ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
             final allDone = reminderList.every(
               (r) =>
                   r.status == ReminderStatus.taken ||
@@ -99,20 +100,17 @@ class GreetingHeader extends ConsumerWidget {
 
             Widget? doseWidget;
             if (pending.isNotEmpty) {
-              final formattedTime =
-                  DateFormat.jm(locale).format(pending.first.scheduledTime);
+              final formattedTime = DateFormat.jm(
+                locale,
+              ).format(pending.first.scheduledTime);
               doseWidget = Text(
                 l10n.nextDoseAt(formattedTime),
-                style: textTheme.bodyMedium?.copyWith(
-                  color: AppColors.primary,
-                ),
+                style: textTheme.bodyMedium?.copyWith(color: AppColors.primary),
               );
             } else if (allDone) {
               doseWidget = Text(
                 l10n.allDoneForToday,
-                style: textTheme.bodyMedium?.copyWith(
-                  color: AppColors.success,
-                ),
+                style: textTheme.bodyMedium?.copyWith(color: AppColors.success),
               );
             }
 
@@ -126,11 +124,12 @@ class GreetingHeader extends ConsumerWidget {
 
             return Padding(
               padding: const EdgeInsets.only(top: AppSpacing.xs),
-              child: Row(
+              child: Wrap(
+                spacing: AppSpacing.md,
+                runSpacing: AppSpacing.xs,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   ?doseWidget,
-                  if (doseWidget != null && streakValue > 0)
-                    const SizedBox(width: AppSpacing.md),
                   if (streakValue > 0) _StreakChip(days: streakValue),
                 ],
               ),
@@ -155,7 +154,10 @@ class _StreakChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: AppColors.accent.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppSpacing.sm),

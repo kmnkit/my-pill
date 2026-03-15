@@ -21,6 +21,7 @@ void main() {
       String medicationId = 'med-1',
       ReminderStatus reminderStatus = ReminderStatus.pending,
       VoidCallback? onMarkTaken,
+      String? dosageTimingLabel,
     }) {
       return createTestableWidget(
         TimelineCard(
@@ -34,6 +35,7 @@ void main() {
           medicationId: medicationId,
           reminderStatus: reminderStatus,
           onMarkTaken: onMarkTaken,
+          dosageTimingLabel: dosageTimingLabel,
         ),
       );
     }
@@ -183,6 +185,70 @@ void main() {
       );
       expect(textWidget.maxLines, equals(1));
       expect(textWidget.overflow, equals(TextOverflow.ellipsis));
+    });
+
+    // TIMELINE-OVERFLOW-001: 320px 좁은 화면 — Flexible로 overflow 없음
+    testWidgets('TIMELINE-OVERFLOW-001: renders without overflow at 320px',
+        (tester) async {
+      tester.view.physicalSize = const Size(320, 200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        buildCard(
+          medicationName: 'Acetaminophen Extended Release Tablet',
+          time: '11:30 PM',
+          dosageTimingLabel: 'After Meal',
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimelineCard), findsOneWidget);
+    });
+
+    // TIMELINE-OVERFLOW-002: textScaler 2.0 — overflow 없이 렌더링
+    testWidgets('TIMELINE-OVERFLOW-002: renders without overflow at textScaler 2.0',
+        (tester) async {
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+          child: buildCard(
+            medicationName: 'Metformin',
+            time: '8:00 AM',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimelineCard), findsOneWidget);
+    });
+
+    // TIMELINE-OVERFLOW-003: 시간 텍스트에 maxLines/ellipsis 설정 확인
+    testWidgets('TIMELINE-OVERFLOW-003: time text has maxLines:1 and ellipsis',
+        (tester) async {
+      await tester.pumpWidget(buildCard(time: '11:59 PM'));
+      await tester.pumpAndSettle();
+
+      final timeText = tester.widget<Text>(find.text('11:59 PM'));
+      expect(timeText.maxLines, equals(1));
+      expect(timeText.overflow, equals(TextOverflow.ellipsis));
+    });
+
+    // TIMELINE-OVERFLOW-004: dosageTimingLabel과 time 합쳐서 렌더링 — Flexible 감싸짐
+    testWidgets('TIMELINE-OVERFLOW-004: time+timingLabel renders inside Flexible',
+        (tester) async {
+      await tester.pumpWidget(
+        buildCard(
+          time: '8:00 AM',
+          dosageTimingLabel: 'After Meal',
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('8:00 AM'), findsOneWidget);
+      // Flexible이 time 영역을 감쌈
+      expect(find.byType(Flexible), findsAtLeastNWidgets(1));
     });
   });
 }

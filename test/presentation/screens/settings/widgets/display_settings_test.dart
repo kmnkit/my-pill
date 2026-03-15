@@ -347,5 +347,66 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Display'), findsOneWidget);
     });
+
+    // DISPLAY-OVERFLOW-001: 320px 좁은 화면 — Wrap으로 텍스트 크기 칩 줄바꿈
+    testWidgets(
+      'DISPLAY-OVERFLOW-001: renders without overflow at 320px width',
+      (tester) async {
+        tester.view.physicalSize = const Size(320, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DisplaySettings(),
+            overrides: _overrides(_defaultProfile),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DisplaySettings), findsOneWidget);
+        // 3개 크기 칩이 여전히 존재
+        expect(find.text('Normal'), findsOneWidget);
+        expect(find.text('Large'), findsOneWidget);
+        expect(find.text('XL'), findsOneWidget);
+      },
+    );
+
+    // DISPLAY-OVERFLOW-002: textScaler 2.0 — Wrap이 칩을 다음 줄로 넘김
+    testWidgets(
+      'DISPLAY-OVERFLOW-002: renders without overflow at textScaler 2.0',
+      (tester) async {
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+            child: createTestableWidget(
+              const DisplaySettings(),
+              overrides: _overrides(_defaultProfile),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(DisplaySettings), findsOneWidget);
+        expect(find.text('Normal'), findsOneWidget);
+      },
+    );
+
+    // DISPLAY-OVERFLOW-003: Wrap 위젯이 텍스트 크기 선택기에 사용됨
+    testWidgets(
+      'DISPLAY-OVERFLOW-003: text size selector uses Wrap widget',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestableWidget(
+            const DisplaySettings(),
+            overrides: _overrides(_defaultProfile),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(Wrap), findsAtLeastNWidgets(1));
+      },
+    );
   });
 }

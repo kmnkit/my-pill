@@ -72,7 +72,11 @@ class _TimelineCardState extends State<TimelineCard>
     super.didUpdateWidget(oldWidget);
     if (widget.reminderStatus == ReminderStatus.taken &&
         oldWidget.reminderStatus != ReminderStatus.taken) {
-      _checkController.forward(from: 0);
+      if (MediaQuery.disableAnimationsOf(context)) {
+        _checkController.value = 1.0;
+      } else {
+        _checkController.forward(from: 0);
+      }
     }
   }
 
@@ -140,18 +144,25 @@ class _TimelineCardState extends State<TimelineCard>
             ),
 
             // Time and badge
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  widget.dosageTimingLabel != null
-                      ? '${widget.time} ${widget.dosageTimingLabel}'
-                      : widget.time,
-                  style: textTheme.bodySmall,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                KdBadge(label: widget.badgeLabel, variant: widget.badgeVariant),
-              ],
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.dosageTimingLabel != null
+                        ? '${widget.time} ${widget.dosageTimingLabel}'
+                        : widget.time,
+                    style: textTheme.bodySmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  KdBadge(
+                    label: widget.badgeLabel,
+                    variant: widget.badgeVariant,
+                  ),
+                ],
+              ),
             ),
 
             // Inline mark-as-taken button for pending reminders
@@ -173,7 +184,11 @@ class _TimelineCardState extends State<TimelineCard>
               const SizedBox(width: AppSpacing.sm),
               ScaleTransition(
                 scale: _checkScale,
-                child: Icon(Icons.check_circle, color: AppColors.success, size: 24),
+                child: Icon(
+                  Icons.check_circle,
+                  color: AppColors.success,
+                  size: 24,
+                ),
               ),
             ],
           ],

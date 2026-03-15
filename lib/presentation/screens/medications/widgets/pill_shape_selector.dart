@@ -62,14 +62,17 @@ class PillShapeSelector extends StatelessWidget {
                       size: AppSpacing.iconLg,
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      shape.localizedName(l10n),
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: isSelected
-                            ? AppColors.primary
-                            : context.appColors.textMuted,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        shape.localizedName(l10n),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: isSelected
+                              ? AppColors.primary
+                              : context.appColors.textMuted,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),

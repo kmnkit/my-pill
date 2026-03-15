@@ -8,6 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:kusuridoki/core/constants/app_spacing.dart';
 import 'package:kusuridoki/core/theme/app_colors_extension.dart';
+import 'package:kusuridoki/data/models/adherence_record.dart';
+import 'package:kusuridoki/data/models/medication.dart';
+import 'package:kusuridoki/data/models/schedule.dart';
 import 'package:kusuridoki/data/providers/medication_provider.dart';
 import 'package:kusuridoki/core/extensions/enum_l10n_extensions.dart';
 import 'package:kusuridoki/data/providers/adherence_provider.dart';
@@ -94,9 +97,6 @@ class MedicationDetailScreen extends ConsumerWidget {
             return Center(child: Text(l10n.medicationNotFound));
           }
 
-          final isLowStock =
-              medication.inventoryRemaining <= medication.lowStockThreshold;
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
@@ -140,198 +140,19 @@ class MedicationDetailScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.xxl),
 
-                // Inventory card
-                KdCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            l10n.inventory,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          if (isLowStock)
-                            KdBadge(
-                              label: l10n.lowStock,
-                              variant: MpBadgeVariant.lowStock,
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      KdProgressBar(
-                        current: medication.inventoryRemaining,
-                        total: medication.inventoryTotal,
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      KdButton(
-                        label: l10n.updateInventory,
-                        variant: MpButtonVariant.secondary,
-                        onPressed: () async {
-                          final result = await InventoryUpdateDialog.show(
-                            context,
-                            currentRemaining: medication.inventoryRemaining,
-                            currentTotal: medication.inventoryTotal,
-                          );
-                          if (result != null) {
-                            final updated = medication.copyWith(
-                              inventoryRemaining: result.remaining,
-                              inventoryTotal: result.total,
-                              updatedAt: DateTime.now(),
-                            );
-                            await ref
-                                .read(medicationListProvider.notifier)
-                                .updateMedication(updated);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                _InventoryCard(medication: medication),
                 const SizedBox(height: AppSpacing.lg),
 
-                // Schedule info card
-                KdCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.schedule,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      schedulesAsync.when(
-                        data: (schedules) {
-                          if (schedules.isEmpty) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                _InfoRow(
-                                  label: l10n.status,
-                                  value: l10n.noScheduleConfigured,
-                                ),
-                                const SizedBox(height: AppSpacing.md),
-                                KdButton(
-                                  label: l10n.setSchedule,
-                                  variant: MpButtonVariant.secondary,
-                                  onPressed: () => context.push(
-                                    '/medications/$medicationId/schedule',
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                          final schedule = schedules.first;
-                          return Column(
-                            children: [
-                              _InfoRow(
-                                label: l10n.type,
-                                value: schedule.type.localizedName(l10n),
-                              ),
-                              if (schedule.dosageSlots.isNotEmpty) ...[
-                                const SizedBox(height: AppSpacing.sm),
-                                _InfoRow(
-                                  label: l10n.dosageTimingTitle,
-                                  value: schedule.dosageSlots
-                                      .map(
-                                        (slot) =>
-                                            '${slot.timing.localizedName(l10n)} ${slot.time}',
-                                      )
-                                      .join(', '),
-                                ),
-                              ],
-                              if (schedule.type == ScheduleType.specificDays &&
-                                  schedule.specificDays.isNotEmpty) ...[
-                                const SizedBox(height: AppSpacing.sm),
-                                _InfoRow(
-                                  label: l10n.days,
-                                  value: _formatDays(
-                                    schedule.specificDays,
-                                    l10n,
-                                  ),
-                                ),
-                              ],
-                              if (schedule.type == ScheduleType.interval &&
-                                  schedule.intervalHours != null) ...[
-                                const SizedBox(height: AppSpacing.sm),
-                                _InfoRow(
-                                  label: l10n.interval,
-                                  value: l10n.everyNHoursLabel(
-                                    schedule.intervalHours!,
-                                  ),
-                                ),
-                              ],
-                              const SizedBox(height: AppSpacing.sm),
-                              _InfoRow(
-                                label: l10n.added,
-                                value: DateFormat(
-                                  'MMM d, yyyy',
-                                ).format(medication.createdAt),
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              KdButton(
-                                label: l10n.editSchedule,
-                                variant: MpButtonVariant.secondary,
-                                onPressed: () => context.push(
-                                  '/medications/$medicationId/schedule',
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        loading: () => const KdShimmerBox(height: 48),
-                        error: (_, _) => _InfoRow(
-                          label: l10n.status,
-                          value: l10n.errorLoadingSchedule,
-                        ),
-                      ),
-                    ],
-                  ),
+                _ScheduleCard(
+                  medicationId: medicationId,
+                  schedulesAsync: schedulesAsync,
+                  createdAt: medication.createdAt,
                 ),
                 const SizedBox(height: AppSpacing.xxl),
 
-                // Recent history
-                KdSectionHeader(title: l10n.recentHistory),
-                const SizedBox(height: AppSpacing.md),
-                historyAsync.when(
-                  data: (records) {
-                    if (records.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.xl),
-                          child: Text(
-                            l10n.noHistoryYet,
-                            style: TextStyle(
-                              color: context.appColors.textMuted,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return Column(
-                      children: records.map((record) {
-                        return HistoryListItem(
-                          date: DateFormat('MMM d, yyyy').format(record.date),
-                          time: DateFormat.jm(locale).format(record.scheduledTime),
-                          wasTaken: record.status == ReminderStatus.taken,
-                        );
-                      }).toList(),
-                    );
-                  },
-                  loading: () => const Padding(
-                    padding: EdgeInsets.all(AppSpacing.xl),
-                    child: KdListShimmer(itemCount: 3, itemHeight: 40),
-                  ),
-                  error: (_, _) => Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSpacing.xl),
-                      child: Text(
-                        l10n.errorLoadingHistory,
-                        style: TextStyle(color: context.appColors.textMuted),
-                      ),
-                    ),
-                  ),
+                _RecentHistorySection(
+                  historyAsync: historyAsync,
+                  locale: locale,
                 ),
                 const SizedBox(height: AppSpacing.xxl),
 
@@ -370,6 +191,226 @@ class MedicationDetailScreen extends ConsumerWidget {
   }
 }
 
+class _InventoryCard extends ConsumerWidget {
+  const _InventoryCard({required this.medication});
+
+  final Medication medication;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final isLowStock =
+        medication.inventoryRemaining <= medication.lowStockThreshold;
+
+    return KdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                l10n.inventory,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              if (isLowStock)
+                KdBadge(label: l10n.lowStock, variant: MpBadgeVariant.lowStock),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          KdProgressBar(
+            current: medication.inventoryRemaining,
+            total: medication.inventoryTotal,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          KdButton(
+            label: l10n.updateInventory,
+            variant: MpButtonVariant.secondary,
+            onPressed: () async {
+              final result = await InventoryUpdateDialog.show(
+                context,
+                currentRemaining: medication.inventoryRemaining,
+                currentTotal: medication.inventoryTotal,
+              );
+              if (result != null) {
+                final updated = medication.copyWith(
+                  inventoryRemaining: result.remaining,
+                  inventoryTotal: result.total,
+                  updatedAt: DateTime.now(),
+                );
+                await ref
+                    .read(medicationListProvider.notifier)
+                    .updateMedication(updated);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ScheduleCard extends StatelessWidget {
+  const _ScheduleCard({
+    required this.medicationId,
+    required this.schedulesAsync,
+    required this.createdAt,
+  });
+
+  final String medicationId;
+  final AsyncValue<List<Schedule>> schedulesAsync;
+  final DateTime createdAt;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return KdCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.schedule, style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: AppSpacing.md),
+          schedulesAsync.when(
+            data: (schedules) {
+              if (schedules.isEmpty) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _InfoRow(
+                      label: l10n.status,
+                      value: l10n.noScheduleConfigured,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    KdButton(
+                      label: l10n.setSchedule,
+                      variant: MpButtonVariant.secondary,
+                      onPressed: () =>
+                          context.push('/medications/$medicationId/schedule'),
+                    ),
+                  ],
+                );
+              }
+              final schedule = schedules.first;
+              return Column(
+                children: [
+                  _InfoRow(
+                    label: l10n.type,
+                    value: schedule.type.localizedName(l10n),
+                  ),
+                  if (schedule.dosageSlots.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    _InfoRow(
+                      label: l10n.dosageTimingTitle,
+                      value: schedule.dosageSlots
+                          .map(
+                            (slot) =>
+                                '${slot.timing.localizedName(l10n)} ${slot.time}',
+                          )
+                          .join(', '),
+                    ),
+                  ],
+                  if (schedule.type == ScheduleType.specificDays &&
+                      schedule.specificDays.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    _InfoRow(
+                      label: l10n.days,
+                      value: _formatDays(schedule.specificDays, l10n),
+                    ),
+                  ],
+                  if (schedule.type == ScheduleType.interval &&
+                      schedule.intervalHours != null) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    _InfoRow(
+                      label: l10n.interval,
+                      value: l10n.everyNHoursLabel(schedule.intervalHours!),
+                    ),
+                  ],
+                  const SizedBox(height: AppSpacing.sm),
+                  _InfoRow(
+                    label: l10n.added,
+                    value: DateFormat('MMM d, yyyy').format(createdAt),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  KdButton(
+                    label: l10n.editSchedule,
+                    variant: MpButtonVariant.secondary,
+                    onPressed: () =>
+                        context.push('/medications/$medicationId/schedule'),
+                  ),
+                ],
+              );
+            },
+            loading: () => const KdShimmerBox(height: 48),
+            error: (_, _) =>
+                _InfoRow(label: l10n.status, value: l10n.errorLoadingSchedule),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecentHistorySection extends StatelessWidget {
+  const _RecentHistorySection({
+    required this.historyAsync,
+    required this.locale,
+  });
+
+  final AsyncValue<List<AdherenceRecord>> historyAsync;
+  final String locale;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        KdSectionHeader(title: l10n.recentHistory),
+        const SizedBox(height: AppSpacing.md),
+        historyAsync.when(
+          data: (records) {
+            if (records.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  child: Text(
+                    l10n.noHistoryYet,
+                    style: TextStyle(color: context.appColors.textMuted),
+                  ),
+                ),
+              );
+            }
+            return Column(
+              children: records.map((record) {
+                return HistoryListItem(
+                  date: DateFormat('MMM d, yyyy').format(record.date),
+                  time: DateFormat.jm(locale).format(record.scheduledTime),
+                  wasTaken: record.status == ReminderStatus.taken,
+                );
+              }).toList(),
+            );
+          },
+          loading: () => const Padding(
+            padding: EdgeInsets.all(AppSpacing.xl),
+            child: KdListShimmer(itemCount: 3, itemHeight: 40),
+          ),
+          error: (_, _) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: Text(
+                l10n.errorLoadingHistory,
+                style: TextStyle(color: context.appColors.textMuted),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _InfoRow extends StatelessWidget {
   const _InfoRow({required this.label, required this.value});
 
@@ -387,7 +428,14 @@ class _InfoRow extends StatelessWidget {
             context,
           ).textTheme.bodyMedium?.copyWith(color: context.appColors.textMuted),
         ),
-        Text(value, style: Theme.of(context).textTheme.bodyMedium),
+        const SizedBox(width: AppSpacing.md),
+        Flexible(
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.end,
+          ),
+        ),
       ],
     );
   }

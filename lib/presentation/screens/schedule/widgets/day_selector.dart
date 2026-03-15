@@ -82,12 +82,15 @@ class _DaySelectorState extends State<DaySelector> {
               ),
               alignment: Alignment.center,
               child: ExcludeSemantics(
-                child: Text(
-                  shortDays[index],
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: isSelected
-                        ? AppColors.textOnPrimary
-                        : context.appColors.textMuted,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    shortDays[index],
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: isSelected
+                          ? AppColors.textOnPrimary
+                          : context.appColors.textMuted,
+                    ),
                   ),
                 ),
               ),

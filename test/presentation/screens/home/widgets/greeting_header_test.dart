@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kusuridoki/data/models/reminder.dart';
 import 'package:kusuridoki/data/models/user_profile.dart';
@@ -251,5 +252,85 @@ void main() {
       expect(find.byType(GreetingHeader), findsOneWidget);
       expect(find.textContaining('Alice'), findsOneWidget);
     });
+
+    // GREET-OVERFLOW-001: 320px 좁은 화면 — Wrap으로 chip 영역 overflow 없음
+    testWidgets(
+      'GREET-OVERFLOW-001: renders without overflow at 320px width',
+      (tester) async {
+        tester.view.physicalSize = const Size(320, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final pendingReminder = Reminder(
+          id: 'r-pending',
+          medicationId: 'med-1',
+          scheduledTime: now.add(const Duration(hours: 2)),
+          status: ReminderStatus.pending,
+        );
+
+        await tester.pumpWidget(
+          createTestableWidget(
+            const GreetingHeader(),
+            overrides: buildOverrides(
+              reminders: [pendingReminder],
+              profile: testProfile,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(GreetingHeader), findsOneWidget);
+      },
+    );
+
+    // GREET-OVERFLOW-002: textScaler 2.0 — 큰 폰트에서 overflow 없음
+    testWidgets(
+      'GREET-OVERFLOW-002: renders without overflow at textScaler 2.0',
+      (tester) async {
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+            child: createTestableWidget(
+              const GreetingHeader(),
+              overrides: buildOverrides(
+                reminders: testReminders,
+                profile: testProfile,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(GreetingHeader), findsOneWidget);
+      },
+    );
+
+    // GREET-OVERFLOW-003: Wrap 위젯이 chip 영역에 사용됨
+    testWidgets(
+      'GREET-OVERFLOW-003: chip area uses Wrap widget',
+      (tester) async {
+        final pendingReminder = Reminder(
+          id: 'r-pending',
+          medicationId: 'med-1',
+          scheduledTime: now.add(const Duration(hours: 2)),
+          status: ReminderStatus.pending,
+        );
+
+        await tester.pumpWidget(
+          createTestableWidget(
+            const GreetingHeader(),
+            overrides: buildOverrides(
+              reminders: [pendingReminder],
+              profile: testProfile,
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Wrap이 칩 영역에 사용되어야 함
+        expect(find.byType(Wrap), findsAtLeastNWidgets(1));
+      },
+    );
   });
 }

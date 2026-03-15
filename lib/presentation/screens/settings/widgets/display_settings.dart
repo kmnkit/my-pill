@@ -49,47 +49,43 @@ class DisplaySettings extends ConsumerWidget {
             const SizedBox(height: AppSpacing.xl),
             Text(l10n.textSize, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: AppSpacing.md),
-            Row(
+            Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
               children: ['normal', 'large', 'xl'].map((storedValue) {
                 final isSelected = textSize == storedValue;
                 final displayLabel = _getTextSizeLabel(l10n, storedValue);
-                return Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.sm),
-                  child: Semantics(
-                    button: true,
-                    selected: isSelected,
-                    label:
-                        '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
-                    child: InkWell(
-                      onTap: () {
-                        ref
-                            .read(userSettingsProvider.notifier)
-                            .updateTextSize(storedValue);
-                      },
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                          vertical: AppSpacing.md,
+                return Semantics(
+                  button: true,
+                  selected: isSelected,
+                  label:
+                      '${l10n.textSizeSemanticLabel(displayLabel)}${isSelected ? ', selected' : ''}',
+                  child: InkWell(
+                    onTap: () {
+                      ref
+                          .read(userSettingsProvider.notifier)
+                          .updateTextSize(storedValue);
+                    },
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                        vertical: AppSpacing.lg,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.primary
+                            : (isDark
+                                  ? AppColors.cardDark
+                                  : AppColors.cardLight),
+                        borderRadius: BorderRadius.circular(
+                          AppSpacing.radiusMd,
                         ),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? AppColors.primary
-                              : (isDark
-                                    ? AppColors.cardDark
-                                    : AppColors.cardLight),
-                          borderRadius: BorderRadius.circular(
-                            AppSpacing.radiusMd,
-                          ),
-                        ),
-                        child: Text(
-                          displayLabel,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: isSelected
-                                    ? AppColors.textOnPrimary
-                                    : null,
-                              ),
+                      ),
+                      child: Text(
+                        displayLabel,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: isSelected ? AppColors.textOnPrimary : null,
                         ),
                       ),
                     ),

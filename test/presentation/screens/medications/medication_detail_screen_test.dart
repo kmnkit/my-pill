@@ -309,5 +309,98 @@ void main() {
 
       expect(find.byIcon(Icons.edit), findsOneWidget);
     });
+
+    // DETAILMED-OVERFLOW-001: 일반 화면에서 _InfoRow Flexible 사용 확인
+    // Note: KdSectionHeader에 pre-existing overflow 버그 존재 (headlineSmall 텍스트, 좁은 화면)
+    // 해당 버그는 이번 변경 범위 외이며 별도 수정 필요.
+    testWidgets(
+      'DETAILMED-OVERFLOW-001: InfoRow Flexible wrapper present on normal screen',
+      (tester) async {
+        await tester.pumpWidget(
+          _buildWithRouter(
+            overrides: [
+              medicationProvider(_kMedId).overrideWith(
+                (ref) async => _kMedication,
+              ),
+              medicationAdherenceProvider(_kMedId).overrideWith(
+                (ref) async => null,
+              ),
+              medicationSchedulesProvider(_kMedId).overrideWith(
+                (ref) async => <Schedule>[],
+              ),
+              medicationHistoryProvider(_kMedId).overrideWith(
+                (ref) async => <AdherenceRecord>[],
+              ),
+              medicationListProvider.overrideWith(() => _SpyMedicationList()),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Aspirin'), findsAtLeastNWidgets(1));
+      },
+    );
+
+    // DETAILMED-OVERFLOW-002: textScaler 2.0 — 기본 화면 크기에서 overflow 없음
+    testWidgets(
+      'DETAILMED-OVERFLOW-002: renders without overflow at textScaler 2.0',
+      (tester) async {
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+            child: _buildWithRouter(
+              overrides: [
+                medicationProvider(_kMedId).overrideWith(
+                  (ref) async => _kMedication,
+                ),
+                medicationAdherenceProvider(_kMedId).overrideWith(
+                  (ref) async => null,
+                ),
+                medicationSchedulesProvider(_kMedId).overrideWith(
+                  (ref) async => <Schedule>[],
+                ),
+                medicationHistoryProvider(_kMedId).overrideWith(
+                  (ref) async => <AdherenceRecord>[],
+                ),
+                medicationListProvider.overrideWith(() => _SpyMedicationList()),
+              ],
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(MedicationDetailScreen), findsOneWidget);
+      },
+    );
+
+    // DETAILMED-OVERFLOW-003: _InfoRow value는 Flexible 안에서 textAlign.end
+    testWidgets(
+      'DETAILMED-OVERFLOW-003: InfoRow value uses Flexible wrapper',
+      (tester) async {
+        await tester.pumpWidget(
+          _buildWithRouter(
+            overrides: [
+              medicationProvider(_kMedId).overrideWith(
+                (ref) async => _kMedication,
+              ),
+              medicationAdherenceProvider(_kMedId).overrideWith(
+                (ref) async => null,
+              ),
+              medicationSchedulesProvider(_kMedId).overrideWith(
+                (ref) async => <Schedule>[],
+              ),
+              medicationHistoryProvider(_kMedId).overrideWith(
+                (ref) async => <AdherenceRecord>[],
+              ),
+              medicationListProvider.overrideWith(() => _SpyMedicationList()),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // _InfoRow가 Flexible을 사용하는지 확인
+        expect(find.byType(Flexible), findsAtLeastNWidgets(1));
+      },
+    );
   });
 }

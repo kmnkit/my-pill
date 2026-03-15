@@ -134,13 +134,13 @@ class AdherenceChart extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: AppSpacing.xl,
+            runSpacing: AppSpacing.sm,
             children: [
               _LegendItem(color: AppColors.primary, label: l10n.taken),
-              const SizedBox(width: AppSpacing.xl),
               _LegendItem(color: AppColors.error, label: l10n.missed),
-              const SizedBox(width: AppSpacing.xl),
               _LegendItem(color: AppColors.info, label: l10n.noData),
             ],
           ),
