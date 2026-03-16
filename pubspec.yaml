@@ -60,7 +60,7 @@ dependencies:
   # Error Monitoring
   # PDF Generation
   pdf: ^3.11.3
-  printing: ^5.14.2
+  printing: ^5.14.3
   # Shimmer Loading
   shimmer: ^3.0.0
   # Screenshot capture (used by lib/core/screenshot/)
